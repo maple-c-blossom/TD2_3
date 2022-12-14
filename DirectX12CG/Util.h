@@ -1,6 +1,7 @@
 #pragma once
 #include <math.h>
 #include "Object3d.h"
+#include "Timer.h"
 #define PI 3.14159265358979323846264338327950288f
 namespace MCB
 {
@@ -20,6 +21,27 @@ namespace MCB
 
 	void InitRand();
 	int GetRand(int min, int max);
+	template<class T>
+	T sign(T x)
+	{
+		return (x > 0) - (x < 0);
+	};
+
+	class Shake
+	{
+		float shakeRange;
+		float shakeStartPos;
+		int shakeStartTimeOrigin;
+		float shakeRangeOrigin;
+		float shakeSign = 1;
+		Timer shakeTime;
+	public:
+		Timer endCount;
+		void Setshake(int shakeTime,float endCount,float shakeRange);
+		float shakeUpdate();
+		float shakeUpdateR();
+	};
+
 
 	class SimpleFigure
 	{

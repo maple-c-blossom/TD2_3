@@ -21,10 +21,12 @@
     <ClCompile Include="Draw.cpp" />
     <ClCompile Include="Dx12.cpp" />
     <ClCompile Include="DxWindow.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FBXLoader.cpp" />
     <ClCompile Include="FBXModel.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GamePad.cpp" />
+    <ClCompile Include="Handwriting.cpp" />
     <ClCompile Include="ICamera.cpp" />
     <ClCompile Include="ImguiManager.cpp" />
     <ClCompile Include="IScene.cpp" />
@@ -63,6 +65,7 @@
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</LanguageStandard>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Default</LanguageStandard>
     </ClCompile>
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="Util.cpp" />
     <ClCompile Include="Vecter2D.cpp" />
@@ -132,10 +135,12 @@
     <ClInclude Include="Draw.h" />
     <ClInclude Include="Dx12.h" />
     <ClInclude Include="DxWindow.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="FBXLoader.h" />
     <ClInclude Include="FBXModel.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GamePad.h" />
+    <ClInclude Include="Handwriting.h" />
     <ClInclude Include="ICamera.h" />
     <ClInclude Include="ImguiManager.h" />
     <ClInclude Include="IScene.h" />
@@ -165,12 +170,14 @@
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SpotLight.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Status.h" />
     <ClInclude Include="TexImgData.h" />
     <ClInclude Include="TexSample.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureBuffer.h" />
     <ClInclude Include="TextureFile.h" />
     <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="Vecter2D.h" />

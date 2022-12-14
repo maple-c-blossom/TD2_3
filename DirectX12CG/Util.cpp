@@ -126,13 +126,15 @@ float MCB::ConvertRadius(float angle)
 
 void MCB::InitRand()
 {
-	srand(time(nullptr));
+	srand((unsigned int)time(nullptr));
 }
 
 int MCB::GetRand(int min, int max)
 {
 	return min + rand() % (max - min);
 }
+
+
 
 MCB::SimpleFigure::SimpleFigure()
 {
@@ -186,5 +188,50 @@ void MCB::SimpleFigure::DrawTriangle(View view, Projection proj)
 	//定数バッファビュー(CBV)の設定コマンド
 	dx12->commandList->SetGraphicsRootConstantBufferView(0, triangle.constBuffTranceform->GetGPUVirtualAddress());
 	//描画コマンド
-	dx12->commandList->DrawInstanced(triangleMaterial.vertices.size(), 1, 0, 0);
+	dx12->commandList->DrawInstanced((UINT)triangleMaterial.vertices.size(), 1, 0, 0);
+}
+
+void MCB::Shake::Setshake(int shakeTime, float endCount, float shakeRange)
+{
+	if (shakeTime / 2 < 1) this->shakeTime.Set(1);
+	else this->shakeTime.Set(shakeTime / 2);
+	this->endCount.Set((int)endCount);
+	this->shakeStartTimeOrigin = shakeTime;
+	this->shakeRange = shakeRange;
+	this->shakeRangeOrigin = shakeRange;
+	shakeStartPos = 0;
+}
+
+float MCB::Shake::shakeUpdate()
+{
+	float ans;
+	shakeTime.SafeUpdate();
+	ans = Lerp(shakeStartPos, shakeRange, shakeTime.GetEndTime(), shakeTime.NowTime());
+	if (shakeTime.IsEnd())
+	{
+		shakeTime.Set(Lerp(shakeStartTimeOrigin, 1, endCount.GetEndTime(), endCount.NowTime()));
+		shakeRange = Lerp(shakeRangeOrigin, 0, endCount.GetEndTime(), endCount.NowTime());
+		shakeStartPos = ans;
+		shakeRange *= -1;
+		endCount.SafeUpdate();
+	}
+	if (endCount.IsEnd())
+	{
+		return 0;
+	}
+	return ans;
+}
+
+float MCB::Shake::shakeUpdateR()
+{
+	float ans = 0;
+	endCount.SafeUpdate();
+	shakeRange = Lerp(shakeRangeOrigin, 0, endCount.GetEndTime(), endCount.NowTime());
+	ans = shakeRange * shakeSign;
+	shakeSign *= -1;
+	if (endCount.IsEnd())
+	{
+		return 0;
+	}
+	return ans;
 }

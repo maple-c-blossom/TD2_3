@@ -182,6 +182,36 @@ void Object3d::Draw(unsigned short int incremant)
 
 }
 
+void MCB::Object3d::Draw(ObjectMaterial* material)
+{
+    if (model == nullptr)return;
+    if (material->constBuffMaterialB1 == nullptr)return;
+    Dx12* dx12 = Dx12::GetInstance();
+    ShaderResource* descriptor = ShaderResource::GetInstance();
+
+    //定数バッファビュー(CBV)の設定コマンド
+    dx12->commandList->SetGraphicsRootConstantBufferView(2, material->constBuffMaterialB1->GetGPUVirtualAddress());
+    lights->Draw(3);
+    //SRVヒープの先頭アドレスを取得
+    D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = descriptor->srvHeap->GetGPUDescriptorHandleForHeapStart();
+
+
+    srvGpuHandle.ptr += model->texture->texture->incrementNum * dx12->device.Get()->GetDescriptorHandleIncrementSize(descriptor->srvHeapDesc.Type);
+
+    //SRVヒープの先頭にあるSRVをパラメータ1番に設定
+    dx12->commandList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+
+    //頂点データ
+    dx12->commandList->IASetVertexBuffers(0, 1, &model->vbView);
+    //インデックスデータ
+    dx12->commandList->IASetIndexBuffer(&model->ibView);
+    //定数バッファビュー(CBV)の設定コマンド
+    dx12->commandList->SetGraphicsRootConstantBufferView(0, constBuffTranceform->GetGPUVirtualAddress());
+    //描画コマンド
+    dx12->commandList->DrawIndexedInstanced((unsigned int)model->indices.size(), 1, 0, 0, 0);
+
+}
+
 void MCB::Object3d::FbxUpdate(View& view, Projection& projection, bool isBillBord)
 {
     if (fbxModel == nullptr)return;
