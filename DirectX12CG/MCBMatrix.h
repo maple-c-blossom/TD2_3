@@ -13,15 +13,24 @@ namespace MCB
 		float _41; float _42; float _43; float _44;
 		
 	public:
+		//yADXEngine—R—ˆz’PˆÊs—ñ‚ğ•Ô‚·
+		static MCBMatrix IdentityMatrix();
+
 		void MCBMatrixIdentity();
+
+		static MCBMatrix GetMCBUdentuty();
 
 		MCBMatrix MCBMatrixTransrate(float x, float y, float z);
 
 		MCBMatrix MCBMatrixScaling(float x, float y, float z);
 
-		void ConvertMatrixArray(float** ArrayMat);
+		static float** ConvertMatrixArray(MCBMatrix mat);
 
-		void ConvertMatrixMCBMat(float** ArrayMat);
+		static float** GetConvertMatrixArray(MCBMatrix mat);
+
+		MCBMatrix ConvertMatrixMCBMat(float** ArrayMat);
+
+		static MCBMatrix GetConvertMatrucNCBMat(float** ArrayMat);
 
 		MCBMatrix MCBMatrixRotaX(float angle);
 
@@ -35,6 +44,12 @@ namespace MCB
 
 		MCBMatrix ReturnMatrixIdentity();
 
+		//yADXEngine—R—ˆz‹ts—ñ
+		MCBMatrix Inverse();
+
+		//yADXEngine—R—ˆzÀ•W•ÏŠ·iƒxƒNƒgƒ‹‚Æs—ñ‚ÌŠ|‚¯Z‚ğ‚·‚éj
+		static Vector3D transform(const Vector3D& v, const MCBMatrix& m);
+
 		MCBMatrix MCBMatrixLookAtLH(Float3 eye, Float3 target, Float3 up);
 
 		MCBMatrix MatrixTranspose(MCBMatrix mat);
@@ -42,9 +57,9 @@ namespace MCB
 		MCBMatrix MatrixReverse(MCBMatrix mat);
 
 		//XMMatrix‚É•ÏŠ·‚·‚éŠÖ”
-		DirectX::XMMATRIX MatrixConvertXMMatrix(MCBMatrix mat);
+		static DirectX::XMMATRIX MatrixConvertXMMatrix(MCBMatrix mat);
 
-		MCBMatrix MCBMatrixConvertXMMatrix( DirectX::XMMATRIX mat);
+		static MCBMatrix MCBMatrixConvertXMMatrix( DirectX::XMMATRIX mat);
 
 		//MCBMatrix operator*(MCBMatrix matrix);
 		MCBMatrix operator*(float s);
