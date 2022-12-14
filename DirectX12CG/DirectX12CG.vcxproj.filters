@@ -351,6 +351,12 @@
     <ClCompile Include="WritingEnemy.cpp">
       <Filter>ソース ファイル\Game\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="PencilEnemy.cpp">
+      <Filter>ソース ファイル\Game\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="EraserEnemy.cpp">
+      <Filter>ソース ファイル\Game\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\ParticleShader\ParticleGeometryShader.hlsl">
@@ -558,6 +564,12 @@
     </ClInclude>
     <ClInclude Include="Status.h">
       <Filter>ヘッダー ファイル\Game\Any</Filter>
+    </ClInclude>
+    <ClInclude Include="PencilEnemy.h">
+      <Filter>ヘッダー ファイル\Game\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EraserEnemy.h">
+      <Filter>ヘッダー ファイル\Game\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
