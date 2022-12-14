@@ -204,7 +204,7 @@ Vector3D ADXCollider::CollidePoint(Vector3D pos, Vector3D targetColSenter, Vecto
 	Vector3D ret = EdgeLocalPoint(pos, pos - move);
 	Vector3D targetLocalSenter = MCBMatrix::transform(targetColSenter, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matTransform).Inverse()) - pos_;
 
-	if (targetLocalSenter.dot(ret) < 0)
+	if (targetLocalSenter.GetV3Dot(ret) < 0)
 	{
 		ret = -ret;
 	}
@@ -221,7 +221,7 @@ Vector3D ADXCollider::CollideVector(ADXCollider col)
 	Vector3D myTranslation = MCBMatrix::transform(pos_, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matTransform));
 	Vector3D myMove = myTranslation - MCBMatrix::transform(pos_, preMatrix);
 
-	Vector3D targetTranslation = MCBMatrix::transform(col.pos_, col.MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matTransform));
+	Vector3D targetTranslation = MCBMatrix::transform(col.pos_, MCBMatrix::MCBMatrixConvertXMMatrix(col.gameObject->matWorld.matTransform));
 	Vector3D targetMove = targetTranslation - MCBMatrix::transform(col.pos_, col.preMatrix);
 
 	Vector3D myPushBack1 = col.CollidePoint(myTranslation, myTranslation, myMove) - CollidePoint(col.CollidePoint(myTranslation, myTranslation, myMove), targetTranslation, targetMove);
@@ -229,7 +229,7 @@ Vector3D ADXCollider::CollideVector(ADXCollider col)
 
 	Vector3D pushBackDiff = myPushBack1 - myPushBack2;
 
-	if ((targetTranslation - myTranslation).dot(pushBackDiff) > 0)
+	if ((targetTranslation - myTranslation).GetV3Dot(pushBackDiff) > 0)
 	{
 		ret = myPushBack2;
 	}
@@ -238,7 +238,7 @@ Vector3D ADXCollider::CollideVector(ADXCollider col)
 		ret = myPushBack1;
 	}
 
-	if (ret.dot(targetTranslation - myTranslation) > 0)
+	if (ret.GetV3Dot(targetTranslation - myTranslation) > 0)
 	{
 		ret = -ret;
 	}
@@ -249,8 +249,8 @@ Vector3D ADXCollider::CollideVector(ADXCollider col)
 //相手のコライダーと重なっているか
 bool ADXCollider::IsHit(ADXCollider col)
 {
-	Vector3D closestVec1 = col.ClosestPoint(ClosestPoint(MCBMatrix::transform(col.pos_, col.MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matTransform))));
-	Vector3D closestVec2 = ClosestPoint(col.ClosestPoint(ClosestPoint(MCBMatrix::transform(col.pos_, col.MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matTransform)))));
+	Vector3D closestVec1 = col.ClosestPoint(ClosestPoint(MCBMatrix::transform(col.pos_, MCBMatrix::MCBMatrixConvertXMMatrix(col.gameObject->matWorld.matTransform))));
+	Vector3D closestVec2 = ClosestPoint(col.ClosestPoint(ClosestPoint(MCBMatrix::transform(col.pos_, MCBMatrix::MCBMatrixConvertXMMatrix(col.gameObject->matWorld.matTransform)))));
 	float colPointDiff = (closestVec1 - closestVec2).V3Len();
 	if ((closestVec1 - closestVec2).V3Len() <= 0)
 	{
