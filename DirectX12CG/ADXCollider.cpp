@@ -66,7 +66,7 @@ Vector3D ADXCollider::ClosestPoint(Vector3D pos)
 	}
 	else if (colType_ == sphere)
 	{
-		if ((closPos - pos_).length() > radius_)
+		if ((closPos - pos_).V3Len() > radius_)
 		{
 			closPos = pos_ + normal(closPos - pos_) * radius_;
 		}
@@ -76,7 +76,7 @@ Vector3D ADXCollider::ClosestPoint(Vector3D pos)
 		closPos = pos_;
 	}
 
-	if ((closPos - ret).length() > 0)
+	if ((closPos - ret).V3Len() > 0)
 	{
 		ret = closPos;
 		ret = MCBMatrix::transform(ret, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matTransform));
@@ -251,16 +251,16 @@ bool ADXCollider::IsHit(ADXCollider col)
 {
 	Vector3D closestVec1 = col.ClosestPoint(ClosestPoint(MCBMatrix::transform(col.pos_, col.MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matTransform))));
 	Vector3D closestVec2 = ClosestPoint(col.ClosestPoint(ClosestPoint(MCBMatrix::transform(col.pos_, col.MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matTransform)))));
-	float colPointDiff = (closestVec1 - closestVec2).length();
-	if ((closestVec1 - closestVec2).length() <= 0)
+	float colPointDiff = (closestVec1 - closestVec2).V3Len();
+	if ((closestVec1 - closestVec2).V3Len() <= 0)
 	{
 		return true;
 	}
 
 	closestVec1 = ClosestPoint(col.ClosestPoint(MCBMatrix::transform(pos_, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matTransform))));
 	closestVec2 = col.ClosestPoint(ClosestPoint(col.ClosestPoint(MCBMatrix::transform(pos_, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matTransform)))));
-	colPointDiff = (closestVec1 - closestVec2).length();
-	if ((closestVec1 - closestVec2).length() <= 0)
+	colPointDiff = (closestVec1 - closestVec2).V3Len();
+	if ((closestVec1 - closestVec2).V3Len() <= 0)
 	{
 		return true;
 	}
@@ -334,9 +334,9 @@ void ADXCollider::CollidersUpdate()
 		Vector3D scaleY1 = { 0,cols[i]->scale_.y,0 };
 		Vector3D scaleZ1 = { 0,0,cols[i]->scale_.z };
 
-		float worldScaleX1 = MCBMatrix::transform(scaleX1, cols[i]->gameObject->transform.matScale_ * cols[i]->gameObject->transform.matRot_).length();
-		float worldScaleY1 = MCBMatrix::transform(scaleY1, cols[i]->gameObject->transform.matScale_ * cols[i]->gameObject->transform.matRot_).length();
-		float worldScaleZ1 = MCBMatrix::transform(scaleZ1, cols[i]->gameObject->transform.matScale_ * cols[i]->gameObject->transform.matRot_).length();
+		float worldScaleX1 = MCBMatrix::transform(scaleX1, cols[i]->gameObject->transform.matScale_ * cols[i]->gameObject->transform.matRot_).V3Len();
+		float worldScaleY1 = MCBMatrix::transform(scaleY1, cols[i]->gameObject->transform.matScale_ * cols[i]->gameObject->transform.matRot_).V3Len();
+		float worldScaleZ1 = MCBMatrix::transform(scaleZ1, cols[i]->gameObject->transform.matScale_ * cols[i]->gameObject->transform.matRot_).V3Len();
 
 		float minimumWorldRadius1 = 1;
 
@@ -353,7 +353,7 @@ void ADXCollider::CollidersUpdate()
 			minimumWorldRadius1 = worldScaleZ1;
 		}
 
-		float moveDivnum1 = move.length() / (minimumWorldRadius1 * 0.95);
+		float moveDivnum1 = move.V3Len() / (minimumWorldRadius1 * 0.95);
 		if (moveDivnum1 >= translateDivNumF)
 		{
 			translateDivNumF = moveDivnum1;
