@@ -154,6 +154,24 @@
     <Filter Include="ヘッダー ファイル\Scene">
       <UniqueIdentifier>{9626c07b-d810-4c3a-a52f-1f3eb218727d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Enemy">
+      <UniqueIdentifier>{a5899761-2ccd-421b-bef2-66cb46ff0723}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Any">
+      <UniqueIdentifier>{029bd1d8-2d2a-4e62-b1ee-8aaccb73360d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Enemy">
+      <UniqueIdentifier>{2a19bc9f-3013-4658-a918-5ca42054ba2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Any">
+      <UniqueIdentifier>{876c7b44-baf3-42b2-a97d-6220213435c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Player">
+      <UniqueIdentifier>{2f7f25cc-563d-46f1-addd-bdaea2654d69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Player">
+      <UniqueIdentifier>{72bbdbe6-87b9-43aa-83ed-b7eafad254d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -321,14 +339,17 @@
     <ClCompile Include="TextureManager.cpp">
       <Filter>ソース ファイル\Engin\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>ソース ファイル\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Handwriting.cpp">
-      <Filter>ソース ファイル\Game</Filter>
-    </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>ソース ファイル\Engin\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>ソース ファイル\Game\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Handwriting.cpp">
+      <Filter>ソース ファイル\Game\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="WritingEnemy.cpp">
+      <Filter>ソース ファイル\Game\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -523,17 +544,20 @@
     <ClInclude Include="TextureManager.h">
       <Filter>ヘッダー ファイル\Engin\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Handwriting.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
-    </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>ヘッダー ファイル\Engin\Util</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>ヘッダー ファイル\Game\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Handwriting.h">
+      <Filter>ヘッダー ファイル\Game\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="WritingEnemy.h">
+      <Filter>ヘッダー ファイル\Game\Enemy</Filter>
+    </ClInclude>
     <ClInclude Include="Status.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
+      <Filter>ヘッダー ファイル\Game\Any</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

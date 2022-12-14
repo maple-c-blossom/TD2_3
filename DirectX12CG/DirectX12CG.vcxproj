@@ -72,6 +72,7 @@
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="View.cpp" />
     <ClCompile Include="WorldMatrix.cpp" />
+    <ClCompile Include="WritingEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\ParticleShader\ParticleGeometryShader.hlsl">
@@ -183,6 +184,7 @@
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="View.h" />
     <ClInclude Include="WorldMatrix.h" />
+    <ClInclude Include="WritingEnemy.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\ParticleShader\ParticleHeader.hlsli" />

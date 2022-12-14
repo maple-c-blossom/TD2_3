@@ -22,3 +22,8 @@ void Handwriting::Draw()
 {
 	Object3d::Draw(&material);
 }
+
+bool Handwriting::GetLifeTimeOver()
+{
+	return lifeTimer.IsEnd();
+}

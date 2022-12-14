@@ -5,10 +5,13 @@
 #include "Handwriting.h"
 class Enemy:public MCB::Object3d
 {
-private:
-	std::vector<std::unique_ptr<Handwriting>> handwriting;//’Ê‚Á‚½Œã
+protected:
 	int hp;
-
+	float speed;
+	MCB::Vector3D velocity;
 public:
+	virtual void Initialize() = 0;
+	virtual void Update() = 0;
+	virtual void Draw() = 0;
 };
 
