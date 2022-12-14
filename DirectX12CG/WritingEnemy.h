@@ -1,14 +1,9 @@
 #pragma once
-#include "Object3d.h"
-#include <vector>
-#include <memory>
-#include "Handwriting.h"
-class Enemy:public MCB::Object3d
+#include "Enemy.h"
+class WritingEnemy :public Enemy
 {
 protected:
-	int hp;
-	float speed;
-	MCB::Vector3D velocity;
+	std::vector<std::unique_ptr<Handwriting>> handwriting;
 public:
 	virtual void Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model) = 0;
 	virtual void Update() = 0;
