@@ -75,6 +75,7 @@ namespace MCB
         void Draw();
 
         void Draw(unsigned short int incremant);
+        void Draw(ObjectMaterial* material);
 
 
         void FbxUpdate(View& view, Projection& projection, bool isBillBord = false);

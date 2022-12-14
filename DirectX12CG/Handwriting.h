@@ -8,9 +8,12 @@ private:
 	int hp;
 	static const int MAX_LIFE_TIME = 300;
 	Timer lifeTimer;
+	MCB::ObjectMaterial material;
+
 public:
 	void Initialize(MCB::Float3 position,MCB::Model* model);
 	void Update();
 	void Draw();
+	bool GetLifeTimeOver();
 };
 
