@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ADXCollider.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="DebugCamera.cpp" />
@@ -127,6 +128,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ADXCollider.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="DebugCamera.h" />
