@@ -5,8 +5,6 @@
 class Handwriting:public MCB::Object3d
 {
 private:
-	int hp;
-	static const int MAX_LIFE_TIME = 300;
 	Timer lifeTimer;
 	MCB::ObjectMaterial material;
 

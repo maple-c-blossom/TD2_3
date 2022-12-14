@@ -1,8 +1,8 @@
 #include "Handwriting.h"
-
+#include "Status.h"
 void Handwriting::Initialize(MCB::Float3 position, MCB::Model* model)
 {
-	lifeTimer.Set(MAX_LIFE_TIME);
+	lifeTimer.Set(MAX_LIFE_TIME_HAND_WRITING);
 	this->position.x = position.x;
 	this->position.y = position.y;
 	this->position.z = position.z;

@@ -532,6 +532,9 @@
     <ClInclude Include="Timer.h">
       <Filter>ヘッダー ファイル\Engin\Util</Filter>
     </ClInclude>
+    <ClInclude Include="Status.h">
+      <Filter>ヘッダー ファイル\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\ParticleShader\ParticleHeader.hlsli">
