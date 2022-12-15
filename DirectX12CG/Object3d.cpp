@@ -298,6 +298,7 @@ void MCB::Object3d::FbxDraw(unsigned short int incremant)
 void MCB::Object3d::StaticUpdate()
 {
     objs = allObjPtr;
+    allObjPtr.clear();
 }
 
 void MCB::Object3d::SetLights(LightGroup* lights)
