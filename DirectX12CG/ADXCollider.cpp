@@ -331,15 +331,18 @@ void ADXCollider::CollidersUpdate()
 		cols[i]->collideList.clear();
 
 
-		Vector3D move = cols[i]->gameObject->position - cols[i]->preTranslation;
+		Vector3D move;
+		move.vec.x = cols[i]->gameObject->position.x - cols[i]->preTranslation.vec.x;
+		move.vec.y = cols[i]->gameObject->position.y - cols[i]->preTranslation.vec.y;
+		move.vec.z = cols[i]->gameObject->position.z - cols[i]->preTranslation.vec.z;
 
 		Vector3D scaleX1 = { cols[i]->scale_.vec.x,0,0 };
 		Vector3D scaleY1 = { 0,cols[i]->scale_.vec.y,0 };
 		Vector3D scaleZ1 = { 0,0,cols[i]->scale_.vec.z };
 
-		float worldScaleX1 = MCBMatrix::transform(scaleX1, cols[i]->gameObject->matWorld.matScale * cols[i]->gameObject->matWorld.matRot).V3Len();
-		float worldScaleY1 = MCBMatrix::transform(scaleY1, cols[i]->gameObject->matWorld.matScale * cols[i]->gameObject->matWorld.matRot).V3Len();
-		float worldScaleZ1 = MCBMatrix::transform(scaleZ1, cols[i]->gameObject->matWorld.matScale * cols[i]->gameObject->matWorld.matRot).V3Len();
+		float worldScaleX1 = MCBMatrix::transform(scaleX1, MCBMatrix::MCBMatrixConvertXMMatrix(cols[i]->gameObject->matWorld.matScale * cols[i]->gameObject->matWorld.matRot)).V3Len();
+		float worldScaleY1 = MCBMatrix::transform(scaleY1, MCBMatrix::MCBMatrixConvertXMMatrix(cols[i]->gameObject->matWorld.matScale * cols[i]->gameObject->matWorld.matRot)).V3Len();
+		float worldScaleZ1 = MCBMatrix::transform(scaleZ1, MCBMatrix::MCBMatrixConvertXMMatrix(cols[i]->gameObject->matWorld.matScale * cols[i]->gameObject->matWorld.matRot)).V3Len();
 
 		float minimumWorldRadius1 = 1;
 

@@ -4,6 +4,8 @@ using namespace MCB;
 using namespace std;
 
 LightGroup* Object3d::lights = nullptr;
+std::list<Object3d*> Object3d::allObjPtr{};
+std::list<Object3d*> Object3d::objs{};
 
 MCB::Object3d::Object3d()
 {

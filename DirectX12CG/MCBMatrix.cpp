@@ -187,7 +187,7 @@ MCBMatrix MCBMatrix::Inverse() {
 
 	const int N = 4;
 
-	MCBMatrix ret;
+	MCBMatrix ret = *this;
 
 	float** inv = ConvertMatrixArray(ret);
 
