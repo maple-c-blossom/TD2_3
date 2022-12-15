@@ -133,6 +133,7 @@ IScene* MCB::Scene::GetNextScene()
 
 void MCB::Scene::Update()
 {
+   
         Float3 SLPos = lights->GetSLightPos(0);
         Float3 PLPos = lights->GetPLightPos(0);
 
@@ -161,6 +162,8 @@ void MCB::Scene::Update()
 
         lights->UpDate();
         viewCamera->Update();
+    Enemy::StaticUpdate();
+    CheckAllColision();
     //s—ñ•ÏŠ·
     MatrixUpdate();
 }

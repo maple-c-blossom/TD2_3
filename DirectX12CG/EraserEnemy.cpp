@@ -10,7 +10,7 @@ void EraserEnemy::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::
 
 }
 
-void EraserEnemy::Update()
+void EraserEnemy::UniqueUpdate()
 {
 	velocity.V3Norm();
 	position.x += velocity.vec.x * speed;

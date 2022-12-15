@@ -5,7 +5,7 @@
 #include "DebugCamera.h"
 
 #pragma region ƒQ[ƒ€Œn.h include
-
+#include "Enemy.h"
 
 #pragma endregion ƒQ[ƒ€Œn.h include
 

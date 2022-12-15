@@ -14,7 +14,7 @@ void PencilEnemy::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::
 
 }
 
-void PencilEnemy::Update()
+void PencilEnemy::UniqueUpdate()
 {
 	velocity.V3Norm();
 	position.x += velocity.vec.x * speed;
@@ -46,6 +46,7 @@ void PencilEnemy::Update()
 	{
 		velocity.vec.z *= -1;
 	}
+	allEnemyPtr.push_back(this);
 }
 
 void PencilEnemy::Draw()
