@@ -295,7 +295,17 @@ void MCB::Object3d::FbxDraw(unsigned short int incremant)
     fbxModel->Draw();
 }
 
+void MCB::Object3d::StaticUpdate()
+{
+    objs = allObjPtr;
+}
+
 void MCB::Object3d::SetLights(LightGroup* lights)
 {
     Object3d::lights = lights;
+}
+
+std::list<Object3d*> MCB::Object3d::GetAllObjs()
+{
+    return objs;
 }

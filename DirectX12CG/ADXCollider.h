@@ -47,6 +47,7 @@ public:
     Vector3D EdgePoint(Vector3D pos, Vector3D prePos);
     Vector3D CollidePoint(Vector3D pos, Vector3D colSenter, Vector3D move);
     Vector3D CollideVector(ADXCollider col);
+    
     bool IsHit(ADXCollider col);
     void SendPushBack();
     void Collide(ADXCollider* col);

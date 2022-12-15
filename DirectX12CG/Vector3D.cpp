@@ -51,6 +51,13 @@ void MCB::Vector3D::V3Norm()
 
 }
 
+Vector3D MCB::Vector3D::normal(Vector3D v)
+{
+	Vector3D ret = v;
+	ret.V3Norm();
+	return ret;
+}
+
 float MCB::Vector3D::GetV3Dot(Vector3D vector)
 {
 	return (vec.x * vector.vec.x) + (vec.y * vector.vec.y) + (vec.z * vector.vec.z);
@@ -95,6 +102,13 @@ Vector3D MCB::Vector3D::GetRightVec(Vector3D frontVec, Vector3D UpVec)
 	ans.V3Norm();
 
 	return ans;
+}
+
+DirectX::XMFLOAT3 MCB::Vector3D::ConvertXMFloat3()
+{
+	DirectX::XMFLOAT3 temp;
+	temp.x = vec.x, temp.y = vec.y, temp.z = vec.z;
+	return temp;
 }
 
 float MCB::Vector3D::GetInnerProduct(Vector3D vector)
