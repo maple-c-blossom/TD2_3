@@ -58,6 +58,7 @@
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Substie.cpp" />
     <ClCompile Include="TexImgData.cpp" />
     <ClCompile Include="TexSample.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="SpotLight.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Status.h" />
+    <ClInclude Include="Substie.h" />
     <ClInclude Include="TexImgData.h" />
     <ClInclude Include="TexSample.h" />
     <ClInclude Include="Texture.h" />

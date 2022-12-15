@@ -366,6 +366,9 @@
     <ClCompile Include="Timer.cpp">
       <Filter>ソース ファイル\Engine\Util</Filter>
     </ClCompile>
+    <ClCompile Include="Substie.cpp">
+      <Filter>ヘッダー ファイル\Game\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\ParticleShader\ParticleGeometryShader.hlsl">
@@ -582,6 +585,9 @@
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>ヘッダー ファイル\Engine\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Substie.h">
+      <Filter>ソース ファイル\Game\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
