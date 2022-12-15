@@ -176,6 +176,24 @@ Vector3D MCB::operator-(Vector3D& vecA, Vector3D& vecB)
 	return temp;
 }
 
+Vector3D MCB::operator-(DirectX::XMFLOAT3& vecA, Vector3D& vecB)
+{
+	Vector3D temp;
+	temp.vec.x = vecA.x - vecB.vec.x;
+	temp.vec.y = vecA.y - vecB.vec.y;
+	temp.vec.z = vecA.z - vecB.vec.z;
+	return temp;
+}
+
+Vector3D MCB::operator-(Vector3D& vecA, DirectX::XMFLOAT3& vecB)
+{
+	Vector3D temp;
+	temp.vec.x = vecA.vec.x - vecB.x;
+	temp.vec.y = vecA.vec.y - vecB.y;
+	temp.vec.z = vecA.vec.z - vecB.z;
+	return temp;
+}
+
 Vector3D MCB::operator*(Vector3D& vecA, float k)
 {
 	Vector3D temp;

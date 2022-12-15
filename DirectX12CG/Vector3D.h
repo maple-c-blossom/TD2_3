@@ -34,6 +34,8 @@ namespace MCB
 	};
 	Vector3D operator+(Vector3D& vecA, Vector3D& vecB);
 	Vector3D operator-(Vector3D& vecA, Vector3D& vecB);
+	Vector3D operator-(DirectX::XMFLOAT3& vecA, Vector3D& vecB);
+	Vector3D operator-(Vector3D& vecA, DirectX::XMFLOAT3& vecB);
 	Vector3D operator*(Vector3D& vecA,float k);
 	Vector3D operator/(Vector3D& vecA,float k);
 	Vector3D operator-(Vector3D& vecA);
