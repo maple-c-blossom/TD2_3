@@ -2,6 +2,7 @@
 #include "Object3d.h"
 #include <vector>
 #include <memory>
+#include <list>
 #include "Handwriting.h"
 class Enemy:public MCB::Object3d
 {

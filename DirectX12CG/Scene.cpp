@@ -188,6 +188,12 @@ void MCB::Scene::ParticleDraw()
 
 void MCB::Scene::CheckAllColision()
 {
+
+
+
+
+
+
 }
 
 void MCB::Scene::ImGuiUpdate()
