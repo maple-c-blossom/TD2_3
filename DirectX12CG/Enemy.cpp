@@ -1,5 +1,6 @@
 #include "Enemy.h"
-
+std::list<Enemy*> Enemy::allEnemyPtr{};
+std::list<Enemy*> Enemy::enemies{};
 void Enemy::StaticUpdate()
 {
 	enemies = allEnemyPtr;
