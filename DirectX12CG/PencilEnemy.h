@@ -1,5 +1,6 @@
 #pragma once
 #include "WritingEnemy.h"
+#include "Status.h"
 class PencilEnemy:public WritingEnemy
 {
 private:
