@@ -7,7 +7,7 @@ class Handwriting:public MCB::Object3d
 private:
 	Timer lifeTimer;
 	MCB::ObjectMaterial material;
-
+	
 public:
 	void Initialize(MCB::Float3 position,MCB::Model* model);
 	void Update();

@@ -348,9 +348,6 @@
     <ClCompile Include="ADXCollider.cpp">
       <Filter>ソース ファイル\Engine\HanaBehaviour</Filter>
     </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>ソース ファイル\Engin\Util</Filter>
-    </ClCompile>
     <ClCompile Include="Enemy.cpp">
       <Filter>ソース ファイル\Game\Enemy</Filter>
     </ClCompile>
@@ -365,6 +362,9 @@
     </ClCompile>
     <ClCompile Include="EraserEnemy.cpp">
       <Filter>ソース ファイル\Game\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>ソース ファイル\Engine\Util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -562,9 +562,6 @@
     <ClInclude Include="ADXCollider.h">
       <Filter>ヘッダー ファイル\Engine\HanaBehaviour</Filter>
     </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>ヘッダー ファイル\Engin\Util</Filter>
-    </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>ヘッダー ファイル\Game\Enemy</Filter>
     </ClInclude>
@@ -582,6 +579,9 @@
     </ClInclude>
     <ClInclude Include="EraserEnemy.h">
       <Filter>ヘッダー ファイル\Game\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>ヘッダー ファイル\Engine\Util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
