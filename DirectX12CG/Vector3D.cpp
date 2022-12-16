@@ -51,6 +51,13 @@ void MCB::Vector3D::V3Norm()
 
 }
 
+Vector3D MCB::Vector3D::normal(Vector3D v)
+{
+	Vector3D ret = v;
+	ret.V3Norm();
+	return ret;
+}
+
 float MCB::Vector3D::GetV3Dot(Vector3D vector)
 {
 	return (vec.x * vector.vec.x) + (vec.y * vector.vec.y) + (vec.z * vector.vec.z);
@@ -97,6 +104,13 @@ Vector3D MCB::Vector3D::GetRightVec(Vector3D frontVec, Vector3D UpVec)
 	return ans;
 }
 
+DirectX::XMFLOAT3 MCB::Vector3D::ConvertXMFloat3()
+{
+	DirectX::XMFLOAT3 temp;
+	temp.x = vec.x, temp.y = vec.y, temp.z = vec.z;
+	return temp;
+}
+
 float MCB::Vector3D::GetInnerProduct(Vector3D vector)
 {
 	Vector3D temp;
@@ -138,6 +152,14 @@ Vector3D& MCB::Vector3D::operator=(const Float3 a)
 	return *this;
 }
 
+Vector3D& MCB::Vector3D::operator=(const DirectX::XMFLOAT3 a)
+{
+	this->vec.x = a.x;
+	this->vec.y = a.y;
+	this->vec.z = a.z;
+	return *this;
+}
+
 Vector3D MCB::operator+(Vector3D& vecA, Vector3D& vecB)
 {
 	Vector3D temp;
@@ -151,6 +173,24 @@ Vector3D MCB::operator-(Vector3D& vecA, Vector3D& vecB)
 	Vector3D temp;
 	temp = vecA;
 	temp -= vecB;
+	return temp;
+}
+
+Vector3D MCB::operator-(DirectX::XMFLOAT3& vecA, Vector3D& vecB)
+{
+	Vector3D temp;
+	temp.vec.x = vecA.x - vecB.vec.x;
+	temp.vec.y = vecA.y - vecB.vec.y;
+	temp.vec.z = vecA.z - vecB.vec.z;
+	return temp;
+}
+
+Vector3D MCB::operator-(Vector3D& vecA, DirectX::XMFLOAT3& vecB)
+{
+	Vector3D temp;
+	temp.vec.x = vecA.vec.x - vecB.x;
+	temp.vec.y = vecA.vec.y - vecB.y;
+	temp.vec.z = vecA.vec.z - vecB.z;
 	return temp;
 }
 

@@ -2,6 +2,7 @@
 #include "TitleScene.h"
 #include "Util.h"
 
+
 using namespace MCB;
 using namespace DirectX;
 
@@ -132,6 +133,7 @@ IScene* MCB::Scene::GetNextScene()
 
 void MCB::Scene::Update()
 {
+   
         Float3 SLPos = lights->GetSLightPos(0);
         Float3 PLPos = lights->GetPLightPos(0);
 
@@ -160,6 +162,8 @@ void MCB::Scene::Update()
 
         lights->UpDate();
         viewCamera->Update();
+    Enemy::StaticUpdate();
+    CheckAllColision();
     //çsóÒïœä∑
     MatrixUpdate();
 }
@@ -187,6 +191,12 @@ void MCB::Scene::ParticleDraw()
 
 void MCB::Scene::CheckAllColision()
 {
+
+
+
+
+
+
 }
 
 void MCB::Scene::ImGuiUpdate()

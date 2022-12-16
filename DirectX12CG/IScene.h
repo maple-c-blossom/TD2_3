@@ -102,7 +102,7 @@ namespace MCB
 
 		IScene* nextScene = nullptr;
 
-		ICamera* viewCamera;
+		static ICamera* viewCamera;
 
 		TextureManager* loader = TextureManager::GetInstance();
 	public:
@@ -125,6 +125,10 @@ namespace MCB
 		virtual void ImGuiUpdate() = 0;
 		virtual IScene* GetNextScene() = 0;
 		virtual void CheckAllColision() = 0;
+		inline static ICamera* GetCamera()
+		{
+			return viewCamera;
+		}
 		bool GetIsSceneEnd() { return sceneEnd; }
 
 		Depth* GetDepth() { return depth; }

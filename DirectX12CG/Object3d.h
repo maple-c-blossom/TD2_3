@@ -66,6 +66,11 @@ namespace MCB
 
         bool trackingFlag = false;
 
+        // 【ADXEngine由来】全てのオブジェクトを入れる配列
+        static std::list<Object3d*> allObjPtr;
+        // 【ADXEngine由来】全てのオブジェクトが入った配列
+        static std::list<Object3d*> objs;
+
         void Init();
 
         void Update(View& view, Projection& projection, bool isBillBord = false);
@@ -75,6 +80,7 @@ namespace MCB
         void Draw();
 
         void Draw(unsigned short int incremant);
+        void Draw(ObjectMaterial* material);
 
 
         void FbxUpdate(View& view, Projection& projection, bool isBillBord = false);
@@ -85,8 +91,14 @@ namespace MCB
 
         void FbxDraw(unsigned short int incremant);
 
+        //【ADXEngine由来】静的更新処理
+        static void StaticUpdate();
+
         static void SetLights(LightGroup* light);
         //void CreateModel(const char* fileName);
+
+        //【ADXEngine由来】
+        static std::list<Object3d*> GetAllObjs();
     };
 
 }

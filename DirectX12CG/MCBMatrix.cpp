@@ -5,12 +5,28 @@
 using namespace DirectX;
 using namespace MCB;
 
+
+//【ADXEngine由来】単位行列を返す
+MCB::MCBMatrix MCB::MCBMatrix::IdentityMatrix()
+{
+	MCBMatrix ret;
+	ret.MCBMatrixIdentity();
+	return ret;
+}
+
 void MCB::MCBMatrix::MCBMatrixIdentity()
 {
 	_11 = 1.0f; _12 = 0.0f; _13 = 0.0f; _14 = 0.0f;
 	_21 = 0.0f; _22 = 1.0f; _23 = 0.0f; _24 = 0.0f;
 	_31 = 0.0f; _32 = 0.0f; _33 = 1.0f; _34 = 0.0f;
 	_41 = 0.0f; _42 = 0.0f; _43 = 0.0f; _44 = 1.0f;
+}
+
+MCBMatrix MCB::MCBMatrix::GetMCBUdentuty()
+{
+	MCBMatrix temp;
+	temp.MCBMatrixIdentity();
+	return temp;
 }
 
 MCB::MCBMatrix MCB::MCBMatrix::MCBMatrixTransrate(float x, float y, float z)
@@ -41,21 +57,42 @@ MCB::MCBMatrix MCB::MCBMatrix::MCBMatrixScaling(float x, float y, float z)
 	return MCBMatrix();
 }
 
-void MCB::MCBMatrix::ConvertMatrixArray(float** ArrayMat)
+float** MCB::MCBMatrix::ConvertMatrixArray(MCB::MCBMatrix mat)
 {
-	ArrayMat[0][0] = _11, ArrayMat[0][1] = _12, ArrayMat[0][2] = _13, ArrayMat[0][3] = _14;
-	ArrayMat[1][0] = _21, ArrayMat[1][1] = _22, ArrayMat[1][2] = _23, ArrayMat[1][3] = _24;
-	ArrayMat[2][0] = _31, ArrayMat[2][1] = _32, ArrayMat[2][2] = _33, ArrayMat[2][3] = _34;
-	ArrayMat[3][0] = _41, ArrayMat[3][1] = _42, ArrayMat[3][2] = _43, ArrayMat[3][3] = _44;
+	float** temp = {};
+
+	temp[0][0] = mat._11, temp[0][1] = mat._12, temp[0][2] = mat._13, temp[0][3] = mat._14;
+	temp[1][0] = mat._21, temp[1][1] = mat._22, temp[1][2] = mat._23, temp[1][3] = mat._24;
+	temp[2][0] = mat._31, temp[2][1] = mat._32, temp[2][2] = mat._33, temp[2][3] = mat._34;
+	temp[3][0] = mat._41, temp[3][1] = mat._42, temp[3][2] = mat._43, temp[3][3] = mat._44;
+
+	return temp;
 }
 
-void MCB::MCBMatrix::ConvertMatrixMCBMat(float** ArrayMat)
+float** MCB::MCBMatrix::GetConvertMatrixArray(MCB::MCBMatrix mat)
 {
-	_11 = ArrayMat[0][0], _12 = ArrayMat[0][1], _13 = ArrayMat[0][2], _14 = ArrayMat[0][3];
-	_21 = ArrayMat[1][0], _22 = ArrayMat[1][1], _23 = ArrayMat[1][2], _24 = ArrayMat[1][3];
-	_31 = ArrayMat[2][0], _32 = ArrayMat[2][1], _33 = ArrayMat[2][2], _34 = ArrayMat[2][3];
-	_41 = ArrayMat[3][0], _42 = ArrayMat[3][1], _43 = ArrayMat[3][2], _44 = ArrayMat[3][3];
+	float** temp = {};
+	temp = ConvertMatrixArray(mat);
+	return temp;
 }
+
+MCBMatrix MCB::MCBMatrix::ConvertMatrixMCBMat(float** ArrayMat)
+{
+	MCBMatrix temp;
+	temp._11 = ArrayMat[0][0], temp._12 = ArrayMat[0][1], temp._13 = ArrayMat[0][2], temp._14 = ArrayMat[0][3];
+	temp._21 = ArrayMat[1][0], temp._22 = ArrayMat[1][1], temp._23 = ArrayMat[1][2], temp._24 = ArrayMat[1][3];
+	temp._31 = ArrayMat[2][0], temp._32 = ArrayMat[2][1], temp._33 = ArrayMat[2][2], temp._34 = ArrayMat[2][3];
+	temp._41 = ArrayMat[3][0], temp._42 = ArrayMat[3][1], temp._43 = ArrayMat[3][2], temp._44 = ArrayMat[3][3];
+	return temp;
+}
+
+MCBMatrix MCB::MCBMatrix::GetConvertMatrucNCBMat(float** ArrayMat)
+{
+	MCBMatrix temp;
+	temp = temp.ConvertMatrixMCBMat(ArrayMat);
+	return temp;
+}
+
 
 MCB::MCBMatrix MCB::MCBMatrix::MCBMatrixRotaX(float angle)
 {
@@ -143,6 +180,87 @@ MCB::MCBMatrix MCB::MCBMatrix::ReturnMatrixIdentity()
 		ans._31 = 0.0f; ans._32 = 0.0f; ans._33 = 1.0f; ans._34 = 0.0f;
 		ans._41 = 0.0f; ans._42 = 0.0f; ans._43 = 0.0f; ans._44 = 1.0f;
 	return ans;
+}
+
+//【ADXEngine由来】逆行列
+MCBMatrix MCBMatrix::Inverse() {
+
+	const int N = 4;
+
+	MCBMatrix ret = *this;
+
+	float** inv = ConvertMatrixArray(ret);
+
+	double sweep[N][N * 2];
+
+	double a; /* 定数倍用 */
+
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			/* sweepの左側に逆行列を求める行列をセット */
+			sweep[i][j] = inv[i][j];
+
+			/* sweepの右側に単位行列をセット */
+			sweep[i][N + j] = ConvertMatrixArray(IdentityMatrix())[i][j];
+		}
+	}
+
+
+	/* 全ての列の対角成分に対する繰り返し */
+	for (int k = 0; k < N; k++) {
+
+		/* sweep[k][k]に掛けると1になる値を求める */
+		a = 1 / sweep[k][k];
+
+		/* 操作（２）：k行目をa倍する */
+		for (int j = 0; j < N * 2; j++) {
+			/* これによりsweep[k][k]が1になる */
+			sweep[k][j] *= a;
+		}
+
+		/* 操作（３）によりk行目以外の行のk列目を0にする */
+		for (int i = 0; i < N; i++) {
+			if (i == k) {
+				/* k行目はそのまま */
+				continue;
+			}
+
+			/* k行目に掛ける値を求める */
+			a = -sweep[i][k];
+
+			for (int j = 0; j < N * 2; j++) {
+				/* i行目にk行目をa倍した行を足す */
+				/* これによりsweep[i][k]が0になる */
+				sweep[i][j] += sweep[k][j] * a;
+			}
+		}
+	}
+
+	/* sweepの右半分がmatの逆行列 */
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			inv[i][j] = sweep[i][N + j];
+		}
+	}
+
+	ret = ConvertMatrixMCBMat(inv);
+
+	return ret;
+}
+
+//【ADXEngine由来】座標変換（ベクトルと行列の掛け算をする）
+Vector3D MCBMatrix::transform(const Vector3D& v, const MCBMatrix& m)
+{
+	float w = v.vec.x * m._14 + v.vec.y * m._24 + v.vec.z * m._34 + m._44;
+
+	Vector3D result
+	{
+		(v.vec.x * m._11 + v.vec.y * m._21 + v.vec.z * m._31 + m._41) / w,
+		(v.vec.x * m._12 + v.vec.y * m._22 + v.vec.z * m._32 + m._42) / w,
+		(v.vec.x * m._13 + v.vec.y * m._23 + v.vec.z * m._33 + m._43) / w
+	};
+
+	return result;
 }
 
 //MCB::MCBMatrix MCB::MCBMatrix::operator*(MCBMatrix matrix)
