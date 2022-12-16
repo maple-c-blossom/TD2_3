@@ -593,7 +593,7 @@
       <Filter>ソース ファイル\Game\Player</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
-      <Filter>ヘッダー ファイル\Engin</Filter>
+      <Filter>リソース ファイル\Icon</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
