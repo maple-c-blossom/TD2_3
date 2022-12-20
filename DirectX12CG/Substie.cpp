@@ -45,6 +45,7 @@ void Substie::Update()
 
 	if (input->IsKeyDown(keyConfig[4]))
 	{
+		shard--;
 		//‚Ë‚è‚¯‚µ‚ğo‚·
 	}
 
