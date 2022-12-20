@@ -2,6 +2,7 @@
 
 #include "Object3d.h"
 #include "Input.h"
+#include "ICamera.h"
 
 class Substie :public MCB::Object3d
 {
@@ -18,4 +19,5 @@ private:
 public:
 	void Initialize();
 	void Update();
+	void UpdateMatrix(MCB::ICamera* camera);
 };

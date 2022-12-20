@@ -57,7 +57,7 @@ void Object3d::Init()
 void Object3d::Update(View& view, Projection& projection,bool isBillBord)
 {
     matWorld.SetMatScale(scale.x, scale.y, scale.z);
-    matWorld.SetMatRot(rotasion.x, rotasion.y, rotasion.z,false);
+    matWorld.SetMatRot(rotation.x, rotation.y, rotation.z,false);
     matWorld.SetMatTrans(position.x, position.y, position.z);
     if (isBillBord)
     {
@@ -218,7 +218,7 @@ void MCB::Object3d::FbxUpdate(View& view, Projection& projection, bool isBillBor
 {
     if (fbxModel == nullptr)return;
     matWorld.SetMatScale(scale.x, scale.y, scale.z);
-    matWorld.SetMatRot(rotasion.x, rotasion.y, rotasion.z, false);
+    matWorld.SetMatRot(rotation.x, rotation.y, rotation.z, false);
     matWorld.SetMatTrans(position.x, position.y, position.z);
     if (isBillBord)
     {
