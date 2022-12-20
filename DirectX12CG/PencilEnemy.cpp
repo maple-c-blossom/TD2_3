@@ -71,6 +71,8 @@ void PencilEnemy::UpdateMatrix(MCB::ICamera* camera)
 	Object3d::Update(*camera->GetView(), *camera->GetProjection());
 }
 
+
+
 void PencilEnemy::Turn()
 {
 	velocity *= -1;

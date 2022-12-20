@@ -10,6 +10,7 @@ public:
 	void UniqueUpdate() override;
 	void Draw() override;
 	void UpdateMatrix(MCB::ICamera* camera) override;
+
 	void Turn();//ˆÚ“®•ûŒü”½“]—p
 };
 
