@@ -5,7 +5,7 @@
 #include "DebugCamera.h"
 
 #pragma region ゲーム系.h include
-#include "Enemy.h"
+#include "PencilEnemy.h"
 
 #pragma endregion ゲーム系.h include
 
@@ -27,6 +27,7 @@ namespace MCB
 		Model* BoxModel;
 		Model* groundModel;
 		Model* skydomeModel;
+		Model* handwrModel;
 
 		FBXModel* testModel;
 #pragma endregion 3Dモデル
@@ -67,6 +68,7 @@ namespace MCB
 
 		DebugText debugText;
 
+		std::list<std::unique_ptr<Enemy>>enemys;
 #pragma endregion スプライト
 #pragma region パーティクル
 		Particle testParticle;

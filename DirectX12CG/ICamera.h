@@ -10,8 +10,8 @@ namespace MCB
 	class ICamera
 	{
 	protected:
-		View view;
-		Projection projection;
+		View view = {};
+		Projection projection = {};
 	public:
 
 		virtual void Inilialize() = 0;

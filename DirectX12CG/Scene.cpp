@@ -6,6 +6,8 @@
 using namespace MCB;
 using namespace DirectX;
 
+using namespace std;
+
 MCB::Scene::~Scene()
 {
     soundManager.AllDeleteSound();
@@ -14,6 +16,7 @@ MCB::Scene::~Scene()
     delete groundModel;
     delete nextScene;
     delete testModel;
+    delete handwrModel;
     //loader->SetDelete(testTex);
     //loader->SetDelete(debugTextTexture);
     //loader->SetDelete(zoomTex);
@@ -66,7 +69,10 @@ void MCB::Scene::Object3DInit()
     testSpher.position = { 0,4,10 };
     testSpher.rotasion = { ConvertRadius(90),0,0 };
 
-
+    unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
+    temp->Initialize({ 1,0,0 }, { 0,0,0 }, BoxModel,0.5f);
+    temp->SetHandwritingModel(handwrModel);
+    enemys.push_back(move(temp));
     //sphere.Init();
     //sphere.model = BoxModel;
     //sphere.SetCollider(1);
@@ -83,6 +89,7 @@ void MCB::Scene::LoadModel()
 	groundModel = new Model("ground");
 
 	skydomeModel = new Model("skydome");
+    handwrModel = new Model("Box");
     //testModel = new FBXModel();
     //testModel->Load("testFbx");
     //assert(testModel->textureManager->textures.size() < 20);
@@ -133,32 +140,16 @@ IScene* MCB::Scene::GetNextScene()
 
 void MCB::Scene::Update()
 {
-   
-        Float3 SLPos = lights->GetSLightPos(0);
-        Float3 PLPos = lights->GetPLightPos(0);
+//        if (input->IsKeyTrigger(DIK_SPACE))
+//        {
+//            sceneEnd = true;
+//        }
 
-
-        if (input->IsKeyTrigger(DIK_SPACE))
+        for (auto& itr : enemys)
         {
-            //if (testSpher.model == BoxModel)
-            //{
-            //    testSpher.model = groundModel;
-            //}
-            //else
-            //{
-            //    testSpher.model = BoxModel;
-            //}
-            sceneEnd = true;
+            itr->Update();
         }
 
-        if (input->IsKeyDown(DIK_A))
-        {
-            testSpher.position.x += 1;
-        }
-        if (input->IsKeyDown(DIK_D))
-        {
-            testSpher.position.x -= 1;
-        }
 
         lights->UpDate();
         viewCamera->Update();
@@ -173,6 +164,10 @@ void MCB::Scene::Draw()
     //3Dオブジェクト
     Skydorm.Draw();
     ground.Draw();
+    for (auto& itr : enemys)
+    {
+        itr->Draw();
+    }
     //human.Draw();
     //testSpher.Draw();
     //testSpher.FbxDraw();
@@ -216,6 +211,10 @@ void MCB::Scene::MatrixUpdate()
     ground.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
     //testSpher.FbxUpdate(*viewCamera->GetView(), *viewCamera->GetProjection(),false);
     testParticle.Update(*viewCamera->GetView(), *viewCamera->GetProjection(), true);
+    for (auto& itr : enemys)
+    {
+        itr->UpdateMatrix(viewCamera);
+    }
     //testParticle.Updata(matView, matProjection, true);
 }
 
