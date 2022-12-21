@@ -14,7 +14,8 @@ private:
 	bool prevBeforeAttack;
 	Timer beforeAttackTimer;
 	Timer AttackTimer;
-
+	Model* enemyModel;
+	Model* handwrModel;
 	void EnemyPop(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, float speed,int popNum = 1);
 public:
 
