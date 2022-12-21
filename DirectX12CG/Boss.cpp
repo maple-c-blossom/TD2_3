@@ -12,3 +12,12 @@ void Boss::EnemyPop(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* mo
 		enemys.push_back(move(temp));
 	}
 }
+
+void Boss::Update()
+{
+
+	for (auto& itr : colliders)
+	{
+		itr.Update(this);
+	}
+}

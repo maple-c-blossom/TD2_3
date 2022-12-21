@@ -16,6 +16,10 @@ void Handwriting::Update()
 {
 	lifeTimer.SafeUpdate();
 	material.constMapMaterial->alpha = MCB::Lerp(1, 0, lifeTimer.GetEndTime(), lifeTimer.NowTime());
+	for (auto& itr : colliders)
+	{
+		itr.Update(this);
+	}
 }
 
 void Handwriting::Draw()

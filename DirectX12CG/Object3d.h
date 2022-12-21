@@ -16,6 +16,9 @@
 #include "Quaternion.h"
 #include "LightGroup.h"
 #include "FBXLoader.h"
+#include <list>
+
+#include"ADXCollider.h"
 
 namespace MCB
 {
@@ -70,6 +73,8 @@ namespace MCB
         static std::list<Object3d*> allObjPtr;
         // 【ADXEngine由来】全てのオブジェクトが入った配列
         static std::list<Object3d*> objs;
+
+        std::list<ADXCollider> colliders;
 
         void Init();
 

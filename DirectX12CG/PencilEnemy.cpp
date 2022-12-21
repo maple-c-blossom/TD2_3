@@ -12,7 +12,14 @@ void PencilEnemy::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::
 	this->position.z = position.z;
 	this->model = model;
 	this->speed = speed;
-
+	for (auto& itr : colliders)
+	{
+		itr.pushable_ = true;
+	}
+	for (auto& itr : attackObj.colliders)
+	{
+		itr.isTrigger = true;
+	}
 }
 
 void PencilEnemy::UniqueUpdate()
@@ -51,6 +58,7 @@ void PencilEnemy::UniqueUpdate()
 	handwriting.remove_if([](auto& itr) {return itr->GetLifeTimeOver(); });
 
 	allEnemyPtr.push_back(this);
+
 }
 
 void PencilEnemy::Draw()

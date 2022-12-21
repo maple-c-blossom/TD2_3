@@ -18,6 +18,9 @@ private:
 	Model* handwrModel;
 	void EnemyPop(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, float speed,int popNum = 1);
 public:
-
+	void Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, float speed);
+	void Update();
+	void Draw();
+	void UpdateMatrix(MCB::ICamera* camera);
 };
 

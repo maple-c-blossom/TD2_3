@@ -13,6 +13,7 @@ protected:
 	int hp;
 	float speed;
 	MCB::Vector3D velocity;
+	MCB::Object3d attackObj;
 	bool attack = false;
 	bool beforeAttack = false;
 	bool prevBeforeAttack;
