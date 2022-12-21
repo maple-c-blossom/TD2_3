@@ -57,17 +57,21 @@ void MCB::Scene::Object3DInit()
     ground.scale = { 4,4,4 };
     ground.position = { 0,0,0 };
     ;
-    Skydorm;
-    Skydorm.Init();
-    Skydorm.model = skydomeModel;
-    Skydorm.scale = { 4,4,4 };
+    Skydome;
+    Skydome.Init();
+    Skydome.model = skydomeModel;
+    Skydome.scale = { 4,4,4 };
 
     testSpher.Init();
     testSpher.model = BoxModel;
     testSpher.fbxModel = testModel;
     testSpher.scale = {1,1,1};
     testSpher.position = { 0,4,10 };
-    testSpher.rotasion = { ConvertRadius(90),0,0 };
+    testSpher.rotation = { ConvertRadius(90),0,0 };
+
+    substie.model = BoxModel;
+    substie.scale = { 1,1,1 };
+    substie.position = { 0,0,0 };
 
     unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
     temp->Initialize({ 1,0,0 }, { 0,0,0 }, BoxModel,0.5f);
@@ -128,7 +132,7 @@ void MCB::Scene::ParticleInit()
 {
     testParticle.Init(testTex);
     testParticle.position = { 0,0,10 };
-    //testParticle.rotasion.x = ConvertRadius(-90);
+    //testParticle.rotation.x = ConvertRadius(-90);
 }
 
 IScene* MCB::Scene::GetNextScene()
@@ -145,11 +149,12 @@ void MCB::Scene::Update()
 //            sceneEnd = true;
 //        }
 
+        substie.Update();
+
         for (auto& itr : enemys)
         {
             itr->Update();
         }
-
 
         lights->UpDate();
         viewCamera->Update();
@@ -162,8 +167,9 @@ void MCB::Scene::Update()
 void MCB::Scene::Draw()
 {
     //3Dオブジェクト
-    Skydorm.Draw();
+    Skydome.Draw();
     ground.Draw();
+    substie.Draw();
     for (auto& itr : enemys)
     {
         itr->Draw();
@@ -206,11 +212,12 @@ void MCB::Scene::MatrixUpdate()
     matProjection.UpdataMatrixProjection();
     matView.UpDateMatrixView(ybill);
     viewCamera->MatrixUpdate();
-    Skydorm.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
+    Skydome.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
     ground.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
     ground.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
     //testSpher.FbxUpdate(*viewCamera->GetView(), *viewCamera->GetProjection(),false);
     testParticle.Update(*viewCamera->GetView(), *viewCamera->GetProjection(), true);
+    substie.UpdateMatrix(viewCamera);
     for (auto& itr : enemys)
     {
         itr->UpdateMatrix(viewCamera);

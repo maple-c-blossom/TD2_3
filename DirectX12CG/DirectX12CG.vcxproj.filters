@@ -369,7 +369,10 @@
     <ClCompile Include="Timer.cpp">
       <Filter>ソース ファイル\Engine\Util</Filter>
     </ClCompile>
-    <ClCompile Include="Substie.cpp">
+    <ClCompile Include="Player.cpp">
+      <Filter>ヘッダー ファイル\Game\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="KneadedEraser.cpp">
       <Filter>ヘッダー ファイル\Game\Player</Filter>
     </ClCompile>
     <ClCompile Include="Boss.cpp">
@@ -592,11 +595,14 @@
     <ClInclude Include="Timer.h">
       <Filter>ヘッダー ファイル\Engine\Util</Filter>
     </ClInclude>
-    <ClInclude Include="Substie.h">
+    <ClInclude Include="Player.h">
       <Filter>ソース ファイル\Game\Player</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>リソース ファイル\Icon</Filter>
+    </ClInclude>
+    <ClInclude Include="KneadedEraser.h">
+      <Filter>ソース ファイル\Game\Player</Filter>
     </ClInclude>
     <ClInclude Include="Boss.h">
       <Filter>ヘッダー ファイル\Game\Enemy</Filter>

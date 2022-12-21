@@ -69,7 +69,7 @@ void Particle::Init(TextureCell* tex)
 void Particle::Update(View& view, Projection& projection, bool isBillBord)
 {
     matWorld.SetMatScale(scale.x, scale.y, scale.z);
-    matWorld.SetMatRot(rotasion.x, rotasion.y, rotasion.z, false);
+    matWorld.SetMatRot(rotation.x, rotation.y, rotation.z, false);
     matWorld.SetMatTrans(position.x, position.y, position.z);
     if (isBillBord)
     {

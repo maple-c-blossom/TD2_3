@@ -28,7 +28,7 @@ void MCB::TitleScene::MatrixUpdate()
 {
     matProjection.UpdataMatrixProjection();
     matView.UpDateMatrixView();
-    Skydorm.Update(matView, matProjection);
+    Skydome.Update(matView, matProjection);
     ground.Update(matView, matProjection);
     testSpher.Update(matView, matProjection, true);
 }
@@ -46,7 +46,7 @@ void MCB::TitleScene::Update()
 void MCB::TitleScene::Draw()
 {
     //3Dオブジェクト
-    Skydorm.Draw();
+    Skydome.Draw();
     ground.Draw();
     testSpher.Draw();
 
@@ -142,10 +142,10 @@ void MCB::TitleScene::Object3DInit()
     ground.scale = { 4,4,4 };
     ground.position = { 0,0,0 };
     ;
-    Skydorm;
-    Skydorm.Init();
-    Skydorm.model = skydomeModel;
-    Skydorm.scale = { 4,4,4 };
+    Skydome;
+    Skydome.Init();
+    Skydome.model = skydomeModel;
+    Skydome.scale = { 4,4,4 };
 
     testSpher.Init();
     testSpher.model = BoxModel;

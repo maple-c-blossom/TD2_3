@@ -1,14 +1,17 @@
 #pragma once
 
 #include "Object3d.h"
+#include "KneadedEraser.h"
 #include "Input.h"
+#include "ICamera.h"
 
-class Substie :public MCB::Object3d
+class Player :public MCB::Object3d
 {
 private:
 	MCB::Input* input = MCB::Input::GetInstance();
 
 	std::vector<int> keyConfig{ DIK_W,DIK_S,DIK_D,DIK_A,DIK_SPACE };
+	std::list<KneadedEraser> kneadedErasers{};
 	float shard = 0;
 	MCB::Vector3D  prevPos{};
 	MCB::Vector3D velocity{};
@@ -18,4 +21,6 @@ private:
 public:
 	void Initialize();
 	void Update();
+	void Draw();
+	void UpdateMatrix(MCB::ICamera* camera);
 };

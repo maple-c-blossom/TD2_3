@@ -6,6 +6,7 @@
 
 #pragma region ゲーム系.h include
 #include "PencilEnemy.h"
+#include "Player.h"
 
 #pragma endregion ゲーム系.h include
 
@@ -54,7 +55,7 @@ namespace MCB
 		SimpleFigure triangle;
 
 		Object3d ground;
-		Object3d Skydorm;
+		Object3d Skydome;
 		Object3d testSpher;
 
 #pragma endregion 3Dオブジェクト
@@ -69,6 +70,8 @@ namespace MCB
 		DebugText debugText;
 
 		std::list<std::unique_ptr<Enemy>>enemys;
+
+		Player substie;
 #pragma endregion スプライト
 #pragma region パーティクル
 		Particle testParticle;

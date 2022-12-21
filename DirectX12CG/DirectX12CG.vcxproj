@@ -32,6 +32,7 @@
     <ClCompile Include="ICamera.cpp" />
     <ClCompile Include="ImguiManager.cpp" />
     <ClCompile Include="IScene.cpp" />
+    <ClCompile Include="KneadedEraser.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightGroup.cpp" />
     <ClCompile Include="MCBFloat.cpp" />
@@ -59,7 +60,7 @@
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="Substie.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="TexImgData.cpp" />
     <ClCompile Include="TexSample.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="ICamera.h" />
     <ClInclude Include="ImguiManager.h" />
     <ClInclude Include="IScene.h" />
+    <ClInclude Include="KneadedEraser.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightGroup.h" />
     <ClInclude Include="MCBFloat.h" />
@@ -180,7 +182,7 @@
     <ClInclude Include="SpotLight.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Status.h" />
-    <ClInclude Include="Substie.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="TexImgData.h" />
     <ClInclude Include="TexSample.h" />
     <ClInclude Include="Texture.h" />
