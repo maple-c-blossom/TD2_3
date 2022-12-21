@@ -5,7 +5,7 @@
 #include "Input.h"
 #include "ICamera.h"
 
-class Substie :public MCB::Object3d
+class Player :public MCB::Object3d
 {
 private:
 	MCB::Input* input = MCB::Input::GetInstance();
@@ -21,5 +21,6 @@ private:
 public:
 	void Initialize();
 	void Update();
+	void Draw();
 	void UpdateMatrix(MCB::ICamera* camera);
 };

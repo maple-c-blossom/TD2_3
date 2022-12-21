@@ -69,9 +69,9 @@ void MCB::Scene::Object3DInit()
     testSpher.position = { 0,4,10 };
     testSpher.rotation = { ConvertRadius(90),0,0 };
 
-    player.model = BoxModel;
-    player.scale = { 1,1,1 };
-    player.position = { 0,0,0 };
+    substie.model = BoxModel;
+    substie.scale = { 1,1,1 };
+    substie.position = { 0,0,0 };
 
     unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
     temp->Initialize({ 1,0,0 }, { 0,0,0 }, BoxModel,0.5f);
@@ -149,7 +149,7 @@ void MCB::Scene::Update()
 //            sceneEnd = true;
 //        }
 
-        player.Update();
+        substie.Update();
 
         for (auto& itr : enemys)
         {
@@ -169,7 +169,7 @@ void MCB::Scene::Draw()
     //3Dオブジェクト
     Skydome.Draw();
     ground.Draw();
-    player.Draw();
+    substie.Draw();
     for (auto& itr : enemys)
     {
         itr->Draw();
@@ -217,7 +217,7 @@ void MCB::Scene::MatrixUpdate()
     ground.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
     //testSpher.FbxUpdate(*viewCamera->GetView(), *viewCamera->GetProjection(),false);
     testParticle.Update(*viewCamera->GetView(), *viewCamera->GetProjection(), true);
-    player.UpdateMatrix(viewCamera);
+    substie.UpdateMatrix(viewCamera);
     for (auto& itr : enemys)
     {
         itr->UpdateMatrix(viewCamera);

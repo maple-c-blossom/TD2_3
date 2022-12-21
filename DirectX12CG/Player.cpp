@@ -1,14 +1,14 @@
-#include "Substie.h"
+#include "Player.h"
 
 using namespace MCB;
 
-void Substie::Initialize()
+void Player::Initialize()
 {
 	prevPos = position;
 	velocity = Vector3D{ 0,0,0 };
 }
 
-void Substie::Update()
+void Player::Update()
 {
 	velocity = position - prevPos;
 	prevPos = position;
@@ -43,16 +43,42 @@ void Substie::Update()
 	position.y += velocity.ConvertXMFloat3().y;
 	position.z += velocity.ConvertXMFloat3().z;
 
-	if (input->IsKeyDown(keyConfig[4]))
+	if (input->IsKeyDown(keyConfig[4]) && shard > 0)
 	{
 		shard--;
-		//‚Ë‚è‚¯‚µ‚ðo‚·
+		kneadedErasers.push_back(KneadedEraser{});
+		kneadedErasers.back().parent = this;
+		kneadedErasers.back().model = model;
+
+		for (auto& itr : kneadedErasers)
+		{
+			itr.position.x -= velocity.ConvertXMFloat3().x;
+			itr.position.y -= velocity.ConvertXMFloat3().y;
+			itr.position.z -= velocity.ConvertXMFloat3().z;
+		}
 	}
 
+	for (auto& itr : kneadedErasers)
+	{
+		allObjPtr.push_back(&itr);
+	}
 	allObjPtr.push_back(this);
 }
 
-void Substie::UpdateMatrix(MCB::ICamera* camera)
+void Player::UpdateMatrix(MCB::ICamera* camera)
 {
 	Object3d::Update(*camera->GetView(), *camera->GetProjection());
+	for (auto& itr : kneadedErasers)
+	{
+		itr.Object3d::Update(*camera->GetView(), *camera->GetProjection());
+	}
+}
+
+void Player::Draw()
+{
+	Object3d::Draw();
+	for (auto& itr : kneadedErasers)
+	{
+		itr.Draw();
+	}
 }
