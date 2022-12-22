@@ -10,7 +10,7 @@ class Player :public MCB::Object3d
 private:
 	MCB::Input* input = MCB::Input::GetInstance();
 
-	std::vector<int> keyConfig{ DIK_W,DIK_S,DIK_D,DIK_A,DIK_SPACE };
+	std::vector<int> keyConfig{ DIK_W,DIK_S,DIK_D,DIK_A,DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE };
 	std::list<KneadedEraser> kneadedErasers{};
 	float shard = 0;
 	float directionAngle = 0;

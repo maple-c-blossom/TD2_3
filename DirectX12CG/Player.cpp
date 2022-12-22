@@ -11,8 +11,19 @@ void Player::Initialize()
 
 void Player::Update()
 {
+	bool MoveUp =
+		input->IsKeyDown(keyConfig[0]) || input->IsKeyDown(keyConfig[4]);
+	bool MoveDown =
+		input->IsKeyDown(keyConfig[1]) || input->IsKeyDown(keyConfig[5]);
+	bool MoveRight =
+		input->IsKeyDown(keyConfig[2]) || input->IsKeyDown(keyConfig[6]);
+	bool MoveLeft =
+		input->IsKeyDown(keyConfig[3]) || input->IsKeyDown(keyConfig[7]);
+
+	bool moving = MoveUp || MoveDown || MoveRight || MoveLeft;
+
 	bool makingKneadedEraser =
-		input->IsKeyDown(keyConfig[4]) && shard > 0;
+		input->IsKeyDown(keyConfig[8]) && shard > 0;
 
 	velocity = position - prevPos;
 	prevPos = position;
@@ -21,22 +32,21 @@ void Player::Update()
 	//velocity.vec.y /= 0.8;
 	//velocity.vec.y -= 0.015;
 
-	if (input->IsKeyDown(keyConfig[0]) || input->IsKeyDown(keyConfig[1])
-		|| input->IsKeyDown(keyConfig[2]) || input->IsKeyDown(keyConfig[3]))
+	if (moving)
 	{
-		if (input->IsKeyDown(keyConfig[0]))
+		if (MoveUp)
 		{
 			velocity.vec.z += 0.05;
 		}
-		if (input->IsKeyDown(keyConfig[1]))
+		if (MoveDown)
 		{
 			velocity.vec.z -= 0.05;
 		}
-		if (input->IsKeyDown(keyConfig[2]))
+		if (MoveRight)
 		{
 			velocity.vec.x += 0.05;
 		}
-		if (input->IsKeyDown(keyConfig[3]))
+		if (MoveLeft)
 		{
 			velocity.vec.x -= 0.05;
 		}
