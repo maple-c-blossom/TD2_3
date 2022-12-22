@@ -20,6 +20,7 @@ private:
 	const float maxShard = 100;
 
 public:
+	std::list<KneadedEraser> GetKneadedErasers();
 	void Initialize();
 	void Update();
 	void Draw();

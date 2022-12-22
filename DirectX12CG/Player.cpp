@@ -3,6 +3,11 @@
 
 using namespace MCB;
 
+std::list<KneadedEraser> Player::GetKneadedErasers()
+{
+	return kneadedErasers;
+}
+
 void Player::Initialize()
 {
 	prevPos = position;

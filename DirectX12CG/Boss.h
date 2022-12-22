@@ -3,6 +3,7 @@
 #include "EraserEnemy.h"
 #include "PencilEnemy.h"
 
+
 class Player;
 
 class Boss :public MCB::Object3d

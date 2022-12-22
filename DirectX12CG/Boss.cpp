@@ -1,4 +1,5 @@
 #include "Boss.h"
+#include "Player.h"
 using namespace MCB;
 using namespace std;
 
@@ -58,6 +59,7 @@ void Boss::Update()
 	{
 		itr.Update(this);
 	}
+	Damage(1);
 }
 
 void Boss::Draw()
@@ -82,10 +84,16 @@ void Boss::Damage(int damage)
 {
 	for (auto& itr : colliders)
 	{
-		//for (auto& itr2 : playerPtr->colliders)
-		//{
-		//	hp -= damage;
-		//}
+		for (auto& itr2 : playerPtr->GetKneadedErasers())
+		{
+			for (auto& itr3 : itr2.colliders)
+			{
+				if (itr.IsHit(itr3))
+				{
+					hp -= damage;
+				}
+			}
+		}
 
 	}
 }
