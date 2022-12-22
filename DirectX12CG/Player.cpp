@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "ADXUtility.h"
 
 using namespace MCB;
 
@@ -42,13 +43,15 @@ void Player::Update()
 		shard += velocity.V3Len() * 0.3;
 		if (!makingKneadedEraser)
 		{
-			rotation.y = atan2(velocity.vec.x, velocity.vec.z);
+			directionAngle = atan2(velocity.vec.x, velocity.vec.z);
 		}
 	}
 
 	position.x += velocity.ConvertXMFloat3().x;
 	position.y += velocity.ConvertXMFloat3().y;
 	position.z += velocity.ConvertXMFloat3().z;
+
+	rotation.y += ADXUtility::AngleDiff(rotation.y, directionAngle) / (kneadedErasers.size() / 10.0 + 1);
 
 	shard = min(max(0, shard), maxShard);
 

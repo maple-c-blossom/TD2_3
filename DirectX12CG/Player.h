@@ -13,6 +13,7 @@ private:
 	std::vector<int> keyConfig{ DIK_W,DIK_S,DIK_D,DIK_A,DIK_SPACE };
 	std::list<KneadedEraser> kneadedErasers{};
 	float shard = 0;
+	float directionAngle = 0;
 	MCB::Vector3D  prevPos{};
 	MCB::Vector3D velocity{};
 	
