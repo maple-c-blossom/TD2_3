@@ -1,6 +1,7 @@
 #pragma once
 #include <DirectXMath.h>
 #include "Vector3D.h"
+#include <array>
 namespace MCB
 {
 
@@ -24,11 +25,13 @@ namespace MCB
 
 		MCBMatrix MCBMatrixScaling(float x, float y, float z);
 
-		static float** ConvertMatrixArray(MCBMatrix mat);
+		static std::array<std::array<float,4>,4> ConvertMatrixArray(MCBMatrix mat);
 
-		static float** GetConvertMatrixArray(MCBMatrix mat);
+		static std::array<std::array<float, 4>, 4> GetConvertMatrixArray(MCBMatrix mat);
 
 		MCBMatrix ConvertMatrixMCBMat(float** ArrayMat);
+
+		MCBMatrix ConvertMatrixMCBMat(std::array<std::array<float, 4>, 4> ArrayMat);
 
 		static MCBMatrix GetConvertMatrucNCBMat(float** ArrayMat);
 

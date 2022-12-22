@@ -57,9 +57,9 @@ MCB::MCBMatrix MCB::MCBMatrix::MCBMatrixScaling(float x, float y, float z)
 	return MCBMatrix();
 }
 
-float** MCB::MCBMatrix::ConvertMatrixArray(MCB::MCBMatrix mat)
+std::array<std::array<float, 4>, 4> MCB::MCBMatrix::ConvertMatrixArray(MCB::MCBMatrix mat)
 {
-	float** temp = nullptr;
+	std::array<std::array<float, 4>, 4> temp = {};
 
 	temp[0][0] = mat._11, temp[0][1] = mat._12, temp[0][2] = mat._13, temp[0][3] = mat._14;
 	temp[1][0] = mat._21, temp[1][1] = mat._22, temp[1][2] = mat._23, temp[1][3] = mat._24;
@@ -69,14 +69,24 @@ float** MCB::MCBMatrix::ConvertMatrixArray(MCB::MCBMatrix mat)
 	return temp;
 }
 
-float** MCB::MCBMatrix::GetConvertMatrixArray(MCB::MCBMatrix mat)
+std::array<std::array<float, 4>, 4> MCB::MCBMatrix::GetConvertMatrixArray(MCB::MCBMatrix mat)
 {
-	float** temp = {};
+	std::array<std::array<float, 4>, 4> temp = {};
 	temp = ConvertMatrixArray(mat);
 	return temp;
 }
 
 MCBMatrix MCB::MCBMatrix::ConvertMatrixMCBMat(float** ArrayMat)
+{
+	MCBMatrix temp;
+	temp._11 = ArrayMat[0][0], temp._12 = ArrayMat[0][1], temp._13 = ArrayMat[0][2], temp._14 = ArrayMat[0][3];
+	temp._21 = ArrayMat[1][0], temp._22 = ArrayMat[1][1], temp._23 = ArrayMat[1][2], temp._24 = ArrayMat[1][3];
+	temp._31 = ArrayMat[2][0], temp._32 = ArrayMat[2][1], temp._33 = ArrayMat[2][2], temp._34 = ArrayMat[2][3];
+	temp._41 = ArrayMat[3][0], temp._42 = ArrayMat[3][1], temp._43 = ArrayMat[3][2], temp._44 = ArrayMat[3][3];
+	return temp;
+}
+
+MCBMatrix MCB::MCBMatrix::ConvertMatrixMCBMat(std::array<std::array<float, 4>, 4> ArrayMat)
 {
 	MCBMatrix temp;
 	temp._11 = ArrayMat[0][0], temp._12 = ArrayMat[0][1], temp._13 = ArrayMat[0][2], temp._14 = ArrayMat[0][3];
@@ -189,7 +199,7 @@ MCBMatrix MCBMatrix::Inverse() {
 
 	MCBMatrix ret = *this;
 
-	float** inv = ConvertMatrixArray(ret);
+	std::array<std::array<float, 4>, 4> inv = ConvertMatrixArray(ret);
 
 	double sweep[N][N * 2];
 
