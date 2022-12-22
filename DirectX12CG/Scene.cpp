@@ -77,6 +77,8 @@ void MCB::Scene::Object3DInit()
     temp->Initialize({ 1,0,0 }, { 0,0,0 }, BoxModel,0.5f);
     temp->SetHandwritingModel(handwrModel);
     enemys.push_back(move(temp));
+
+    boss.Initialize({ 0,0,1 }, { 0,0,0 }, BoxModel, BoxModel, handwrModel, 1,&substie);
     //sphere.Init();
     //sphere.model = BoxModel;
     //sphere.SetCollider(1);
@@ -156,6 +158,7 @@ void MCB::Scene::Update()
             itr->Update();
         }
 
+        boss.Update();
         lights->UpDate();
         viewCamera->Update();
     Enemy::StaticUpdate();
@@ -174,6 +177,7 @@ void MCB::Scene::Draw()
     {
         itr->Draw();
     }
+    boss.Draw();
     //human.Draw();
     //testSpher.Draw();
     //testSpher.FbxDraw();
@@ -222,6 +226,7 @@ void MCB::Scene::MatrixUpdate()
     {
         itr->UpdateMatrix(viewCamera);
     }
+    boss.UpdateMatrix(viewCamera);
     //testParticle.Updata(matView, matProjection, true);
 }
 

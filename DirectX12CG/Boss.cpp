@@ -13,7 +13,7 @@ void Boss::EnemyPop(MCB::Vector3D velocity, MCB::Float3 position, float speed, i
 	}
 }
 
-void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, MCB::Model* enemyModel, MCB::Model* handwrModel, float speed)
+void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, MCB::Model* enemyModel, MCB::Model* handwrModel, float speed, Player* playerPtr)
 {
 	this->velocity = velocity;
 	this->position.x = position.x;
@@ -23,7 +23,7 @@ void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* 
 	this->speed = speed;
 	this->enemyModel = enemyModel;
 	this->handwrModel = handwrModel;
-
+	this->playerPtr = playerPtr;
 	for (auto& itr : colliders)
 	{
 		itr.pushable_ = true;
@@ -80,5 +80,12 @@ void Boss::UpdateMatrix(MCB::ICamera* camera)
 
 void Boss::Damage(int damage)
 {
-	hp -= damage;
+	for (auto& itr : colliders)
+	{
+		//for (auto& itr2 : playerPtr->colliders)
+		//{
+		//	hp -= damage;
+		//}
+
+	}
 }
