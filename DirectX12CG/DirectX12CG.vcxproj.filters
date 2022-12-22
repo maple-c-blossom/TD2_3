@@ -378,6 +378,9 @@
     <ClCompile Include="Boss.cpp">
       <Filter>ソース ファイル\Game\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="ADXUtility.cpp">
+      <Filter>ソース ファイル\Engine\HanaBehaviour</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\ParticleShader\ParticleGeometryShader.hlsl">
@@ -606,6 +609,9 @@
     </ClInclude>
     <ClInclude Include="Boss.h">
       <Filter>ヘッダー ファイル\Game\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ADXUtility.h">
+      <Filter>ヘッダー ファイル\Engine\HanaBehaviour</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
