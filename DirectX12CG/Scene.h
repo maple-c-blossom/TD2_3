@@ -73,6 +73,8 @@ namespace MCB
 		std::list<std::unique_ptr<Enemy>>enemys;
 
 		Player substie;
+
+		Boss boss;
 #pragma endregion スプライト
 #pragma region パーティクル
 		Particle testParticle;
