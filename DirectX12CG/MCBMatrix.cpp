@@ -59,7 +59,7 @@ MCB::MCBMatrix MCB::MCBMatrix::MCBMatrixScaling(float x, float y, float z)
 
 float** MCB::MCBMatrix::ConvertMatrixArray(MCB::MCBMatrix mat)
 {
-	float** temp = {};
+	float** temp = nullptr;
 
 	temp[0][0] = mat._11, temp[0][1] = mat._12, temp[0][2] = mat._13, temp[0][3] = mat._14;
 	temp[1][0] = mat._21, temp[1][1] = mat._22, temp[1][2] = mat._23, temp[1][3] = mat._24;
@@ -253,7 +253,7 @@ Vector3D MCBMatrix::transform(const Vector3D& v, const MCBMatrix& m)
 {
 	float w = v.vec.x * m._14 + v.vec.y * m._24 + v.vec.z * m._34 + m._44;
 
-	Vector3D result
+	Vector3D result = 
 	{
 		(v.vec.x * m._11 + v.vec.y * m._21 + v.vec.z * m._31 + m._41) / w,
 		(v.vec.x * m._12 + v.vec.y * m._22 + v.vec.z * m._32 + m._42) / w,
@@ -346,7 +346,7 @@ MCB::MCBMatrix MCB::MCBMatrix::MCBMatrixConvertXMMatrix(XMMATRIX mat)
 	ans._42 = mat.r[3].m128_f32[1] ;
 	ans._43 = mat.r[3].m128_f32[2] ;
 	ans._44 = mat.r[3].m128_f32[3] ;
-	return MCBMatrix();
+	return ans;
 }
 
 MCB::MCBMatrix MCB::MCBMatrix::operator*(float s)
