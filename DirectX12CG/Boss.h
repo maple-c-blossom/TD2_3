@@ -16,11 +16,12 @@ private:
 	Timer AttackTimer;
 	Model* enemyModel;
 	Model* handwrModel;
-	void EnemyPop(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, float speed,int popNum = 1);
+	void EnemyPop(MCB::Vector3D velocity, MCB::Float3 position,  float speed,int popNum = 1);
 public:
-	void Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, float speed);
+	void Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, MCB::Model* enemyModel, MCB::Model* handwrModel, float speed);
 	void Update();
 	void Draw();
 	void UpdateMatrix(MCB::ICamera* camera);
+	void Damage(int damage);
 };
 
