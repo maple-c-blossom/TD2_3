@@ -14,6 +14,7 @@ private:
 	std::list<KneadedEraser> kneadedErasers{};
 	float shard = 0;
 	float directionAngle = 0;
+	bool rotateTapped = false;
 	bool rotateMode = false;
 	float rotateModeCount;
 	MCB::Vector3D  prevPos{};

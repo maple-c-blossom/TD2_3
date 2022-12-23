@@ -58,14 +58,19 @@ void Player::Update()
 			velocity.vec.x -= 0.05;
 		}
 
-		if (MoveUp && MoveDown)
+		if (!rotateTapped)
 		{
-			rotateModeCount += 4;
-		}
+			if (MoveUp && MoveDown)
+			{
+				rotateModeCount += 6;
+				rotateTapped = true;
+			}
 
-		if (MoveRight && MoveLeft)
-		{
-			rotateModeCount -= 4;
+			if (MoveRight && MoveLeft)
+			{
+				rotateModeCount -= 6;
+				rotateTapped = true;
+			}
 		}
 
 		shard += velocity.V3Len() * 0.3;
@@ -82,6 +87,7 @@ void Player::Update()
 	}
 	else
 	{
+		rotateTapped = false;
 		rotateModeCount *= 0.9;
 		if (abs(rotateModeCount) < 1)
 		{
