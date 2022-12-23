@@ -17,6 +17,8 @@ void EraserEnemy::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::
 	{
 		itr.isTrigger = true;
 	}
+	Object3d::Init();
+
 }
 
 void EraserEnemy::UniqueUpdate()

@@ -10,6 +10,7 @@ void Boss::EnemyPop(MCB::Vector3D velocity, MCB::Float3 position, float speed, i
 		unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
 		temp->Initialize({ 1,0,0 }, { 0,0,0 }, enemyModel, 0.5f);
 		temp->SetHandwritingModel(handwrModel);
+		temp->SetPlayerPtr(playerPtr);
 		enemys.push_back(move(temp));
 	}
 }
@@ -26,12 +27,13 @@ void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* 
 	this->handwrModel = handwrModel;
 	this->playerPtr = playerPtr;
 	hp = 10;
+	ADXCollider tempCol(this);
+	colliders.push_back(tempCol);
 	for (auto& itr : colliders)
 	{
 		itr.pushable_ = true;
 	}
-	ADXCollider tempCol(this);
-	colliders.push_back(tempCol);
+	Object3d::Init();
 
 }
 
@@ -88,6 +90,7 @@ void Boss::UpdateMatrix(MCB::ICamera* camera)
 
 void Boss::Damage(int damage)
 {
+	if (playerPtr == nullptr)return;
 	for (auto& itr : colliders)
 	{
 		for (auto& itr2 : playerPtr->GetKneadedErasers())
