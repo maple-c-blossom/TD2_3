@@ -16,13 +16,8 @@ void Enemy::AttackStart()
 	}
 	beforeAttack = true;
 }
-bool Enemy::IsAttack()
+void Enemy::AttackTimerUpdate()
 {
-	return attack;
-}
-void Enemy::Update()
-{
-	UniqueUpdate();
 	if (beforeAttack)
 	{
 		beforeAttackTimer.SafeUpdate();
@@ -41,6 +36,15 @@ void Enemy::Update()
 			attack = false;
 		}
 	}
+}
+bool Enemy::IsAttack()
+{
+	return attack;
+}
+void Enemy::Update()
+{
+	UniqueUpdate();
+	
 	allEnemyPtr.push_back(this);
 	allObjPtr.push_back(this);
 	for (auto& itr : colliders)
