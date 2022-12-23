@@ -27,6 +27,7 @@ void PencilEnemy::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::
 	}
 	Object3d::Init();
 	attackObj.model = model;
+	attackObj.scale = { 3,3,3 };
 	attackObj.Init();
 }
 
