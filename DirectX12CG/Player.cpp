@@ -132,7 +132,12 @@ void Player::Update()
 			colItr.Update(&itr);
 		}
 	}
+
 	allObjPtr.push_back(this);
+	for (auto& colItr : colliders)
+	{
+		colItr.Update(this);
+	}
 }
 
 void Player::UpdateMatrix(MCB::ICamera* camera)
