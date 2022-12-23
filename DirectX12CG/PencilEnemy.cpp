@@ -20,6 +20,8 @@ void PencilEnemy::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::
 	{
 		itr.isTrigger = true;
 	}
+	ADXCollider tempAttackCol(this);
+	colliders.push_back(tempAttackCol);
 }
 
 void PencilEnemy::UniqueUpdate()
@@ -55,6 +57,18 @@ void PencilEnemy::UniqueUpdate()
 		velocity.vec.z *= -1;
 	}
 
+	{
+		int num = 0;
+		for (auto& itr : colliders)
+		{
+			itr.Update(this);
+			if (num == 0)
+			{
+
+			}
+			num++;
+		}
+	}
 	handwriting.remove_if([](auto& itr) {return itr->GetLifeTimeOver(); });
 
 	allEnemyPtr.push_back(this);
