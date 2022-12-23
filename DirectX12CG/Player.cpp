@@ -58,7 +58,21 @@ void Player::Update()
 		shard += velocity.V3Len() * 0.3;
 		if (!makingKneadedEraser)
 		{
+			float prevDirectionAngle = directionAngle;
 			directionAngle = atan2(velocity.vec.x, velocity.vec.z);
+			rotateModeCount += ADXUtility::AngleDiff(prevDirectionAngle, directionAngle);
+			if (abs(rotateModeCount) > 6.28)
+			{
+				rotateMode = true;
+			}
+		}
+	}
+	else
+	{
+		rotateModeCount *= 0.9;
+		if (abs(rotateModeCount) < 1)
+		{
+			rotateMode = false;
 		}
 	}
 
@@ -66,7 +80,14 @@ void Player::Update()
 	position.y += velocity.ConvertXMFloat3().y;
 	position.z += velocity.ConvertXMFloat3().z;
 
-	rotation.y += ADXUtility::AngleDiff(rotation.y, directionAngle) / (kneadedErasers.size() / 10.0 + 1);
+	if (rotateMode)
+	{
+		rotation.y += rotateModeCount * 0.03;
+	}
+	else
+	{
+		rotation.y += ADXUtility::AngleDiff(rotation.y, directionAngle) / (kneadedErasers.size() / 10.0 + 1);
+	}
 
 	shard = min(max(0, shard), maxShard);
 
