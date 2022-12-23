@@ -10,6 +10,7 @@ std::list<KneadedEraser> Player::GetKneadedErasers()
 
 void Player::Initialize()
 {
+	Init();
 	prevPos = position;
 	velocity = Vector3D{ 0,0,0 };
 	colliders.push_back(ADXCollider(this));
