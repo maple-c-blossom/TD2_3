@@ -12,6 +12,7 @@ void Player::Initialize()
 {
 	prevPos = position;
 	velocity = Vector3D{ 0,0,0 };
+	colliders.push_back(ADXCollider(this));
 }
 
 void Player::Update()
@@ -55,6 +56,17 @@ void Player::Update()
 		{
 			velocity.vec.x -= 0.05;
 		}
+
+		if (MoveUp && MoveDown)
+		{
+			rotateModeCount += 4;
+		}
+
+		if (MoveRight && MoveLeft)
+		{
+			rotateModeCount -= 4;
+		}
+
 		shard += velocity.V3Len() * 0.3;
 		if (!makingKneadedEraser)
 		{
@@ -107,6 +119,7 @@ void Player::Update()
 			itr.position.z -= rotatedVel.ConvertXMFloat3().z;
 
 			itr.colliders.push_back(ADXCollider(&itr));
+			itr.colliders.back().isTrigger = true;
 		}
 	}
 
