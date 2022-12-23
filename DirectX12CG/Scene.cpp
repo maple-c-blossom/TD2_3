@@ -72,6 +72,7 @@ void MCB::Scene::Object3DInit()
     substie.model = BoxModel;
     substie.scale = { 1,1,1 };
     substie.position = { 0,0,0 };
+    substie.Initialize();
 
     unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
     temp->Initialize({ 1,0,0 }, { 0,0,0 }, BoxModel,0.5f);
