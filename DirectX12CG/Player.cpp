@@ -105,12 +105,19 @@ void Player::Update()
 			itr.position.x -= rotatedVel.ConvertXMFloat3().x;
 			itr.position.y -= rotatedVel.ConvertXMFloat3().y;
 			itr.position.z -= rotatedVel.ConvertXMFloat3().z;
+
+			itr.colliders.push_back(ADXCollider(&itr));
 		}
 	}
 
 	for (auto& itr : kneadedErasers)
 	{
 		allObjPtr.push_back(&itr);
+		KneadedEraser::allKneadedEraser.push_back(&itr);
+		for (auto& colItr : itr.colliders)
+		{
+			colItr.Update(&itr);
+		}
 	}
 	allObjPtr.push_back(this);
 }

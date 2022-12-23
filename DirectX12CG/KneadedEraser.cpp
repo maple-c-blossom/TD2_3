@@ -1,10 +1,10 @@
 #include "KneadedEraser.h"
 
-std::list<KneadedEraser*> KneadedEraser::setAllKneadedEraser{};
+std::list<KneadedEraser*> KneadedEraser::allKneadedEraser{};
 std::list<KneadedEraser*> KneadedEraser::kneadedErasers{};
 
 void KneadedEraser::StaticUpdate()
 {
-	kneadedErasers = setAllKneadedEraser;
-	setAllKneadedEraser.clear();
+	kneadedErasers = allKneadedEraser;
+	allKneadedEraser.clear();
 }

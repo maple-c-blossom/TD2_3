@@ -6,7 +6,7 @@
 class KneadedEraser :public MCB::Object3d
 {
 public:
-	static std::list<KneadedEraser*> setAllKneadedEraser;
+	static std::list<KneadedEraser*> allKneadedEraser;
 	static std::list<KneadedEraser*> kneadedErasers;
 
 public:
