@@ -25,10 +25,14 @@ void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* 
 	this->enemyModel = enemyModel;
 	this->handwrModel = handwrModel;
 	this->playerPtr = playerPtr;
+	hp = 10;
 	for (auto& itr : colliders)
 	{
 		itr.pushable_ = true;
 	}
+	ADXCollider tempCol(this);
+	colliders.push_back(tempCol);
+
 }
 
 void Boss::Update()
@@ -59,6 +63,8 @@ void Boss::Update()
 	{
 		itr.Update(this);
 	}
+
+	allObjPtr.push_back(this);
 	Damage(1);
 }
 

@@ -185,7 +185,7 @@ void MCB::Scene::Draw()
 
 void MCB::Scene::SpriteDraw()
 {
-    debugText.Print(20, 20, 1, "hogehoge");
+    debugText.Print(20, 20, 1, "boss:hp %d",boss.GetHp());
     debugText.AllDraw();
 }
 
