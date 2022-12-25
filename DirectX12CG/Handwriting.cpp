@@ -33,6 +33,10 @@ void Handwriting::Update()
 		}
 		itr.Update(this);
 	}
+	if (!deleteFlag && !lifeTimer.IsEnd())
+	{
+		allObjPtr.push_back(this);
+	}
 }
 
 void Handwriting::Draw()
