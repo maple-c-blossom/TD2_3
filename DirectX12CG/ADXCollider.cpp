@@ -303,13 +303,16 @@ void ADXCollider::Collide(ADXCollider* col)
 //先のCollidersUpdateで別のコライダーにぶつかっていたらオブジェクトを押し戻す
 void ADXCollider::SendPushBack()
 {
-	gameObject->position.x += pushBackVector.ConvertXMFloat3().x ;
-	gameObject->position.y += pushBackVector.ConvertXMFloat3().y ;
-	gameObject->position.z += pushBackVector.ConvertXMFloat3().z ;
-	gameObject->Update(*IScene::GetCamera()->GetView(), *IScene::GetCamera()->GetProjection());
-	preTranslation = gameObject->position;
-	preMatrix = MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matTransform);
-	pushBackVector.vec = { 0,0,0 };
+	if(gameObject != nullptr)
+	{
+		gameObject->position.x += pushBackVector.ConvertXMFloat3().x;
+		gameObject->position.y += pushBackVector.ConvertXMFloat3().y;
+		gameObject->position.z += pushBackVector.ConvertXMFloat3().z;
+		gameObject->Update(*IScene::GetCamera()->GetView(), *IScene::GetCamera()->GetProjection());
+		preTranslation = gameObject->position;
+		preMatrix = MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matTransform);
+		pushBackVector.vec = { 0,0,0 };
+	}
 }
 
 //全てのコライダーで接触判定と押し戻しベクトルの算出を行う
