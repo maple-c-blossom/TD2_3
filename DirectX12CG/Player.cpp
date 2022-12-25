@@ -164,3 +164,8 @@ void Player::Draw()
 		itr.Draw();
 	}
 }
+
+void Player::Erase()
+{
+	shard += 1;
+}

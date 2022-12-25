@@ -69,12 +69,12 @@ namespace MCB
 
         bool trackingFlag = false;
 
+        std::list<ADXCollider> colliders{};
+
         // 【ADXEngine由来】全てのオブジェクトを入れる配列
         static std::list<Object3d*> allObjPtr;
         // 【ADXEngine由来】全てのオブジェクトが入った配列
         static std::list<Object3d*> objs;
-
-        std::list<ADXCollider> colliders;
 
         void Init();
 

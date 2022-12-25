@@ -1,5 +1,7 @@
 #include "Handwriting.h"
 #include "Status.h"
+#include "Player.h"
+
 void Handwriting::Initialize(MCB::Float3 position, MCB::Model* model)
 {
 	lifeTimer.Set(MAX_LIFE_TIME_HAND_WRITING);
@@ -18,6 +20,14 @@ void Handwriting::Update()
 	material.constMapMaterial->alpha = MCB::Lerp(1, 0, lifeTimer.GetEndTime(), lifeTimer.NowTime());
 	for (auto& itr : colliders)
 	{
+		for (auto& colListItr : itr.collideList)
+		{
+			Player* player = static_cast<Player*>(colListItr->gameObject);
+			if (player != nullptr)
+			{
+				player->Erase();
+			}
+		}
 		itr.Update(this);
 	}
 }
