@@ -28,6 +28,7 @@ void Handwriting::Update()
 			if (player != nullptr)
 			{
 				player->Erase();
+				deleteFlag = true;
 			}
 		}
 		itr.Update(this);
