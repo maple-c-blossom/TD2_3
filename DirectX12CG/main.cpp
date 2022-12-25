@@ -71,6 +71,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
         
         scene.Update();
         Object3d::StaticUpdate();
+        ADXCollider::CollidersUpdate();
         scene.Draw();
     }
 #pragma endregion ÉQÅ[ÉÄÉãÅ[Év

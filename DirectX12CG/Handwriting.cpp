@@ -12,6 +12,8 @@ void Handwriting::Initialize(MCB::Float3 position, MCB::Model* model)
 	material.Init();
 	material.material = model->material.material;
 	Init();
+	colliders.push_back(ADXCollider(this));
+	colliders.back().isTrigger = true;
 }
 
 void Handwriting::Update()
