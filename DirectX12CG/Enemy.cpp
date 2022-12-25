@@ -47,15 +47,12 @@ void Enemy::Update()
 	
 	allEnemyPtr.push_back(this);
 	allObjPtr.push_back(this);
-	allObjPtr.push_back(&attackObj);
+
 	for (auto& itr : colliders)
 	{
 		itr.Update(this);
 	}
-	for (auto& itr : attackObj.colliders)
-	{
-		itr.Update(&attackObj);
-	}
+
 
 }
 

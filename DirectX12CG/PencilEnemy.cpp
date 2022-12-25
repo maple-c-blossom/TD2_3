@@ -67,6 +67,7 @@ void PencilEnemy::UniqueUpdate()
 		velocity.vec.z *= -1;
 	}
 
+	allEnemyPtr.push_back(this);
 	{
 		int num = 0;
 		for (auto& itr : colliders)
@@ -82,6 +83,7 @@ void PencilEnemy::UniqueUpdate()
 
 	AttackCheck();
 	AttackTimerUpdate();
+	allObjPtr.push_back(&attackObj);
 	for (auto& itr : attackObj.colliders)
 	{
 		itr.Update(&attackObj);
@@ -89,7 +91,7 @@ void PencilEnemy::UniqueUpdate()
 	AttackHit();
 	handwriting.remove_if([](auto& itr) {return itr->GetLifeTimeOver(); });
 
-	allEnemyPtr.push_back(this);
+
 
 }
 
