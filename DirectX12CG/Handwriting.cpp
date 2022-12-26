@@ -18,7 +18,7 @@ void Handwriting::Initialize(MCB::Float3 position, MCB::Model* model)
 
 void Handwriting::Update()
 {
-	lifeTimer.SafeUpdate();
+	//lifeTimer.SafeUpdate();
 	material.constMapMaterial->alpha = MCB::Lerp(1, 0, lifeTimer.GetEndTime(), lifeTimer.NowTime());
 	for (auto& itr : colliders)
 	{
@@ -27,8 +27,8 @@ void Handwriting::Update()
 			Player* player = static_cast<Player*>(colListItr->gameObject);
 			if (player != nullptr)
 			{
-				player->Erase();
-				deleteFlag = true;
+				//player->Erase();
+				this->deleteFlag = true;
 			}
 		}
 		itr.Update(this);
