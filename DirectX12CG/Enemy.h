@@ -12,7 +12,6 @@ class Player;
 class Enemy:public MCB::Object3d
 {
 protected:
-	Player* playerPtr = nullptr;
 	int hp;
 	float speed;
 	MCB::Vector3D velocity;
@@ -34,7 +33,6 @@ public:
 	virtual void UpdateMatrix(MCB::ICamera* camera) = 0;
 	void AttackStart();//攻撃開始のフラグをtrueにする
 	void Update();
-	void SetPlayerPtr(Player* ptr) { playerPtr = ptr; }
 	bool IsAttack();
 	//【ADXEngine由来】
 	static std::list<Enemy*> GetAllEnemies();

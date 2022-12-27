@@ -3,6 +3,8 @@
 
 using namespace MCB;
 
+Player* Player::playerPtr = nullptr;
+
 std::list<KneadedEraser> Player::GetKneadedErasers()
 {
 	return kneadedErasers;
@@ -14,6 +16,7 @@ void Player::Initialize()
 	prevPos = position;
 	velocity = Vector3D{ 0,0,0 };
 	colliders.push_back(ADXCollider(this));
+	playerPtr = this;
 }
 
 void Player::Update()

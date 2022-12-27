@@ -120,7 +120,7 @@ void PencilEnemy::UpdateMatrix(MCB::ICamera* camera)
 
 void PencilEnemy::AttackCheck()
 {
-	if (playerPtr == nullptr)return;
+	if (Player::GetPlayer() == nullptr)return;
 	int num = 0;
 	for (auto& itr : colliders)
 	{
@@ -128,13 +128,13 @@ void PencilEnemy::AttackCheck()
 		{
 			break;
 		}
-		for (auto& itr2 : playerPtr->colliders)
+		for (auto& itr2 : Player::GetPlayer()->colliders)
 		{
 			if (itr.IsHit(itr2))
 			{
 				AttackStart();
 				Vector3D vec;
-				vec.V3Get({ position.x,position.y ,position.z }, { playerPtr->position.x,playerPtr->position.y,playerPtr->position.z });
+				vec.V3Get({ position.x,position.y ,position.z }, { Player::GetPlayer()->position.x,Player::GetPlayer()->position.y,Player::GetPlayer()->position.z });
 				vec.V3Norm();
 				attackObj.position = { position.x + vec.vec.x * 2,position.y + vec.vec.y * 2,position.z + vec.vec.z * 2 };
 			}
@@ -148,11 +148,11 @@ void PencilEnemy::AttackHit()
 	if (!attack)return;
 	for (auto& itr : attackObj.colliders)
 	{
-		for (auto& itr2 : playerPtr->colliders)
+		for (auto& itr2 : Player::GetPlayer()->colliders)
 		{
 			if (itr.IsHit(itr2))
 			{
-				playerPtr->SetHp(playerPtr->GetHp() - damage);
+				Player::GetPlayer()->SetHp(Player::GetPlayer()->GetHp() - damage);
 			}
 		}
 	}

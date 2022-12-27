@@ -77,7 +77,6 @@ void MCB::Scene::Object3DInit()
     unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
     temp->Initialize({ 1,0,0 }, { 0,0,0 }, BoxModel,0.5f);
     temp->SetHandwritingModel(handwrModel);
-    temp->SetPlayerPtr(&substie);
     enemys.push_back(move(temp));
 
     boss.Initialize({ 0,0,1 }, { 0,0,0 }, BoxModel, BoxModel, handwrModel, 1,&substie);

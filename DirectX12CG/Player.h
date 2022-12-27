@@ -8,6 +8,9 @@
 class Player :public MCB::Object3d
 {
 private:
+	static Player* playerPtr;
+
+private:
 	MCB::Input* input = MCB::Input::GetInstance();
 	int hp = 10;
 	std::vector<int> keyConfig{ DIK_W,DIK_S,DIK_D,DIK_A,DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE };
@@ -33,4 +36,7 @@ public:
 	void UpdateMatrix(MCB::ICamera* camera);
 	float GetShard() { return shard; };
 	void Erase();
+
+public:
+	static Player* GetPlayer() { return playerPtr; };
 };
