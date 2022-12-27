@@ -24,7 +24,7 @@ void Handwriting::Update()
 	{
 		for (auto& colListItr : itr.collideList)
 		{
-			if (colListItr->gameObject != Player::GetPlayer())
+			if (colListItr->gameObject == Player::GetPlayer())
 			{
 				Player::GetPlayer()->Erase();
 				this->deleteFlag = true;

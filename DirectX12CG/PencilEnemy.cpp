@@ -41,6 +41,9 @@ void PencilEnemy::UniqueUpdate()
 		position.z += velocity.vec.z * speed;
 		Movement += speed;
 	}
+
+	handwriting.remove_if([](auto& itr) {return itr->GetLifeTimeOver() || itr->deleteFlag; });
+
 	if (Movement > WRITING_RADIUS)
 	{
 		unique_ptr<Handwriting> temp = make_unique<Handwriting>();
@@ -89,10 +92,6 @@ void PencilEnemy::UniqueUpdate()
 		itr.Update(&attackObj);
 	}
 	AttackHit();
-	handwriting.remove_if([](auto& itr) {return itr->GetLifeTimeOver(); });
-
-
-
 }
 
 void PencilEnemy::Draw()
