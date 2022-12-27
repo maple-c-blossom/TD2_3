@@ -30,5 +30,6 @@ public:
 	void Update();
 	void Draw();
 	void UpdateMatrix(MCB::ICamera* camera);
+	float GetShard() { return shard; };
 	void Erase();
 };
