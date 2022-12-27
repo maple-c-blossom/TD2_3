@@ -18,23 +18,20 @@ void Handwriting::Initialize(MCB::Float3 position, MCB::Model* model)
 
 void Handwriting::Update()
 {
-	/*
 	//lifeTimer.SafeUpdate();
 	material.constMapMaterial->alpha = MCB::Lerp(1, 0, lifeTimer.GetEndTime(), lifeTimer.NowTime());
 	for (auto& itr : colliders)
 	{
 		for (auto& colListItr : itr.collideList)
 		{
-			Player* player = static_cast<Player*>(colListItr->gameObject);
-			if (player != nullptr)
+			if (colListItr->gameObject != Player::GetPlayer())
 			{
-				//player->Erase();
+				Player::GetPlayer()->Erase();
 				this->deleteFlag = true;
 			}
 		}
 		itr.Update(this);
 	}
-	*/
 	if (!deleteFlag && !lifeTimer.IsEnd())
 	{
 		allObjPtr.push_back(this);
