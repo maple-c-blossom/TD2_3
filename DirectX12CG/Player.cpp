@@ -62,24 +62,31 @@ void Player::Update()
 		{
 			if (MoveUp && MoveDown)
 			{
-				rotateModeCount += 6;
+				rotateModeCount += 11;
 				rotateTapped = true;
 			}
 
 			if (MoveRight && MoveLeft)
 			{
-				rotateModeCount -= 6;
+				rotateModeCount -= 11;
 				rotateTapped = true;
 			}
 		}
 
-		shard += velocity.V3Len() * 0.3;
 		if (!makingKneadedEraser)
 		{
+			if (!rotateMode)
+			{
+				shard += velocity.V3Len() * 0.3;
+			}
 			float prevDirectionAngle = directionAngle;
 			directionAngle = atan2(velocity.vec.x, velocity.vec.z);
 			rotateModeCount += ADXUtility::AngleDiff(prevDirectionAngle, directionAngle);
-			if (abs(rotateModeCount) > 6.28)
+			if(rotateCanceled)
+			{ 
+				rotateMode = false;
+			}
+			else if (abs(rotateModeCount) > 12.56)
 			{
 				rotateMode = true;
 			}
@@ -88,6 +95,7 @@ void Player::Update()
 	else
 	{
 		rotateTapped = false;
+		rotateCanceled = false;
 		rotateModeCount *= 0.9;
 		if (abs(rotateModeCount) < 1)
 		{
@@ -99,8 +107,14 @@ void Player::Update()
 	position.y += velocity.ConvertXMFloat3().y;
 	position.z += velocity.ConvertXMFloat3().z;
 
+	if (shard <= 0)
+	{
+		rotateCanceled = true;
+	}
+
 	if (rotateMode)
 	{
+		shard -= abs(rotateModeCount * 0.001);
 		rotation.y += rotateModeCount * 0.03;
 	}
 	else

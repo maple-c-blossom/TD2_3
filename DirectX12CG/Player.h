@@ -16,6 +16,7 @@ private:
 	float directionAngle = 0;
 	bool rotateTapped = false;
 	bool rotateMode = false;
+	bool rotateCanceled = false;
 	float rotateModeCount;
 	MCB::Vector3D  prevPos{};
 	MCB::Vector3D velocity{};
