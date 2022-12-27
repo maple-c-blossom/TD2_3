@@ -189,7 +189,7 @@ void MCB::Scene::SpriteDraw()
 {
     debugText.Print(20, 20, 1, "boss:hp %d",boss.GetHp());
     debugText.Print(20, 40, 1, "player:hp %d",substie.GetHp());
-    debugText.Print(20, 60, 1, "player:shard %d", substie.GetShard());
+    debugText.Print(20, 60, 1, "player:shard %f", substie.GetShard());
     debugText.AllDraw();
 }
 
