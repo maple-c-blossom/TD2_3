@@ -1,7 +1,11 @@
 #include "Enemy.h"
 #include "Status.h"
+
 std::list<Enemy*> Enemy::allEnemyPtr{};
 std::list<Enemy*> Enemy::enemies{};
+
+using namespace MCB;
+
 void Enemy::StaticUpdate()
 {
 	enemies = allEnemyPtr;
@@ -16,6 +20,7 @@ void Enemy::AttackStart()
 	}
 	beforeAttack = true;
 }
+
 void Enemy::AttackTimerUpdate()
 {
 	if (beforeAttack)
@@ -37,13 +42,22 @@ void Enemy::AttackTimerUpdate()
 		}
 	}
 }
+
 bool Enemy::IsAttack()
 {
 	return attack;
 }
+
 void Enemy::Update()
 {
+
 	UniqueUpdate();
+
+	if (capture != nullptr)
+	{
+		Vector3D positionVec = MCBMatrix::transform(captureLocalPos, MCB::MCBMatrix::MCBMatrixConvertXMMatrix(matWorld.matRot));
+		position = positionVec.ConvertXMFloat3();
+	}
 	
 	allEnemyPtr.push_back(this);
 	allObjPtr.push_back(this);
