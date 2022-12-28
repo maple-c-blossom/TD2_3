@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "Status.h"
+#include "Player.h"
 
 std::list<Enemy*> Enemy::allEnemyPtr{};
 std::list<Enemy*> Enemy::enemies{};
@@ -53,18 +54,34 @@ void Enemy::Update()
 
 	UniqueUpdate();
 
-
-
-	if (capture != prevCapture && capture != nullptr)
+	if (capture == nullptr)
 	{
-		Vector3D positionVec = MCBMatrix::transform(captureLocalPos, MCB::MCBMatrix::MCBMatrixConvertXMMatrix(matWorld.matRot));
-		position = positionVec.ConvertXMFloat3();
+		for (auto& itr : colliders)
+		{
+			for (auto& colListItr : itr.collideList)
+			{
+				for (auto& colListItr2 : KneadedEraser::GetAllKneadedEraser())
+				{
+					if (colListItr->gameObject == colListItr2)
+					{
+						capture = colListItr2;
+					}
+				}
+			}
+			itr.Update(this);
+		}
+	}
+
+	if (capture != nullptr && prevCapture == nullptr)
+	{
+		Vector3D positionVec = Vector3D(position.x, position.y, position.z);
+		captureLocalPos = MCBMatrix::transform(positionVec, MCB::MCBMatrix::MCBMatrixConvertXMMatrix(capture->matWorld.matWorld).Inverse());
 	}
 	prevCapture = capture;
 
 	if (capture != nullptr)
 	{
-		Vector3D positionVec = MCBMatrix::transform(captureLocalPos, MCB::MCBMatrix::MCBMatrixConvertXMMatrix(matWorld.matRot));
+		Vector3D positionVec = MCBMatrix::transform(captureLocalPos, MCB::MCBMatrix::MCBMatrixConvertXMMatrix(capture->matWorld.matWorld));
 		position = positionVec.ConvertXMFloat3();
 	}
 	

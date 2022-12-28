@@ -163,6 +163,7 @@ void MCB::Scene::Update()
         lights->UpDate();
         viewCamera->Update();
     Enemy::StaticUpdate();
+    KneadedEraser::StaticUpdate();
     CheckAllColision();
     //s—ñ•ÏŠ·
     MatrixUpdate();

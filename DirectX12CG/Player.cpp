@@ -150,11 +150,7 @@ void Player::Update()
 	for (auto& itr : kneadedErasers)
 	{
 		allObjPtr.push_back(&itr);
-		KneadedEraser::allKneadedEraser.push_back(&itr);
-		for (auto& colItr : itr.colliders)
-		{
-			colItr.Update(&itr);
-		}
+		itr.UniqueUpdate();
 	}
 
 	allObjPtr.push_back(this);

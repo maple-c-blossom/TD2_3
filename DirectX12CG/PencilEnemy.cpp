@@ -48,7 +48,7 @@ void PencilEnemy::UniqueUpdate()
 	{
 		unique_ptr<Handwriting> temp = make_unique<Handwriting>();
 		temp->Initialize({ position.x,position.y,position.z }, handwritingModel);
-		handwriting.push_back(move(temp));
+		//handwriting.push_back(move(temp));
 	}
 	for (auto& itr : handwriting)
 	{
