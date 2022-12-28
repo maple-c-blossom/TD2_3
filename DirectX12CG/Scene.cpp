@@ -147,6 +147,9 @@ IScene* MCB::Scene::GetNextScene()
 
 void MCB::Scene::Update()
 {
+    Enemy::StaticUpdate();
+    KneadedEraser::StaticUpdate();
+
 //        if (input->IsKeyTrigger(DIK_SPACE))
 //        {
 //            sceneEnd = true;
@@ -166,9 +169,6 @@ void MCB::Scene::Update()
     CheckAllColision();
     //s—ñ•ÏŠ·
     MatrixUpdate();
-
-    Enemy::StaticUpdate();
-    KneadedEraser::StaticUpdate();
 }
 
 void MCB::Scene::Draw()

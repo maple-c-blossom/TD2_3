@@ -151,6 +151,10 @@ void Player::Update()
 	{
 		allObjPtr.push_back(&itr);
 		itr.UniqueUpdate();
+		for (auto& colItr : itr.colliders)
+		{
+			colItr.Update(this);
+		}
 	}
 
 	allObjPtr.push_back(this);
