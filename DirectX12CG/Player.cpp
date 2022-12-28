@@ -153,7 +153,7 @@ void Player::Update()
 		itr.UniqueUpdate();
 		for (auto& colItr : itr.colliders)
 		{
-			colItr.Update(this);
+			colItr.Update(&itr);
 		}
 	}
 
