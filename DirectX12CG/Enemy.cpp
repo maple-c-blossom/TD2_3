@@ -53,6 +53,15 @@ void Enemy::Update()
 
 	UniqueUpdate();
 
+
+
+	if (capture != prevCapture && capture != nullptr)
+	{
+		Vector3D positionVec = MCBMatrix::transform(captureLocalPos, MCB::MCBMatrix::MCBMatrixConvertXMMatrix(matWorld.matRot));
+		position = positionVec.ConvertXMFloat3();
+	}
+	prevCapture = capture;
+
 	if (capture != nullptr)
 	{
 		Vector3D positionVec = MCBMatrix::transform(captureLocalPos, MCB::MCBMatrix::MCBMatrixConvertXMMatrix(matWorld.matRot));
@@ -66,8 +75,6 @@ void Enemy::Update()
 	{
 		itr.Update(this);
 	}
-
-
 }
 
 std::list<Enemy*> Enemy::GetAllEnemies()
