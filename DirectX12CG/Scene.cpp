@@ -162,11 +162,13 @@ void MCB::Scene::Update()
         boss.Update();
         lights->UpDate();
         viewCamera->Update();
-    Enemy::StaticUpdate();
-    KneadedEraser::StaticUpdate();
+
     CheckAllColision();
     //s—ñ•ÏŠ·
     MatrixUpdate();
+
+    Enemy::StaticUpdate();
+    KneadedEraser::StaticUpdate();
 }
 
 void MCB::Scene::Draw()

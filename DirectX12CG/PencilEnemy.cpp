@@ -15,7 +15,9 @@ void PencilEnemy::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::
 
 	ADXCollider tempAttackCol(this);
 	colliders.push_back(tempAttackCol);
+	colliders.push_back(this);
 	ADXCollider tempAttackObjCol(&attackObj);
+	tempAttackObjCol.isTrigger = true;
 	attackObj.colliders.push_back(tempAttackObjCol);
 	for (auto& itr : colliders)
 	{
@@ -78,6 +80,7 @@ void PencilEnemy::UniqueUpdate()
 			itr.Update(this);
 			if (num == 0)
 			{
+				itr.isTrigger = true;
 				itr.radius_ = 3;
 			}
 			num++;

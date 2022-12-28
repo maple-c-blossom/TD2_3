@@ -58,13 +58,16 @@ void Enemy::Update()
 	{
 		for (auto& itr : colliders)
 		{
-			for (auto& colListItr : itr.collideList)
+			if (!itr.isTrigger)
 			{
-				for (auto& colListItr2 : KneadedEraser::GetAllKneadedEraser())
+				for (auto& colListItr : itr.collideList)
 				{
-					if (colListItr->gameObject == colListItr2)
+					for (auto& colListItr2 : KneadedEraser::GetAllKneadedEraser())
 					{
-						capture = colListItr2;
+						if (colListItr->gameObject == colListItr2)
+						{
+							capture = colListItr2;
+						}
 					}
 				}
 			}
