@@ -130,9 +130,13 @@ void Player::Update()
 	if (makingKneadedEraser)
 	{
 		shard -= velocity.V3Len();
-		kneadedErasers.push_back(KneadedEraser{});
-		kneadedErasers.back().parent = this;
-		kneadedErasers.back().model = model;
+		if (kneadedErasers.empty()
+			|| Vector3D{ kneadedErasers.back().position.x,kneadedErasers.back().position.y,kneadedErasers.back().position.z }.V3Len() > kneadedEraserDistance)
+		{
+			kneadedErasers.push_back(KneadedEraser{});
+			kneadedErasers.back().parent = this;
+			kneadedErasers.back().model = model;
+		}
 
 		for (auto& itr : kneadedErasers)
 		{

@@ -11,6 +11,8 @@ private:
 	static Player* playerPtr;
 
 private:
+	const float kneadedEraserDistance = 1.0f;
+
 	MCB::Input* input = MCB::Input::GetInstance();
 	int hp = 10;
 	std::vector<int> keyConfig{ DIK_W,DIK_S,DIK_D,DIK_A,DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE };
