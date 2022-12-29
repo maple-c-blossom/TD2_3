@@ -75,12 +75,12 @@ void MCB::Scene::Object3DInit()
     substie.Initialize();
 
     unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
-    temp->Initialize({ 1,0,0 }, { 0,0,0 }, BoxModel,0.5f);
+    temp->Initialize({ 1,0,0 }, { 0,0,10 }, BoxModel,0.5f);
     temp->SetHandwritingModel(handwrModel);
     enemys.push_back(move(temp));
 
     temp = make_unique<PencilEnemy>();
-    temp->Initialize({ 1,0,0 }, { 0,0,10 }, BoxModel, 0.5f);
+    temp->Initialize({ 1,0,0 }, { 0,0,20 }, BoxModel, 0.5f);
     temp->SetHandwritingModel(handwrModel);
     enemys.push_back(move(temp));
 
