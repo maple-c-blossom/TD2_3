@@ -75,6 +75,11 @@ void Enemy::Update()
 		}
 	}
 
+	if (Player::GetPlayer()->IsInvincible())
+	{
+		capture = nullptr;
+	}
+
 	if (capture != nullptr && prevCapture == nullptr)
 	{
 		Vector3D positionVec = Vector3D(position.x, position.y, position.z);

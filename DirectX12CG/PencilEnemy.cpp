@@ -154,7 +154,7 @@ void PencilEnemy::AttackHit()
 		{
 			if (itr.IsHit(itr2))
 			{
-				Player::GetPlayer()->SetHp(Player::GetPlayer()->GetHp() - damage);
+				Player::GetPlayer()->Damage(damage);
 			}
 		}
 	}

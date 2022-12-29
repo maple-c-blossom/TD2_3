@@ -17,6 +17,7 @@ private:
 	int hp = 10;
 	std::vector<int> keyConfig{ DIK_W,DIK_S,DIK_D,DIK_A,DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE };
 	std::list<KneadedEraser> kneadedErasers{};
+	int invincible = 0;
 	float shard = 0;
 	float directionAngle = 0;
 	bool rotateTapped = false;
@@ -30,7 +31,8 @@ private:
 
 public:
 	int GetHp() { return hp; }
-	void SetHp(int hp) { this->hp = hp; }
+	void Damage(int damage);
+	bool IsInvincible();
 	std::list<KneadedEraser> GetKneadedErasers();
 	void Initialize();
 	void Update();

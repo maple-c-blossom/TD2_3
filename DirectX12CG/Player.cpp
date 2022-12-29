@@ -161,6 +161,9 @@ void Player::Update()
 	{
 		colItr.Update(this);
 	}
+
+	invincible--;
+	invincible = max(invincible, 0);
 }
 
 void Player::UpdateMatrix(MCB::ICamera* camera)
@@ -181,7 +184,21 @@ void Player::Draw()
 	}
 }
 
+bool Player::IsInvincible()
+{
+	return invincible > 0;
+}
+
 void Player::Erase()
 {
 	shard += 1;
+}
+
+void Player::Damage(int damage)
+{
+	if(invincible <= 0)
+	{
+		hp -= damage;
+		invincible = 70;
+	}
 }
