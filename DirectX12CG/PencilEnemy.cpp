@@ -6,7 +6,7 @@ using namespace std;
 
 void PencilEnemy::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, float speed)
 {
-	this->velocity = velocity;
+	//this->velocity = velocity;
 	this->position.x = position.x;
 	this->position.y = position.y;
 	this->position.z = position.z;
@@ -57,19 +57,30 @@ void PencilEnemy::UniqueUpdate()
 		itr->Update();
 	}
 
-	if (position.x < -20 || position.x > 20)
+	if (movePoint.size() > 0)
 	{
-		velocity.vec.x *= -1;
-	}
+		movePointIndex = movePointIndex % movePoint.size();
 
-	if (position.y < -20 || position.y > 20)
-	{
-		velocity.vec.y *= -1;
-	}
+		Vector3D positionVec = Vector3D(position.x,position.y,position.z);
 
-	if (position.z < -20 || position.z > 20)
-	{
-		velocity.vec.z *= -1;
+		velocity = Vector3D::normal(movePoint[movePointIndex] - positionVec);
+
+		float movePointDistance = (movePoint[movePointIndex] - positionVec).V3Len();
+		if (movePointDistance >= nearestMovePointDistance)
+		{
+			notApproachingCount++;
+			if (notApproachingCount > 10)
+			{
+				movePointIndex++;
+				movePointIndex = movePointIndex % movePoint.size();
+				nearestMovePointDistance = (movePoint[movePointIndex] - positionVec).V3Len();
+				notApproachingCount = 0;
+			}
+		}
+		else
+		{
+			nearestMovePointDistance = movePointDistance;
+		}
 	}
 
 	allEnemyPtr.push_back(this);
