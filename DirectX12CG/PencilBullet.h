@@ -12,6 +12,6 @@ private:
 public:
 	void Initialize(MCB::Model* model, float speed, MCB::Vector3D startPos, MCB::Vector3D targetPos);
 	void Update();
-	bool GetDelete() { return lifeTime.IsEnd(); }
+	bool GetDelete() { return (lifeTime.IsEnd() || deleteFlag); }
 };
 
