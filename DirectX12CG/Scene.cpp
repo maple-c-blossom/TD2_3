@@ -75,9 +75,15 @@ void MCB::Scene::Object3DInit()
     substie.Initialize();
 
     unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
-    temp->Initialize({ 1,0,0 }, { 0,0,0 }, BoxModel,0.5f);
+    temp->Initialize({ 0,0,0 }, { 20,0,40 }, BoxModel,0.5f);
+    temp->movePoint = { {20,0,40},{ -20,0,20 },{ -20,0,40 } };
     temp->SetHandwritingModel(handwrModel);
-    temp->SetPlayerPtr(&substie);
+    enemys.push_back(move(temp));
+
+    temp = make_unique<PencilEnemy>();
+    temp->Initialize({ 0,0,0 }, { -20,0,20 }, BoxModel, 0.5f);
+    temp->movePoint = { {-20,0,20},{ 20,0,40 },{ 20,0,20 } };
+    temp->SetHandwritingModel(handwrModel);
     enemys.push_back(move(temp));
 
     boss.Initialize({ 0,0,1 }, { 0,0,0 }, BoxModel, BoxModel, handwrModel, 1,&substie);
@@ -148,6 +154,9 @@ IScene* MCB::Scene::GetNextScene()
 
 void MCB::Scene::Update()
 {
+    Enemy::StaticUpdate();
+    KneadedEraser::StaticUpdate();
+
 //        if (input->IsKeyTrigger(DIK_SPACE))
 //        {
 //            sceneEnd = true;
@@ -163,7 +172,7 @@ void MCB::Scene::Update()
         boss.Update();
         lights->UpDate();
         viewCamera->Update();
-    Enemy::StaticUpdate();
+
     CheckAllColision();
     //çsóÒïœä∑
     MatrixUpdate();
@@ -189,6 +198,7 @@ void MCB::Scene::SpriteDraw()
 {
     debugText.Print(20, 20, 1, "boss:hp %d",boss.GetHp());
     debugText.Print(20, 40, 1, "player:hp %d",substie.GetHp());
+    debugText.Print(20, 60, 1, "player:shard %f", substie.GetShard());
     debugText.AllDraw();
 }
 

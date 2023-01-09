@@ -7,12 +7,12 @@
 #include "ICamera.h"
 #include "ADXCollider.h"
 #include "Timer.h"
+#include "KneadedEraser.h"
 
 class Player;
 class Enemy:public MCB::Object3d
 {
 protected:
-	Player* playerPtr = nullptr;
 	int hp;
 	float speed;
 	MCB::Vector3D velocity;
@@ -22,6 +22,9 @@ protected:
 	bool prevBeforeAttack;
 	Timer beforeAttackTimer;
 	Timer AttackTimer;
+	Vector3D captureLocalPos{};
+	KneadedEraser* capture = nullptr;
+	KneadedEraser* prevCapture = nullptr;
 	// 【ADXEngine由来】全てのオブジェクトを入れる配列
 	static std::list<Enemy*> allEnemyPtr;
 	// 【ADXEngine由来】全てのオブジェクトが入った配列
@@ -34,7 +37,6 @@ public:
 	virtual void UpdateMatrix(MCB::ICamera* camera) = 0;
 	void AttackStart();//攻撃開始のフラグをtrueにする
 	void Update();
-	void SetPlayerPtr(Player* ptr) { playerPtr = ptr; }
 	bool IsAttack();
 	//【ADXEngine由来】
 	static std::list<Enemy*> GetAllEnemies();

@@ -21,7 +21,7 @@ ADXCollider::ADXCollider(Object3d* obj)
 {
 	gameObject = obj;
 	preTranslation = gameObject->position;
-	preMatrix = MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matTransform);
+	preMatrix = MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld);
 }
 
 void ADXCollider::Update(Object3d* obj)
@@ -33,7 +33,7 @@ void ADXCollider::Update(Object3d* obj)
 //空間上の点をコライダーの中に収めた時の座標
 Vector3D ADXCollider::ClosestPoint(Vector3D pos)
 {
-	Vector3D ret = MCBMatrix::transform(pos, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matTransform).Inverse());
+	Vector3D ret = MCBMatrix::transform(pos, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld).Inverse());
 	Vector3D closPos = ret;
 
 	if (colType_ == box)
@@ -80,7 +80,7 @@ Vector3D ADXCollider::ClosestPoint(Vector3D pos)
 	if ((closPos - ret).V3Len() > 0)
 	{
 		ret = closPos;
-		ret = MCBMatrix::transform(ret, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matTransform));
+		ret = MCBMatrix::transform(ret, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld));
 	}
 	else
 	{
@@ -99,7 +99,7 @@ Vector3D ADXCollider::EdgeLocalPoint(Vector3D pos)
 //空間上の点をコライダーのフチに寄せた時の相対座標
 Vector3D ADXCollider::EdgeLocalPoint(Vector3D pos, Vector3D prePos)
 {
-	Vector3D ret = MCBMatrix::transform(pos, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matTransform).Inverse());
+	Vector3D ret = MCBMatrix::transform(pos, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld).Inverse());
 	ret -= pos_;
 
 	Vector3D prevPos = MCBMatrix::transform(prePos, preMatrix.Inverse());
@@ -180,7 +180,7 @@ Vector3D ADXCollider::EdgeLocalPoint(Vector3D pos, Vector3D prePos)
 	}
 
 	ret += pos_;
-	ret = MCBMatrix::transform(ClosestPoint(MCBMatrix::transform(ret, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matTransform))), MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matTransform).Inverse());
+	ret = MCBMatrix::transform(ClosestPoint(MCBMatrix::transform(ret, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld))), MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld).Inverse());
 
 	return ret;
 }
@@ -195,7 +195,7 @@ Vector3D ADXCollider::EdgePoint(Vector3D pos)
 Vector3D ADXCollider::EdgePoint(Vector3D pos, Vector3D prePos)
 {
 	Vector3D ret = EdgeLocalPoint(pos, prePos);
-	ret = MCBMatrix::transform(ret, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matTransform));
+	ret = MCBMatrix::transform(ret, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld));
 	return ret;
 }
 
@@ -203,14 +203,14 @@ Vector3D ADXCollider::EdgePoint(Vector3D pos, Vector3D prePos)
 Vector3D ADXCollider::CollidePoint(Vector3D pos, Vector3D targetColSenter, Vector3D move)
 {
 	Vector3D ret = EdgeLocalPoint(pos, pos - move);
-	Vector3D targetLocalSenter = MCBMatrix::transform(targetColSenter, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matTransform).Inverse()) - pos_;
+	Vector3D targetLocalSenter = MCBMatrix::transform(targetColSenter, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld).Inverse()) - pos_;
 
 	if (targetLocalSenter.GetV3Dot(ret) < 0)
 	{
 		ret = -ret;
 	}
 
-	ret = MCBMatrix::transform(ret, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matTransform));
+	ret = MCBMatrix::transform(ret, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld));
 	return ret;
 }
 
@@ -219,10 +219,10 @@ Vector3D ADXCollider::CollideVector(ADXCollider col)
 {
 	Vector3D ret;
 
-	Vector3D myTranslation = MCBMatrix::transform(pos_, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matTransform));
+	Vector3D myTranslation = MCBMatrix::transform(pos_, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld));
 	Vector3D myMove = myTranslation - MCBMatrix::transform(pos_, preMatrix);
 
-	Vector3D targetTranslation = MCBMatrix::transform(col.pos_, MCBMatrix::MCBMatrixConvertXMMatrix(col.gameObject->matWorld.matTransform));
+	Vector3D targetTranslation = MCBMatrix::transform(col.pos_, MCBMatrix::MCBMatrixConvertXMMatrix(col.gameObject->matWorld.matWorld));
 	Vector3D targetMove = targetTranslation - MCBMatrix::transform(col.pos_, col.preMatrix);
 
 	Vector3D myPushBack1 = col.CollidePoint(myTranslation, myTranslation, myMove) - CollidePoint(col.CollidePoint(myTranslation, myTranslation, myMove), targetTranslation, targetMove);
@@ -250,16 +250,16 @@ Vector3D ADXCollider::CollideVector(ADXCollider col)
 //相手のコライダーと重なっているか
 bool ADXCollider::IsHit(ADXCollider col)
 {
-	Vector3D closestVec1 = col.ClosestPoint(ClosestPoint(MCBMatrix::transform(col.pos_, MCBMatrix::MCBMatrixConvertXMMatrix(col.gameObject->matWorld.matTransform))));
-	Vector3D closestVec2 = ClosestPoint(col.ClosestPoint(ClosestPoint(MCBMatrix::transform(col.pos_, MCBMatrix::MCBMatrixConvertXMMatrix(col.gameObject->matWorld.matTransform)))));
+	Vector3D closestVec1 = col.ClosestPoint(ClosestPoint(MCBMatrix::transform(col.pos_, MCBMatrix::MCBMatrixConvertXMMatrix(col.gameObject->matWorld.matWorld))));
+	Vector3D closestVec2 = ClosestPoint(col.ClosestPoint(ClosestPoint(MCBMatrix::transform(col.pos_, MCBMatrix::MCBMatrixConvertXMMatrix(col.gameObject->matWorld.matWorld)))));
 	float colPointDiff = (closestVec1 - closestVec2).V3Len();
 	if ((closestVec1 - closestVec2).V3Len() <= 0)
 	{
 		return true;
 	}
 
-	closestVec1 = ClosestPoint(col.ClosestPoint(MCBMatrix::transform(pos_, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matTransform))));
-	closestVec2 = col.ClosestPoint(ClosestPoint(col.ClosestPoint(MCBMatrix::transform(pos_, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matTransform)))));
+	closestVec1 = ClosestPoint(col.ClosestPoint(MCBMatrix::transform(pos_, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld))));
+	closestVec2 = col.ClosestPoint(ClosestPoint(col.ClosestPoint(MCBMatrix::transform(pos_, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld)))));
 	colPointDiff = (closestVec1 - closestVec2).V3Len();
 	if ((closestVec1 - closestVec2).V3Len() <= 0)
 	{
@@ -272,7 +272,7 @@ bool ADXCollider::IsHit(ADXCollider col)
 //コライダー同士で押し合う（動かないコライダーにぶつかったら一方的に押される）
 void ADXCollider::Collide(ADXCollider* col)
 {
-	if (IsHit(*col) && enabled && col->enabled && col->gameObject != gameObject)
+	if (!gameObject->deleteFlag && !col->gameObject->deleteFlag && IsHit(*col) && enabled && col->enabled && col->gameObject != gameObject)
 	{
 		if (!isTrigger && !col->isTrigger)
 		{
@@ -310,7 +310,7 @@ void ADXCollider::SendPushBack()
 		gameObject->position.z += pushBackVector.ConvertXMFloat3().z;
 		gameObject->Update(*IScene::GetCamera()->GetView(), *IScene::GetCamera()->GetProjection());
 		preTranslation = gameObject->position;
-		preMatrix = MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matTransform);
+		preMatrix = MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld);
 		pushBackVector.vec = { 0,0,0 };
 	}
 }

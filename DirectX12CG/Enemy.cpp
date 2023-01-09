@@ -1,7 +1,12 @@
 #include "Enemy.h"
 #include "Status.h"
+#include "Player.h"
+
 std::list<Enemy*> Enemy::allEnemyPtr{};
 std::list<Enemy*> Enemy::enemies{};
+
+using namespace MCB;
+
 void Enemy::StaticUpdate()
 {
 	enemies = allEnemyPtr;
@@ -16,6 +21,7 @@ void Enemy::AttackStart()
 	}
 	beforeAttack = true;
 }
+
 void Enemy::AttackTimerUpdate()
 {
 	if (beforeAttack)
@@ -37,13 +43,55 @@ void Enemy::AttackTimerUpdate()
 		}
 	}
 }
+
 bool Enemy::IsAttack()
 {
 	return attack;
 }
+
 void Enemy::Update()
 {
+
 	UniqueUpdate();
+
+	if (capture == nullptr)
+	{
+		for (auto& itr : colliders)
+		{
+			if (!itr.isTrigger)
+			{
+				for (auto& colListItr : itr.collideList)
+				{
+					for (auto& colListItr2 : KneadedEraser::GetAllKneadedEraser())
+					{
+						if (colListItr->gameObject == colListItr2)
+						{
+							capture = colListItr2;
+						}
+					}
+				}
+			}
+			itr.Update(this);
+		}
+	}
+
+	if (Player::GetPlayer()->IsInvincible())
+	{
+		capture = nullptr;
+	}
+
+	if (capture != nullptr && prevCapture == nullptr)
+	{
+		Vector3D positionVec = Vector3D(position.x, position.y, position.z);
+		captureLocalPos = MCBMatrix::transform(positionVec, MCB::MCBMatrix::MCBMatrixConvertXMMatrix(capture->matWorld.matWorld).Inverse());
+	}
+	prevCapture = capture;
+
+	if (capture != nullptr)
+	{
+		Vector3D positionVec = MCBMatrix::transform(captureLocalPos, MCB::MCBMatrix::MCBMatrixConvertXMMatrix(capture->matWorld.matWorld));
+		position = positionVec.ConvertXMFloat3();
+	}
 	
 	allEnemyPtr.push_back(this);
 	allObjPtr.push_back(this);
@@ -52,8 +100,6 @@ void Enemy::Update()
 	{
 		itr.Update(this);
 	}
-
-
 }
 
 std::list<Enemy*> Enemy::GetAllEnemies()

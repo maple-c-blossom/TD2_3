@@ -3,6 +3,8 @@
 
 using namespace MCB;
 
+Player* Player::playerPtr = nullptr;
+
 std::list<KneadedEraser> Player::GetKneadedErasers()
 {
 	return kneadedErasers;
@@ -14,6 +16,7 @@ void Player::Initialize()
 	prevPos = position;
 	velocity = Vector3D{ 0,0,0 };
 	colliders.push_back(ADXCollider(this));
+	playerPtr = this;
 }
 
 void Player::Update()
@@ -35,51 +38,70 @@ void Player::Update()
 	velocity = position - prevPos;
 	prevPos = position;
 
-	velocity *= 0.8;
-	//velocity.vec.y /= 0.8;
-	//velocity.vec.y -= 0.015;
+	velocity /= 0.8f;
+
+	if (rotateMode)
+	{
+		weight = (1 + kneadedErasers.size()) * 10;
+	}
+	else
+	{
+		weight = 10;
+	}
 
 	if (moving)
 	{
+		moveSpeedPercentage += 1 / weight;
+
+		Vector3D walkVec = { 0,0,0 };
+
 		if (MoveUp)
 		{
-			velocity.vec.z += 0.05;
+			walkVec.vec.z += 1;
 		}
 		if (MoveDown)
 		{
-			velocity.vec.z -= 0.05;
+			walkVec.vec.z -= 1;
 		}
 		if (MoveRight)
 		{
-			velocity.vec.x += 0.05;
+			walkVec.vec.x += 1;
 		}
 		if (MoveLeft)
 		{
-			velocity.vec.x -= 0.05;
+			walkVec.vec.x -= 1;
 		}
 
 		if (!rotateTapped)
 		{
 			if (MoveUp && MoveDown)
 			{
-				rotateModeCount += 6;
+				rotateModeCount += 11;
 				rotateTapped = true;
 			}
 
 			if (MoveRight && MoveLeft)
 			{
-				rotateModeCount -= 6;
+				rotateModeCount -= 11;
 				rotateTapped = true;
 			}
 		}
 
-		shard += velocity.V3Len() * 0.3;
+		float prevDirectionAngle = directionAngle;
+		directionAngle += ADXUtility::AngleDiff(directionAngle, atan2(walkVec.vec.x, walkVec.vec.z)) / (1 + (weight) / 5);
+
 		if (!makingKneadedEraser)
 		{
-			float prevDirectionAngle = directionAngle;
-			directionAngle = atan2(velocity.vec.x, velocity.vec.z);
+			if (!rotateMode)
+			{
+				shard += velocity.V3Len() * 0.3;
+			}
 			rotateModeCount += ADXUtility::AngleDiff(prevDirectionAngle, directionAngle);
-			if (abs(rotateModeCount) > 6.28)
+			if(rotateCanceled)
+			{ 
+				rotateMode = false;
+			}
+			else if (abs(rotateModeCount) > 12.56)
 			{
 				rotateMode = true;
 			}
@@ -87,7 +109,10 @@ void Player::Update()
 	}
 	else
 	{
+		moveSpeedPercentage -= 1 / weight;
+
 		rotateTapped = false;
+		rotateCanceled = false;
 		rotateModeCount *= 0.9;
 		if (abs(rotateModeCount) < 1)
 		{
@@ -95,15 +120,25 @@ void Player::Update()
 		}
 	}
 
+	moveSpeedPercentage = max(0,min(moveSpeedPercentage,1));
+
+	velocity = Vector3D{sin(directionAngle),0,cos(directionAngle)} * moveSpeedPercentage * maxMoveSpeed;
+
 	position.x += velocity.ConvertXMFloat3().x;
 	position.y += velocity.ConvertXMFloat3().y;
 	position.z += velocity.ConvertXMFloat3().z;
 
+	if (shard <= 0)
+	{
+		rotateCanceled = true;
+	}
+
 	if (rotateMode)
 	{
+		shard -= abs(rotateModeCount * 0.001);
 		rotation.y += rotateModeCount * 0.03;
 	}
-	else
+	else if(!makingKneadedEraser)
 	{
 		rotation.y += ADXUtility::AngleDiff(rotation.y, directionAngle) / (kneadedErasers.size() / 10.0 + 1);
 	}
@@ -113,9 +148,13 @@ void Player::Update()
 	if (makingKneadedEraser)
 	{
 		shard -= velocity.V3Len();
-		kneadedErasers.push_back(KneadedEraser{});
-		kneadedErasers.back().parent = this;
-		kneadedErasers.back().model = model;
+		if (kneadedErasers.empty()
+			|| Vector3D{ kneadedErasers.back().position.x,kneadedErasers.back().position.y,kneadedErasers.back().position.z }.V3Len() > kneadedEraserDistance)
+		{
+			kneadedErasers.push_back(KneadedEraser{});
+			kneadedErasers.back().parent = this;
+			kneadedErasers.back().model = model;
+		}
 
 		for (auto& itr : kneadedErasers)
 		{
@@ -130,14 +169,11 @@ void Player::Update()
 		}
 	}
 
+	velocity.vec = { 0,0,0 };
+
 	for (auto& itr : kneadedErasers)
 	{
-		allObjPtr.push_back(&itr);
-		KneadedEraser::allKneadedEraser.push_back(&itr);
-		for (auto& colItr : itr.colliders)
-		{
-			colItr.Update(&itr);
-		}
+		itr.UniqueUpdate();
 	}
 
 	allObjPtr.push_back(this);
@@ -145,6 +181,9 @@ void Player::Update()
 	{
 		colItr.Update(this);
 	}
+
+	invincible--;
+	invincible = max(invincible, 0);
 }
 
 void Player::UpdateMatrix(MCB::ICamera* camera)
@@ -165,7 +204,21 @@ void Player::Draw()
 	}
 }
 
+bool Player::IsInvincible()
+{
+	return invincible > 0;
+}
+
 void Player::Erase()
 {
 	shard += 1;
+}
+
+void Player::Damage(int damage)
+{
+	if(invincible <= 0)
+	{
+		hp -= damage;
+		invincible = 70;
+	}
 }

@@ -6,7 +6,7 @@ using namespace std;
 
 void PencilEnemy::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, float speed)
 {
-	this->velocity = velocity;
+	//this->velocity = velocity;
 	this->position.x = position.x;
 	this->position.y = position.y;
 	this->position.z = position.z;
@@ -15,7 +15,9 @@ void PencilEnemy::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::
 
 	ADXCollider tempAttackCol(this);
 	colliders.push_back(tempAttackCol);
+	colliders.push_back(this);
 	ADXCollider tempAttackObjCol(&attackObj);
+	tempAttackObjCol.isTrigger = true;
 	attackObj.colliders.push_back(tempAttackObjCol);
 	for (auto& itr : colliders)
 	{
@@ -41,30 +43,44 @@ void PencilEnemy::UniqueUpdate()
 		position.z += velocity.vec.z * speed;
 		Movement += speed;
 	}
+
+	handwriting.remove_if([](auto& itr) {return itr->GetLifeTimeOver() || itr->deleteFlag; });
+
 	if (Movement > WRITING_RADIUS)
 	{
 		unique_ptr<Handwriting> temp = make_unique<Handwriting>();
 		temp->Initialize({ position.x,position.y,position.z }, handwritingModel);
-		handwriting.push_back(move(temp));
+		//handwriting.push_back(move(temp));
 	}
 	for (auto& itr : handwriting)
 	{
 		itr->Update();
 	}
 
-	if (position.x < -20 || position.x > 20)
+	if (movePoint.size() > 0)
 	{
-		velocity.vec.x *= -1;
-	}
+		movePointIndex = movePointIndex % movePoint.size();
 
-	if (position.y < -20 || position.y > 20)
-	{
-		velocity.vec.y *= -1;
-	}
+		Vector3D positionVec = Vector3D(position.x,position.y,position.z);
 
-	if (position.z < -20 || position.z > 20)
-	{
-		velocity.vec.z *= -1;
+		velocity = Vector3D::normal(movePoint[movePointIndex] - positionVec);
+
+		float movePointDistance = (movePoint[movePointIndex] - positionVec).V3Len();
+		if (movePointDistance >= nearestMovePointDistance)
+		{
+			notApproachingCount++;
+			if (notApproachingCount > 10)
+			{
+				movePointIndex++;
+				movePointIndex = movePointIndex % movePoint.size();
+				nearestMovePointDistance = (movePoint[movePointIndex] - positionVec).V3Len();
+				notApproachingCount = 0;
+			}
+		}
+		else
+		{
+			nearestMovePointDistance = movePointDistance;
+		}
 	}
 
 	allEnemyPtr.push_back(this);
@@ -75,6 +91,7 @@ void PencilEnemy::UniqueUpdate()
 			itr.Update(this);
 			if (num == 0)
 			{
+				itr.isTrigger = true;
 				itr.radius_ = 3;
 			}
 			num++;
@@ -89,10 +106,6 @@ void PencilEnemy::UniqueUpdate()
 		itr.Update(&attackObj);
 	}
 	AttackHit();
-	handwriting.remove_if([](auto& itr) {return itr->GetLifeTimeOver(); });
-
-
-
 }
 
 void PencilEnemy::Draw()
@@ -120,7 +133,7 @@ void PencilEnemy::UpdateMatrix(MCB::ICamera* camera)
 
 void PencilEnemy::AttackCheck()
 {
-	if (playerPtr == nullptr)return;
+	if (Player::GetPlayer() == nullptr)return;
 	int num = 0;
 	for (auto& itr : colliders)
 	{
@@ -128,13 +141,13 @@ void PencilEnemy::AttackCheck()
 		{
 			break;
 		}
-		for (auto& itr2 : playerPtr->colliders)
+		for (auto& itr2 : Player::GetPlayer()->colliders)
 		{
 			if (itr.IsHit(itr2))
 			{
 				AttackStart();
 				Vector3D vec;
-				vec.V3Get({ position.x,position.y ,position.z }, { playerPtr->position.x,playerPtr->position.y,playerPtr->position.z });
+				vec.V3Get({ position.x,position.y ,position.z }, { Player::GetPlayer()->position.x,Player::GetPlayer()->position.y,Player::GetPlayer()->position.z });
 				vec.V3Norm();
 				attackObj.position = { position.x + vec.vec.x * 2,position.y + vec.vec.y * 2,position.z + vec.vec.z * 2 };
 			}
@@ -148,11 +161,11 @@ void PencilEnemy::AttackHit()
 	if (!attack)return;
 	for (auto& itr : attackObj.colliders)
 	{
-		for (auto& itr2 : playerPtr->colliders)
+		for (auto& itr2 : Player::GetPlayer()->colliders)
 		{
 			if (itr.IsHit(itr2))
 			{
-				playerPtr->SetHp(playerPtr->GetHp() - damage);
+				Player::GetPlayer()->Damage(damage);
 			}
 		}
 	}

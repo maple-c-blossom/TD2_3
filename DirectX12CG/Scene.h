@@ -110,6 +110,4 @@ namespace MCB
 		void CheckAllColision()override;
 		void ImGuiUpdate()override;
 	};
-
 }
-
