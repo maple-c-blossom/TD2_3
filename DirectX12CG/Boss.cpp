@@ -25,6 +25,7 @@ void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* 
 	this->enemyModel = enemyModel;
 	this->handwrModel = handwrModel;
 	this->playerPtr = playerPtr;
+	this->scale = { 4,4,4 };
 	hp = 10;
 	ADXCollider tempCol(this);
 	colliders.push_back(tempCol);
