@@ -144,6 +144,14 @@ Vector3D& MCB::Vector3D::operator*=(const float& k)
 	return *this;
 }
 
+Vector3D& MCB::Vector3D::operator/=(const float& k)
+{
+	this->vec.x /= k;
+	this->vec.y /= k;
+	this->vec.z /= k;
+	return *this;
+}
+
 Vector3D& MCB::Vector3D::operator=(const Float3 a)
 {
 	this->vec.x = a.x;
@@ -205,9 +213,8 @@ Vector3D MCB::operator*(Vector3D& vecA, float k)
 Vector3D MCB::operator/(Vector3D& vecA, float k)
 {
 	Vector3D temp;
-	temp.vec.x = vecA.vec.x / k;
-	temp.vec.y = vecA.vec.y / k;
-	temp.vec.z = vecA.vec.z / k;
+	temp = vecA;
+	temp /= k;
 	return temp;
 }
 

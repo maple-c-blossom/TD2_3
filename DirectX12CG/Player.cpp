@@ -38,27 +38,38 @@ void Player::Update()
 	velocity = position - prevPos;
 	prevPos = position;
 
-	velocity *= 0.8;
-	//velocity.vec.y /= 0.8;
-	//velocity.vec.y -= 0.015;
+	velocity /= 0.8f;
+
+	if (rotateMode)
+	{
+		weight = (1 + kneadedErasers.size()) * 10;
+	}
+	else
+	{
+		weight = 10;
+	}
 
 	if (moving)
 	{
+		moveSpeedPercentage += 1 / weight;
+
+		Vector3D walkVec = { 0,0,0 };
+
 		if (MoveUp)
 		{
-			velocity.vec.z += 0.05;
+			walkVec.vec.z += 1;
 		}
 		if (MoveDown)
 		{
-			velocity.vec.z -= 0.05;
+			walkVec.vec.z -= 1;
 		}
 		if (MoveRight)
 		{
-			velocity.vec.x += 0.05;
+			walkVec.vec.x += 1;
 		}
 		if (MoveLeft)
 		{
-			velocity.vec.x -= 0.05;
+			walkVec.vec.x -= 1;
 		}
 
 		if (!rotateTapped)
@@ -76,14 +87,15 @@ void Player::Update()
 			}
 		}
 
+		float prevDirectionAngle = directionAngle;
+		directionAngle += ADXUtility::AngleDiff(directionAngle, atan2(walkVec.vec.x, walkVec.vec.z)) / (1 + (weight) / 5);
+
 		if (!makingKneadedEraser)
 		{
 			if (!rotateMode)
 			{
 				shard += velocity.V3Len() * 0.3;
 			}
-			float prevDirectionAngle = directionAngle;
-			directionAngle = atan2(velocity.vec.x, velocity.vec.z);
 			rotateModeCount += ADXUtility::AngleDiff(prevDirectionAngle, directionAngle);
 			if(rotateCanceled)
 			{ 
@@ -97,6 +109,8 @@ void Player::Update()
 	}
 	else
 	{
+		moveSpeedPercentage -= 1 / weight;
+
 		rotateTapped = false;
 		rotateCanceled = false;
 		rotateModeCount *= 0.9;
@@ -105,6 +119,10 @@ void Player::Update()
 			rotateMode = false;
 		}
 	}
+
+	moveSpeedPercentage = max(0,min(moveSpeedPercentage,1));
+
+	velocity = Vector3D{sin(directionAngle),0,cos(directionAngle)} * moveSpeedPercentage * maxMoveSpeed;
 
 	position.x += velocity.ConvertXMFloat3().x;
 	position.y += velocity.ConvertXMFloat3().y;
@@ -120,7 +138,7 @@ void Player::Update()
 		shard -= abs(rotateModeCount * 0.001);
 		rotation.y += rotateModeCount * 0.03;
 	}
-	else
+	else if(!makingKneadedEraser)
 	{
 		rotation.y += ADXUtility::AngleDiff(rotation.y, directionAngle) / (kneadedErasers.size() / 10.0 + 1);
 	}
@@ -150,6 +168,8 @@ void Player::Update()
 			itr.colliders.back().isTrigger = true;
 		}
 	}
+
+	velocity.vec = { 0,0,0 };
 
 	for (auto& itr : kneadedErasers)
 	{

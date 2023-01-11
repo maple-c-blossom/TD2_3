@@ -381,6 +381,12 @@
     <ClCompile Include="ADXUtility.cpp">
       <Filter>ソース ファイル\Engine\HanaBehaviour</Filter>
     </ClCompile>
+    <ClCompile Include="mechanicalPencil.cpp">
+      <Filter>ソース ファイル\Game\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="PencilBullet.cpp">
+      <Filter>ソース ファイル\Game\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\ParticleShader\ParticleGeometryShader.hlsl">
@@ -612,6 +618,12 @@
     </ClInclude>
     <ClInclude Include="ADXUtility.h">
       <Filter>ヘッダー ファイル\Engine\HanaBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="mechanicalPencil.h">
+      <Filter>ヘッダー ファイル\Game\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="PencilBullet.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
