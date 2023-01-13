@@ -154,6 +154,8 @@ void Player::Update()
 			kneadedErasers.push_back(KneadedEraser{});
 			kneadedErasers.back().parent = this;
 			kneadedErasers.back().model = model;
+			kneadedErasers.back().colliders.push_back(ADXCollider(&kneadedErasers.back()));
+			kneadedErasers.back().colliders.back().isTrigger = true;
 		}
 
 		for (auto& itr : kneadedErasers)
@@ -164,8 +166,7 @@ void Player::Update()
 			itr.position.y -= rotatedVel.ConvertXMFloat3().y;
 			itr.position.z -= rotatedVel.ConvertXMFloat3().z;
 
-			itr.colliders.push_back(ADXCollider(&itr));
-			itr.colliders.back().isTrigger = true;
+		
 		}
 	}
 
