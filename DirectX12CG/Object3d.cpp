@@ -18,7 +18,7 @@ MCB::Object3d::Object3d()
 
 MCB::Object3d::~Object3d()
 {
-    constBuffTranceform->Unmap(0, nullptr);
+    //constBuffTranceform->Unmap(0, nullptr);
 }
 
 void Object3d::Init()

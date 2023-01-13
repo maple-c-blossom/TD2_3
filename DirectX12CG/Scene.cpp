@@ -183,7 +183,10 @@ void MCB::Scene::Draw()
     //3Dオブジェクト
     Skydome.Draw();
     ground.Draw();
-    substie.Draw();
+    if (substie.GetVisible())
+    {
+        substie.Draw();
+    }
     for (auto& itr : enemys)
     {
         itr->Draw();

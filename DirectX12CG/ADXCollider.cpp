@@ -20,8 +20,10 @@ std::vector<ADXCollider*> ADXCollider::cols = {};
 ADXCollider::ADXCollider(Object3d* obj)
 {
 	gameObject = obj;
-	preTranslation = gameObject->position;
-	preMatrix = MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld);
+	preTranslation.x = gameObject->position.x;
+	preTranslation.y = gameObject->position.y;
+	preTranslation.z = gameObject->position.z;
+	preMatrix = ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld.matWorld);
 }
 
 void ADXCollider::Update(Object3d* obj)
@@ -31,45 +33,45 @@ void ADXCollider::Update(Object3d* obj)
 }
 
 //空間上の点をコライダーの中に収めた時の座標
-Vector3D ADXCollider::ClosestPoint(Vector3D pos)
+ADXVector3 ADXCollider::ClosestPoint(ADXVector3 pos)
 {
-	Vector3D ret = MCBMatrix::transform(pos, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld).Inverse());
-	Vector3D closPos = ret;
+	ADXVector3 ret = ADXMatrix4::transform(pos, ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld.matWorld).Inverse());
+	ADXVector3 closPos = ret;
 
 	if (colType_ == box)
 	{
-		if (closPos.vec.x > pos_.vec.x + scale_.vec.x)
+		if (closPos.x > pos_.x + scale_.x)
 		{
-			closPos.vec.x = pos_.vec.x + scale_.vec.x;
+			closPos.x = pos_.x + scale_.x;
 		}
-		else if (closPos.vec.x < pos_.vec.x - scale_.vec.x)
+		else if (closPos.x < pos_.x - scale_.x)
 		{
-			closPos.vec.x = pos_.vec.x - scale_.vec.x;
-		}
-
-		if (closPos.vec.y > pos_.vec.y + scale_.vec.y)
-		{
-			closPos.vec.y = pos_.vec.y + scale_.vec.y;
-		}
-		else if (closPos.vec.y < pos_.vec.y - scale_.vec.y)
-		{
-			closPos.vec.y = pos_.vec.y - scale_.vec.y;
+			closPos.x = pos_.x - scale_.x;
 		}
 
-		if (closPos.vec.z > pos_.vec.z + scale_.vec.z)
+		if (closPos.y > pos_.y + scale_.y)
 		{
-			closPos.vec.z = pos_.vec.z + scale_.vec.z;
+			closPos.y = pos_.y + scale_.y;
 		}
-		else if (closPos.vec.z < pos_.vec.z - scale_.vec.z)
+		else if (closPos.y < pos_.y - scale_.y)
 		{
-			closPos.vec.z = pos_.vec.z - scale_.vec.z;
+			closPos.y = pos_.y - scale_.y;
+		}
+
+		if (closPos.z > pos_.z + scale_.z)
+		{
+			closPos.z = pos_.z + scale_.z;
+		}
+		else if (closPos.z < pos_.z - scale_.z)
+		{
+			closPos.z = pos_.z - scale_.z;
 		}
 	}
 	else if (colType_ == sphere)
 	{
-		if ((closPos - pos_).V3Len() > radius_)
+		if ((closPos - pos_).length() > radius_)
 		{
-			closPos = pos_ + Vector3D::normal(closPos - pos_) * radius_;
+			closPos = pos_ + ADXVector3::normalized(closPos - pos_) * radius_;
 		}
 	}
 	else
@@ -77,10 +79,10 @@ Vector3D ADXCollider::ClosestPoint(Vector3D pos)
 		closPos = pos_;
 	}
 
-	if ((closPos - ret).V3Len() > 0)
+	if ((closPos - ret).length() > 0)
 	{
 		ret = closPos;
-		ret = MCBMatrix::transform(ret, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld));
+		ret = ADXMatrix4::transform(ret, ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld.matWorld));
 	}
 	else
 	{
@@ -91,146 +93,146 @@ Vector3D ADXCollider::ClosestPoint(Vector3D pos)
 }
 
 //空間上の点をコライダーのフチに寄せた時の相対座標
-Vector3D ADXCollider::EdgeLocalPoint(Vector3D pos)
+ADXVector3 ADXCollider::EdgeLocalPoint(ADXVector3 pos)
 {
 	return EdgeLocalPoint(pos, pos);
 }
 
 //空間上の点をコライダーのフチに寄せた時の相対座標
-Vector3D ADXCollider::EdgeLocalPoint(Vector3D pos, Vector3D prePos)
+ADXVector3 ADXCollider::EdgeLocalPoint(ADXVector3 pos, ADXVector3 prePos)
 {
-	Vector3D ret = MCBMatrix::transform(pos, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld).Inverse());
+	ADXVector3 ret = ADXMatrix4::transform(pos, ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld.matWorld).Inverse());
 	ret -= pos_;
 
-	Vector3D prevPos = MCBMatrix::transform(prePos, preMatrix.Inverse());
+	ADXVector3 prevPos = ADXMatrix4::transform(prePos, preMatrix.Inverse());
 	prevPos -= pos_;
 
 	if (colType_ == box)
 	{
-		ret.vec.x /= scale_.vec.x;
-		ret.vec.y /= scale_.vec.y;
-		ret.vec.z /= scale_.vec.z;
+		ret.x /= scale_.x;
+		ret.y /= scale_.y;
+		ret.z /= scale_.z;
 
-		prevPos.vec.x /= scale_.vec.x;
-		prevPos.vec.y /= scale_.vec.y;
-		prevPos.vec.z /= scale_.vec.z;
+		prevPos.x /= scale_.x;
+		prevPos.y /= scale_.y;
+		prevPos.z /= scale_.z;
 
-		Vector3D absLocalPos = prevPos;
-		if (absLocalPos.vec.x < 0)
+		ADXVector3 absLocalPos = prevPos;
+		if (absLocalPos.x < 0)
 		{
-			absLocalPos.vec.x = -absLocalPos.vec.x;
+			absLocalPos.x = -absLocalPos.x;
 		}
-		if (absLocalPos.vec.y < 0)
+		if (absLocalPos.y < 0)
 		{
-			absLocalPos.vec.y = -absLocalPos.vec.y;
+			absLocalPos.y = -absLocalPos.y;
 		}
-		if (absLocalPos.vec.z < 0)
+		if (absLocalPos.z < 0)
 		{
-			absLocalPos.vec.z = -absLocalPos.vec.z;
+			absLocalPos.z = -absLocalPos.z;
 		}
 
-		if (absLocalPos.vec.z > absLocalPos.vec.x && absLocalPos.vec.z > absLocalPos.vec.y)
+		if (absLocalPos.z > absLocalPos.x && absLocalPos.z > absLocalPos.y)
 		{
-			if (ret.vec.z > 0)
+			if (ret.z > 0)
 			{
-				ret.vec.z = 1;
+				ret.z = 1;
 			}
 			else
 			{
-				ret.vec.z = -1;
+				ret.z = -1;
 			}
 		}
 		else
 		{
-			if (absLocalPos.vec.x > absLocalPos.vec.y)
+			if (absLocalPos.x > absLocalPos.y)
 			{
-				if (ret.vec.x > 0)
+				if (ret.x > 0)
 				{
-					ret.vec.x = 1;
+					ret.x = 1;
 				}
 				else
 				{
-					ret.vec.x = -1;
+					ret.x = -1;
 				}
 			}
 			else
 			{
-				if (ret.vec.y > 0)
+				if (ret.y > 0)
 				{
-					ret.vec.y = 1;
+					ret.y = 1;
 				}
 				else
 				{
-					ret.vec.y = -1;
+					ret.y = -1;
 				}
 			}
 		}
 
-		ret.vec.x *= scale_.vec.x;
-		ret.vec.y *= scale_.vec.y;
-		ret.vec.z *= scale_.vec.z;
+		ret.x *= scale_.x;
+		ret.y *= scale_.y;
+		ret.z *= scale_.z;
 	}
 	else if (colType_ == sphere)
 	{
-		ret = Vector3D::normal(ret) * radius_;
+		ret = ADXVector3::normalized(ret) * radius_;
 	}
 	else
 	{
-		ret.vec = { 0,0,0 };
+		ret = { 0,0,0 };
 	}
 
 	ret += pos_;
-	ret = MCBMatrix::transform(ClosestPoint(MCBMatrix::transform(ret, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld))), MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld).Inverse());
+	ret = ADXMatrix4::transform(ClosestPoint(ADXMatrix4::transform(ret, ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld.matWorld))), ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld.matWorld).Inverse());
 
 	return ret;
 }
 
 //空間上の点をコライダーのフチに寄せた時の座標
-Vector3D ADXCollider::EdgePoint(Vector3D pos)
+ADXVector3 ADXCollider::EdgePoint(ADXVector3 pos)
 {
 	return EdgePoint(pos, pos);
 }
 
 //空間上の点をコライダーのフチに寄せた時の座標
-Vector3D ADXCollider::EdgePoint(Vector3D pos, Vector3D prePos)
+ADXVector3 ADXCollider::EdgePoint(ADXVector3 pos, ADXVector3 prePos)
 {
-	Vector3D ret = EdgeLocalPoint(pos, prePos);
-	ret = MCBMatrix::transform(ret, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld));
+	ADXVector3 ret = EdgeLocalPoint(pos, prePos);
+	ret = ADXMatrix4::transform(ret, ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld.matWorld));
 	return ret;
 }
 
 //相手のコライダーとの衝突点の座標
-Vector3D ADXCollider::CollidePoint(Vector3D pos, Vector3D targetColSenter, Vector3D move)
+ADXVector3 ADXCollider::CollidePoint(ADXVector3 pos, ADXVector3 targetColSenter, ADXVector3 move)
 {
-	Vector3D ret = EdgeLocalPoint(pos, pos - move);
-	Vector3D targetLocalSenter = MCBMatrix::transform(targetColSenter, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld).Inverse()) - pos_;
+	ADXVector3 ret = EdgeLocalPoint(pos, pos - move);
+	ADXVector3 targetLocalSenter = ADXMatrix4::transform(targetColSenter, ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld.matWorld).Inverse()) - pos_;
 
-	if (targetLocalSenter.GetV3Dot(ret) < 0)
+	if (targetLocalSenter.dot(ret) < 0)
 	{
 		ret = -ret;
 	}
 
-	ret = MCBMatrix::transform(ret, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld));
+	ret = ADXMatrix4::transform(ret, ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld.matWorld));
 	return ret;
 }
 
 //押し返す方向と強さのベクトル
-Vector3D ADXCollider::CollideVector(ADXCollider col)
+ADXVector3 ADXCollider::CollideVector(ADXCollider col)
 {
-	Vector3D ret;
+	ADXVector3 ret;
 
-	Vector3D myTranslation = MCBMatrix::transform(pos_, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld));
-	Vector3D myMove = myTranslation - MCBMatrix::transform(pos_, preMatrix);
+	ADXVector3 myTranslation = ADXMatrix4::transform(pos_, ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld.matWorld));
+	ADXVector3 myMove = myTranslation - ADXMatrix4::transform(pos_, preMatrix);
 
-	Vector3D targetTranslation = MCBMatrix::transform(col.pos_, MCBMatrix::MCBMatrixConvertXMMatrix(col.gameObject->matWorld.matWorld));
-	Vector3D targetMove = targetTranslation - MCBMatrix::transform(col.pos_, col.preMatrix);
+	ADXVector3 targetTranslation = ADXMatrix4::transform(col.pos_, ADXMatrix4::ConvertToADXMatrix(col.gameObject->matWorld.matWorld));
+	ADXVector3 targetMove = targetTranslation - ADXMatrix4::transform(col.pos_, col.preMatrix);
 
-	Vector3D myPushBack1 = col.CollidePoint(myTranslation, myTranslation, myMove) - CollidePoint(col.CollidePoint(myTranslation, myTranslation, myMove), targetTranslation, targetMove);
-	Vector3D myPushBack2 = col.CollidePoint(CollidePoint(targetTranslation, targetTranslation, targetMove), myTranslation, myMove) - CollidePoint(targetTranslation, targetTranslation, targetMove);
+	ADXVector3 myPushBack1 = col.CollidePoint(myTranslation, myTranslation, myMove) - CollidePoint(col.CollidePoint(myTranslation, myTranslation, myMove), targetTranslation, targetMove);
+	ADXVector3 myPushBack2 = col.CollidePoint(CollidePoint(targetTranslation, targetTranslation, targetMove), myTranslation, myMove) - CollidePoint(targetTranslation, targetTranslation, targetMove);
 
-	Vector3D pushBackDiff = myPushBack1 - myPushBack2;
+	ADXVector3 pushBackDiff = myPushBack1 - myPushBack2;
 
-	if ((targetTranslation - myTranslation).GetV3Dot(pushBackDiff) > 0)
+	if ((targetTranslation - myTranslation).dot(pushBackDiff) > 0)
 	{
 		ret = myPushBack2;
 	}
@@ -239,7 +241,7 @@ Vector3D ADXCollider::CollideVector(ADXCollider col)
 		ret = myPushBack1;
 	}
 
-	if (ret.GetV3Dot(targetTranslation - myTranslation) > 0)
+	if (ret.dot(targetTranslation - myTranslation) > 0)
 	{
 		ret = -ret;
 	}
@@ -250,18 +252,18 @@ Vector3D ADXCollider::CollideVector(ADXCollider col)
 //相手のコライダーと重なっているか
 bool ADXCollider::IsHit(ADXCollider col)
 {
-	Vector3D closestVec1 = col.ClosestPoint(ClosestPoint(MCBMatrix::transform(col.pos_, MCBMatrix::MCBMatrixConvertXMMatrix(col.gameObject->matWorld.matWorld))));
-	Vector3D closestVec2 = ClosestPoint(col.ClosestPoint(ClosestPoint(MCBMatrix::transform(col.pos_, MCBMatrix::MCBMatrixConvertXMMatrix(col.gameObject->matWorld.matWorld)))));
-	float colPointDiff = (closestVec1 - closestVec2).V3Len();
-	if ((closestVec1 - closestVec2).V3Len() <= 0)
+	ADXVector3 closestVec1 = col.ClosestPoint(ClosestPoint(ADXMatrix4::transform(col.pos_, ADXMatrix4::ConvertToADXMatrix(col.gameObject->matWorld.matWorld))));
+	ADXVector3 closestVec2 = ClosestPoint(col.ClosestPoint(ClosestPoint(ADXMatrix4::transform(col.pos_, ADXMatrix4::ConvertToADXMatrix(col.gameObject->matWorld.matWorld)))));
+	float colPointDiff = (closestVec1 - closestVec2).length();
+	if ((closestVec1 - closestVec2).length() <= 0)
 	{
 		return true;
 	}
 
-	closestVec1 = ClosestPoint(col.ClosestPoint(MCBMatrix::transform(pos_, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld))));
-	closestVec2 = col.ClosestPoint(ClosestPoint(col.ClosestPoint(MCBMatrix::transform(pos_, MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld)))));
-	colPointDiff = (closestVec1 - closestVec2).V3Len();
-	if ((closestVec1 - closestVec2).V3Len() <= 0)
+	closestVec1 = ClosestPoint(col.ClosestPoint(ADXMatrix4::transform(pos_, ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld.matWorld))));
+	closestVec2 = col.ClosestPoint(ClosestPoint(col.ClosestPoint(ADXMatrix4::transform(pos_, ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld.matWorld)))));
+	colPointDiff = (closestVec1 - closestVec2).length();
+	if ((closestVec1 - closestVec2).length() <= 0)
 	{
 		return true;
 	}
@@ -276,8 +278,8 @@ void ADXCollider::Collide(ADXCollider* col)
 	{
 		if (!isTrigger && !col->isTrigger)
 		{
-			Vector3D myPushBack = CollideVector(*col);
-			Vector3D targetPushBack = col->CollideVector(*this);
+			ADXVector3 myPushBack = CollideVector(*col);
+			ADXVector3 targetPushBack = col->CollideVector(*this);
 
 			if (pushable_ && col->pushable_)
 			{
@@ -305,13 +307,15 @@ void ADXCollider::SendPushBack()
 {
 	if(gameObject != nullptr)
 	{
-		gameObject->position.x += pushBackVector.ConvertXMFloat3().x;
-		gameObject->position.y += pushBackVector.ConvertXMFloat3().y;
-		gameObject->position.z += pushBackVector.ConvertXMFloat3().z;
+		gameObject->position.x += pushBackVector.x;
+		gameObject->position.y += pushBackVector.y;
+		gameObject->position.z += pushBackVector.z;
 		gameObject->Update(*IScene::GetCamera()->GetView(), *IScene::GetCamera()->GetProjection());
-		preTranslation = gameObject->position;
-		preMatrix = MCBMatrix::MCBMatrixConvertXMMatrix(gameObject->matWorld.matWorld);
-		pushBackVector.vec = { 0,0,0 };
+		preTranslation.x = gameObject->position.x;
+		preTranslation.y = gameObject->position.y;
+		preTranslation.z = gameObject->position.z;
+		preMatrix = ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld.matWorld);
+		pushBackVector = { 0,0,0 };
 	}
 }
 
@@ -320,7 +324,7 @@ void ADXCollider::SendPushBack()
 void ADXCollider::CollidersUpdate()
 {
 	//現在の座標を保存しておく
-	std::vector<Vector3D> objsTranslation = {};
+	std::vector<ADXVector3> objsTranslation = {};
 	for (auto& itr : Object3d::GetAllObjs())
 	{
 		objsTranslation.push_back({ itr->position.x,itr->position.y,itr->position.z });
@@ -334,18 +338,18 @@ void ADXCollider::CollidersUpdate()
 		cols[i]->collideList.clear();
 
 
-		Vector3D move;
-		move.vec.x = cols[i]->gameObject->position.x - cols[i]->preTranslation.vec.x;
-		move.vec.y = cols[i]->gameObject->position.y - cols[i]->preTranslation.vec.y;
-		move.vec.z = cols[i]->gameObject->position.z - cols[i]->preTranslation.vec.z;
+		ADXVector3 move;
+		move.x = cols[i]->gameObject->position.x - cols[i]->preTranslation.x;
+		move.y = cols[i]->gameObject->position.y - cols[i]->preTranslation.y;
+		move.z = cols[i]->gameObject->position.z - cols[i]->preTranslation.z;
 
-		Vector3D scaleX1 = { cols[i]->scale_.vec.x,0,0 };
-		Vector3D scaleY1 = { 0,cols[i]->scale_.vec.y,0 };
-		Vector3D scaleZ1 = { 0,0,cols[i]->scale_.vec.z };
+		ADXVector3 scaleX1 = { cols[i]->scale_.x,0,0 };
+		ADXVector3 scaleY1 = { 0,cols[i]->scale_.y,0 };
+		ADXVector3 scaleZ1 = { 0,0,cols[i]->scale_.z };
 
-		float worldScaleX1 = MCBMatrix::transform(scaleX1, MCBMatrix::MCBMatrixConvertXMMatrix(cols[i]->gameObject->matWorld.matScale * cols[i]->gameObject->matWorld.matRot)).V3Len();
-		float worldScaleY1 = MCBMatrix::transform(scaleY1, MCBMatrix::MCBMatrixConvertXMMatrix(cols[i]->gameObject->matWorld.matScale * cols[i]->gameObject->matWorld.matRot)).V3Len();
-		float worldScaleZ1 = MCBMatrix::transform(scaleZ1, MCBMatrix::MCBMatrixConvertXMMatrix(cols[i]->gameObject->matWorld.matScale * cols[i]->gameObject->matWorld.matRot)).V3Len();
+		float worldScaleX1 = ADXMatrix4::transform(scaleX1, ADXMatrix4::ConvertToADXMatrix(cols[i]->gameObject->matWorld.matScale * cols[i]->gameObject->matWorld.matRot)).length();
+		float worldScaleY1 = ADXMatrix4::transform(scaleY1, ADXMatrix4::ConvertToADXMatrix(cols[i]->gameObject->matWorld.matScale * cols[i]->gameObject->matWorld.matRot)).length();
+		float worldScaleZ1 = ADXMatrix4::transform(scaleZ1, ADXMatrix4::ConvertToADXMatrix(cols[i]->gameObject->matWorld.matScale * cols[i]->gameObject->matWorld.matRot)).length();
 
 		float minimumWorldRadius1 = 1;
 
@@ -362,7 +366,7 @@ void ADXCollider::CollidersUpdate()
 			minimumWorldRadius1 = worldScaleZ1;
 		}
 
-		float moveDivnum1 = move.V3Len() / (minimumWorldRadius1 * 0.95);
+		float moveDivnum1 = move.length() / (minimumWorldRadius1 * 0.95);
 		if (moveDivnum1 >= translateDivNumF)
 		{
 			translateDivNumF = moveDivnum1;
@@ -373,11 +377,13 @@ void ADXCollider::CollidersUpdate()
 	//全てのオブジェクトを移動する前の座標へ移動させる
 	for (int i = 0; i < cols.size(); i++)
 	{
-		cols[i]->gameObject->position = cols[i]->preTranslation.ConvertXMFloat3();
+		cols[i]->gameObject->position.x = cols[i]->preTranslation.x;
+		cols[i]->gameObject->position.y = cols[i]->preTranslation.y;
+		cols[i]->gameObject->position.z = cols[i]->preTranslation.z;
 	}
 
 	//行列更新のついでに移動する前の座標を保存
-	std::vector<Vector3D> objsPreTranslation = {};
+	std::vector<ADXVector3> objsPreTranslation = {};
 	for (auto& itr:Object3d::GetAllObjs())
 	{
 		objsPreTranslation.push_back({ itr->position.x,itr->position.y,itr->position.z });
@@ -391,11 +397,11 @@ void ADXCollider::CollidersUpdate()
 		int j = 0;
 		for (auto& itr : Object3d::GetAllObjs())
 		{
-			Vector3D move = objsTranslation[j] - objsPreTranslation[j];
+			ADXVector3 move = objsTranslation[j] - objsPreTranslation[j];
 
-			itr->position.x += move.vec.x / translateDivNumF;
-			itr->position.y += move.vec.y / translateDivNumF;
-			itr->position.z += move.vec.z / translateDivNumF;
+			itr->position.x += move.x / translateDivNumF;
+			itr->position.y += move.y / translateDivNumF;
+			itr->position.z += move.z / translateDivNumF;
 			itr->Update(*IScene::GetCamera()->GetView(), *IScene::GetCamera()->GetProjection());
 			j++;
 		}
@@ -410,14 +416,6 @@ void ADXCollider::CollidersUpdate()
 				cols[k]->SendPushBack();
 			}
 		}
-
-		//押し戻し
-		/*
-		for (int j = 0; j < cols.size(); j++)
-		{
-			cols[j]->SendPushBack();
-		}
-		*/
 	}
 
 	cols.clear();

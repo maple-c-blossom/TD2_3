@@ -185,6 +185,8 @@ void Player::Update()
 
 	invincible--;
 	invincible = max(invincible, 0);
+
+	visible = invincible % 8 < 4;
 }
 
 void Player::UpdateMatrix(MCB::ICamera* camera)

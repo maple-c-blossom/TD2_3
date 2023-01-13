@@ -19,6 +19,7 @@ private:
 	std::vector<int> keyConfig{ DIK_W,DIK_S,DIK_D,DIK_A,DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE };
 	std::list<KneadedEraser> kneadedErasers{};
 	int invincible = 0;
+	bool visible = true;
 	float weight = 1;
 	float shard = 0;
 	float directionAngle = 0;
@@ -34,6 +35,7 @@ private:
 
 public:
 	int GetHp() { return hp; }
+	bool GetVisible() { return visible; };
 	void Damage(int damage);
 	bool IsInvincible();
 	std::list<KneadedEraser> GetKneadedErasers();

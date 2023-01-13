@@ -1,6 +1,6 @@
 #pragma once
-#include "Vector3D.h"
-#include "MCBMatrix.h"
+#include "ADXVector3.h"
+#include "ADXMatrix4.h"
 #include <vector>
 
 using namespace MCB;
@@ -25,8 +25,8 @@ public:
     static void CollidersUpdate();
 
 protected:
-    Vector3D EdgeLocalPoint(Vector3D pos);
-    Vector3D EdgeLocalPoint(Vector3D pos, Vector3D prePos);
+    ADXVector3 EdgeLocalPoint(ADXVector3 pos);
+    ADXVector3 EdgeLocalPoint(ADXVector3 pos, ADXVector3 prePos);
 
 public:
     bool enabled = true;
@@ -35,24 +35,24 @@ public:
     colType colType_ = sphere;
     Object3d* gameObject = nullptr;
     float radius_ = 1;
-    Vector3D pos_ = { 0,0,0 };
-    Vector3D scale_ = { 1,1,1 };
+    ADXVector3 pos_ = { 0,0,0 };
+    ADXVector3 scale_ = { 1,1,1 };
     std::vector<ADXCollider*> collideList{};
-    Vector3D pushBackVector = { 0,0,0 };
+    ADXVector3 pushBackVector = { 0,0,0 };
 
     ADXCollider(Object3d* obj);
     void Update(Object3d* obj);
-    Vector3D ClosestPoint(Vector3D pos);
-    Vector3D EdgePoint(Vector3D pos);
-    Vector3D EdgePoint(Vector3D pos, Vector3D prePos);
-    Vector3D CollidePoint(Vector3D pos, Vector3D colSenter, Vector3D move);
-    Vector3D CollideVector(ADXCollider col);
+    ADXVector3 ClosestPoint(ADXVector3 pos);
+    ADXVector3 EdgePoint(ADXVector3 pos);
+    ADXVector3 EdgePoint(ADXVector3 pos, ADXVector3 prePos);
+    ADXVector3 CollidePoint(ADXVector3 pos, ADXVector3 colSenter, ADXVector3 move);
+    ADXVector3 CollideVector(ADXCollider col);
     
     bool IsHit(ADXCollider col);
     void SendPushBack();
     void Collide(ADXCollider* col);
 
 private:
-    Vector3D preTranslation;
-    MCBMatrix preMatrix;
+    ADXVector3 preTranslation;
+    ADXMatrix4 preMatrix;
 };
