@@ -22,6 +22,5 @@ public:
 	void UpdateMatrix(MCB::ICamera* camera) override;
 	void AttackCheck();
 	void AttackHit();
-	void Turn();//ˆÚ“®•ûŒü”½“]—p
 };
 
