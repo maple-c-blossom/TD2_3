@@ -107,8 +107,8 @@ void PencilEnemy::UniqueUpdate()
 	if (capture == nullptr)
 	{
 		AttackCheck();
-		AttackTimerUpdate();
 	}
+		AttackTimerUpdate();
 	for (auto& itr : attackObj.colliders)
 	{
 		itr.Update(&attackObj);
