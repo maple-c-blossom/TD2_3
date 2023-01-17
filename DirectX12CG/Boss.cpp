@@ -65,14 +65,24 @@ void Boss::Update()
 	{
 		itr.Update(this);
 	}
-
+	if (imotalFlag)
+	{
+		imotalTimer.Update();
+		if (imotalTimer.IsEnd())
+		{
+			imotalFlag = false;
+		}
+	}
 	allObjPtr.push_back(this);
 	Damage(1);
 }
 
 void Boss::Draw()
 {
-	Object3d::Draw();
+	if (!imotalFlag || imotalTimer.NowTime() % 3 == 0)
+	{
+		Object3d::Draw();
+	}
 	for (auto& itr : enemys)
 	{
 		itr->Draw();
@@ -97,9 +107,16 @@ void Boss::Damage(int damage)
 		{
 			for (auto& itr3 : itr2.colliders)
 			{
-				if (itr.IsHit(itr3))
+				if (itr.IsHit(itr3) && !imotalFlag)
 				{
-					hp -= damage;
+					hp -= damage * (Player::GetCaptureList()->size() + 1);
+					for (auto& itr : *Player::GetCaptureList())//すでに練りけしについている敵のデリートフラグをOnに
+					{
+						itr->deleteFlag = true;
+					}
+					Player::GetCaptureList()->clear();//ねり消しの接着リストをリセット
+					imotalTimer.Set(60);
+					imotalFlag = true;
 				}
 			}
 		}

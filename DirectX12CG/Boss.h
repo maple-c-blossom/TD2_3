@@ -16,8 +16,10 @@ private:
 	bool attack = false;
 	bool beforeAttack = false;
 	bool prevBeforeAttack;
+	bool imotalFlag = false;
 	Timer beforeAttackTimer;
 	Timer AttackTimer;
+	Timer imotalTimer;//–³“GŽžŠÔ
 	Model* enemyModel;
 	Model* handwrModel;
 	Player* playerPtr;

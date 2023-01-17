@@ -35,18 +35,21 @@ void mechanicalPencil::Initialize(MCB::Vector3D velocity, MCB::Float3 position, 
 void mechanicalPencil::UniqueUpdate()
 {
 	velocity.V3Norm();
-	if (!attack && !beforeAttack)
+	if (capture == nullptr)
 	{
-		position.x += velocity.vec.x * speed;
-		position.y += velocity.vec.y * speed;
-		position.z += velocity.vec.z * speed;
-		Movement += speed;
-	}
-	if (Movement > WRITING_RADIUS)
-	{
-		unique_ptr<Handwriting> temp = make_unique<Handwriting>();
-		temp->Initialize({ position.x,position.y,position.z }, handwritingModel);
-		handwriting.push_back(move(temp));
+		if (!attack && !beforeAttack)
+		{
+			position.x += velocity.vec.x * speed;
+			position.y += velocity.vec.y * speed;
+			position.z += velocity.vec.z * speed;
+			Movement += speed;
+		}
+		if (Movement > WRITING_RADIUS)
+		{
+			unique_ptr<Handwriting> temp = make_unique<Handwriting>();
+			temp->Initialize({ position.x,position.y,position.z }, handwritingModel);
+			handwriting.push_back(move(temp));
+		}
 	}
 	for (auto& itr : handwriting)
 	{

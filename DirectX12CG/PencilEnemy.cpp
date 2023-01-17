@@ -36,22 +36,26 @@ void PencilEnemy::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::
 void PencilEnemy::UniqueUpdate()
 {
 	velocity.V3Norm();
-	if (!attack && !beforeAttack)
+	if (capture == nullptr)
 	{
-		position.x += velocity.vec.x * speed;
-		position.y += velocity.vec.y * speed;
-		position.z += velocity.vec.z * speed;
-		Movement += speed;
+		if (!attack && !beforeAttack)
+		{
+			position.x += velocity.vec.x * speed;
+			position.y += velocity.vec.y * speed;
+			position.z += velocity.vec.z * speed;
+			Movement += speed;
+		}
 	}
-
 	handwriting.remove_if([](auto& itr) {return itr->GetLifeTimeOver() || itr->deleteFlag; });
-
-	if (Movement > WRITING_RADIUS)
+	if (capture == nullptr)
 	{
-		unique_ptr<Handwriting> temp = make_unique<Handwriting>();
-		temp->Initialize({ position.x,position.y,position.z }, handwritingModel);
-		handwriting.push_back(move(temp));
-		Movement = 0;
+		if (Movement > WRITING_RADIUS)
+		{
+			unique_ptr<Handwriting> temp = make_unique<Handwriting>();
+			temp->Initialize({ position.x,position.y,position.z }, handwritingModel);
+			handwriting.push_back(move(temp));
+			Movement = 0;
+		}
 	}
 	for (auto& itr : handwriting)
 	{
