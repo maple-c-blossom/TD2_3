@@ -4,6 +4,8 @@
 
 using namespace MCB;
 
+bool ADXCollider::translateDivine = false;
+
 /*
 【接触検知から押し戻しベクトル算出までの流れ】
 
@@ -323,97 +325,115 @@ void ADXCollider::SendPushBack()
 //ゲーム内の全てのコライダーが入った配列を入れて使う
 void ADXCollider::CollidersUpdate()
 {
-	//現在の座標を保存しておく
-	std::vector<ADXVector3> objsTranslation = {};
-	for (auto& itr : Object3d::GetAllObjs())
-	{
-		objsTranslation.push_back({ itr->position.x,itr->position.y,itr->position.z });
-	}
-
-	//すべてのコライダーで移動距離÷(最小絶対半径×0.95)を求め、最も大きい値をtranslateDivNumFに入れる
-	float translateDivNumF = 1;
 	for (int i = 0; i < cols.size(); i++)
 	{
-		//ついでにcollideListもこのタイミングでリセット
+		//collideListをリセット
 		cols[i]->collideList.clear();
-
-
-		ADXVector3 move;
-		move.x = cols[i]->gameObject->position.x - cols[i]->preTranslation.x;
-		move.y = cols[i]->gameObject->position.y - cols[i]->preTranslation.y;
-		move.z = cols[i]->gameObject->position.z - cols[i]->preTranslation.z;
-
-		ADXVector3 scaleX1 = { cols[i]->scale_.x,0,0 };
-		ADXVector3 scaleY1 = { 0,cols[i]->scale_.y,0 };
-		ADXVector3 scaleZ1 = { 0,0,cols[i]->scale_.z };
-
-		float worldScaleX1 = ADXMatrix4::transform(scaleX1, ADXMatrix4::ConvertToADXMatrix(cols[i]->gameObject->matWorld.matScale * cols[i]->gameObject->matWorld.matRot)).length();
-		float worldScaleY1 = ADXMatrix4::transform(scaleY1, ADXMatrix4::ConvertToADXMatrix(cols[i]->gameObject->matWorld.matScale * cols[i]->gameObject->matWorld.matRot)).length();
-		float worldScaleZ1 = ADXMatrix4::transform(scaleZ1, ADXMatrix4::ConvertToADXMatrix(cols[i]->gameObject->matWorld.matScale * cols[i]->gameObject->matWorld.matRot)).length();
-
-		float minimumWorldRadius1 = 1;
-
-		if (worldScaleX1 < worldScaleY1 && worldScaleX1 < worldScaleZ1 && worldScaleX1 > 0)
-		{
-			minimumWorldRadius1 = worldScaleX1;
-		}
-		else if (worldScaleY1 < worldScaleZ1 && worldScaleY1 > 0)
-		{
-			minimumWorldRadius1 = worldScaleY1;
-		}
-		else if (worldScaleZ1 > 0)
-		{
-			minimumWorldRadius1 = worldScaleZ1;
-		}
-
-		float moveDivnum1 = move.length() / (minimumWorldRadius1 * 0.95);
-		if (moveDivnum1 >= translateDivNumF)
-		{
-			translateDivNumF = moveDivnum1;
-		}
-	}
-	translateDivNumF = ceilf(translateDivNumF);
-
-	//全てのオブジェクトを移動する前の座標へ移動させる
-	for (int i = 0; i < cols.size(); i++)
-	{
-		cols[i]->gameObject->position.x = cols[i]->preTranslation.x;
-		cols[i]->gameObject->position.y = cols[i]->preTranslation.y;
-		cols[i]->gameObject->position.z = cols[i]->preTranslation.z;
 	}
 
-	//行列更新のついでに移動する前の座標を保存
-	std::vector<ADXVector3> objsPreTranslation = {};
-	for (auto& itr:Object3d::GetAllObjs())
+	if (translateDivine)
 	{
-		objsPreTranslation.push_back({ itr->position.x,itr->position.y,itr->position.z });
-		itr->Update(*IScene::GetCamera()->GetView(), *IScene::GetCamera()->GetProjection());
-	}
-
-	//少しづつ移動させながら当たり判定と押し戻し処理を行う
-	for (int i = 0; i < translateDivNumF; i++)
-	{
-		//移動
-		int j = 0;
+		//現在の座標を保存しておく
+		std::vector<ADXVector3> objsTranslation = {};
 		for (auto& itr : Object3d::GetAllObjs())
 		{
-			ADXVector3 move = objsTranslation[j] - objsPreTranslation[j];
-
-			itr->position.x += move.x / translateDivNumF;
-			itr->position.y += move.y / translateDivNumF;
-			itr->position.z += move.z / translateDivNumF;
-			itr->Update(*IScene::GetCamera()->GetView(), *IScene::GetCamera()->GetProjection());
-			j++;
+			objsTranslation.push_back({ itr->position.x,itr->position.y,itr->position.z });
 		}
 
-		//当たり判定と押し戻しベクトルの算出
-		for (int j = 0; j < cols.size(); j++)
+		//すべてのコライダーで移動距離÷(最小絶対半径×0.95)を求め、最も大きい値をtranslateDivNumFに入れる
+		float translateDivNumF = 1;
+		for (int i = 0; i < cols.size(); i++)
 		{
-			for (int k = j + 1; k < cols.size(); k++)
+			ADXVector3 move;
+			move.x = cols[i]->gameObject->position.x - cols[i]->preTranslation.x;
+			move.y = cols[i]->gameObject->position.y - cols[i]->preTranslation.y;
+			move.z = cols[i]->gameObject->position.z - cols[i]->preTranslation.z;
+
+			ADXVector3 scaleX1 = { cols[i]->scale_.x,0,0 };
+			ADXVector3 scaleY1 = { 0,cols[i]->scale_.y,0 };
+			ADXVector3 scaleZ1 = { 0,0,cols[i]->scale_.z };
+
+			float worldScaleX1 = ADXMatrix4::transform(scaleX1, ADXMatrix4::ConvertToADXMatrix(cols[i]->gameObject->matWorld.matScale * cols[i]->gameObject->matWorld.matRot)).length();
+			float worldScaleY1 = ADXMatrix4::transform(scaleY1, ADXMatrix4::ConvertToADXMatrix(cols[i]->gameObject->matWorld.matScale * cols[i]->gameObject->matWorld.matRot)).length();
+			float worldScaleZ1 = ADXMatrix4::transform(scaleZ1, ADXMatrix4::ConvertToADXMatrix(cols[i]->gameObject->matWorld.matScale * cols[i]->gameObject->matWorld.matRot)).length();
+
+			float minimumWorldRadius1 = 1;
+
+			if (worldScaleX1 < worldScaleY1 && worldScaleX1 < worldScaleZ1 && worldScaleX1 > 0)
 			{
-				cols[j]->Collide(cols[k]);
+				minimumWorldRadius1 = worldScaleX1;
+			}
+			else if (worldScaleY1 < worldScaleZ1 && worldScaleY1 > 0)
+			{
+				minimumWorldRadius1 = worldScaleY1;
+			}
+			else if (worldScaleZ1 > 0)
+			{
+				minimumWorldRadius1 = worldScaleZ1;
+			}
+
+			float moveDivnum1 = move.length() / (minimumWorldRadius1 * 0.95);
+			if (moveDivnum1 >= translateDivNumF)
+			{
+				translateDivNumF = moveDivnum1;
+			}
+		}
+		translateDivNumF = ceilf(translateDivNumF);
+
+		//全てのオブジェクトを移動する前の座標へ移動させる
+		for (int i = 0; i < cols.size(); i++)
+		{
+			cols[i]->gameObject->position.x = cols[i]->preTranslation.x;
+			cols[i]->gameObject->position.y = cols[i]->preTranslation.y;
+			cols[i]->gameObject->position.z = cols[i]->preTranslation.z;
+		}
+
+		//行列更新のついでに移動する前の座標を保存
+		std::vector<ADXVector3> objsPreTranslation = {};
+		for (auto& itr : Object3d::GetAllObjs())
+		{
+			objsPreTranslation.push_back({ itr->position.x,itr->position.y,itr->position.z });
+			itr->Update(*IScene::GetCamera()->GetView(), *IScene::GetCamera()->GetProjection());
+		}
+
+		//少しづつ移動させながら当たり判定と押し戻し処理を行う
+		for (int i = 0; i < translateDivNumF; i++)
+		{
+			//移動
+			int j = 0;
+			for (auto& itr : Object3d::GetAllObjs())
+			{
+				ADXVector3 move = objsTranslation[j] - objsPreTranslation[j];
+
+				itr->position.x += move.x / translateDivNumF;
+				itr->position.y += move.y / translateDivNumF;
+				itr->position.z += move.z / translateDivNumF;
+				itr->Update(*IScene::GetCamera()->GetView(), *IScene::GetCamera()->GetProjection());
+				j++;
+			}
+
+			//当たり判定と押し戻しベクトルの算出
+			for (int j = 0; j < cols.size(); j++)
+			{
+				for (int k = j + 1; k < cols.size(); k++)
+				{
+					cols[j]->Collide(cols[k]);
+					cols[j]->SendPushBack();
+					cols[k]->SendPushBack();
+				}
+			}
+		}
+	}
+	else
+	{
+		//当たり判定と押し戻しベクトルの算出
+		for (int i = 0; i < cols.size(); i++)
+		{
+			for (int j = i + 1; j < cols.size(); j++)
+			{
+				cols[i]->Collide(cols[j]);
+				cols[i]->SendPushBack();
 				cols[j]->SendPushBack();
-				cols[k]->SendPushBack();
 			}
 		}
 	}

@@ -55,4 +55,7 @@ public:
 private:
     ADXVector3 preTranslation;
     ADXMatrix4 preMatrix;
+
+private:
+    static bool translateDivine;
 };
