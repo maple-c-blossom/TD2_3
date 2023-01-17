@@ -31,6 +31,12 @@ namespace MCB
 		Model* skydomeModel;
 		Model* handwrModel;
 
+		std::unique_ptr<Model> playerModel;
+		std::unique_ptr<Model> pencilEnemyModel;
+		std::unique_ptr<Model> WritingModel;
+		std::unique_ptr<Model> bossModel;
+		std::unique_ptr<Model> nerikesiModel;
+
 		FBXModel* testModel;
 #pragma endregion 3Dモデル
 
@@ -75,6 +81,8 @@ namespace MCB
 		Player substie;
 
 		Boss boss;
+
+		Timer spownTimer;
 #pragma endregion スプライト
 #pragma region パーティクル
 		Particle testParticle;

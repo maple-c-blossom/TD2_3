@@ -26,7 +26,7 @@ void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* 
 	this->handwrModel = handwrModel;
 	this->playerPtr = playerPtr;
 	this->scale = { 4,4,4 };
-	hp = 10;
+	hp = MAX_HP_BOSS;
 	ADXCollider tempCol(this);
 	colliders.push_back(tempCol);
 	for (auto& itr : colliders)
@@ -75,6 +75,7 @@ void Boss::Update()
 	}
 	allObjPtr.push_back(this);
 	Damage(1);
+
 }
 
 void Boss::Draw()
@@ -107,9 +108,9 @@ void Boss::Damage(int damage)
 		{
 			for (auto& itr3 : itr2.colliders)
 			{
-				if (itr.IsHit(itr3) && !imotalFlag)
+				if (itr.IsHit(itr3) )
 				{
-					hp -= damage * (Player::GetCaptureList()->size() + 1);
+					if(!imotalFlag) hp -= damage * (Player::GetCaptureList()->size() + 1);
 					for (auto& itr : *Player::GetCaptureList())//すでに練りけしについている敵のデリートフラグをOnに
 					{
 						itr->deleteFlag = true;

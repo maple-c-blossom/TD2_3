@@ -35,11 +35,13 @@ private:
 	const float maxShard = 100;
 
 public:
+	MCB::Model* nerikeshiModel = nullptr;//あとで英名にでもしておいてください。ねり消し用のモデルとして暫定使用します
 	int GetHp() { return hp; }
 	bool GetVisible() { return visible; };
 	void Damage(int damage);
 	bool IsInvincible();
 	std::list<KneadedEraser> GetKneadedErasers();
+	std::list<KneadedEraser>* GetKneadedErasersPtr();
 	void Initialize();
 	void Update();
 	void Draw();

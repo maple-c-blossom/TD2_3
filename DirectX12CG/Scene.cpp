@@ -70,24 +70,25 @@ void MCB::Scene::Object3DInit()
     testSpher.position = { 0,4,10 };
     testSpher.rotation = { ConvertRadius(90),0,0 };
 
-    substie.model = BoxModel;
+    substie.model = playerModel.get();
+    substie.nerikeshiModel = nerikesiModel.get();
     substie.scale = { 1,1,1 };
-    substie.position = { 0,0,0 };
+    substie.position = { 0,0,-35 };
     substie.Initialize();
 
     unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
-    temp->Initialize({ 0,0,0 }, { 20,0,40 }, BoxModel,0.5f);
+    temp->Initialize({ 0,0,0 }, { 20,0,40 }, pencilEnemyModel.get(), 0.5f);
     temp->movePoint = { {20,0,40},{ -20,0,20 },{ -20,0,40 } };
-    temp->SetHandwritingModel(handwrModel);
+    temp->SetHandwritingModel(WritingModel.get());
     enemys.push_back(move(temp));
 
     temp = make_unique<PencilEnemy>();
-    temp->Initialize({ 0,0,0 }, { -20,0,20 }, BoxModel, 0.5f);
+    temp->Initialize({ 0,0,0 }, { -20,0,20 }, pencilEnemyModel.get(), 0.5f);
     temp->movePoint = { {-20,0,20},{ 20,0,40 },{ 20,0,20 } };
-    temp->SetHandwritingModel(handwrModel);
+    temp->SetHandwritingModel(WritingModel.get());
     enemys.push_back(move(temp));
-
-    boss.Initialize({ 0,0,1 }, { 0,0,0 }, BoxModel, BoxModel, handwrModel, 1,&substie);
+    spownTimer.Set(30);
+    boss.Initialize({ 0,0,1 }, { 0,0,0 }, bossModel.get(), pencilEnemyModel.get(), WritingModel.get(), 1, &substie);
     //sphere.Init();
     //sphere.model = BoxModel;
     //sphere.SetCollider(1);
@@ -105,6 +106,12 @@ void MCB::Scene::LoadModel()
 
 	skydomeModel = new Model("skydome");
     handwrModel = new Model("Box");
+
+    playerModel = std::make_unique<Model>("player");
+    pencilEnemyModel = std::make_unique<Model>("pencil");
+    WritingModel = std::make_unique<Model>("Box");
+    bossModel = std::make_unique<Model>("boss");
+    nerikesiModel = std::make_unique<Model>("nerikeshi");
     //testModel = new FBXModel();
     //testModel->Load("testFbx");
     //assert(testModel->textureManager->textures.size() < 20);
@@ -164,6 +171,17 @@ void MCB::Scene::Update()
 //        }
 
         substie.Update();
+        spownTimer.Update();
+
+        if (spownTimer.IsEnd() && enemys.size() < 3)
+        {
+            unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
+            temp->Initialize({ (float)GetRand(-1,1),0,(float)GetRand(-1,1)}, {(float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100}, pencilEnemyModel.get(), 0.5f);
+            temp->movePoint = { {-20 + temp->position.x,0,20 + temp->position.z},{ 20 + temp->position.x,0,40 + temp->position.z },{ 20 + temp->position.x,0,20 + temp->position.z } };
+            temp->SetHandwritingModel(handwrModel);
+            enemys.push_back(move(temp));
+            spownTimer.Set(60);
+        }
 
         for (auto& itr : enemys)
         {

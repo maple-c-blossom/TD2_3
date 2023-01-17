@@ -23,6 +23,7 @@ private:
 	Model* enemyModel;
 	Model* handwrModel;
 	Player* playerPtr;
+
 	void EnemyPop(MCB::Vector3D velocity, MCB::Float3 position,  float speed,int popNum = 1);
 public:
 	int GetHp() { return hp; };

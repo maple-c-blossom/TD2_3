@@ -10,6 +10,11 @@ std::list<KneadedEraser> Player::GetKneadedErasers()
 	return kneadedErasers;
 }
 
+std::list<KneadedEraser>* Player::GetKneadedErasersPtr()
+{
+	return &kneadedErasers;
+}
+
 void Player::Initialize()
 {
 	Init();
@@ -155,7 +160,7 @@ void Player::Update()
 		{
 			kneadedErasers.push_back(KneadedEraser{});
 			kneadedErasers.back().parent = this;
-			kneadedErasers.back().model = model;
+			kneadedErasers.back().model = nerikeshiModel;
 			kneadedErasers.back().colliders.push_back(ADXCollider(&kneadedErasers.back()));
 			kneadedErasers.back().colliders.back().isTrigger = true;
 		}

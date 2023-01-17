@@ -28,6 +28,18 @@ void Handwriting::Update()
 			{
 				Player::GetPlayer()->Erase();
 				this->deleteFlag = true;
+				continue;
+			}
+			else //ã‚Åcontinue‚µ‚Ä‚é‚©‚ç–{—ˆ‚¢‚ç‚È‚¢‚¯‚Çˆê‰ž
+			{
+				for (auto& itr2 : *Player::GetPlayer()->GetKneadedErasersPtr())//‚Ë‚èÁ‚µ‚É“–‚½‚Á‚Ä‚à•MÕ‚ÍÁ‚·
+				{
+					if(colListItr->gameObject == &itr2)
+					{
+						Player::GetPlayer()->Erase();
+						this->deleteFlag = true;
+					}
+				}
 			}
 		}
 		itr.Update(this);
