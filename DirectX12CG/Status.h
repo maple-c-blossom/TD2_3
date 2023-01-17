@@ -4,6 +4,6 @@
 static int MAX_LIFE_TIME_HAND_WRITING = 300;//•MÕ‚Ì¶‘¶ŽžŠÔ
 static int MAX_HP_ENEMY_PENCIL = 10;//‰”•M‚ÌHP
 static int MAX_HP_ENEMY_MECHANICAL_PENCIL = 10;//ƒVƒƒ[ƒyƒ“‚ÌHP
-static float WRITING_RADIUS = 0.5f;//•MÕ‚Ì‹…‚Ì”¼Œa(”¼Œa•ª‚ÌˆÚ“®‚²‚Æ‚É¶¬‚·‚é‚½‚ßj
+static float WRITING_RADIUS = 1.5f;//•MÕ‚Ì‹…‚Ì’¼Œa(’¼Œa•ª‚ÌˆÚ“®‚²‚Æ‚É¶¬‚·‚é‚½‚ßj
 static int ENEMY_ATTACK_TIME = SECOND_FRAME;//UŒ‚‚ÌŽ‘±ŽžŠÔ
 static int ENEMY_BEFORE_ATTACK_TIME = SECOND_FRAME;//UŒ‚‘O‚Ì—­‚ßŽžŠÔ
