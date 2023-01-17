@@ -133,6 +133,8 @@ void Player::Update()
 		rotateCanceled = true;
 	}
 
+	rotateModeCount = max(-maxRotateSpeed, min(rotateModeCount, maxRotateSpeed));
+
 	if (rotateMode)
 	{
 		shard -= abs(rotateModeCount * 0.001);

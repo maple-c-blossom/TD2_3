@@ -13,6 +13,7 @@ private:
 private:
 	const float kneadedEraserDistance = 1.0f;
 	const float maxMoveSpeed = 0.3;
+	const float maxRotateSpeed = 30;
 
 	MCB::Input* input = MCB::Input::GetInstance();
 	int hp = 1;
