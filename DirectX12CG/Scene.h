@@ -2,7 +2,7 @@
 #include "IScene.h"
 #define _USE_MATH_DEFINES
 #include <cmath>
-#include "DebugCamera.h"
+
 
 #pragma region ƒQ[ƒ€Œn.h include
 #include "PencilEnemy.h"
@@ -86,6 +86,7 @@ namespace MCB
 		bool startPositionReset = true;
 		bool ybill = false;
 		DebugCamera debugCamera;
+		Camera mainCamera;
 #pragma endregion ’Êí•Ï”
 
 	public:

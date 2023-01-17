@@ -32,7 +32,8 @@ MCB::Scene::~Scene()
 void MCB::Scene::Initialize()
 {
     debugCamera.Inilialize();
-    viewCamera = &debugCamera;
+    mainCamera.Inilialize();
+    viewCamera = &mainCamera;
     matView.CreateMatrixView(XMFLOAT3(0.0f, 0.0f, -10.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 1.0f, 0.0f));
     matProjection.CreateMatrixProjection(XMConvertToRadians(45.0f), (float)dxWindow->window_width / dxWindow->window_height, 0.1f, 4000.0f);
     LoadTexture();

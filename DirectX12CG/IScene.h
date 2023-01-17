@@ -49,6 +49,8 @@
 #include "ICamera.h"
 #include "TextureManager.h"
 #include <MyImgui/imgui.h>
+#include "DebugCamera.h"
+#include "Camera.h"
 #pragma endregion ©ì.h include
 #pragma region pragma comment
 
