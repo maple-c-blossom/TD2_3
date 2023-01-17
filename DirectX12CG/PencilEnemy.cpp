@@ -103,14 +103,20 @@ void PencilEnemy::UniqueUpdate()
 		}
 	}
 
-	AttackCheck();
-	AttackTimerUpdate();
 	allObjPtr.push_back(&attackObj);
+	if (capture == nullptr)
+	{
+		AttackCheck();
+		AttackTimerUpdate();
+	}
 	for (auto& itr : attackObj.colliders)
 	{
 		itr.Update(&attackObj);
 	}
-	AttackHit();
+	if (capture == nullptr)
+	{
+		AttackHit();
+	}
 }
 
 void PencilEnemy::Draw()
