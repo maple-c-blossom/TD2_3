@@ -10,6 +10,7 @@ class Player :public MCB::Object3d
 private:
 	static Player* playerPtr;
 	static std::list<MCB::Object3d*> captureList;
+	static int captureCount;
 private:
 	const float kneadedEraserDistance = 1.0f;
 	const float maxMoveSpeed = 0.3;
@@ -52,4 +53,6 @@ public:
 public:
 	static Player* GetPlayer() { return playerPtr; };
 	static std::list<MCB::Object3d*>* GetCaptureList() { return &captureList; };
+	static int GetCaptureCount() { return captureCount; };
+	static void SetCaptureCount(int num) { captureCount = num; };
 };

@@ -67,6 +67,7 @@ void Enemy::Update()
 						if (colListItr->gameObject == colListItr2)
 						{
 							if (capture == nullptr)Player::GetCaptureList()->push_back(this);//プレイヤーがもっているキャプチャしている敵のリストに格納(攻撃当てた時に敵を消すためのリスト）
+							Player::SetCaptureCount(Player::GetCaptureCount() + 1);
 							capture = colListItr2;
 						}
 					}
@@ -79,6 +80,7 @@ void Enemy::Update()
 	if (Player::GetPlayer()->IsInvincible())
 	{
 		capture = nullptr;
+		Player::SetCaptureCount(0);
 	}
 
 	if (capture != nullptr && prevCapture == nullptr)

@@ -5,6 +5,7 @@ using namespace MCB;
 
 Player* Player::playerPtr = nullptr;
 std::list<MCB::Object3d*> Player::captureList = {};
+int Player::captureCount = 0;
 std::list<KneadedEraser> Player::GetKneadedErasers()
 {
 	return kneadedErasers;
