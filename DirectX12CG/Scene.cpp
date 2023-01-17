@@ -196,6 +196,11 @@ void MCB::Scene::Update()
     enemys.remove_if([](auto& itr) {return itr->deleteFlag; });
     //s—ñ•ÏŠ·
     MatrixUpdate();
+
+    if (boss.GetHp() <= 0)
+    {
+        sceneEnd = true;
+    }
 }
 
 void MCB::Scene::Draw()
@@ -219,9 +224,9 @@ void MCB::Scene::Draw()
 
 void MCB::Scene::SpriteDraw()
 {
-    debugText.Print(20, 20, 1, "boss:hp %d",boss.GetHp());
-    debugText.Print(20, 40, 1, "player:hp %d",substie.GetHp());
-    debugText.Print(20, 60, 1, "player:shard %f", substie.GetShard());
+    debugText.Print(20, 20, 2, "boss:hp %d",boss.GetHp());
+    debugText.Print(20, 60, 2, "player:hp %d",substie.GetHp());
+    debugText.Print(20, 100, 2, "player:shard %f", substie.GetShard());
     debugText.AllDraw();
 }
 

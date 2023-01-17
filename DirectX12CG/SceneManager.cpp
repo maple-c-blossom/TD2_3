@@ -1,6 +1,6 @@
 #include "SceneManager.h"
 #include "DxWindow.h"
-#include "Scene.h"
+#include "TitleScene.h"
 #include "Draw.h"
 
 MCB::SceneManager::SceneManager(RootParameter* root, Depth* depth, PipeLineManager* pipeline)
@@ -18,7 +18,7 @@ MCB::SceneManager::SceneManager(RootParameter* root, Depth* depth, PipeLineManag
 	loadSprite = loadSprite.CreateSprite();
 	InitRand();
 	imgui.Init();
-	scene = new Scene(this->root, this->depth, this->pipeline);
+	scene = new TitleScene(this->root, this->depth, this->pipeline);
 }
 
 MCB::SceneManager::~SceneManager()

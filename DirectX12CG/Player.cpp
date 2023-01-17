@@ -99,7 +99,7 @@ void Player::Update()
 		{
 			if (!rotateMode)
 			{
-				shard += velocity.V3Len() * 0.3;
+				shard += velocity.V3Len() * 0.01;
 			}
 			rotateModeCount += ADXUtility::AngleDiff(prevDirectionAngle, directionAngle);
 			if(rotateCanceled)

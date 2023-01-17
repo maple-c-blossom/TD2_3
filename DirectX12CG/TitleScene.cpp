@@ -55,7 +55,8 @@ void MCB::TitleScene::Draw()
 
 void MCB::TitleScene::SpriteDraw()
 {
-
+    debugText.Print(dxWindow->window_width / 2, dxWindow->window_height / 2-40, 4, "Grafight");
+    debugText.Print(dxWindow->window_width / 2, dxWindow->window_height / 2 + 40, 4, "PushSpace");
     debugText.AllDraw();
 }
 
