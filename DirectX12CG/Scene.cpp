@@ -197,7 +197,7 @@ void MCB::Scene::Update()
     //s—ñ•ÏŠ·
     MatrixUpdate();
 
-    if (boss.GetHp() <= 0)
+    if (boss.GetHp() <= 0 || substie.GetHp() <= 0)
     {
         sceneEnd = true;
     }
