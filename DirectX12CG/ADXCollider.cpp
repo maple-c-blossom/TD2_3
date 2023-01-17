@@ -278,26 +278,26 @@ void ADXCollider::Collide(ADXCollider* col)
 {
 	if (!gameObject->deleteFlag && !col->gameObject->deleteFlag && IsHit(*col) && enabled && col->enabled && col->gameObject != gameObject)
 	{
-		if (!isTrigger && !col->isTrigger)
-		{
-			ADXVector3 myPushBack = CollideVector(*col);
-			ADXVector3 targetPushBack = col->CollideVector(*this);
+		//if (!isTrigger && !col->isTrigger)
+		//{
+		//	ADXVector3 myPushBack = CollideVector(*col);
+		//	ADXVector3 targetPushBack = col->CollideVector(*this);
 
-			if (pushable_ && col->pushable_)
-			{
-				myPushBack = myPushBack * 0.5f;
-				targetPushBack = targetPushBack * 0.5f;
-			}
+		//	if (pushable_ && col->pushable_)
+		//	{
+		//		myPushBack = myPushBack * 0.5f;
+		//		targetPushBack = targetPushBack * 0.5f;
+		//	}
 
-			if (pushable_)
-			{
-				pushBackVector += myPushBack;
-			}
-			if (col->pushable_)
-			{
-				col->pushBackVector += targetPushBack;
-			}
-		}
+		//	if (pushable_)
+		//	{
+		//		pushBackVector += myPushBack;
+		//	}
+		//	if (col->pushable_)
+		//	{
+		//		col->pushBackVector += targetPushBack;
+		//	}
+		//}
 
 		collideList.push_back(col);
 		col->collideList.push_back(this);

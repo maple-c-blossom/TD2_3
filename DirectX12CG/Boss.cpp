@@ -108,9 +108,10 @@ void Boss::Damage(int damage)
 		{
 			for (auto& itr3 : itr2.colliders)
 			{
-				if (itr.IsHit(itr3) )
+				if (itr.IsHit(itr3) && !imotalFlag)
 				{
-					if(!imotalFlag) hp -= damage * (Player::GetCaptureList()->size() + 1);
+					int num = ((Player::GetCaptureList()->size() * 3) + 1);
+					if(!imotalFlag) hp -= damage * num;
 					for (auto& itr : *Player::GetCaptureList())//すでに練りけしについている敵のデリートフラグをOnに
 					{
 						itr->deleteFlag = true;

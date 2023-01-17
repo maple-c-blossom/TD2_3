@@ -66,8 +66,8 @@ void Enemy::Update()
 					{
 						if (colListItr->gameObject == colListItr2)
 						{
+							if (capture == nullptr)Player::GetCaptureList()->push_back(this);//プレイヤーがもっているキャプチャしている敵のリストに格納(攻撃当てた時に敵を消すためのリスト）
 							capture = colListItr2;
-							Player::GetCaptureList()->push_back(this);//プレイヤーがもっているキャプチャしている敵のリストに格納(攻撃当てた時に敵を消すためのリスト）
 						}
 					}
 				}
