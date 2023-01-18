@@ -32,7 +32,7 @@ private:
 	bool rotateMode = false;
 	bool rotateCanceled = false;
 	float rotateModeCount;
-	MCB::Vector3D  prevPos{};
+	MCB::Vector3D prevPos{};
 	MCB::Vector3D velocity{};
 
 public:

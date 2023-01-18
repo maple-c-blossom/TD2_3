@@ -277,7 +277,6 @@ bool ADXCollider::IsHit(ADXCollider col)
 //コライダー同士で押し合う（動かないコライダーにぶつかったら一方的に押される）
 void ADXCollider::Collide(ADXCollider* col)
 {
-	bool InvalidLayerPattern = false;
 	for (auto& itr : ignoreCollidePatterns)
 	{
 		if ((itr.layer1 == collideLayer && itr.layer2 == col->collideLayer) ||
@@ -287,7 +286,7 @@ void ADXCollider::Collide(ADXCollider* col)
 		}
 	}
 
-	if (!InvalidLayerPattern && !gameObject->deleteFlag && !col->gameObject->deleteFlag && IsHit(*col) && enabled && col->enabled && col->gameObject != gameObject)
+	if (!gameObject->deleteFlag && !col->gameObject->deleteFlag && IsHit(*col) && enabled && col->enabled && col->gameObject != gameObject)
 	{
 		if (!isTrigger && !col->isTrigger)
 		{
