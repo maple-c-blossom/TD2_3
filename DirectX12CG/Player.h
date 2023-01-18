@@ -12,6 +12,8 @@ private:
 	static std::list<MCB::Object3d*> captureList;
 	static int captureCount;
 private:
+	const float maxShard = 100;
+	const int maxKneadedErasers = 50;
 	const float kneadedEraserDistance = 1.0f;
 	const float maxMoveSpeed = 0.3;
 	const float maxRotateSpeed = 30;
@@ -32,11 +34,9 @@ private:
 	float rotateModeCount;
 	MCB::Vector3D  prevPos{};
 	MCB::Vector3D velocity{};
-	
-	const float maxShard = 100;
 
 public:
-	MCB::Model* nerikeshiModel = nullptr;//あとで英名にでもしておいてください。ねり消し用のモデルとして暫定使用します
+	MCB::Model* KneadedEraserModel = nullptr;
 	int GetHp() { return hp; }
 	bool GetVisible() { return visible; };
 	void Damage(int damage);

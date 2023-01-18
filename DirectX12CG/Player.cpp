@@ -41,6 +41,8 @@ void Player::Update()
 	bool makingKneadedEraser =
 		input->IsKeyDown(keyConfig[8]) && shard > 0;
 
+	bool trueMakingKneadedEraser = makingKneadedEraser && kneadedErasers.size() <= maxKneadedErasers;
+
 	velocity = position - prevPos;
 	prevPos = position;
 
@@ -96,7 +98,7 @@ void Player::Update()
 		float prevDirectionAngle = directionAngle;
 		directionAngle += ADXUtility::AngleDiff(directionAngle, atan2(walkVec.vec.x, walkVec.vec.z)) / (1 + (weight) / 5);
 
-		if (!makingKneadedEraser)
+		if (!trueMakingKneadedEraser)
 		{
 			if (!rotateMode)
 			{
@@ -146,14 +148,14 @@ void Player::Update()
 		shard -= abs(rotateModeCount * 0.001);
 		rotation.y += rotateModeCount * 0.03;
 	}
-	else if(!makingKneadedEraser)
+	else if(!trueMakingKneadedEraser)
 	{
 		rotation.y += ADXUtility::AngleDiff(rotation.y, directionAngle) / (kneadedErasers.size() / 10.0 + 1);
 	}
 
 	shard = min(max(0, shard), maxShard);
 
-	if (makingKneadedEraser)
+	if (trueMakingKneadedEraser)
 	{
 		shard -= velocity.V3Len();
 		if (kneadedErasers.empty()
@@ -161,7 +163,7 @@ void Player::Update()
 		{
 			kneadedErasers.push_back(KneadedEraser{});
 			kneadedErasers.back().parent = this;
-			kneadedErasers.back().model = nerikeshiModel;
+			kneadedErasers.back().model = KneadedEraserModel;
 			kneadedErasers.back().colliders.push_back(ADXCollider(&kneadedErasers.back()));
 			kneadedErasers.back().colliders.back().isTrigger = true;
 			kneadedErasers.back().colliders.back().collideLayer = 1;
@@ -177,6 +179,11 @@ void Player::Update()
 
 		
 		}
+	}
+
+	if (kneadedErasers.size() > maxKneadedErasers)
+	{
+		kneadedErasers.erase(kneadedErasers.end());
 	}
 
 	velocity.vec = { 0,0,0 };

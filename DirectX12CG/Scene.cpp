@@ -71,7 +71,7 @@ void MCB::Scene::Object3DInit()
     testSpher.rotation = { ConvertRadius(90),0,0 };
 
     substie.model = playerModel.get();
-    substie.nerikeshiModel = nerikesiModel.get();
+    substie.KneadedEraserModel = nerikesiModel.get();
     substie.scale = { 1,1,1 };
     substie.position = { 0,0,-35 };
     substie.Initialize();
