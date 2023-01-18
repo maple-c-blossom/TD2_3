@@ -230,6 +230,15 @@ void MCB::Scene::SpriteDraw()
     debugText.Print(dxWindow->window_width - 300, 20, 2, "Move:WASD");
     debugText.Print(dxWindow->window_width - 300, 60, 2, "Action:SPACE", substie.GetShard());
     debugText.Print(dxWindow->window_width - 300, 100, 2, "ActionCost:shard");
+    if (boss.GetHp() <= 0)
+    {
+        debugText.Print(dxWindow->window_width/2 - 100, dxWindow->window_height/2, 4, "GameClear");
+    }
+    else if (substie.GetHp() <= 0)
+    {
+        debugText.Print(dxWindow->window_width / 2 - 100, dxWindow->window_height / 2, 4, "GameOver");
+    }
+
     debugText.AllDraw();
 }
 
