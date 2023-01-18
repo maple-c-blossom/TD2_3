@@ -41,7 +41,7 @@ void Player::Update()
 	bool makingKneadedEraser =
 		input->IsKeyDown(keyConfig[8]) && shard > 0;
 
-	bool trueMakingKneadedEraser = makingKneadedEraser && kneadedErasers.size() <= maxKneadedErasers;
+	bool trueMakingKneadedEraser = makingKneadedEraser && kneadedErasers.size() <= maxKneadedErasers && !rotateMode;
 
 	velocity = position - prevPos;
 	prevPos = position;
@@ -126,6 +126,12 @@ void Player::Update()
 		{
 			rotateMode = false;
 		}
+	}
+
+	if (kneadedErasers.size() <= 0)
+	{
+		rotateModeCount = 0;
+		rotateMode = false;
 	}
 
 	moveSpeedPercentage = max(0,min(moveSpeedPercentage,1));
