@@ -157,7 +157,7 @@ void Player::Update()
 
 	if (trueMakingKneadedEraser)
 	{
-		shard -= velocity.V3Len();
+		shard -= velocity.V3Len() * 2;
 		if (kneadedErasers.empty()
 			|| Vector3D{ kneadedErasers.back().position.x,kneadedErasers.back().position.y,kneadedErasers.back().position.z }.V3Len() > kneadedEraserDistance)
 		{
@@ -183,7 +183,7 @@ void Player::Update()
 
 	if (kneadedErasers.size() > maxKneadedErasers)
 	{
-		kneadedErasers.erase(kneadedErasers.end());
+		//kneadedErasers.erase(kneadedErasers.end());
 	}
 
 	velocity.vec = { 0,0,0 };
