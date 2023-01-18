@@ -297,6 +297,11 @@ void MCB::Object3d::FbxDraw(unsigned short int incremant)
     fbxModel->Draw();
 }
 
+void MCB::Object3d::OnColliderHit(ADXCollider* col)
+{
+    UniqueOnColliderHit(col);
+}
+
 void MCB::Object3d::StaticUpdate()
 {
     objs = allObjPtr;
@@ -311,4 +316,8 @@ void MCB::Object3d::SetLights(LightGroup* lights)
 std::list<Object3d*> MCB::Object3d::GetAllObjs()
 {
     return objs;
+}
+
+void MCB::Object3d::UniqueOnColliderHit(ADXCollider* col)
+{
 }

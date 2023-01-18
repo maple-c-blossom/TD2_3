@@ -96,6 +96,8 @@ namespace MCB
 
         void FbxDraw(unsigned short int incremant);
 
+        void OnColliderHit(ADXCollider* col);
+
         //yADXEngine—R—ˆzÃ“IXVˆ—
         static void StaticUpdate();
 
@@ -104,6 +106,9 @@ namespace MCB
 
         //yADXEngine—R—ˆz
         static std::list<Object3d*> GetAllObjs();
+
+    protected:
+        virtual void UniqueOnColliderHit(ADXCollider* col);
     };
 
 }

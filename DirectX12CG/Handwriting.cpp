@@ -14,6 +14,7 @@ void Handwriting::Initialize(MCB::Float3 position, MCB::Model* model)
 	Init();
 	colliders.push_back(ADXCollider(this));
 	colliders.back().isTrigger = true;
+	colliders.back().collideLayer = 2;
 }
 
 void Handwriting::Update()

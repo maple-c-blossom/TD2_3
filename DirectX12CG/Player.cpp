@@ -164,6 +164,7 @@ void Player::Update()
 			kneadedErasers.back().model = nerikeshiModel;
 			kneadedErasers.back().colliders.push_back(ADXCollider(&kneadedErasers.back()));
 			kneadedErasers.back().colliders.back().isTrigger = true;
+			kneadedErasers.back().colliders.back().collideLayer = 1;
 		}
 
 		for (auto& itr : kneadedErasers)

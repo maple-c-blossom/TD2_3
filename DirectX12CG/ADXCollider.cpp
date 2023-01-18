@@ -5,6 +5,7 @@
 using namespace MCB;
 
 bool ADXCollider::translateDivine = false;
+std::vector<collidePattern> ADXCollider::ignoreCollidePatterns = { {1,1},{2,2} };
 
 /*
 【接触検知から押し戻しベクトル算出までの流れ】
@@ -276,7 +277,17 @@ bool ADXCollider::IsHit(ADXCollider col)
 //コライダー同士で押し合う（動かないコライダーにぶつかったら一方的に押される）
 void ADXCollider::Collide(ADXCollider* col)
 {
-	if (!gameObject->deleteFlag && !col->gameObject->deleteFlag && IsHit(*col) && enabled && col->enabled && col->gameObject != gameObject)
+	bool InvalidLayerPattern = false;
+	for (auto& itr : ignoreCollidePatterns)
+	{
+		if ((itr.layer1 == collideLayer && itr.layer2 == col->collideLayer) ||
+			(itr.layer2 == collideLayer && itr.layer1 == col->collideLayer))
+		{
+			return;
+		}
+	}
+
+	if (!InvalidLayerPattern && !gameObject->deleteFlag && !col->gameObject->deleteFlag && IsHit(*col) && enabled && col->enabled && col->gameObject != gameObject)
 	{
 		if (!isTrigger && !col->isTrigger)
 		{
@@ -301,6 +312,9 @@ void ADXCollider::Collide(ADXCollider* col)
 
 		collideList.push_back(col);
 		col->collideList.push_back(this);
+
+		gameObject->OnColliderHit(col);
+		col->gameObject->OnColliderHit(this);
 	}
 }
 

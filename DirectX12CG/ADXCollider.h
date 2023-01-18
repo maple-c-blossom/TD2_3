@@ -16,6 +16,12 @@ enum colType
     sphere,
 };
 
+struct collidePattern
+{
+    int layer1;
+    int layer2;
+};
+
 class ADXCollider
 {
 private:
@@ -39,6 +45,7 @@ public:
     ADXVector3 scale_ = { 1,1,1 };
     std::vector<ADXCollider*> collideList{};
     ADXVector3 pushBackVector = { 0,0,0 };
+    int collideLayer = 0;
 
     ADXCollider(Object3d* obj);
     void Update(Object3d* obj);
@@ -58,4 +65,5 @@ private:
 
 private:
     static bool translateDivine;
+    static std::vector<collidePattern> ignoreCollidePatterns;
 };
