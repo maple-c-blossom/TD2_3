@@ -13,7 +13,7 @@ private:
 	static int captureCount;
 private:
 	const float maxShard = 100;
-	const int maxKneadedErasers = 50;
+	const int maxKneadedErasers = 40;
 	const float kneadedEraserDistance = 1.0f;
 	const float maxMoveSpeed = 0.3;
 	const float maxRotateSpeed = 30;

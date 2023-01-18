@@ -51,7 +51,10 @@ bool Enemy::IsAttack()
 
 void Enemy::Update()
 {
-	colliders.begin()->collideLayer = 3;
+	for(auto& itr : colliders)
+	{
+		itr.collideLayer = 3;
+	}
 
 	UniqueUpdate();
 
