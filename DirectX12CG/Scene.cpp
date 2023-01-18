@@ -173,7 +173,7 @@ void MCB::Scene::Update()
         substie.Update();
         spownTimer.Update();
 
-        if (spownTimer.IsEnd() && enemys.size() < 3)
+        if (spownTimer.IsEnd() && enemys.size() < 5)
         {
             unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
             temp->Initialize({ (float)GetRand(-1,1),0,(float)GetRand(-1,1)}, {(float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100}, pencilEnemyModel.get(), 0.5f);
