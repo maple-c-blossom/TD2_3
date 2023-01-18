@@ -5,7 +5,7 @@
 using namespace MCB;
 
 bool ADXCollider::translateDivine = false;
-std::vector<collidePattern> ADXCollider::ignoreCollidePatterns = { {1,1},{2,2},{2,3} };
+std::vector<collidePattern> ADXCollider::ignoreCollidePatterns = { {1,1},{2,2},{2,3},{3,3} };
 
 /*
 yÚGŒŸ’m‚©‚ç‰Ÿ‚µ–ß‚µƒxƒNƒgƒ‹Zo‚Ü‚Å‚Ì—¬‚êz
