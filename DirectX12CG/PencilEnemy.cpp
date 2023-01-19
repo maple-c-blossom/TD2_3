@@ -7,7 +7,7 @@ using namespace std;
 void PencilEnemy::UniqueInitialize()
 {
 	ADXCollider tempAttackCol(this);
-	tempAttackCol.radius_ = 50;
+	tempAttackCol.radius_ = 5;
 	tempAttackCol.isTrigger = true;
 	attackCol.push_back(tempAttackCol);
 	ADXCollider tempAttackObjCol(&attackObj);

@@ -49,7 +49,6 @@ void Handwriting::Update()
 	if (!deleteFlag && !lifeTimer.IsEnd())
 	{
 		allObjPtr.push_back(this);
-		Enemy::PushBackAllHandWriting(this);
 	}
 }
 

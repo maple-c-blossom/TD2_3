@@ -188,7 +188,7 @@ void MCB::Scene::Update()
             //temp->Initialize({ (float)GetRand(-1,1),0,(float)GetRand(-1,1)}, {(float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100}, pencilEnemyModel.get(), 0.5f);
             //temp->movePoint = { {-20 + temp->position.x,0,20 + temp->position.z},{ 20 + temp->position.x,0,40 + temp->position.z },{ 20 + temp->position.x,0,20 + temp->position.z } };
             unique_ptr<EraserEnemy> temp = make_unique<EraserEnemy>();
-            temp->Initialize({ 0,0,1 }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, pencilEnemyModel.get(), 0.5f);
+            temp->Initialize({ 0,0,1 }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, pencilEnemyModel.get(), 0.25f);
             enemys.push_back(move(temp));
             spownTimer.Set(60);
         }
