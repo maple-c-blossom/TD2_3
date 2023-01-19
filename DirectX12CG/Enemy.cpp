@@ -4,8 +4,7 @@
 #include "Handwriting.h"
 std::list<Enemy*> Enemy::allEnemyPtr{};
 std::list<Enemy*> Enemy::enemies{};
-std::list<Handwriting*> Enemy::handwritingPtr{};
-std::list<Handwriting*> Enemy::allHandwritingPtr{};
+
 
 using namespace MCB;
 
@@ -13,9 +12,6 @@ void Enemy::StaticUpdate()
 {
 	enemies = allEnemyPtr;
 	allEnemyPtr.clear();
-
-	handwritingPtr = allHandwritingPtr;
-	allHandwritingPtr.clear();
 }
 
 void Enemy::AttackStart()
@@ -134,7 +130,4 @@ std::list<Enemy*> Enemy::GetAllEnemies()
 	return enemies;
 }
 
-void Enemy::PushBackAllHandWriting(Handwriting* ptr)
-{
-	allHandwritingPtr.push_back(ptr);
-}
+

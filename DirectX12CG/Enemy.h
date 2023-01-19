@@ -30,9 +30,6 @@ protected:
 	// 【ADXEngine由来】全てのオブジェクトが入った配列
 	static std::list<Enemy*> enemies;
 
-	static std::list<Handwriting*> handwritingPtr;
-
-	static std::list<Handwriting*> allHandwritingPtr;
 
 	void AttackTimerUpdate();
 public:
@@ -46,7 +43,6 @@ public:
 	bool IsAttack();
 	//【ADXEngine由来】
 	static std::list<Enemy*> GetAllEnemies();
-	static void PushBackAllHandWriting(Handwriting* ptr);
 	virtual void Draw() = 0;
 };
 

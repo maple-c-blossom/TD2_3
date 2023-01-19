@@ -1,5 +1,5 @@
 #include "EraserEnemy.h"
-
+#include "WritingEnemy.h"
 void EraserEnemy::UniqueInitialize()
 {
 	for (auto& itr : attackObj.colliders)
@@ -13,13 +13,14 @@ void EraserEnemy::UniqueUpdate()
 {
 	velocity.V3Norm();
 	float tempNorm = 1000;
-	for (auto& itr : this->handwritingPtr)
+	velocity = Float3(0.f,0.f,0.f);
+	for (auto& itr : *WritingEnemy::GetHandWrite())
 	{
-		MCB::Vector3D temp;
-		temp.V3Get(position, itr->position);
+		MCB::Vector3D temp(position, itr->position);
 		float tempLen = temp.V3Len();
 		if (tempLen < tempNorm)
 		{
+			temp.V3Norm();
 			velocity = temp;
 			tempNorm = tempLen;
 		}
@@ -27,11 +28,11 @@ void EraserEnemy::UniqueUpdate()
 	position.x += velocity.vec.x * speed;
 	position.y += velocity.vec.y * speed;
 	position.z += velocity.vec.z * speed;
-	for (auto& itr : this->handwritingPtr)
+	for (auto& itr : *WritingEnemy::GetHandWrite())
 	{
 		for (auto& itr2 : itr->colliders)
 		{
-			for (auto& itr3 : this->colliders)
+			for (auto& itr3 : colliders)
 			{
 				if (itr3.IsHit(itr2))
 				{

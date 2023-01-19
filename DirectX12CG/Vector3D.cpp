@@ -173,6 +173,14 @@ Vector3D& MCB::Vector3D::operator=(const Float3 a)
 	return *this;
 }
 
+Vector3D& MCB::Vector3D::operator=(const Vector3D a)
+{
+	this->vec.x = a.vec.x;
+	this->vec.y = a.vec.y;
+	this->vec.z = a.vec.z;
+	return *this; 
+}
+
 Vector3D& MCB::Vector3D::operator=(const DirectX::XMFLOAT3 a)
 {
 	this->vec.x = a.x;
