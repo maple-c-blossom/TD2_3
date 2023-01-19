@@ -82,6 +82,8 @@ namespace MCB
 
 		Boss boss;
 
+		std::list<Object3d> walls;
+
 		Timer spownTimer;
 #pragma endregion スプライト
 #pragma region パーティクル
