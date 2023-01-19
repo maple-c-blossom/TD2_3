@@ -16,7 +16,7 @@ void mechanicalPencil::Initialize(MCB::Vector3D velocity, MCB::Float3 position, 
 	this->speed = speed;
 
 	ADXCollider tempAttackCol(this);
-	colliders.push_back(tempAttackCol);
+	attackCol.push_back(tempAttackCol);
 	ADXCollider tempAttackObjCol(&attackObj);
 	attackObj.colliders.push_back(tempAttackObjCol);
 	for (auto& itr : colliders)

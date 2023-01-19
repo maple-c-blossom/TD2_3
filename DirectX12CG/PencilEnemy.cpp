@@ -15,8 +15,7 @@ void PencilEnemy::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::
 
 	ADXCollider tempAttackCol(this);
 	tempAttackCol.radius_ = 50;
-	colliders.push_back(tempAttackCol);
-	colliders.push_back(this);
+	attackCol.push_back(tempAttackCol);
 	ADXCollider tempAttackObjCol(&attackObj);
 	tempAttackObjCol.isTrigger = true;
 	attackObj.colliders.push_back(tempAttackObjCol);
@@ -151,12 +150,8 @@ void PencilEnemy::AttackCheck()
 {
 	if (Player::GetPlayer() == nullptr)return;
 	int num = 0;
-	for (auto& itr : colliders)
+	for (auto& itr : attackCol)
 	{
-		if (num != 0)
-		{
-			break;
-		}
 		for (auto& itr2 : Player::GetPlayer()->colliders)
 		{
 			if (itr.IsHit(itr2))
@@ -176,13 +171,8 @@ void PencilEnemy::AttackHit()
 {
 	if (!attack)return;
 	int num = 0;
-	for (auto& itr :colliders)
+	for (auto& itr : attackObj.colliders)
 	{
-		if (num != 2)
-		{
-			num++;
-			continue;
-		}
 		for (auto& itr2 : Player::GetPlayer()->colliders)
 		{
 			if (itr.IsHit(itr2))

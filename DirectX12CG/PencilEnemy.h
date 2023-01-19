@@ -7,6 +7,7 @@ class PencilEnemy:public WritingEnemy
 {
 public:
 	std::vector<MCB::Vector3D> movePoint{};
+	std::vector<ADXCollider> attackCol;
 
 private:
 	int movePointIndex = 0;

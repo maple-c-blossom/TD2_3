@@ -25,9 +25,11 @@ void EraserEnemy::UniqueUpdate()
 	{
 		MCB::Vector3D temp;
 		temp.V3Get(position, itr->position);
-		if (temp.V3Len() < tempNorm)
+		float tempLen = temp.V3Len();
+		if (tempLen < tempNorm)
 		{
 			velocity = temp;
+			tempNorm = tempLen;
 		}
 	}
 	position.x += velocity.vec.x * speed;
