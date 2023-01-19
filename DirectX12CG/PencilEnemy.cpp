@@ -35,7 +35,6 @@ void PencilEnemy::UniqueUpdate()
 			Movement += speed;
 		}
 	}
-	handwriting.remove_if([](auto& itr) {return itr->GetLifeTimeOver() || itr->deleteFlag; });
 	if (capture == nullptr)
 	{
 		if (Movement > WRITING_RADIUS)

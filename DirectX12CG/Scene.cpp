@@ -172,7 +172,7 @@ void MCB::Scene::Update()
 {
     Enemy::StaticUpdate();
     KneadedEraser::StaticUpdate();
-
+    WritingEnemy::StaticUpdate();
 //        if (input->IsKeyTrigger(DIK_SPACE))
 //        {
 //            sceneEnd = true;
@@ -200,7 +200,7 @@ void MCB::Scene::Update()
         }
 
         boss.Update();
-        WritingEnemy::StaticUpdate();
+
         lights->UpDate();
         viewCamera->Update();
 
