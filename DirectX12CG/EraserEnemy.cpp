@@ -6,6 +6,7 @@ void EraserEnemy::UniqueInitialize()
 	{
 		itr.isTrigger = true;
 	}
+	enemyType = Erase;
 	Object3d::Init();
 }
 
@@ -16,6 +17,19 @@ void EraserEnemy::UniqueUpdate()
 	velocity = Float3(0.f,0.f,0.f);
 	for (auto& itr : *WritingEnemy::GetHandWrite())
 	{
+		MCB::Vector3D temp(position, itr->position);
+		float tempLen = temp.V3Len();
+		if (tempLen < tempNorm)
+		{
+			temp.V3Norm();
+			velocity = temp;
+			tempNorm = tempLen;
+		}
+	}
+
+	for (auto& itr : enemies)
+	{
+		if (itr->enemyType == Erase)continue;
 		MCB::Vector3D temp(position, itr->position);
 		float tempLen = temp.V3Len();
 		if (tempLen < tempNorm)

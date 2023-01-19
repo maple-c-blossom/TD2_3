@@ -13,6 +13,12 @@ class Player;
 class Enemy:public MCB::Object3d
 {
 protected:
+	enum Type
+	{
+		Writing,
+		Erase
+	};
+	
 	int hp;
 	float speed;
 	MCB::Vector3D velocity;
@@ -33,6 +39,7 @@ protected:
 
 	void AttackTimerUpdate();
 public:
+	int enemyType = Writing;
 	virtual void UniqueInitialize() = 0;
 	virtual void UniqueUpdate() = 0;
 	static void StaticUpdate();
