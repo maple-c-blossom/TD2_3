@@ -208,9 +208,24 @@ void Player::Update()
 
 	velocity.vec = { 0,0,0 };
 
-	for (auto& itr : kneadedErasers)
 	{
-		itr.UniqueUpdate();
+		bool connectedFlag = true;
+		auto& itr = kneadedErasers.rbegin();
+		while (itr != kneadedErasers.rend())
+		{
+			if (itr->deleteFlag)
+			{
+				connectedFlag = false;
+			}
+
+			if (!connectedFlag)
+			{
+				itr->deleteFlag = true;
+			}
+
+			itr->UniqueUpdate();
+			itr++;
+		}
 	}
 
 	allObjPtr.push_back(this);
