@@ -151,6 +151,18 @@ void Player::Update()
 
 	if (rotateMode)
 	{
+		if (moving && abs(rotateModeCount) < 12.56)
+		{
+			if (rotateModeCount > 0)
+			{
+				rotateModeCount += 0.3;
+			}
+			else
+			{
+				rotateModeCount -= 0.3;
+			}
+		}
+
 		shard -= abs(rotateModeCount * 0.001);
 		rotation.y += rotateModeCount * 0.03;
 	}
@@ -182,8 +194,6 @@ void Player::Update()
 			itr.position.x -= rotatedVel.ConvertXMFloat3().x;
 			itr.position.y -= rotatedVel.ConvertXMFloat3().y;
 			itr.position.z -= rotatedVel.ConvertXMFloat3().z;
-
-		
 		}
 	}
 
