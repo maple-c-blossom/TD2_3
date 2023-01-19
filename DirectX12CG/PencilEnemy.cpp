@@ -46,10 +46,7 @@ void PencilEnemy::UniqueUpdate()
 			Movement = 0;
 		}
 	}
-	for (auto& itr : handwriting)
-	{
-		itr->Update();
-	}
+
 
 	if (movePoint.size() > 0)
 	{
@@ -123,10 +120,7 @@ void PencilEnemy::Draw()
 	{
 		attackObj.Draw();
 	}
-	for (auto& itr : handwriting)
-	{
-		itr->Draw();
-	}
+
 }
 
 void PencilEnemy::UpdateMatrix(MCB::ICamera* camera)

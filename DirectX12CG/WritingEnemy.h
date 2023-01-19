@@ -14,5 +14,7 @@ public:
 	virtual void Draw() = 0;
 	virtual void UpdateMatrix(MCB::ICamera* camera) = 0;
 	static std::list<std::unique_ptr<Handwriting>>* GetHandWrite();
+	static void StaticDraw();
+	static void StaticUpdate();
 };
 

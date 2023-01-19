@@ -25,6 +25,7 @@ void EraserEnemy::UniqueUpdate()
 			temp.V3Norm();
 			velocity = temp;
 			tempNorm = tempLen;
+
 		}
 	}
 
@@ -52,6 +53,7 @@ void EraserEnemy::UniqueUpdate()
 				if (itr3.IsHit(itr2))
 				{
 					itr->SetDelete(true);
+
 				}
 			}
 		}
@@ -64,9 +66,21 @@ void EraserEnemy::UniqueUpdate()
 			if (itr2->enemyType == Erase || itr2->deleteFlag || !itr2->imotalTimer.IsEnd())continue;
 			for (auto& itr3 : itr2->colliders)
 			{
+				if (itr3.gameObject->deleteFlag)continue;
 				if (itr3.IsHit(itr))
 				{
+					bool flag = itr2->deleteFlag;
 					itr2->IsDamage(1);
+					if (flag != itr2->deleteFlag)
+					{
+						for (int i = 0; i < 10; i++)
+						{
+							std::unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
+							float angle = ConvertRadius((i * 32.f));
+							temp->Initialize({ position.x + sinf(angle) * 2,position.y,position.z + cosf(angle) * 2 }, handwritingModel);
+							WritingEnemy::GetHandWrite()->push_back(move(temp));
+						}
+					}
 				}
 			}
 		}
