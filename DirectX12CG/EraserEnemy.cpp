@@ -6,7 +6,6 @@ void EraserEnemy::UniqueInitialize()
 	{
 		itr.isTrigger = true;
 	}
-	Object3d::Init();
 }
 
 void EraserEnemy::UniqueUpdate()

@@ -23,6 +23,7 @@ void Player::Initialize()
 	velocity = Vector3D{ 0,0,0 };
 	colliders.push_back(ADXCollider(this));
 	colliders.back().pushable_ = true;
+	colliders.back().collideLayer = -1;
 	playerPtr = this;
 }
 
@@ -128,6 +129,8 @@ void Player::Update()
 			rotateMode = false;
 		}
 	}
+
+	kneadedErasers.remove_if([](auto& itr) {return itr.deleteFlag; });
 
 	if (kneadedErasers.size() <= 0)
 	{

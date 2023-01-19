@@ -17,7 +17,6 @@ void PencilEnemy::UniqueInitialize()
 	{
 		itr.isTrigger = true;
 	}
-	Object3d::Init();
 	attackObj.model = model;
 	attackObj.scale = { 2,2,2 };
 	attackObj.Init();
