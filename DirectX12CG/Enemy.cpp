@@ -54,6 +54,10 @@ void Enemy::IsDamage(int damage)
 {
 	hp -= damage;
 	imotalTimer.Set(10);
+	if (hp <= 0)
+	{
+		deleteFlag = true;
+	}
 }
 
 void Enemy::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, float speed)
