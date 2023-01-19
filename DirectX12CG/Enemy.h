@@ -19,7 +19,7 @@ protected:
 		Erase
 	};
 	
-	int hp;
+	
 	float speed;
 	MCB::Vector3D velocity;
 	MCB::Object3d attackObj;
@@ -39,6 +39,8 @@ protected:
 
 	void AttackTimerUpdate();
 public:
+	Timer imotalTimer;
+	int hp;
 	int enemyType = Writing;
 	virtual void UniqueInitialize() = 0;
 	virtual void UniqueUpdate() = 0;
@@ -48,6 +50,7 @@ public:
 	void Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, float speed);
 	void Update();
 	bool IsAttack();
+	void IsDamage(int damage);
 	//ÅyADXEngineóRóàÅz
 	static std::list<Enemy*> GetAllEnemies();
 	virtual void Draw() = 0;

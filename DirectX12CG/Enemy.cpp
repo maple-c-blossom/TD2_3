@@ -50,6 +50,12 @@ bool Enemy::IsAttack()
 	return attack;
 }
 
+void Enemy::IsDamage(int damage)
+{
+	hp -= damage;
+	imotalTimer.Set(10);
+}
+
 void Enemy::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, float speed)
 {
 	this->velocity = velocity;
@@ -58,12 +64,14 @@ void Enemy::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model*
 	this->position.z = position.z;
 	this->model = model;
 	this->speed = speed;
-
+	this->hp = 5;
 	Object3d::Init();
 
 	colliders.push_back(this);
 	colliders.back().pushable_ = true;
-
+	imotalTimer.Set(1);
+	imotalTimer.Update();
+	imotalTimer.Update();
 	UniqueInitialize();
 }
 
@@ -73,7 +81,10 @@ void Enemy::Update()
 	{
 		itr.collideLayer = 3;
 	}
-
+	if (!imotalTimer.IsEnd())
+	{
+		imotalTimer.Update();
+	}
 	UniqueUpdate();
 
 	if (capture == nullptr)
@@ -124,6 +135,10 @@ void Enemy::Update()
 	for (auto& itr : colliders)
 	{
 		itr.Update(this);
+	}
+	if (hp <= 0)
+	{
+		deleteFlag = true;
 	}
 }
 
