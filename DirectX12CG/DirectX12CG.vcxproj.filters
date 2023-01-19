@@ -369,12 +369,6 @@
     <ClCompile Include="Timer.cpp">
       <Filter>ソース ファイル\Engine\Util</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>ヘッダー ファイル\Game\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="KneadedEraser.cpp">
-      <Filter>ヘッダー ファイル\Game\Player</Filter>
-    </ClCompile>
     <ClCompile Include="Boss.cpp">
       <Filter>ソース ファイル\Game\Enemy</Filter>
     </ClCompile>
@@ -392,6 +386,12 @@
     </ClCompile>
     <ClCompile Include="ADXVector3.cpp">
       <Filter>ソース ファイル\Engine\HanaBehaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル\Game\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="KneadedEraser.cpp">
+      <Filter>ソース ファイル\Game\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -610,14 +610,8 @@
     <ClInclude Include="Timer.h">
       <Filter>ヘッダー ファイル\Engine\Util</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>ソース ファイル\Game\Player</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>リソース ファイル\Icon</Filter>
-    </ClInclude>
-    <ClInclude Include="KneadedEraser.h">
-      <Filter>ソース ファイル\Game\Player</Filter>
     </ClInclude>
     <ClInclude Include="Boss.h">
       <Filter>ヘッダー ファイル\Game\Enemy</Filter>
@@ -636,6 +630,12 @@
     </ClInclude>
     <ClInclude Include="PencilBullet.h">
       <Filter>ヘッダー ファイル\Game\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="KneadedEraser.h">
+      <Filter>ヘッダー ファイル\Game\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>ヘッダー ファイル\Game\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
