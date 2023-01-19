@@ -2,6 +2,8 @@
 #include "Object3d.h"
 #include "Util.h"
 #include "Timer.h"
+
+class Enemy;
 class Handwriting:public MCB::Object3d
 {
 private:

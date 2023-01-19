@@ -1,6 +1,7 @@
 #include "Handwriting.h"
 #include "Status.h"
 #include "Player.h"
+#include "Enemy.h"
 
 void Handwriting::Initialize(MCB::Float3 position, MCB::Model* model)
 {
@@ -48,6 +49,7 @@ void Handwriting::Update()
 	if (!deleteFlag && !lifeTimer.IsEnd())
 	{
 		allObjPtr.push_back(this);
+		Enemy::PushBackAllHandWriting(this);
 	}
 }
 

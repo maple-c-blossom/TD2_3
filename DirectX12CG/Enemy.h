@@ -29,6 +29,11 @@ protected:
 	static std::list<Enemy*> allEnemyPtr;
 	// 【ADXEngine由来】全てのオブジェクトが入った配列
 	static std::list<Enemy*> enemies;
+
+	static std::list<Handwriting*> handwriting;
+
+	static std::list<Handwriting*> allHandwritingPtr;
+
 	void AttackTimerUpdate();
 public:
 	virtual void Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model,float speed) = 0;
@@ -40,6 +45,7 @@ public:
 	bool IsAttack();
 	//【ADXEngine由来】
 	static std::list<Enemy*> GetAllEnemies();
+	static void PushBackAllHandWriting(Handwriting* ptr);
 	virtual void Draw() = 0;
 };
 
