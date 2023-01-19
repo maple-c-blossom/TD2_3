@@ -15,5 +15,6 @@ public:
 	void Update();
 	void Draw();
 	bool GetLifeTimeOver();
+	void SetDelete(bool flag) { deleteFlag = flag; };
 };
 

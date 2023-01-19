@@ -13,10 +13,6 @@ void EraserEnemy::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::
 		itr.pushable_ = true;
 	}
 
-	for (auto& itr : attackObj.colliders)
-	{
-		itr.isTrigger = true;
-	}
 	Object3d::Init();
 
 }
@@ -24,11 +20,32 @@ void EraserEnemy::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::
 void EraserEnemy::UniqueUpdate()
 {
 	velocity.V3Norm();
-
+	float tempNorm = 1000;
+	for (auto& itr : this->handwritingPtr)
+	{
+		MCB::Vector3D temp;
+		temp.V3Get(position, itr->position);
+		if (temp.V3Len() < tempNorm)
+		{
+			velocity = temp;
+		}
+	}
 	position.x += velocity.vec.x * speed;
 	position.y += velocity.vec.y * speed;
 	position.z += velocity.vec.z * speed;
-
+	for (auto& itr : this->handwritingPtr)
+	{
+		for (auto& itr2 : itr->colliders)
+		{
+			for (auto& itr3 : this->colliders)
+			{
+				if (itr3.IsHit(itr2))
+				{
+					itr->SetDelete(true);
+				}
+			}
+		}
+	}
 
 
 
@@ -37,6 +54,11 @@ void EraserEnemy::UniqueUpdate()
 void EraserEnemy::Draw()
 {
 	Object3d::Draw();
+}
+
+void EraserEnemy::UpdateMatrix(MCB::ICamera* camera)
+{
+	Object3d::Update(*camera->GetView(), *camera->GetProjection());
 }
 
 void EraserEnemy::Turn()
