@@ -14,6 +14,7 @@ namespace MCB
 		Vector3D(const float x, const float y,const float z);
 
 		Vector3D V3Get(Float3 start, Float3 end);
+		Vector3D V3Get(DirectX::XMFLOAT3 start, DirectX::XMFLOAT3 end);
 		float V3Len() const;
 		void V3Norm();
 		static Vector3D normal(Vector3D v);

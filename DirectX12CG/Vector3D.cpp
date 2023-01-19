@@ -8,6 +8,13 @@ MCB::Vector3D::Vector3D(Float3 start, Float3 end)
 	vec = end - start;
 }
 
+MCB::Vector3D::Vector3D(DirectX::XMFLOAT3 start, DirectX::XMFLOAT3 end)
+{
+	vec.x = end.x - start.x;
+	vec.y = end.y - start.y;
+	vec.z = end.z - start.z;
+}
+
 
 
 MCB::Vector3D::Vector3D()
@@ -30,6 +37,12 @@ Vector3D MCB::Vector3D::V3Get(Float3 start, Float3 end)
 {
 	 Vector3D temp(start,end);
 	 return temp;
+}
+
+Vector3D MCB::Vector3D::V3Get(DirectX::XMFLOAT3 start, DirectX::XMFLOAT3 end)
+{
+	Vector3D temp(start, end);
+	return temp;
 }
 float MCB::Vector3D::V3Len() const
 {

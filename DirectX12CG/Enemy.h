@@ -3,11 +3,11 @@
 #include <vector>
 #include <memory>
 #include <list>
-#include "Handwriting.h"
 #include "ICamera.h"
 #include "ADXCollider.h"
 #include "Timer.h"
 #include "KneadedEraser.h"
+#include "Handwriting.h"
 
 class Player;
 class Enemy:public MCB::Object3d
@@ -30,7 +30,7 @@ protected:
 	// 【ADXEngine由来】全てのオブジェクトが入った配列
 	static std::list<Enemy*> enemies;
 
-	static std::list<Handwriting*> handwriting;
+	static std::list<Handwriting*> handwritingPtr;
 
 	static std::list<Handwriting*> allHandwritingPtr;
 

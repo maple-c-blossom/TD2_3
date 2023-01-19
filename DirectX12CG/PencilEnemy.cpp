@@ -1,6 +1,6 @@
 #include "PencilEnemy.h"
 #include "Player.h"
-
+#include "Handwriting.h"
 using namespace MCB;
 using namespace std;
 
@@ -8,7 +8,8 @@ void PencilEnemy::UniqueInitialize()
 {
 	ADXCollider tempAttackCol(this);
 	tempAttackCol.radius_ = 50;
-	colliders.push_back(tempAttackCol);
+	tempAttackCol.isTrigger = true;
+	attackCol.push_back(tempAttackCol);
 	ADXCollider tempAttackObjCol(&attackObj);
 	tempAttackObjCol.isTrigger = true;
 	attackObj.colliders.push_back(tempAttackObjCol);
@@ -83,7 +84,7 @@ void PencilEnemy::UniqueUpdate()
 		for (auto& itr : colliders)
 		{
 			itr.Update(this);
-			if (num == 0)
+			if (num == 1)
 			{
 				itr.isTrigger = true;
 				itr.radius_ = 3;
@@ -105,6 +106,10 @@ void PencilEnemy::UniqueUpdate()
 	for (auto& itr : attackObj.colliders)
 	{
 		itr.Update(&attackObj);
+	}
+	for (auto& itr : attackCol)
+	{
+		itr.Update(this);
 	}
 	if (capture == nullptr)
 	{
@@ -139,19 +144,15 @@ void PencilEnemy::AttackCheck()
 {
 	if (Player::GetPlayer() == nullptr)return;
 	int num = 0;
-	for (auto& itr : colliders)
+	for (auto& itr : attackCol)
 	{
-		if (num != 0)
-		{
-			break;
-		}
 		for (auto& itr2 : Player::GetPlayer()->colliders)
 		{
 			if (itr.IsHit(itr2))
 			{
 				AttackStart();
 				Vector3D vec;
-				vec.V3Get({ position.x,position.y ,position.z }, { Player::GetPlayer()->position.x,Player::GetPlayer()->position.y,Player::GetPlayer()->position.z });
+				vec.V3Get(position,  Player::GetPlayer()->position);
 				vec.V3Norm();
 				attackObj.position = { position.x + vec.vec.x * 2,position.y + vec.vec.y * 2,position.z + vec.vec.z * 2 };
 			}
@@ -164,13 +165,8 @@ void PencilEnemy::AttackHit()
 {
 	if (!attack)return;
 	int num = 0;
-	for (auto& itr :colliders)
+	for (auto& itr : attackObj.colliders)
 	{
-		if (num == 0)
-		{
-			num = 1;
-			continue;
-		}
 		for (auto& itr2 : Player::GetPlayer()->colliders)
 		{
 			if (itr.IsHit(itr2))
@@ -178,5 +174,6 @@ void PencilEnemy::AttackHit()
 				Player::GetPlayer()->Damage(damage);
 			}
 		}
+		num++;
 	}
 }

@@ -2,13 +2,14 @@
 #include "Player.h"
 #include "Status.h"
 
+
 using namespace MCB;
 using namespace std;
 
 void mechanicalPencil::UniqueInitialize()
 {
 	ADXCollider tempAttackCol(this);
-	colliders.push_back(tempAttackCol);
+	attackCol.push_back(tempAttackCol);
 	ADXCollider tempAttackObjCol(&attackObj);
 	attackObj.colliders.push_back(tempAttackObjCol);
 	for (auto& itr : attackObj.colliders)

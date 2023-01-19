@@ -1,10 +1,10 @@
 #include "Enemy.h"
 #include "Status.h"
 #include "Player.h"
-
+#include "Handwriting.h"
 std::list<Enemy*> Enemy::allEnemyPtr{};
 std::list<Enemy*> Enemy::enemies{};
-std::list<Handwriting*> Enemy::handwriting{};
+std::list<Handwriting*> Enemy::handwritingPtr{};
 std::list<Handwriting*> Enemy::allHandwritingPtr{};
 
 using namespace MCB;
@@ -14,7 +14,7 @@ void Enemy::StaticUpdate()
 	enemies = allEnemyPtr;
 	allEnemyPtr.clear();
 
-	handwriting = allHandwritingPtr;
+	handwritingPtr = allHandwritingPtr;
 	allHandwritingPtr.clear();
 }
 
