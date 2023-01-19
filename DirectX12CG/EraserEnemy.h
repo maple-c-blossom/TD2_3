@@ -4,6 +4,7 @@
 class EraserEnemy :public Enemy
 {
 public:
+	MCB::Model* handwritingModel;
 	void UniqueInitialize() override;
 	void UniqueUpdate() override;
 	void Draw() override;

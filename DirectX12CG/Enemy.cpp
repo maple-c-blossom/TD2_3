@@ -2,6 +2,7 @@
 #include "Status.h"
 #include "Player.h"
 #include "Handwriting.h"
+#include "WritingEnemy.h"
 std::list<Enemy*> Enemy::allEnemyPtr{};
 std::list<Enemy*> Enemy::enemies{};
 

@@ -82,7 +82,6 @@ void mechanicalPencil::UniqueUpdate()
 		itr.Update(&attackObj);
 	}
 	AttackHit();
-	handwriting.remove_if([](auto& itr) {return itr->GetLifeTimeOver(); });
 
 
 

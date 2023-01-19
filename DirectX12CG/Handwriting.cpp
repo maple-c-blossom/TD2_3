@@ -46,7 +46,11 @@ void Handwriting::Update()
 		}
 		itr.Update(this);
 	}
-	if (!deleteFlag && !lifeTimer.IsEnd())
+	if (lifeTimer.IsEnd())
+	{
+		deleteFlag = true;
+	}
+	if (!deleteFlag)
 	{
 		allObjPtr.push_back(this);
 	}

@@ -172,7 +172,7 @@ void MCB::Scene::Update()
 {
     Enemy::StaticUpdate();
     KneadedEraser::StaticUpdate();
-
+    WritingEnemy::StaticUpdate();
 //        if (input->IsKeyTrigger(DIK_SPACE))
 //        {
 //            sceneEnd = true;
@@ -189,6 +189,7 @@ void MCB::Scene::Update()
             //temp->movePoint = { {-20 + temp->position.x,0,20 + temp->position.z},{ 20 + temp->position.x,0,40 + temp->position.z },{ 20 + temp->position.x,0,20 + temp->position.z } };
             unique_ptr<EraserEnemy> temp = make_unique<EraserEnemy>();
             temp->Initialize({ 0,0,1 }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, pencilEnemyModel.get(), 0.25f);
+            temp->handwritingModel = WritingModel.get();
             enemys.push_back(move(temp));
             spownTimer.Set(60);
         }
@@ -199,6 +200,7 @@ void MCB::Scene::Update()
         }
 
         boss.Update();
+
         lights->UpDate();
         viewCamera->Update();
 
@@ -231,6 +233,7 @@ void MCB::Scene::Draw()
         itr->Draw();
     }
     boss.Draw();
+    WritingEnemy::StaticDraw();
     //human.Draw();
     //testSpher.Draw();
     //testSpher.FbxDraw();
