@@ -4,26 +4,14 @@
 using namespace MCB;
 using namespace std;
 
-void PencilEnemy::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, float speed)
+void PencilEnemy::UniqueInitialize()
 {
-	//this->velocity = velocity;
-	this->position.x = position.x;
-	this->position.y = position.y;
-	this->position.z = position.z;
-	this->model = model;
-	this->speed = speed;
-
 	ADXCollider tempAttackCol(this);
 	tempAttackCol.radius_ = 50;
 	colliders.push_back(tempAttackCol);
-	colliders.push_back(this);
 	ADXCollider tempAttackObjCol(&attackObj);
 	tempAttackObjCol.isTrigger = true;
 	attackObj.colliders.push_back(tempAttackObjCol);
-	for (auto& itr : colliders)
-	{
-		itr.pushable_ = true;
-	}
 	for (auto& itr : attackObj.colliders)
 	{
 		itr.isTrigger = true;

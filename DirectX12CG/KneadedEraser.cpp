@@ -11,6 +11,17 @@ void KneadedEraser::UniqueUpdate()
 	{
 		colItr.Update(this);
 	}
+
+	for (auto& colItr : colliders)
+	{
+		for (auto& colListItr : colItr.collideList)
+		{
+			if (!colListItr->pushable_)
+			{
+
+			}
+		}
+	}
 }
 
 void KneadedEraser::StaticUpdate()

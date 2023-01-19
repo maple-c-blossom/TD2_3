@@ -85,13 +85,13 @@ void MCB::Scene::Object3DInit()
     walls.back().colliders.back().colType_ = box;
 
     unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
-    temp->Initialize({ 0,0,0 }, { 20,0,40 }, pencilEnemyModel.get(), 0.5f);
+    temp->Enemy::Initialize({ 0,0,0 }, { 20,0,40 }, pencilEnemyModel.get(), 0.5f);
     temp->movePoint = { {20,0,40},{ -20,0,20 },{ -20,0,40 } };
     temp->SetHandwritingModel(WritingModel.get());
     enemys.push_back(move(temp));
 
     temp = make_unique<PencilEnemy>();
-    temp->Initialize({ 0,0,0 }, { -20,0,20 }, pencilEnemyModel.get(), 0.5f);
+    temp->Enemy::Initialize({ 0,0,0 }, { -20,0,20 }, pencilEnemyModel.get(), 0.5f);
     temp->movePoint = { {-20,0,20},{ 20,0,40 },{ 20,0,20 } };
     temp->SetHandwritingModel(WritingModel.get());
     enemys.push_back(move(temp));

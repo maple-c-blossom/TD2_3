@@ -36,11 +36,12 @@ protected:
 
 	void AttackTimerUpdate();
 public:
-	virtual void Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model,float speed) = 0;
+	virtual void UniqueInitialize() = 0;
 	virtual void UniqueUpdate() = 0;
 	static void StaticUpdate();
 	virtual void UpdateMatrix(MCB::ICamera* camera) = 0;
 	void AttackStart();//攻撃開始のフラグをtrueにする
+	void Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, float speed);
 	void Update();
 	bool IsAttack();
 	//【ADXEngine由来】

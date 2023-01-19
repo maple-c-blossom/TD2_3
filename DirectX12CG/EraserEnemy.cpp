@@ -1,24 +1,12 @@
 #include "EraserEnemy.h"
 
-void EraserEnemy::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model,float speed)
+void EraserEnemy::UniqueInitialize()
 {
-	this->velocity = velocity;
-	this->position.x = position.x;
-	this->position.y = position.y;
-	this->position.z = position.z;
-	this->model = model;
-	this->speed = speed;
-	for (auto& itr : colliders)
-	{
-		itr.pushable_ = true;
-	}
-
 	for (auto& itr : attackObj.colliders)
 	{
 		itr.isTrigger = true;
 	}
 	Object3d::Init();
-
 }
 
 void EraserEnemy::UniqueUpdate()

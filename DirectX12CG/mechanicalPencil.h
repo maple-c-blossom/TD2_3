@@ -10,7 +10,7 @@ private:
 	std::list<std::unique_ptr<PencilBullet>> bullets;
 	MCB::Model* bulletModel;
 public:
-	void Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, float speed) override;
+	void UniqueInitialize() override;
 	void UniqueUpdate() override;
 	void Draw() override;
 	void UpdateMatrix(MCB::ICamera* camera) override;

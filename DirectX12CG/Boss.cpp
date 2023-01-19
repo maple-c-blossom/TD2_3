@@ -8,7 +8,7 @@ void Boss::EnemyPop(MCB::Vector3D velocity, MCB::Float3 position, float speed, i
 	for (int i = 0; i < popNum; i++)
 	{
 		unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
-		temp->Initialize({ 1,0,0 }, { 0,0,0 }, enemyModel, 0.5f);
+		temp->Enemy::Initialize({ 1,0,0 }, { 0,0,0 }, enemyModel, 0.5f);
 		temp->SetHandwritingModel(handwrModel);
 		enemys.push_back(move(temp));
 	}

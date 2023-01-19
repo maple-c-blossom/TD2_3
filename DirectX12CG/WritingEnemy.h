@@ -8,7 +8,7 @@ protected:
 	float Movement;
 	MCB::Model* handwritingModel;
 public:
-	virtual void Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, float speed) = 0;
+	virtual void UniqueInitialize() = 0;
 	void SetHandwritingModel(MCB::Model* model);
 	virtual void UniqueUpdate() = 0;
 	virtual void Draw() = 0;
