@@ -16,6 +16,7 @@ void WritingEnemy::StaticUpdate()
 	{
 		itr->Update();
 	}
+	handwriting.remove_if([](auto& itr) {return itr->deleteFlag; });
 }
 
 void WritingEnemy::StaticDraw()

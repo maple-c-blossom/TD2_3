@@ -18,6 +18,7 @@ void EraserEnemy::UniqueUpdate()
 	velocity = Float3(0.f,0.f,0.f);
 	for (auto& itr : *WritingEnemy::GetHandWrite())
 	{
+		if (itr->generatorType == TypeName::Bonus) continue;
 		MCB::Vector3D temp(position, itr->position);
 		float tempLen = temp.V3Len();
 		if (tempLen < tempNorm)
@@ -46,6 +47,7 @@ void EraserEnemy::UniqueUpdate()
 	position.z += velocity.vec.z * speed;
 	for (auto& itr : *WritingEnemy::GetHandWrite())
 	{
+		if (itr->generatorType == TypeName::Bonus) continue;
 		for (auto& itr2 : itr->colliders)
 		{
 			for (auto& itr3 : colliders)
@@ -78,6 +80,7 @@ void EraserEnemy::UniqueUpdate()
 							std::unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
 							float angle = ConvertRadius((i * 32.f));
 							temp->Initialize({ position.x + sinf(angle) * 2,position.y,position.z + cosf(angle) * 2 }, handwritingModel);
+							temp->generatorType = TypeName::Bonus;
 							WritingEnemy::GetHandWrite()->push_back(move(temp));
 						}
 					}
