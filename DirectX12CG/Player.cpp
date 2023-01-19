@@ -22,6 +22,7 @@ void Player::Initialize()
 	prevPos = position;
 	velocity = Vector3D{ 0,0,0 };
 	colliders.push_back(ADXCollider(this));
+	colliders.back().pushable_ = true;
 	playerPtr = this;
 }
 

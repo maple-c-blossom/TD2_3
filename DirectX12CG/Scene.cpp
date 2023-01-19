@@ -76,6 +76,14 @@ void MCB::Scene::Object3DInit()
     substie.position = { 0,0,-35 };
     substie.Initialize();
 
+    Object3d wall = Object3d();
+    wall.scale = { 10,10,10 };
+    wall.Init();
+    wall.model = BoxModel;
+    walls.push_back(wall);
+    walls.back().colliders.push_back(ADXCollider(&walls.back()));
+    walls.back().colliders.back().colType_ = box;
+
     unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
     temp->Initialize({ 0,0,0 }, { 20,0,40 }, pencilEnemyModel.get(), 0.5f);
     temp->movePoint = { {20,0,40},{ -20,0,20 },{ -20,0,40 } };
@@ -100,7 +108,7 @@ void MCB::Scene::Object3DInit()
 #pragma region 各種リソースの読み込みと初期化
 void MCB::Scene::LoadModel()
 {
-	BoxModel = new Model("hoge");
+	BoxModel = new Model("Box");
 
 	groundModel = new Model("ground");
 
@@ -212,6 +220,10 @@ void MCB::Scene::Draw()
     {
         substie.Draw();
     }
+    for (auto& itr : walls)
+    {
+        itr.Draw();
+    }
     for (auto& itr : enemys)
     {
         itr->Draw();
@@ -278,6 +290,14 @@ void MCB::Scene::MatrixUpdate()
     for (auto& itr : enemys)
     {
         itr->UpdateMatrix(viewCamera);
+    }
+    for (auto& itr : walls)
+    {
+        itr.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
+        for (auto& colItr : itr.colliders)
+        {
+            colItr.Update(&itr);
+        }
     }
     boss.UpdateMatrix(viewCamera);
     //testParticle.Updata(matView, matProjection, true);
