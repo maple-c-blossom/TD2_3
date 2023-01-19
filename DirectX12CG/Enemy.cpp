@@ -59,6 +59,8 @@ void Enemy::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model*
 	this->model = model;
 	this->speed = speed;
 
+	Object3d::Init();
+
 	colliders.push_back(this);
 	colliders.back().pushable_ = true;
 
