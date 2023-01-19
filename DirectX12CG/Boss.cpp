@@ -39,6 +39,11 @@ void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* 
 
 void Boss::Update()
 {
+	for (auto& itr : colliders)
+	{
+		itr.collideLayer = 3;
+	}
+
 	velocity.V3Norm();
 	position.x += velocity.vec.x * speed;
 	position.y += velocity.vec.y * speed;
