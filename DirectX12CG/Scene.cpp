@@ -85,13 +85,13 @@ void MCB::Scene::Object3DInit()
     walls.back().colliders.back().colType_ = box;
 
     unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
-    temp->Enemy::Initialize({ 0,0,0 }, { 20,0,40 }, pencilEnemyModel.get(), 0.5f);
+    temp->Enemy::Initialize({ 0,0,1 }, { 20,0,40 }, pencilEnemyModel.get(), 0.5f);
     temp->movePoint = { {20,0,40},{ -20,0,20 },{ -20,0,40 } };
     temp->SetHandwritingModel(WritingModel.get());
     enemys.push_back(move(temp));
 
     temp = make_unique<PencilEnemy>();
-    temp->Enemy::Initialize({ 0,0,0 }, { -20,0,20 }, pencilEnemyModel.get(), 0.5f);
+    temp->Enemy::Initialize({ 1,0,0 }, { -20,0,20 }, pencilEnemyModel.get(), 0.5f);
     temp->movePoint = { {-20,0,20},{ 20,0,40 },{ 20,0,20 } };
     temp->SetHandwritingModel(WritingModel.get());
     enemys.push_back(move(temp));
@@ -181,16 +181,38 @@ void MCB::Scene::Update()
         substie.Update();
         spownTimer.Update();
 
-        if (spownTimer.IsEnd() && enemys.size() < 5)
+        if (spownTimer.IsEnd() && enemys.size() < 6)
         {
-            //unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
-            //temp->SetHandwritingModel(WritingModel.get());
-            //temp->Initialize({ (float)GetRand(-1,1),0,(float)GetRand(-1,1)}, {(float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100}, pencilEnemyModel.get(), 0.5f);
-            //temp->movePoint = { {-20 + temp->position.x,0,20 + temp->position.z},{ 20 + temp->position.x,0,40 + temp->position.z },{ 20 + temp->position.x,0,20 + temp->position.z } };
-            unique_ptr<EraserEnemy> temp = make_unique<EraserEnemy>();
-            temp->Initialize({ 0,0,1 }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, pencilEnemyModel.get(), 0.25f);
-            temp->handwritingModel = WritingModel.get();
-            enemys.push_back(move(temp));
+            switch (GetRand(1,3))
+            {
+            case 1:
+            {
+                unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
+                temp->SetHandwritingModel(WritingModel.get());
+                temp->Initialize({ (float)GetRand(-1,1),0,(float)GetRand(-1,1) }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, pencilEnemyModel.get(), 0.5f);
+                temp->movePoint = { {-20 + temp->position.x,0,20 + temp->position.z},{ 20 + temp->position.x,0,40 + temp->position.z },{ 20 + temp->position.x,0,20 + temp->position.z } };
+                enemys.push_back(move(temp));
+            }
+            break;
+            case 2:
+            {
+                unique_ptr<EraserEnemy> temp = make_unique<EraserEnemy>();
+                temp->Initialize({ 0,0,1 }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, pencilEnemyModel.get(), 0.25f);
+                temp->handwritingModel = WritingModel.get();
+                enemys.push_back(move(temp));
+            }
+                break;
+            default:
+            {
+                unique_ptr<EraserEnemy> temp = make_unique<EraserEnemy>();
+                temp->Initialize({ 0,0,1 }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, pencilEnemyModel.get(), 0.25f);
+                temp->handwritingModel = WritingModel.get();
+                enemys.push_back(move(temp));
+            }
+                break;
+            }
+
+
             spownTimer.Set(60);
         }
 

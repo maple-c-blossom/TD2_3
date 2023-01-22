@@ -19,7 +19,9 @@ namespace MCB
 	double Abs(double num);
 	float ConvertRadius(float angle);
 
-	void InitRand();
+	static void InitRand() {
+		srand((unsigned int)time(nullptr));
+	};
 	int GetRand(int min, int max);
 	template<class T>
 	T sign(T x)

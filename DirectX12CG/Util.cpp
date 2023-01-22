@@ -124,10 +124,7 @@ float MCB::ConvertRadius(float angle)
 	return angle * PI / 180.0f;
 }
 
-void MCB::InitRand()
-{
-	srand((unsigned int)time(nullptr));
-}
+
 
 int MCB::GetRand(int min, int max)
 {

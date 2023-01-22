@@ -15,7 +15,8 @@ private:
 	int notApproachingCount = 0;
 	int trunCount = 0;
 	int damage = 1;
-
+	MCB::Vector3D attackVec;
+	int writingCount;
 public:
 	void UniqueInitialize() override;
 	void UniqueUpdate() override;

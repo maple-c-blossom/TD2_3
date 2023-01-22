@@ -7,19 +7,10 @@ using namespace std;
 void PencilEnemy::UniqueInitialize()
 {
 	ADXCollider tempAttackCol(this);
-	tempAttackCol.radius_ = 5;
+	tempAttackCol.radius_ = 10;
 	tempAttackCol.isTrigger = true;
 	attackCol.push_back(tempAttackCol);
-	ADXCollider tempAttackObjCol(&attackObj);
-	tempAttackObjCol.isTrigger = true;
-	attackObj.colliders.push_back(tempAttackObjCol);
-	for (auto& itr : attackObj.colliders)
-	{
-		itr.isTrigger = true;
-	}
-	attackObj.model = model;
-	attackObj.scale = { 2,2,2 };
-	attackObj.Init();
+
 }
 
 void PencilEnemy::UniqueUpdate()
@@ -34,16 +25,35 @@ void PencilEnemy::UniqueUpdate()
 			position.z += velocity.vec.z * speed;
 			Movement += speed;
 		}
-	}
-	if (capture == nullptr)
-	{
+		else if (attack)
+		{
+			position.x += attackVec.vec.x * speed * 2;
+			position.y += attackVec.vec.y * speed * 2;
+			position.z += attackVec.vec.z * speed * 2;
+
+			for (auto& itr : movePoint)
+			{
+				itr += (attackVec * speed * 2);
+			}
+			Movement += speed * 2;
+		}
+
 		if (Movement > WRITING_RADIUS)
 		{
 			unique_ptr<Handwriting> temp = make_unique<Handwriting>();
 			temp->Initialize({ position.x,position.y,position.z }, handwritingModel);
 			handwriting.push_back(move(temp));
 			Movement = 0;
+			writingCount++;
 		}
+
+		if (writingCount > 20)
+		{
+			writingCount = 0;
+			velocity *= -1;
+		}
+
+
 	}
 
 
@@ -98,10 +108,6 @@ void PencilEnemy::UniqueUpdate()
 	{
 		attack = false;
 	}
-	for (auto& itr : attackObj.colliders)
-	{
-		itr.Update(&attackObj);
-	}
 	for (auto& itr : attackCol)
 	{
 		itr.Update(this);
@@ -115,10 +121,6 @@ void PencilEnemy::UniqueUpdate()
 void PencilEnemy::Draw()
 {
 	Object3d::Draw();
-	if (attack)
-	{
-		attackObj.Draw();
-	}
 
 }
 
@@ -128,13 +130,12 @@ void PencilEnemy::UpdateMatrix(MCB::ICamera* camera)
 	{
 		itr->Object3d::Update(*camera->GetView(),*camera->GetProjection());
 	}
-	attackObj.Update(*camera->GetView(), *camera->GetProjection());
 	Object3d::Update(*camera->GetView(), *camera->GetProjection());
 }
 
 void PencilEnemy::AttackCheck()
 {
-	if (Player::GetPlayer() == nullptr)return;
+	if (Player::GetPlayer() == nullptr || attack)return;
 	int num = 0;
 	for (auto& itr : attackCol)
 	{
@@ -143,10 +144,10 @@ void PencilEnemy::AttackCheck()
 			if (itr.IsHit(itr2))
 			{
 				AttackStart();
-				Vector3D vec;
-				vec.V3Get(position,  Player::GetPlayer()->position);
-				vec.V3Norm();
-				attackObj.position = { position.x + vec.vec.x * 2,position.y + vec.vec.y * 2,position.z + vec.vec.z * 2 };
+				attackVec = attackVec.V3Get(position, Player::GetPlayer()->position);
+				attackVec.V3Norm();
+
+				//attackObj.position = { position.x + vec.vec.x * 2,position.y + vec.vec.y * 2,position.z + vec.vec.z * 2 };
 			}
 		}
 		num++;
@@ -157,7 +158,7 @@ void PencilEnemy::AttackHit()
 {
 	if (!attack)return;
 	int num = 0;
-	for (auto& itr : attackObj.colliders)
+	for (auto& itr : colliders)
 	{
 		for (auto& itr2 : Player::GetPlayer()->colliders)
 		{

@@ -68,7 +68,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     PipeLineManager pipeline(&rootparams, &depth);
     SceneManager scene(&rootparams, &depth, &pipeline);
     scene.Initialize();
-
+    MCB::InitRand();
 
 #pragma region ÉQÅ[ÉÄÉãÅ[Év
     while (true)
