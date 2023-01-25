@@ -241,6 +241,22 @@ void Player::Update()
 	invincible = max(invincible, 0);
 
 	visible = invincible % 8 < 4;
+
+	if (shard > 15)
+	{
+		if (kneadedErasers.size() > 0)
+		{
+			//ここで「ctrlGuide3」「ctrlGuide4」「ctrlGuide5」「ctrlGuide6」という名前の画像をアニメーションさせて表示
+		}
+		else
+		{
+			//ここで「ctrlGuide2」という名前の画像を表示
+		}
+	}
+	else
+	{
+		//ここで「ctrlGuide1」という名前の画像を表示
+	}
 }
 
 void Player::UpdateMatrix(MCB::ICamera* camera)
