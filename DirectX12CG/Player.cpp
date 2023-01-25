@@ -41,9 +41,11 @@ void Player::Update()
 	bool moving = MoveUp || MoveDown || MoveRight || MoveLeft;
 
 	bool makingKneadedEraser =
-		input->IsKeyDown(keyConfig[8]) && shard > 0;
+		input->IsKeyDown(keyConfig[8]);
 
-	bool trueMakingKneadedEraser = makingKneadedEraser && kneadedErasers.size() <= maxKneadedErasers && !rotateMode;
+	bool makingKneadedEraserTrigger = input->IsKeyTrigger(keyConfig[8]);
+
+	bool trueMakingKneadedEraser = makingKneadedEraser && shard > 0 && kneadedErasers.size() <= maxKneadedErasers && !rotateMode;
 
 	velocity = position - prevPos;
 	prevPos = position;
@@ -177,19 +179,27 @@ void Player::Update()
 
 	shard = min(max(0, shard), maxShard);
 
+	if (makingKneadedEraserTrigger && kneadedErasers.size() > 0)
+	{
+		for (auto& itr : kneadedErasers)
+		{
+			itr.deleteFlag = true;
+		}
+	}
+
 	if (trueMakingKneadedEraser)
 	{
 		shard -= velocity.V3Len() * 2;
 		if (kneadedErasers.empty()
-			|| Vector3D{ kneadedErasers.back().position.x,kneadedErasers.back().position.y,kneadedErasers.back().position.z }.V3Len() > kneadedEraserDistance)
+			|| Vector3D{ kneadedErasers.front().position.x,kneadedErasers.front().position.y,kneadedErasers.front().position.z }.V3Len() > kneadedEraserDistance)
 		{
-			kneadedErasers.push_back(KneadedEraser{});
-			kneadedErasers.back().parent = this;
-			kneadedErasers.back().model = KneadedEraserModel;
-			kneadedErasers.back().matWorld.matWorld *= matWorld.matWorld;
-			kneadedErasers.back().colliders.push_back(ADXCollider(&kneadedErasers.back()));
-			kneadedErasers.back().colliders.back().isTrigger = true;
-			kneadedErasers.back().colliders.back().collideLayer = 1;
+			kneadedErasers.push_front(KneadedEraser{});
+			kneadedErasers.front().parent = this;
+			kneadedErasers.front().model = KneadedEraserModel;
+			kneadedErasers.front().matWorld.matWorld *= matWorld.matWorld;
+			kneadedErasers.front().colliders.push_back(ADXCollider(&kneadedErasers.front()));
+			kneadedErasers.front().colliders.back().isTrigger = true;
+			kneadedErasers.front().colliders.back().collideLayer = 1;
 		}
 
 		for (auto& itr : kneadedErasers)
@@ -205,30 +215,21 @@ void Player::Update()
 	captureCount = captureList.size();
 	captureList = {};
 
-	if (kneadedErasers.size() > maxKneadedErasers)
-	{
-		//kneadedErasers.erase(kneadedErasers.end());
-	}
-
 	velocity.vec = { 0,0,0 };
 
 	{
 		bool connectedFlag = true;
-		auto& itr = kneadedErasers.rbegin();
-		while (itr != kneadedErasers.rend())
+		for (auto& itr : kneadedErasers)
 		{
-			if (!IsValid(&*itr))
+			if (connectedFlag)
 			{
-				connectedFlag = false;
+				itr.UniqueUpdate();
 			}
-
-			if (!connectedFlag)
+			else
 			{
-				itr->deleteFlag = true;
+				itr.deleteFlag = true;
 			}
-
-			itr->UniqueUpdate();
-			itr++;
+			connectedFlag = IsValid(&itr);
 		}
 	}
 
