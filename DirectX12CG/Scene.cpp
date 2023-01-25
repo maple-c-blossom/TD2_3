@@ -73,12 +73,12 @@ void MCB::Scene::Object3DInit()
     substie.model = playerModel.get();
     substie.KneadedEraserModel = nerikesiModel.get();
     substie.scale = { 1,1,1 };
-    substie.position = { 0,0,-35 };
+    substie.position = { 0,0,-10 };
     substie.Initialize();
 
     Object3d wall = Object3d();
-    wall.position = { 0,0,-10 };
-    wall.scale = { 3,10,1 };
+    wall.position = { 13,9,-14 };
+    wall.scale = { 5.8,10,1.5 };
     wall.rotation = { 0,0,0 };
     wall.Init();
     wall.model = BoxModel;
