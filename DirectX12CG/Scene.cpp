@@ -73,7 +73,7 @@ void MCB::Scene::Object3DInit()
     substie.model = playerModel.get();
     substie.KneadedEraserModel = nerikesiModel.get();
     substie.scale = { 1,1,1 };
-    substie.position = { 0,0,-10 };
+    substie.position = { 0,0,0 };
     substie.Initialize();
 
     Object3d wall = Object3d();
@@ -87,14 +87,14 @@ void MCB::Scene::Object3DInit()
     walls.back().colliders.back().colType_ = box;
 
     unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
-    temp->Enemy::Initialize({ 0,0,1 }, { 20,0,40 }, pencilEnemyModel.get(), 0.5f);
-    temp->movePoint = { {20,0,40},{ -20,0,20 },{ -20,0,40 } };
+    temp->Enemy::Initialize({ 0,0,1 }, { 20,0,10 }, pencilEnemyModel.get(), 0.5f);
+    temp->movePoint = { {20,0,10},{ 20,0,20 },{ -20,0,10 } };
     temp->SetHandwritingModel(WritingModel.get());
     enemys.push_back(move(temp));
 
     temp = make_unique<PencilEnemy>();
-    temp->Enemy::Initialize({ 1,0,0 }, { -20,0,20 }, pencilEnemyModel.get(), 0.5f);
-    temp->movePoint = { {-20,0,20},{ 20,0,40 },{ 20,0,20 } };
+    temp->Enemy::Initialize({ 1,0,0 }, { -20,0,-10 }, pencilEnemyModel.get(), 0.5f);
+    temp->movePoint = { {-20,0,-10},{ -20,0,-20 },{ 20,0,-10 } };
     temp->SetHandwritingModel(WritingModel.get());
     enemys.push_back(move(temp));
     spownTimer.Set(30);
