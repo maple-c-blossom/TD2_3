@@ -63,6 +63,29 @@ void PencilEnemy::UniqueUpdate()
 
 		Vector3D positionVec = Vector3D(position.x,position.y,position.z);
 
+		Float2 temp;
+		temp.x = MCB::Lerp(0, 85, (movePoint[movePointIndex].vec.z+ 30) / 85);
+		temp.x /= 85;
+		Float2 Vartical;
+		Vartical.x = MCB::Lerp(-40, -80, temp.x);
+		Vartical.y = MCB::Lerp(40, 80, temp.x);
+		if (movePoint[movePointIndex].vec.x < Vartical.x)
+		{
+			movePoint[movePointIndex].vec.x = Vartical.x;
+		}
+		if (movePoint[movePointIndex].vec.x > Vartical.y)
+		{
+			movePoint[movePointIndex].vec.x = Vartical.y;
+		}
+
+		if (movePoint[movePointIndex].vec.z < -30)
+		{
+			movePoint[movePointIndex].vec.z = -30;
+		}
+		if (movePoint[movePointIndex].vec.z > 55)
+		{
+			movePoint[movePointIndex].vec.z = 55;
+		}
 		velocity = Vector3D::normal(movePoint[movePointIndex] - positionVec);
 
 		float movePointDistance = (movePoint[movePointIndex] - positionVec).V3Len();
@@ -116,6 +139,30 @@ void PencilEnemy::UniqueUpdate()
 	{
 		AttackHit();
 	}
+	Float2 temp;
+	temp.x = MCB::Lerp(0, 85, (position.z + 30) / 85);
+	temp.x /= 85;
+	Float2 Vartical;
+	Vartical.x = MCB::Lerp(-40, -80, temp.x);
+	Vartical.y = MCB::Lerp(40, 80, temp.x);
+	if (position.x < Vartical.x)
+	{
+		position.x = Vartical.x;
+	}
+	if (position.x > Vartical.y)
+	{
+		position.x = Vartical.y;
+	}
+
+	if (position.z < -30)
+	{
+		position.z = -30;
+	}
+	if (position.z > 55)
+	{
+		position.z = 55;
+	}
+
 }
 
 void PencilEnemy::Draw()

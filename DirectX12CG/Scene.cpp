@@ -280,7 +280,7 @@ void MCB::Scene::SpriteDraw()
 
     debugText.Print(20, 20, 2, "boss:hp %d",boss.GetHp());
     //debugText.Print(20, 60, 2, "player:hp %d",substie.GetHp());
-    debugText.Print(20, 60, 2, "player:hp %f",substie.position.z);
+    debugText.Print(20, 60, 2, "position x:%fz:%f", substie.position.x,substie.position.z);
     debugText.Print(20, 100, 2, "player:shard %f", substie.GetShard());
     //debugText.Print(dxWindow->window_width - 300, 20, 2, "Move:WASD");
     //debugText.Print(dxWindow->window_width - 300, 60, 2, "Action:SPACE", substie.GetShard());
