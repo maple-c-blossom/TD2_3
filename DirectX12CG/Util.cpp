@@ -10,6 +10,11 @@ double MCB::Lerp(double startPos, double endPos, double maxTime, double time)
 	double change = endPos - startPos;
 	return change * time + startPos;
 }
+double MCB::Lerp(double startPos, double endPos, double time)
+{
+	double change = endPos - startPos;
+	return change * time + startPos;
+}
 double MCB::InQuad(double startPos, double endPos, double maxTime, double time)
 {
 	time /= maxTime;
