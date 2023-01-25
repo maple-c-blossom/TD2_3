@@ -50,7 +50,7 @@ void Handwriting::Update()
 	{
 		deleteFlag = true;
 	}
-	if (!deleteFlag)
+	if (IsValid())
 	{
 		allObjPtr.push_back(this);
 	}

@@ -116,7 +116,7 @@ void Enemy::Update()
 		}
 	}
 
-	if (Player::GetPlayer()->IsInvincible() || (capture != nullptr && capture->deleteFlag))
+	if (Player::GetPlayer()->IsInvincible() || (capture != nullptr && !capture->IsValid()))
 	{
 		capture = nullptr;
 		Player::SetCaptureCount(0);
