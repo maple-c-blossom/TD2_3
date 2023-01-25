@@ -126,6 +126,5 @@ namespace MCB
     protected:
         virtual void UniqueOnColliderHit(ADXCollider* col);
     };
-
 }
 
