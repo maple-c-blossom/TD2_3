@@ -6,6 +6,7 @@
 namespace MCB
 {
 	double Lerp(double startPos, double endPos, double maxTime, double time);
+	double Lerp(double startPos, double endPos, double time);
 	double InQuad(double startPos, double endPos, double maxTime, double time);
 	double OutQuad(double startPos, double endPos, double maxTime, double time);
 	double InOutQuad(double startPos, double endPos, double maxTime, double time);

@@ -148,6 +148,31 @@ void Player::Update()
 	position.y += velocity.ConvertXMFloat3().y;
 	position.z += velocity.ConvertXMFloat3().z;
 
+	Float2 temp;
+	temp.x = MCB::Lerp(0, 50,(position.z + 20) / 50);
+	temp.x /= 50;
+	Float2 Vartical;
+	Vartical.x = MCB::Lerp(-32, -51,temp.x);
+	Vartical.y = MCB::Lerp(31, 50,temp.x);
+	if (position.x < Vartical.x)
+	{
+		position.x = Vartical.x;
+	}
+	if (position.x > Vartical.y)
+	{
+		position.x = Vartical.y;
+	}
+
+	if (position.z < -20)
+	{
+		position.z = -20;
+	}
+	if (position.z > 30)
+	{
+		position.z = 30;
+	}
+
+
 	if (shard <= 0)
 	{
 		rotateCanceled = true;
