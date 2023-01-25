@@ -77,7 +77,7 @@ void MCB::Scene::Object3DInit()
     substie.Initialize();
 
     Object3d wall = Object3d();
-    wall.position = { 13,9,-14 };
+    wall.position = { 20,9,-14 };
     wall.scale = { 5.8,10,1.5 };
     wall.rotation = { 0,0,0 };
     wall.Init();
@@ -98,7 +98,7 @@ void MCB::Scene::Object3DInit()
     temp->SetHandwritingModel(WritingModel.get());
     enemys.push_back(move(temp));
     spownTimer.Set(30);
-    boss.Initialize({ 0,0,1 }, { -15,0,0 }, bossModel.get(), pencilEnemyModel.get(), WritingModel.get(), 1, &substie);
+    boss.Initialize({ 0,0,1 }, { -20,0,0 }, bossModel.get(), pencilEnemyModel.get(), WritingModel.get(), 1, &substie);
     //sphere.Init();
     //sphere.model = BoxModel;
     //sphere.SetCollider(1);
