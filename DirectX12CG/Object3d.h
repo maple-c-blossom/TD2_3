@@ -114,6 +114,7 @@ namespace MCB
             try
             {
                 objPtr->TestCall();
+                return !objPtr->deleteFlag && objPtr->constMapTranceform != nullptr;
             }
             catch (bool err)
             {
