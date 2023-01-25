@@ -103,10 +103,8 @@ void Enemy::Update()
 				{
 					for (auto& colListItr2 : KneadedEraser::GetAllKneadedEraser())
 					{
-						if (colListItr->gameObject == colListItr2)
+						if (colListItr->gameObject == colListItr2 && capture == nullptr)
 						{
-							if (capture == nullptr)Player::GetCaptureList()->push_back(this);//プレイヤーがもっているキャプチャしている敵のリストに格納(攻撃当てた時に敵を消すためのリスト）
-							Player::SetCaptureCount(Player::GetCaptureCount() + 1);
 							capture = colListItr2;
 						}
 					}
@@ -119,7 +117,6 @@ void Enemy::Update()
 	if (Player::GetPlayer()->IsInvincible() || (capture != nullptr && !Object3d::IsValid(capture)))
 	{
 		capture = nullptr;
-		Player::SetCaptureCount(0);
 	}
 
 	if (capture != nullptr && prevCapture == nullptr)
@@ -133,6 +130,7 @@ void Enemy::Update()
 	{
 		Vector3D positionVec = MCBMatrix::transform(captureLocalPos, MCB::MCBMatrix::MCBMatrixConvertXMMatrix(capture->matWorld.matWorld));
 		position = positionVec.ConvertXMFloat3();
+		Player::GetCaptureList()->push_back(this);//プレイヤーがもっているキャプチャしている敵のリストに格納(攻撃当てた時に敵を消すためのリスト）
 	}
 	
 	allEnemyPtr.push_back(this);
