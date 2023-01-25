@@ -36,6 +36,7 @@ namespace MCB
 		std::unique_ptr<Model> WritingModel;
 		std::unique_ptr<Model> bossModel;
 		std::unique_ptr<Model> nerikesiModel;
+		std::unique_ptr<Model> eraseEnemyModel;
 
 		FBXModel* testModel;
 #pragma endregion 3Dƒ‚ƒfƒ‹

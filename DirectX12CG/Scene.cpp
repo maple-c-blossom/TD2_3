@@ -120,6 +120,7 @@ void MCB::Scene::LoadModel()
     WritingModel = std::make_unique<Model>("Box");
     bossModel = std::make_unique<Model>("boss");
     nerikesiModel = std::make_unique<Model>("nerikeshi");
+    eraseEnemyModel = std::make_unique<Model>("eraser");
     //testModel = new FBXModel();
     //testModel->Load("testFbx");
     //assert(testModel->textureManager->textures.size() < 20);
@@ -197,7 +198,7 @@ void MCB::Scene::Update()
             case 2:
             {
                 unique_ptr<EraserEnemy> temp = make_unique<EraserEnemy>();
-                temp->Initialize({ 0,0,1 }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, pencilEnemyModel.get(), 0.25f);
+                temp->Initialize({ 0,0,1 }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, eraseEnemyModel.get(), 0.15f);
                 temp->handwritingModel = WritingModel.get();
                 enemys.push_back(move(temp));
             }
@@ -205,7 +206,7 @@ void MCB::Scene::Update()
             default:
             {
                 unique_ptr<EraserEnemy> temp = make_unique<EraserEnemy>();
-                temp->Initialize({ 0,0,1 }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, pencilEnemyModel.get(), 0.25f);
+                temp->Initialize({ 0,0,1 }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, eraseEnemyModel.get(), 0.15f);
                 temp->handwritingModel = WritingModel.get();
                 enemys.push_back(move(temp));
             }
