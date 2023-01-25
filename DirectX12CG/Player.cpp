@@ -186,6 +186,7 @@ void Player::Update()
 			kneadedErasers.push_back(KneadedEraser{});
 			kneadedErasers.back().parent = this;
 			kneadedErasers.back().model = KneadedEraserModel;
+			kneadedErasers.back().matWorld.matWorld *= matWorld.matWorld;
 			kneadedErasers.back().colliders.push_back(ADXCollider(&kneadedErasers.back()));
 			kneadedErasers.back().colliders.back().isTrigger = true;
 			kneadedErasers.back().colliders.back().collideLayer = 1;

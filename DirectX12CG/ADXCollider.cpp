@@ -22,6 +22,11 @@ std::vector<ADXCollider*> ADXCollider::cols = {};
 
 ADXCollider::ADXCollider(Object3d* obj)
 {
+	Initialize(obj);
+}
+
+void ADXCollider::Initialize(Object3d* obj)
+{
 	gameObject = obj;
 	preTranslation.x = gameObject->position.x;
 	preTranslation.y = gameObject->position.y;
