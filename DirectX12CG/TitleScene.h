@@ -23,9 +23,9 @@ namespace MCB
 
 		//テクスチャ
 #pragma region テクスチャ
-		TextureCell* testTex;
+		TextureCell* title;
 		TextureCell* debugTextTexture;
-		TextureCell* zoomTex;
+		TextureCell* pushSpace;
 		TextureCell* scopeTex;
 #pragma endregion テクスチャ
 
@@ -49,9 +49,9 @@ namespace MCB
 #pragma endregion 3Dオブジェクト
 
 #pragma region スプライト
-		Sprite sprite;
+		Sprite titleSprite;
 
-		Sprite zoomSprite;
+		Sprite pushSpaceSprite;
 
 		Sprite scopeSprite;
 

@@ -55,8 +55,8 @@ void MCB::Scene::Object3DInit()
     ground;
     ground.Init();
     ground.model = groundModel;
-    ground.scale = { 4,4,4 };
-    ground.position = { 0,0,0 };
+    ground.scale = { 90,90,90 };
+    ground.position = { 0,-20,0 };
     ;
     Skydome;
     Skydome.Init();
@@ -82,6 +82,7 @@ void MCB::Scene::Object3DInit()
     wall.rotation = { 0,0,0 };
     wall.Init();
     wall.model = BoxModel;
+    BoxModel->material.constMapMaterial->color = { 0,0,0,1 };
     walls.push_back(wall);
     walls.back().colliders.push_back(ADXCollider(&walls.back()));
     walls.back().colliders.back().colType_ = box;
@@ -112,7 +113,7 @@ void MCB::Scene::LoadModel()
 {
 	BoxModel = new Model("Box");
 
-	groundModel = new Model("ground");
+	groundModel = new Model("note");
 
 	skydomeModel = new Model("skydome");
     handwrModel = new Model("Box");
@@ -299,7 +300,7 @@ void MCB::Scene::SpriteDraw()
 
 void MCB::Scene::ParticleDraw()
 {
-    testParticle.Draw();
+    //testParticle.Draw();
 }
 
 void MCB::Scene::CheckAllColision()

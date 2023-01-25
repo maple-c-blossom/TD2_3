@@ -6,10 +6,12 @@ using namespace DirectX;
 
 void MCB::TitleScene::SpriteInit()
 {
-    sprite.InitMatProje();
-    sprite = sprite.CreateSprite();
-    zoomSprite.InitMatProje();
-    zoomSprite = zoomSprite.CreateSprite();
+    titleSprite.InitMatProje();
+    titleSprite = titleSprite.CreateSprite();
+    titleSprite.tex = title->texture.get();
+    pushSpaceSprite.InitMatProje();
+    pushSpaceSprite = pushSpaceSprite.CreateSprite();
+    pushSpaceSprite.tex = pushSpace->texture.get();
     scopeSprite.InitMatProje();
     scopeSprite = scopeSprite.CreateSprite();
     debugText.Init(debugTextTexture->texture.get());
@@ -55,8 +57,8 @@ void MCB::TitleScene::Draw()
 
 void MCB::TitleScene::SpriteDraw()
 {
-    debugText.Print(dxWindow->window_width / 2, dxWindow->window_height / 2-40, 4, "Grafight");
-    debugText.Print(dxWindow->window_width / 2, dxWindow->window_height / 2 + 40, 4, "PushSpace");
+    titleSprite.SpriteDraw(dxWindow->window_width / 2, dxWindow->window_height / 2 - 80);
+    pushSpaceSprite.SpriteDraw(dxWindow->window_width / 2, dxWindow->window_height / 2 + 40);
     debugText.AllDraw();
 }
 
@@ -121,8 +123,8 @@ void MCB::TitleScene::LoadModel()
 void MCB::TitleScene::LoadTexture()
 {
     debugTextTexture = loader->LoadTexture(L"Resources\\debugfont.png");
-    testTex = loader->LoadTexture(L"Resources\\reimu.png");
-    zoomTex = loader->LoadTexture(L"Resources\\reticle.png");
+    title = loader->LoadTexture(L"Resources\\text\\title.png");
+    pushSpace = loader->LoadTexture(L"Resources\\text\\pushSpace.png");
     scopeTex = loader->LoadTexture(L"Resources\\scope.png");
 }
 
