@@ -346,7 +346,17 @@ void MCB::Scene::ImGuiUpdate()
                 ImGui::TreePop();
             }
         }
-
+        if (ImGui::TreeNode("Player"))
+        {
+            if (ImGui::TreeNode("Position"))
+            {
+                ImGui::Text("X %f", substie.position.x);
+                ImGui::Text("Y %f", substie.position.y);
+                ImGui::Text("Z %f", substie.position.z);
+                ImGui::TreePop();
+            }
+            ImGui::TreePop();
+        }
         //if (ImGui::Button("Genarate"))
         //{
         //    Object3d wall = Object3d();
