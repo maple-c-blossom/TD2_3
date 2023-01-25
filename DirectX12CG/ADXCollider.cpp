@@ -286,7 +286,7 @@ void ADXCollider::Collide(ADXCollider* col)
 		}
 	}
 
-	if (gameObject->IsValid() && col->gameObject->IsValid() && IsHit(*col) && enabled && col->enabled && col->gameObject != gameObject)
+	if (Object3d::IsValid(gameObject) && Object3d::IsValid(col->gameObject) && IsHit(*col) && enabled && col->enabled && col->gameObject != gameObject)
 	{
 		if (!isTrigger && !col->isTrigger)
 		{

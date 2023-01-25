@@ -130,7 +130,7 @@ void Player::Update()
 		}
 	}
 
-	kneadedErasers.remove_if([](auto& itr) {return !itr.IsValid(); });
+	kneadedErasers.remove_if([](auto& itr) {return !Object3d::IsValid(&itr); });
 
 	if (kneadedErasers.size() <= 0)
 	{
@@ -213,7 +213,7 @@ void Player::Update()
 		auto& itr = kneadedErasers.rbegin();
 		while (itr != kneadedErasers.rend())
 		{
-			if (!itr->IsValid())
+			if (!IsValid(&*itr))
 			{
 				connectedFlag = false;
 			}
