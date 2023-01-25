@@ -43,10 +43,10 @@ namespace MCB
 
 		//テクスチャ
 		#pragma region テクスチャ
-		TextureCell* testTex;
+		TextureCell* playerHp;
 		TextureCell* debugTextTexture;
-		TextureCell* zoomTex;
-		TextureCell* scopeTex;
+		TextureCell* bossHp;
+		TextureCell* shard;
 		std::array<MCB::TextureCell*, 6> tutorialTexs;
 #pragma endregion テクスチャ
 
@@ -70,11 +70,11 @@ namespace MCB
 #pragma endregion 3Dオブジェクト
 
 		#pragma region スプライト
-		Sprite sprite;
+		Sprite playerHpSprite;
 
-		Sprite zoomSprite;
+		Sprite bossHpSprite;
 
-		Sprite scopeSprite;
+		Sprite shardSprite;
 
 		DebugText debugText;
 
@@ -88,9 +88,7 @@ namespace MCB
 
 		Timer spownTimer;
 #pragma endregion スプライト
-#pragma region パーティクル
-		Particle testParticle;
-		
+#pragma region パーティクル		
 
 #pragma endregion
 		#pragma region 通常変数

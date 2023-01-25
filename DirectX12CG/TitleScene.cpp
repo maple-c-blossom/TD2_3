@@ -91,7 +91,10 @@ MCB::TitleScene::~TitleScene()
     delete skydomeModel;
     delete groundModel;
     delete nextScene;
-
+    title->free = true;
+    debugTextTexture->free = true;
+    pushSpace->free = true;
+    scopeTex->free = true;
 }
 
 void MCB::TitleScene::Initialize()

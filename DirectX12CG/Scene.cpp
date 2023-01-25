@@ -21,10 +21,14 @@ MCB::Scene::~Scene()
     //loader->SetDelete(debugTextTexture);
     //loader->SetDelete(zoomTex);
     //loader->SetDelete(scopeTex);
-    testTex->free = true;
+    shard->free = true;
     debugTextTexture->free = true;
-    zoomTex->free = true;
-    scopeTex->free = true;
+    playerHp->free = true;
+    bossHp->free = true;
+    for (auto& itr : tutorialTexs)
+    {
+        itr->free = true;
+    }
 
 }
 
@@ -132,10 +136,10 @@ void MCB::Scene::LoadModel()
 
 void MCB::Scene::LoadTexture()
 {
-	testTex = loader->LoadTexture(L"Resources\\reimu.png");
+	playerHp = loader->LoadTexture(L"Resources\\text\\playerHp.png");
 	debugTextTexture = loader->LoadTexture(L"Resources\\debugfont.png");
-    zoomTex = loader->LoadTexture(L"Resources\\reticle.png");
-    scopeTex = loader->CreateNoTextureFileIsTexture();
+    bossHp = loader->LoadTexture(L"Resources\\text\\bossHp.png");
+    shard = loader->LoadTexture(L"Resources\\text\\shard.png");
     tutorialTexs[0] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide1.png");
     tutorialTexs[1] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide2.png");
     tutorialTexs[2] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide3.png");
@@ -153,12 +157,18 @@ void MCB::Scene::LoadSound()
 
 void MCB::Scene::SpriteInit()
 {
-    sprite.InitMatProje();
-    sprite = sprite.CreateSprite();
-    zoomSprite.InitMatProje();
-    zoomSprite = zoomSprite.CreateSprite();
-    scopeSprite.InitMatProje();
-    scopeSprite = scopeSprite.CreateSprite();
+    playerHpSprite.InitMatProje();
+    playerHpSprite = playerHpSprite.CreateSprite();
+    playerHpSprite.anchorPoint = { 0,0 };
+    playerHpSprite.tex = playerHp->texture.get();
+    bossHpSprite.InitMatProje();
+    bossHpSprite = bossHpSprite.CreateSprite();
+    bossHpSprite.tex = bossHp->texture.get();
+    bossHpSprite.anchorPoint = { 0,0 };
+    shardSprite.InitMatProje();
+    shardSprite = shardSprite.CreateSprite();
+    shardSprite.tex = shard->texture.get();
+    shardSprite.anchorPoint = { 0,0 };
     debugText.Init(debugTextTexture->texture.get());
     substie.TutorialInitialize(tutorialTexs[0]->texture.get(), tutorialTexs[1]->texture.get(), tutorialTexs[2]->texture.get(),
         tutorialTexs[3]->texture.get(), tutorialTexs[4]->texture.get(), tutorialTexs[5]->texture.get());
@@ -166,8 +176,8 @@ void MCB::Scene::SpriteInit()
 
 void MCB::Scene::ParticleInit()
 {
-    testParticle.Init(testTex);
-    testParticle.position = { 0,0,10 };
+    //testParticle.Init(testTex);
+    //testParticle.position = { 0,0,10 };
     //testParticle.rotation.x = ConvertRadius(-90);
 }
 
@@ -278,11 +288,19 @@ void MCB::Scene::SpriteDraw()
 {
 
     substie.TutorialDraw();
+    playerHpSprite.SpriteDraw(10, 10,360/2,80/2);
+    debugText.Print(15 + 360 / 2, 10, 2, "%f", substie.GetHp());
 
-    debugText.Print(20, 20, 2, "boss:hp %d",boss.GetHp());
-    //debugText.Print(20, 60, 2, "player:hp %d",substie.GetHp());
-    debugText.Print(20, 60, 2, "position x:%fz:%f", substie.position.x,substie.position.z);
-    debugText.Print(20, 100, 2, "player:shard %f", substie.GetShard());
+    bossHpSprite.SpriteDraw(10, 60, 290/2,80/2);
+    debugText.Print(15 + 290 / 2, 60, 2, "%f", boss.GetHp());
+
+    shardSprite.SpriteDraw(10, 110,370/2,80/2);
+    debugText.Print(15 + 370 / 2, 110, 2, "%f", substie.GetShard());
+
+    //debugText.Print(20, 20, 2, "boss:hp %d",boss.GetHp());
+    ////debugText.Print(20, 60, 2, "player:hp %d",substie.GetHp());
+    //debugText.Print(20, 60, 2, "position x:%fz:%f", substie.position.x,substie.position.z);
+    //debugText.Print(20, 100, 2, "player:shard %f", substie.GetShard());
     //debugText.Print(dxWindow->window_width - 300, 20, 2, "Move:WASD");
     //debugText.Print(dxWindow->window_width - 300, 60, 2, "Action:SPACE", substie.GetShard());
     //debugText.Print(dxWindow->window_width - 300, 100, 2, "ActionCost:shard");
@@ -385,7 +403,6 @@ void MCB::Scene::MatrixUpdate()
     ground.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
     ground.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
     //testSpher.FbxUpdate(*viewCamera->GetView(), *viewCamera->GetProjection(),false);
-    testParticle.Update(*viewCamera->GetView(), *viewCamera->GetProjection(), true);
     substie.UpdateMatrix(viewCamera);
     for (auto& itr : enemys)
     {
