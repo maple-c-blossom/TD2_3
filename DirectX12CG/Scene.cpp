@@ -77,7 +77,7 @@ void MCB::Scene::Object3DInit()
     substie.Initialize();
 
     Object3d wall = Object3d();
-    wall.scale = { 10,10,10 };
+    wall.scale = { 3,10,1 };
     wall.Init();
     wall.model = BoxModel;
     walls.push_back(wall);

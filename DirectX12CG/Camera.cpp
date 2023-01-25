@@ -7,7 +7,7 @@ using namespace DirectX;
 
 void Camera::Inilialize()
 {
-	view.CreateMatrixView(XMFLOAT3(0.0f, 100.0f, -50.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 1.0f));
+	view.CreateMatrixView(XMFLOAT3(0.0f, 50.0f, -30.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 1.0f));
 	projection.CreateMatrixProjection(XMConvertToRadians(45.0f), (float)DxWindow::GetInstance()->window_width / DxWindow::GetInstance()->window_height, 0.1f, 4000.0f);
 }
 
