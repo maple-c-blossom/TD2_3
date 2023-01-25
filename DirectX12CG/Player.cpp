@@ -243,7 +243,16 @@ void Player::Update()
 	invincible = max(invincible, 0);
 
 	visible = invincible % 8 < 4;
-
+	animationTime.Update();
+	if (animationTime.IsEnd())
+	{
+		animationTime.Set(10);
+		animeNum++;
+		if (animeNum >= tutorialTexs.size())
+		{
+			animeNum = 2;
+		}
+	}
 	
 }
 
@@ -271,16 +280,18 @@ void Player::TutorialDraw()
 	{
 		if (kneadedErasers.size() > 0)
 		{
-			//ここで「ctrlGuide3」「ctrlGuide4」「ctrlGuide5」「ctrlGuide6」という名前の画像をアニメーションさせて表示
+			tutorials[2].SpriteDraw(*tutorialTexs[animeNum], DxWindow::GetInstance()->window_width - 128, 0, 126, 126);//ここで「ctrlGuide2」という名前の画像を表示//ここで「ctrlGuide3」「ctrlGuide4」「ctrlGuide5」「ctrlGuide6」という名前の画像をアニメーションさせて表示
 		}
 		else
 		{
-			tutorials[1].SpriteDraw(*tutorialTexs[1], DxWindow::GetInstance()->window_width - 256, 0);//ここで「ctrlGuide2」という名前の画像を表示
+			animationTime.Set(10);
+			animeNum = 2;
+			tutorials[1].SpriteDraw(*tutorialTexs[1], DxWindow::GetInstance()->window_width - 128, 0,126,126);//ここで「ctrlGuide2」という名前の画像を表示
 		}
 	}
 	else
 	{
-		tutorials[0].SpriteDraw(*tutorialTexs[0], DxWindow::GetInstance()->window_width - 256, 0);//ここで「ctrlGuide1」という名前の画像を表示
+		tutorials[0].SpriteDraw(*tutorialTexs[0], DxWindow::GetInstance()->window_width - 128, 0,126,126);//ここで「ctrlGuide1」という名前の画像を表示
 	}
 }
 

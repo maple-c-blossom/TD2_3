@@ -39,6 +39,9 @@ private:
 	MCB::Vector3D velocity{};
 	std::array<MCB::Sprite, 6> tutorials;//‚±‚ñ‚È‚É—v‚ç‚È‚¢‚©‚à
 	std::array<MCB::Texture*, 6> tutorialTexs;
+
+	Timer animationTime;
+	int animeNum;
 public:
 	MCB::Model* KneadedEraserModel = nullptr;
 	int GetHp() { return hp; }
