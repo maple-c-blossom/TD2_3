@@ -55,6 +55,4 @@ public:
 public:
 	static Player* GetPlayer() { return playerPtr; };
 	static std::list<MCB::Object3d*>* GetCaptureList() { return &captureList; };
-	static int GetCaptureCount() { return captureCount; };
-	static void SetCaptureCount(int num) { captureCount = num; };
 };

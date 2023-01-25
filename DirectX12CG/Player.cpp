@@ -201,6 +201,9 @@ void Player::Update()
 		}
 	}
 
+	captureCount = captureList.size();
+	captureList = {};
+
 	if (kneadedErasers.size() > maxKneadedErasers)
 	{
 		//kneadedErasers.erase(kneadedErasers.end());
