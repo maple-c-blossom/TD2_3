@@ -47,6 +47,7 @@ namespace MCB
 		TextureCell* debugTextTexture;
 		TextureCell* zoomTex;
 		TextureCell* scopeTex;
+		std::array<MCB::TextureCell*, 6> tutorialTexs;
 #pragma endregion テクスチャ
 
 		//サウンド

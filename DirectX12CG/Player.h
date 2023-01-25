@@ -4,6 +4,7 @@
 #include "KneadedEraser.h"
 #include "Input.h"
 #include "ICamera.h"
+#include "Sprite.h"
 
 class Player :public MCB::Object3d
 {
@@ -36,7 +37,8 @@ private:
 	float rotateModeCount;
 	MCB::Vector3D prevPos{};
 	MCB::Vector3D velocity{};
-
+	std::array<MCB::Sprite, 6> tutorials;//‚±‚ñ‚È‚É—v‚ç‚È‚¢‚©‚à
+	std::array<MCB::Texture*, 6> tutorialTexs;
 public:
 	MCB::Model* KneadedEraserModel = nullptr;
 	int GetHp() { return hp; }
@@ -48,10 +50,12 @@ public:
 	void Initialize();
 	void Update();
 	void Draw();
+	void TutorialDraw();
 	void UpdateMatrix(MCB::ICamera* camera);
 	float GetShard() { return shard; };
 	void Erase();
-
+	void TutorialInitialize(MCB::Texture* tutorial1, MCB::Texture* tutorial2, MCB::Texture* tutorial3,
+							MCB::Texture* tutorial4, MCB::Texture* tutorial5, MCB::Texture* tutorial6);
 public:
 	static Player* GetPlayer() { return playerPtr; };
 	static std::list<MCB::Object3d*>* GetCaptureList() { return &captureList; };

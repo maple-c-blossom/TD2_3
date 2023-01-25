@@ -243,21 +243,7 @@ void Player::Update()
 
 	visible = invincible % 8 < 4;
 
-	if (shard > 15)
-	{
-		if (kneadedErasers.size() > 0)
-		{
-			//ここで「ctrlGuide3」「ctrlGuide4」「ctrlGuide5」「ctrlGuide6」という名前の画像をアニメーションさせて表示
-		}
-		else
-		{
-			//ここで「ctrlGuide2」という名前の画像を表示
-		}
-	}
-	else
-	{
-		//ここで「ctrlGuide1」という名前の画像を表示
-	}
+	
 }
 
 void Player::UpdateMatrix(MCB::ICamera* camera)
@@ -278,6 +264,25 @@ void Player::Draw()
 	}
 }
 
+void Player::TutorialDraw()
+{
+	if (shard > 15)
+	{
+		if (kneadedErasers.size() > 0)
+		{
+			//ここで「ctrlGuide3」「ctrlGuide4」「ctrlGuide5」「ctrlGuide6」という名前の画像をアニメーションさせて表示
+		}
+		else
+		{
+			tutorials[1].SpriteDraw(*tutorialTexs[1], DxWindow::GetInstance()->window_width - 256, 0);//ここで「ctrlGuide2」という名前の画像を表示
+		}
+	}
+	else
+	{
+		tutorials[0].SpriteDraw(*tutorialTexs[0], DxWindow::GetInstance()->window_width - 256, 0);//ここで「ctrlGuide1」という名前の画像を表示
+	}
+}
+
 bool Player::IsInvincible()
 {
 	return invincible > 0;
@@ -286,6 +291,22 @@ bool Player::IsInvincible()
 void Player::Erase()
 {
 	shard += 1;
+}
+
+void Player::TutorialInitialize(MCB::Texture* tutorial1, MCB::Texture* tutorial2, MCB::Texture* tutorial3, MCB::Texture* tutorial4, MCB::Texture* tutorial5, MCB::Texture* tutorial6)
+{
+	tutorialTexs[0] = tutorial1;//ctrlGuide1
+	tutorialTexs[1] = tutorial2;//ctrlGuide2
+	tutorialTexs[2] = tutorial3;//ctrlGuide3
+	tutorialTexs[3] = tutorial4;//ctrlGuide4
+	tutorialTexs[4] = tutorial5;//ctrlGuide5
+	tutorialTexs[5] = tutorial6;//ctrlGuide6
+
+	for(auto&itr:tutorials)
+	{
+		itr = itr.CreateSprite();
+		itr.anchorPoint = { 0,0 };
+	};
 }
 
 void Player::Damage(int damage)

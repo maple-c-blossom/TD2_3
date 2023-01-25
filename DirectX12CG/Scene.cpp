@@ -135,7 +135,12 @@ void MCB::Scene::LoadTexture()
 	debugTextTexture = loader->LoadTexture(L"Resources\\debugfont.png");
     zoomTex = loader->LoadTexture(L"Resources\\reticle.png");
     scopeTex = loader->CreateNoTextureFileIsTexture();
-
+    tutorialTexs[0] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide1.png");
+    tutorialTexs[1] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide2.png");
+    tutorialTexs[2] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide3.png");
+    tutorialTexs[3] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide4.png");
+    tutorialTexs[4] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide5.png");
+    tutorialTexs[5] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide6.png");
 }
 
 void MCB::Scene::LoadSound()
@@ -154,7 +159,8 @@ void MCB::Scene::SpriteInit()
     scopeSprite.InitMatProje();
     scopeSprite = scopeSprite.CreateSprite();
     debugText.Init(debugTextTexture->texture.get());
-
+    substie.TutorialInitialize(tutorialTexs[0]->texture.get(), tutorialTexs[1]->texture.get(), tutorialTexs[2]->texture.get(),
+        tutorialTexs[3]->texture.get(), tutorialTexs[4]->texture.get(), tutorialTexs[5]->texture.get());
 }
 
 void MCB::Scene::ParticleInit()
@@ -269,12 +275,15 @@ void MCB::Scene::Draw()
 
 void MCB::Scene::SpriteDraw()
 {
+
+    substie.TutorialDraw();
+
     debugText.Print(20, 20, 2, "boss:hp %d",boss.GetHp());
     debugText.Print(20, 60, 2, "player:hp %d",substie.GetHp());
     debugText.Print(20, 100, 2, "player:shard %f", substie.GetShard());
-    debugText.Print(dxWindow->window_width - 300, 20, 2, "Move:WASD");
-    debugText.Print(dxWindow->window_width - 300, 60, 2, "Action:SPACE", substie.GetShard());
-    debugText.Print(dxWindow->window_width - 300, 100, 2, "ActionCost:shard");
+    //debugText.Print(dxWindow->window_width - 300, 20, 2, "Move:WASD");
+    //debugText.Print(dxWindow->window_width - 300, 60, 2, "Action:SPACE", substie.GetShard());
+    //debugText.Print(dxWindow->window_width - 300, 100, 2, "ActionCost:shard");
     if (boss.GetHp() <= 0)
     {
         debugText.Print(dxWindow->window_width/2 - 100, dxWindow->window_height/2, 4, "GameClear");

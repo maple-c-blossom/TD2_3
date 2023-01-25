@@ -348,3 +348,151 @@ void MCB::Sprite::SpriteCuttingDraw( Texture& tex, float positionX, float positi
     //描画コマンド
     dx12->commandList->DrawInstanced(4, 1, 0, 0);
 }
+
+
+void MCB::Sprite::SpriteDraw(float positionX, float positionY,
+    float size_x, float size_y)
+{
+    Dx12* dx12 = Dx12::GetInstance();
+    ShaderResource* descriptor = ShaderResource::GetInstance();
+
+    Sprite tempsprite = *this;
+
+    Float2 size;
+    Float2 anchorPoint;
+
+    size.x = size_x;
+    size.y = size_y;
+
+    tempsprite.position.x = positionX;
+    tempsprite.position.y = positionY;
+    tempsprite.position.z = 0;
+
+    tempsprite.SpriteUpdate();
+
+    if (size.x == 0 || size.y == 0)
+    {
+        D3D12_RESOURCE_DESC resdesc = tex->texBuff.texbuff->GetDesc();
+
+        if (size.x == 0)
+        {
+            tempsprite.size.x = (float)resdesc.Width;
+        }
+
+        if (size.y == 0)
+        {
+            tempsprite.size.y = (float)resdesc.Height;
+        }
+    }
+
+    if (size.x != 0 || size.y != 0)
+    {
+        if (size.x != 0)
+        {
+            tempsprite.size.x = size.x;
+        }
+
+        if (size.y != 0)
+        {
+            tempsprite.size.y = size.y;
+        }
+    }
+
+
+
+    if (tempsprite.size.x != this->size.x || tempsprite.size.y != this->size.y)
+    {
+        tempsprite.SpriteTransferVertexBuffer();
+        this->size = tempsprite.size;
+    }
+
+    //SRVヒープの先頭アドレスを取得
+    D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = descriptor->srvHeap->GetGPUDescriptorHandleForHeapStart();
+
+
+    srvGpuHandle.ptr += tex->incrementNum * dx12->device.Get()->GetDescriptorHandleIncrementSize(descriptor->srvHeapDesc.Type);
+
+    //SRVヒープの先頭にあるSRVをパラメータ1番に設定
+    dx12->commandList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+
+    //頂点データ
+    dx12->commandList->IASetVertexBuffers(0, 1, &vbView);
+    //定数バッファビュー(CBV)の設定コマンド
+    dx12->commandList->SetGraphicsRootConstantBufferView(0, tempsprite.constBuff->GetGPUVirtualAddress());
+    //描画コマンド
+    dx12->commandList->DrawInstanced(4, 1, 0, 0);
+
+}
+
+void MCB::Sprite::SpriteFlipDraw( float positionX, float positionY, bool isflipX, bool isflipY)
+{
+    Dx12* dx12 = Dx12::GetInstance();
+    ShaderResource* descriptor = ShaderResource::GetInstance();
+
+    Sprite tempSprite = *this;
+
+    tempSprite.position.x = positionX;
+    tempSprite.position.y = positionY;
+    tempSprite.position.z = 0;
+
+    tempSprite.SpriteUpdate();
+
+    tempSprite.isFlipX = isflipX;
+    tempSprite.isFlipY = isflipY;
+
+    D3D12_RESOURCE_DESC resdesc = tex->texBuff.texbuff->GetDesc();
+
+    tempSprite.size.x = (float)resdesc.Width;
+    tempSprite.size.y = (float)resdesc.Height;
+
+    tempSprite.SpriteTransferVertexBuffer();
+
+    //SRVヒープの先頭アドレスを取得
+    D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = descriptor->srvHeap->GetGPUDescriptorHandleForHeapStart();
+
+
+    srvGpuHandle.ptr += tex->incrementNum * dx12->device.Get()->GetDescriptorHandleIncrementSize(descriptor->srvHeapDesc.Type);
+
+    //SRVヒープの先頭にあるSRVをパラメータ1番に設定
+    dx12->commandList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+
+    //頂点データ
+    dx12->commandList->IASetVertexBuffers(0, 1, &vbView);
+    //定数バッファビュー(CBV)の設定コマンド
+    dx12->commandList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
+    //描画コマンド
+    dx12->commandList->DrawInstanced(4, 1, 0, 0);
+
+}
+
+void MCB::Sprite::SpriteCuttingDraw( float positionX, float positionY, Float2 cuttingsize, Float2 CuttingLeftTop)
+{
+    Dx12* dx12 = Dx12::GetInstance();
+    ShaderResource* descriptor = ShaderResource::GetInstance();
+    Sprite tempSprite = *this;
+
+    tempSprite.position.x = positionX;
+    tempSprite.position.y = positionY;
+    tempSprite.position.z = 0;
+    tempSprite.texLeftTop = CuttingLeftTop;
+    tempSprite.cuttingSize = cuttingsize;
+
+    tempSprite.SpriteUpdate();
+    tempSprite.SpriteTransferVertexBuffer(tex);
+
+    //SRVヒープの先頭アドレスを取得
+    D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = descriptor->srvHeap->GetGPUDescriptorHandleForHeapStart();
+
+
+    srvGpuHandle.ptr += tex->incrementNum * dx12->device.Get()->GetDescriptorHandleIncrementSize(descriptor->srvHeapDesc.Type);
+
+    //SRVヒープの先頭にあるSRVをパラメータ1番に設定
+    dx12->commandList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+
+    //頂点データ
+    dx12->commandList->IASetVertexBuffers(0, 1, &vbView);
+    //定数バッファビュー(CBV)の設定コマンド
+    dx12->commandList->SetGraphicsRootConstantBufferView(0, this->constBuff->GetGPUVirtualAddress());
+    //描画コマンド
+    dx12->commandList->DrawInstanced(4, 1, 0, 0);
+}

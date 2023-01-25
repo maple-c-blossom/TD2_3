@@ -52,7 +52,8 @@ namespace MCB
 
 		void SpriteTransferVertexBuffer( Texture* tex = nullptr);
 		void SpriteUpdate();
-		void InitMatProje();
+		static void InitMatProje();
+		Texture* tex;
 		Sprite CreateSprite();
 		//void SpriteCommonBeginDraw(const PipelineRootSignature& pipeline);
 
@@ -65,6 +66,14 @@ namespace MCB
 		void SpriteCuttingDraw(Texture& tex, float positionX = 0, float positionY = 0,
 			Float2 cuttingsize = {0,0},Float2 CuttingLeftTop = {0,0});
 
+		void SpriteDraw( float positionX = 0, float positionY = 0,
+			float size_x = 0, float size_y = 0);
+
+		void SpriteFlipDraw(float positionX = 0, float positionY = 0,
+			bool isflipX = false, bool isflipY = false);
+
+		void SpriteCuttingDraw( float positionX = 0, float positionY = 0,
+			Float2 cuttingsize = { 0,0 }, Float2 CuttingLeftTop = { 0,0 });
 
 
 	};
