@@ -61,7 +61,7 @@ void Object3d::Update(View& view, Projection& projection,bool isBillBord)
     matWorld.SetMatTrans(position.x, position.y, position.z);
     if (isBillBord)
     {
-        if (parent == nullptr || !parent->IsValid())
+        if (parent == nullptr || !Object3d::IsValid(parent))
         {
             matWorld.UpdataBillBordMatrixWorld(view);
         }
@@ -75,7 +75,7 @@ void Object3d::Update(View& view, Projection& projection,bool isBillBord)
         matWorld.UpdataMatrixWorld();
     }
 
-    if (parent != nullptr && parent->IsValid())
+    if (parent != nullptr && Object3d::IsValid(parent))
     {
         matWorld.matWorld *= parent->matWorld.matWorld;
     }

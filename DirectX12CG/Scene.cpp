@@ -227,7 +227,10 @@ void MCB::Scene::Update()
         viewCamera->Update();
 
     CheckAllColision();
-    enemys.remove_if([](auto& itr) {return !itr->IsValid(); });
+    enemys.remove_if([](auto& itr)
+        {
+            return !Object3d::IsValid(itr.get());
+        });
     //s—ñ•ÏŠ·
     MatrixUpdate();
 

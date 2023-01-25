@@ -107,7 +107,20 @@ namespace MCB
         //yADXEngine—R—ˆz
         static std::list<Object3d*> GetAllObjs();
 
-        inline bool IsValid() { return !deleteFlag && constMapTranceform != nullptr; };
+        inline int TestCall() { return 1; };
+
+        static inline bool IsValid(Object3d* objPtr)
+        {
+            try
+            {
+                objPtr->TestCall();
+            }
+            catch (bool err)
+            {
+                return false;
+            }
+            return !objPtr->deleteFlag && objPtr->constMapTranceform != nullptr;
+        };
 
     protected:
         virtual void UniqueOnColliderHit(ADXCollider* col);
