@@ -79,6 +79,8 @@ void MCB::SceneManager::Update()
 				loadSprite.rotation = angle;
 			}
 		}
+		Object3d::StaticUpdate();
+		ADXCollider::CollidersUpdate();
 	}
 	else//ƒ[ƒh‰æ–Ê‚Ìˆ—
 	{

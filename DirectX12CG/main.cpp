@@ -78,8 +78,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
         if (input->IsKeyDown(DIK_ESCAPE) || dxWindow->IsBreak()) break;
         
         scene.Update();
-        Object3d::StaticUpdate();
-        ADXCollider::CollidersUpdate();
         scene.Draw();
     }
 #pragma endregion ƒQ[ƒ€ƒ‹[ƒv
