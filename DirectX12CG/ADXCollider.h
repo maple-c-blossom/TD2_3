@@ -48,6 +48,7 @@ public:
     int collideLayer = 0;
 
     ADXCollider(Object3d* obj);
+    void Initialize(Object3d* obj);
     void Update(Object3d* obj);
     ADXVector3 ClosestPoint(ADXVector3 pos);
     ADXVector3 EdgePoint(ADXVector3 pos);
