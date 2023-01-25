@@ -289,13 +289,13 @@ void MCB::Scene::SpriteDraw()
 
     substie.TutorialDraw();
     playerHpSprite.SpriteDraw(10, 10,360/2,80/2);
-    debugText.Print(15 + 360 / 2, 10, 2, "%f", substie.GetHp());
+    debugText.Print(15 + 360 / 2, 15, 2, "%d", substie.GetHp());
 
     bossHpSprite.SpriteDraw(10, 60, 290/2,80/2);
-    debugText.Print(15 + 290 / 2, 60, 2, "%f", boss.GetHp());
+    debugText.Print(15 + 290 / 2, 65, 2, "%d", boss.GetHp());
 
     shardSprite.SpriteDraw(10, 110,370/2,80/2);
-    debugText.Print(15 + 370 / 2, 110, 2, "%f", substie.GetShard());
+    debugText.Print(15 + 370 / 2, 115, 2, "%.3f", substie.GetShard());
 
     //debugText.Print(20, 20, 2, "boss:hp %d",boss.GetHp());
     ////debugText.Print(20, 60, 2, "player:hp %d",substie.GetHp());
