@@ -79,7 +79,7 @@ void Object3d::Update(View& view, Projection& projection,bool isBillBord)
     {
         matWorld.matWorld *= parent->matWorld.matWorld;
     }
-    
+    if (constMapTranceform == nullptr)return;
     constMapTranceform->world = matWorld.matWorld * view.mat;
     constMapTranceform->viewproj = projection.mat;
     constMapTranceform->cameraPos.x = view.eye.x;
