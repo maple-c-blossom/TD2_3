@@ -45,9 +45,9 @@ void Boss::Update()
 	}
 
 	velocity.V3Norm();
-	position.x += velocity.vec.x * speed;
-	position.y += velocity.vec.y * speed;
-	position.z += velocity.vec.z * speed;
+	//position.x += velocity.vec.x * speed;
+	//position.y += velocity.vec.y * speed;
+	//position.z += velocity.vec.z * speed;
 	if (position.x < -20 || position.x > 20)
 	{
 		velocity.vec.x *= -1;

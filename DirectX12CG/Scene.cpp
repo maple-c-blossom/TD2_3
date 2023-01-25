@@ -303,7 +303,53 @@ void MCB::Scene::CheckAllColision()
 void MCB::Scene::ImGuiUpdate()
 {
     imgui.Begin();
-    ImGui::ShowDemoWindow();
+    //ImGui::ShowDemoWindow();
+    ImGui::Begin("Debug");
+    
+    if (ImGui::TreeNode("Wall"))
+    {
+        int i = 0;
+        for (auto& itr : walls)
+        {
+            i++;
+            ImGui::Text("Wall%d", i);
+            if (ImGui::TreeNode("Position"))
+            {
+                ImGui::SliderFloat("x", &itr.position.x, -100, 100);
+                ImGui::SliderFloat("y", &itr.position.y, -100, 100);
+                ImGui::SliderFloat("z", &itr.position.z, -100, 100);
+                ImGui::TreePop();
+            }
+            if (ImGui::TreeNode("Scale"))
+            {
+                ImGui::SliderFloat("x", &itr.scale.x, 0, 10);
+                ImGui::SliderFloat("y", &itr.scale.y, 0, 10);
+                ImGui::SliderFloat("z", &itr.scale.z, 0, 10);
+                ImGui::TreePop();
+            }
+            if (ImGui::TreeNode("Rotation"))
+            {
+                ImGui::SliderFloat("x", &itr.rotation.x, 0, 2 * PI);
+                ImGui::SliderFloat("y", &itr.rotation.y, 0, 2 * PI);
+                ImGui::SliderFloat("z", &itr.rotation.z, 0, 2 * PI);
+                ImGui::TreePop();
+            }
+        }
+
+        //if (ImGui::Button("Genarate"))
+        //{
+        //    Object3d wall = Object3d();
+        //    wall.scale = { 3,10,1 };
+        //    wall.Init();
+        //    wall.model = BoxModel;
+        //    walls.push_back(wall);
+        //    walls.back().colliders.push_back(ADXCollider(&walls.back()));
+        //    walls.back().colliders.back().colType_ = box;
+        //}
+        ImGui::TreePop();
+
+    }
+    ImGui::End();
     imgui.End();
 }
 
