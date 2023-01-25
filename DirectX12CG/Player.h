@@ -22,6 +22,7 @@ private:
 	int hp = 10;
 	std::vector<int> keyConfig{ DIK_W,DIK_S,DIK_D,DIK_A,DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE };
 	std::vector<int> gamePadConfig{ GAMEPAD_A };
+	std::vector<Float3> gamePadAxisConfig{ input->gamePad->LStick };
 	std::list<KneadedEraser> kneadedErasers{};
 	int invincible = 0;
 	bool visible = true;

@@ -12,7 +12,7 @@ std::list<std::unique_ptr<Handwriting>>* WritingEnemy::GetHandWrite()
 
 void WritingEnemy::StaticUpdate()
 {
-	handwriting.remove_if([](auto& itr) {return itr->deleteFlag; });
+	handwriting.remove_if([](auto& itr) {return !itr->IsValid(); });
 	for (auto& itr : handwriting)
 	{
 		itr->Update();

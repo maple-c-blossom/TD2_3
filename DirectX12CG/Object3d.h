@@ -107,6 +107,8 @@ namespace MCB
         //ÅyADXEngineóRóàÅz
         static std::list<Object3d*> GetAllObjs();
 
+        inline bool IsValid() { return !deleteFlag && constMapTranceform != nullptr; };
+
     protected:
         virtual void UniqueOnColliderHit(ADXCollider* col);
     };

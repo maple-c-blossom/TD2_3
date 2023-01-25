@@ -286,7 +286,7 @@ void ADXCollider::Collide(ADXCollider* col)
 		}
 	}
 
-	if (!gameObject->deleteFlag && !col->gameObject->deleteFlag && IsHit(*col) && enabled && col->enabled && col->gameObject != gameObject)
+	if (gameObject->IsValid() && col->gameObject->IsValid() && IsHit(*col) && enabled && col->enabled && col->gameObject != gameObject)
 	{
 		if (!isTrigger && !col->isTrigger)
 		{

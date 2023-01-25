@@ -130,7 +130,7 @@ void Player::Update()
 		}
 	}
 
-	kneadedErasers.remove_if([](auto& itr) {return itr.deleteFlag; });
+	kneadedErasers.remove_if([](auto& itr) {return !itr.IsValid(); });
 
 	if (kneadedErasers.size() <= 0)
 	{
@@ -213,7 +213,7 @@ void Player::Update()
 		auto& itr = kneadedErasers.rbegin();
 		while (itr != kneadedErasers.rend())
 		{
-			if (itr->deleteFlag)
+			if (!itr->IsValid())
 			{
 				connectedFlag = false;
 			}

@@ -227,7 +227,7 @@ void MCB::Scene::Update()
         viewCamera->Update();
 
     CheckAllColision();
-    enemys.remove_if([](auto& itr) {return itr->deleteFlag; });
+    enemys.remove_if([](auto& itr) {return !itr->IsValid(); });
     //s—ñ•ÏŠ·
     MatrixUpdate();
 

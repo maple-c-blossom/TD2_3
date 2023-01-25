@@ -12,7 +12,7 @@ void EraserEnemy::UniqueInitialize()
 
 void EraserEnemy::UniqueUpdate()
 {
-	if (this->deleteFlag)return;
+	if (!this->IsValid())return;
 	velocity.V3Norm();
 	float tempNorm = 1000;
 	velocity = Float3(0.f,0.f,0.f);
@@ -65,10 +65,10 @@ void EraserEnemy::UniqueUpdate()
 		
 		for (auto& itr2 : enemies)
 		{
-			if (itr2->enemyType == Erase || itr2->deleteFlag || !itr2->imotalTimer.IsEnd())continue;
+			if (itr2->enemyType == Erase || !itr2->IsValid() || !itr2->imotalTimer.IsEnd())continue;
 			for (auto& itr3 : itr2->colliders)
 			{
-				if (itr3.gameObject->deleteFlag)continue;
+				if (!itr3.gameObject->IsValid())continue;
 				if (itr3.IsHit(itr))
 				{
 					bool flag = itr2->deleteFlag;
