@@ -47,7 +47,7 @@ namespace MCB
 		TextureCell* debugTextTexture;
 		TextureCell* bossHp;
 		TextureCell* shard;
-		std::array<MCB::TextureCell*, 6> tutorialTexs;
+		std::array<MCB::TextureCell*, 8> tutorialTexs;
 #pragma endregion テクスチャ
 
 		//サウンド

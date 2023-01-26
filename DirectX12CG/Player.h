@@ -37,8 +37,8 @@ private:
 	float rotateModeCount;
 	MCB::Vector3D prevPos{};
 	MCB::Vector3D velocity{};
-	std::array<MCB::Sprite, 6> tutorials;//‚±‚ñ‚È‚É—v‚ç‚È‚¢‚©‚à
-	std::array<MCB::Texture*, 6> tutorialTexs;
+	std::array<MCB::Sprite, 2> tutorials;//‚±‚ñ‚È‚É—v‚ç‚È‚¢‚©‚à
+	std::array<MCB::Texture*, 8> tutorialTexs;
 
 	Timer animationTime;
 	int animeNum;
@@ -58,7 +58,8 @@ public:
 	float GetShard() { return shard; };
 	void Erase();
 	void TutorialInitialize(MCB::Texture* tutorial1, MCB::Texture* tutorial2, MCB::Texture* tutorial3,
-							MCB::Texture* tutorial4, MCB::Texture* tutorial5, MCB::Texture* tutorial6);
+		MCB::Texture* tutorial4, MCB::Texture* tutorial5, MCB::Texture* tutorial6,
+		MCB::Texture* tutorial7, MCB::Texture* tutorial8);
 public:
 	static Player* GetPlayer() { return playerPtr; };
 	static std::list<MCB::Object3d*>* GetCaptureList() { return &captureList; };

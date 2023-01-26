@@ -171,6 +171,8 @@ void Player::Update()
 	{
 		position.z = 55;
 	}
+
+	position.y = 0;
 	//--
 
 	if (shard <= 0)
@@ -301,22 +303,29 @@ void Player::Draw()
 
 void Player::TutorialDraw()
 {
+	float spriteSize = 126.0f;
+	float spriteExtend = 3.0f;
+	float edgeSpace = 2.0f;
+	float totalSpriteSize = spriteSize * spriteExtend;
+	float edgedTotalSpriteSize = (spriteSize + edgeSpace) * spriteExtend;
+
+
 	if (shard > 15)
 	{
 		if (kneadedErasers.size() > 0)
 		{
-			tutorials[2].SpriteDraw(*tutorialTexs[animeNum], DxWindow::GetInstance()->window_width - (128 * 1.5f), 0, 126*1.5f, 126*1.5f);//ここで「ctrlGuide2」という名前の画像を表示//ここで「ctrlGuide3」「ctrlGuide4」「ctrlGuide5」「ctrlGuide6」という名前の画像をアニメーションさせて表示
+			tutorials[1].SpriteDraw(*tutorialTexs[animeNum], DxWindow::GetInstance()->window_width - edgedTotalSpriteSize, 0, totalSpriteSize, totalSpriteSize);
 		}
 		else
 		{
 			animationTime.Set(10);
 			animeNum = 2;
-			tutorials[1].SpriteDraw(*tutorialTexs[1], DxWindow::GetInstance()->window_width - (128 * 1.5f), 0,126 * 1.5f,126 * 1.5f);//ここで「ctrlGuide2」という名前の画像を表示
+			tutorials[1].SpriteDraw(*tutorialTexs[1], DxWindow::GetInstance()->window_width - edgedTotalSpriteSize, 0, totalSpriteSize, totalSpriteSize);
 		}
 	}
 	else
 	{
-		tutorials[0].SpriteDraw(*tutorialTexs[0], DxWindow::GetInstance()->window_width - (128 * 1.5f), 0,126 * 1.5f,126 * 1.5f);//ここで「ctrlGuide1」という名前の画像を表示
+		tutorials[0].SpriteDraw(*tutorialTexs[0], DxWindow::GetInstance()->window_width - edgedTotalSpriteSize, 0, totalSpriteSize, totalSpriteSize);
 	}
 }
 
@@ -330,7 +339,9 @@ void Player::Erase()
 	shard += 0.5;
 }
 
-void Player::TutorialInitialize(MCB::Texture* tutorial1, MCB::Texture* tutorial2, MCB::Texture* tutorial3, MCB::Texture* tutorial4, MCB::Texture* tutorial5, MCB::Texture* tutorial6)
+void Player::TutorialInitialize(MCB::Texture* tutorial1, MCB::Texture* tutorial2, MCB::Texture* tutorial3,
+	MCB::Texture* tutorial4, MCB::Texture* tutorial5, MCB::Texture* tutorial6,
+	MCB::Texture* tutorial7, MCB::Texture* tutorial8)
 {
 	tutorialTexs[0] = tutorial1;//ctrlGuide1
 	tutorialTexs[1] = tutorial2;//ctrlGuide2
@@ -338,6 +349,8 @@ void Player::TutorialInitialize(MCB::Texture* tutorial1, MCB::Texture* tutorial2
 	tutorialTexs[3] = tutorial4;//ctrlGuide4
 	tutorialTexs[4] = tutorial5;//ctrlGuide5
 	tutorialTexs[5] = tutorial6;//ctrlGuide6
+	tutorialTexs[6] = tutorial7;//ctrlGuide7
+	tutorialTexs[7] = tutorial8;//ctrlGuide8
 
 	for(auto&itr:tutorials)
 	{

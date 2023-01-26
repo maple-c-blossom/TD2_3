@@ -44,6 +44,8 @@ void Boss::Update()
 		itr.collideLayer = 3;
 	}
 
+	position.y = 0;
+
 	velocity.V3Norm();
 	//position.x += velocity.vec.x * speed;
 	//position.y += velocity.vec.y * speed;

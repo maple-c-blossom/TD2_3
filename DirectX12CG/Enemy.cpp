@@ -132,6 +132,8 @@ void Enemy::Update()
 		position = positionVec.ConvertXMFloat3();
 		Player::GetCaptureList()->push_back(this);//プレイヤーがもっているキャプチャしている敵のリストに格納(攻撃当てた時に敵を消すためのリスト）
 	}
+
+	position.y = 0;
 	
 	allEnemyPtr.push_back(this);
 	allObjPtr.push_back(this);
