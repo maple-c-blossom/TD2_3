@@ -10,7 +10,7 @@ MCB::SceneManager::SceneManager(RootParameter* root, Depth* depth, PipeLineManag
 	this->depth = depth;
 	damyTexture = texmanager->CreateNoTextureFileIsTexture();
 	loadBackGroundTex = texmanager->CreateNoTextureFileIsTexture();
-	loadTex = texmanager->LoadTexture(L"Resources\\reimu.png");
+	loadTex = texmanager->LoadTexture(L"Resources\\text\\title.png");
 	loadBackGround.InitMatProje();
 	loadBackGround = loadBackGround.CreateSprite();
 	loadBackGround.color = { 0,0,0,0 };
