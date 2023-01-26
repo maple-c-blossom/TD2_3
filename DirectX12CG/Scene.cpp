@@ -11,6 +11,9 @@ using namespace std;
 MCB::Scene::~Scene()
 {
     soundManager.AllDeleteSound();
+    WritingEnemy::GetHandWrite()->clear();
+    Player::GetCaptureList()->clear();
+
     delete BoxModel;
     delete skydomeModel;
     delete groundModel;
