@@ -90,8 +90,8 @@ void EraserEnemy::UniqueUpdate()
 	}
 
 	Float2 temp;
-	temp.x = MCB::Lerp(0, 85, (position.z + 30) / 85);
-	temp.x /= 85;
+	//temp.x = MCB::Lerp(0, 85, (position.z + 30) / 85);
+	temp.x = (position.z + 30) / 85;
 	Float2 Vartical;
 	Vartical.x = MCB::Lerp(-40, -80, temp.x);
 	Vartical.y = MCB::Lerp(40, 80, temp.x);
