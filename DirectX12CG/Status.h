@@ -7,4 +7,4 @@ static int MAX_HP_ENEMY_MECHANICAL_PENCIL = 10;//シャーペンのHP
 static float WRITING_RADIUS = 1.5f;//筆跡の球の直径(直径分の移動ごとに生成するため）
 static int ENEMY_ATTACK_TIME = SECOND_FRAME;//攻撃の持続時間
 static int ENEMY_BEFORE_ATTACK_TIME = SECOND_FRAME;//攻撃前の溜め時間
-static int MAX_HP_BOSS = 50;//攻撃前の溜め時間
+static int MAX_HP_BOSS = 75;//ボスの初期HP
