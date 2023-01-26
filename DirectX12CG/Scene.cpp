@@ -203,12 +203,17 @@ void MCB::Scene::Update()
 
         if (spownTimer.IsEnd() && enemys.size() < 6)
         {
-            int count;
+            int count = 0;
+            int countErase = 0;
             for (auto& itr : enemys)
             {
                 if (itr->enemyType == Enemy::Type::Writing)
                 {
                     count++;
+                }
+                else
+                {
+                    countErase++;
                 }
             }
             if (count < 2)
@@ -217,6 +222,13 @@ void MCB::Scene::Update()
                 temp->SetHandwritingModel(WritingModel.get());
                 temp->Initialize({ (float)GetRand(-1,1),0,(float)GetRand(-1,1) }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, pencilEnemyModel.get(), 0.5f);
                 temp->movePoint = { {-20 + temp->position.x,0,20 + temp->position.z},{ 20 + temp->position.x,0,40 + temp->position.z },{ 20 + temp->position.x,0,20 + temp->position.z } };
+                enemys.push_back(move(temp));
+            }
+            else if (countErase <= 1)
+            {
+                unique_ptr<EraserEnemy> temp = make_unique<EraserEnemy>();
+                temp->Initialize({ 0,0,1 }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, eraseEnemyModel.get(), 0.15f);
+                temp->handwritingModel = WritingModel.get();
                 enemys.push_back(move(temp));
             }
             else
