@@ -275,9 +275,9 @@ void Player::Update()
 	{
 		animationTime.Set(10);
 		animeNum++;
-		if (animeNum >= tutorialTexs.size())
+		if (animeNum >= tutorialTexs.size() || animeNum >= 7)
 		{
-			animeNum = 2;
+			animeNum = 3;
 		}
 	}
 	
@@ -309,24 +309,39 @@ void Player::TutorialDraw()
 	float totalSpriteSize = spriteSize * spriteExtend;
 	float edgedTotalSpriteSize = (spriteSize + edgeSpace) * spriteExtend;
 
+	Texture* tutorialTexL = tutorialTexs[0];
+	Texture* tutorialTexR = tutorialTexs[1];
 
 	if (shard > 15)
 	{
 		if (kneadedErasers.size() > 0)
 		{
-			tutorials[1].SpriteDraw(*tutorialTexs[animeNum], DxWindow::GetInstance()->window_width - edgedTotalSpriteSize, 0, totalSpriteSize, totalSpriteSize);
+			tutorialTexL = tutorialTexs[animeNum];
 		}
 		else
 		{
 			animationTime.Set(10);
-			animeNum = 2;
-			tutorials[1].SpriteDraw(*tutorialTexs[1], DxWindow::GetInstance()->window_width - edgedTotalSpriteSize, 0, totalSpriteSize, totalSpriteSize);
+			animeNum = 3;
 		}
 	}
-	else
-	{
-		tutorials[0].SpriteDraw(*tutorialTexs[0], DxWindow::GetInstance()->window_width - edgedTotalSpriteSize, 0, totalSpriteSize, totalSpriteSize);
-	}
+
+		if (kneadedErasers.size() > 0)
+		{
+			tutorialTexR = tutorialTexs[7];
+		}
+		else
+		{
+			animationTime.Set(10);
+			animeNum = 3;
+			if (shard > 15)
+			{
+				tutorialTexR = tutorialTexs[2];
+			}
+		}
+
+	tutorials[0].SpriteDraw(*tutorialTexL, 0, DxWindow::GetInstance()->window_height - edgedTotalSpriteSize, totalSpriteSize, totalSpriteSize);
+	tutorials[1].SpriteDraw(*tutorialTexR, DxWindow::GetInstance()->window_width - edgedTotalSpriteSize, DxWindow::GetInstance()->window_height - edgedTotalSpriteSize, totalSpriteSize, totalSpriteSize);
+
 }
 
 bool Player::IsInvincible()
