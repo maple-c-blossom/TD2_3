@@ -43,7 +43,7 @@ void Player::Update()
 	bool makingKneadedEraser =
 		input->IsKeyDown(keyConfig[8]);
 
-	bool trueMakingKneadedEraser = makingKneadedEraser && kneadedErasers.size() <= maxKneadedErasers && !rotateMode;
+	bool trueMakingKneadedEraser = makingKneadedEraser && kneadedErasers.size() <= maxKneadedErasers;
 
 	velocity = position - prevPos;
 	prevPos = position;
@@ -132,12 +132,6 @@ void Player::Update()
 
 	kneadedErasers.remove_if([](auto& itr) {return !Object3d::IsValid(&itr); });
 
-	if (kneadedErasers.size() <= 0)
-	{
-		rotateModeCount = 0;
-		rotateMode = false;
-	}
-
 	moveSpeedPercentage = max(0,min(moveSpeedPercentage,1));
 
 	velocity = Vector3D{sin(directionAngle),0,cos(directionAngle)} * moveSpeedPercentage * maxMoveSpeed;
@@ -204,13 +198,15 @@ void Player::Update()
 	}
 	else if(!trueMakingKneadedEraser)
 	{
-		rotation.y += ADXUtility::AngleDiff(rotation.y, directionAngle) / (kneadedErasers.size() / 10.0 + 1);
+		rotation.y += ADXUtility::AngleDiff(rotation.y, directionAngle);
 	}
 
 	shard = min(max(0, shard), maxShard);
 
 	if (trueMakingKneadedEraser)
 	{
+		rotateMode = false;
+		rotateModeCount = 0;
 		shard -= velocity.V3Len() * 2;
 		if (kneadedErasers.empty()
 			|| Vector3D{ kneadedErasers.front().position.x,kneadedErasers.front().position.y,kneadedErasers.front().position.z }.V3Len() > kneadedEraserDistance)
@@ -311,7 +307,7 @@ void Player::TutorialDraw()
 
 	if (shard > 0.5f)
 	{
-		if (kneadedErasers.size() > 0)
+		if (kneadedErasers.size() > 0 && !rotateMode)
 		{
 			tutorialTexL = tutorialTexs[animeNum];
 		}
