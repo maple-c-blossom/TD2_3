@@ -105,7 +105,7 @@ namespace MCB
         //void CreateModel(const char* fileName);
 
         //ÅyADXEngineóRóàÅz
-        static std::list<Object3d*> GetAllObjs();
+        static inline std::list<Object3d*> GetAllObjs() { return objs; };
 
         inline int TestCall() { return 1; };
 
@@ -113,6 +113,8 @@ namespace MCB
         {
             return objPtr->deleteFlag == false && objPtr->constMapTranceform != nullptr;
         };
+
+        static void UpdateObjs();
 
     protected:
         virtual void UniqueOnColliderHit(ADXCollider* col);

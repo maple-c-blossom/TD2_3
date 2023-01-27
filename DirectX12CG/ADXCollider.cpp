@@ -6,6 +6,7 @@ using namespace MCB;
 
 bool ADXCollider::translateDivine = false;
 std::vector<collidePattern> ADXCollider::ignoreCollidePatterns = { {1,1},{2,2},{2,3},{3,3},{-1,1} };
+std::vector<collidePattern> ADXCollider::ignorePushBackPatterns = {};
 
 /*
 【接触検知から押し戻しベクトル算出までの流れ】
@@ -18,6 +19,7 @@ std::vector<collidePattern> ADXCollider::ignoreCollidePatterns = { {1,1},{2,2},{
 ・互いのオブジェクトの衝突点の座標の差が押し戻しの方向と強さが入ったベクトルになる
 */
 
+std::vector<ADXCollider*> ADXCollider::allColPtr = {};
 std::vector<ADXCollider*> ADXCollider::cols = {};
 
 ADXCollider::ADXCollider(Object3d* obj)
@@ -37,7 +39,7 @@ void ADXCollider::Initialize(Object3d* obj)
 void ADXCollider::Update(Object3d* obj)
 {
 	gameObject = obj;
-	cols.push_back(this);
+	allColPtr.push_back(this);
 }
 
 //空間上の点をコライダーの中に収めた時の座標
@@ -291,9 +293,19 @@ void ADXCollider::Collide(ADXCollider* col)
 		}
 	}
 
+	bool executePushBack = true;
+	for (auto& itr : ignorePushBackPatterns)
+	{
+		if ((itr.layer1 == collideLayer && itr.layer2 == col->collideLayer) ||
+			(itr.layer2 == collideLayer && itr.layer1 == col->collideLayer))
+		{
+			executePushBack = false;
+		}
+	}
+
 	if (Object3d::IsValid(gameObject) && Object3d::IsValid(col->gameObject) && IsHit(*col) && enabled && col->enabled && col->gameObject != gameObject)
 	{
-		if (!isTrigger && !col->isTrigger)
+		if (executePushBack && !isTrigger && !col->isTrigger)
 		{
 			ADXVector3 myPushBack = CollideVector(*col);
 			ADXVector3 targetPushBack = col->CollideVector(*this);
@@ -322,6 +334,14 @@ void ADXCollider::Collide(ADXCollider* col)
 	}
 }
 
+void ADXCollider::UpdateCols()
+{
+	for (auto& itr : cols)
+	{
+		itr->collideList.remove_if([](auto& colItr) { return !Object3d::IsValid(colItr->gameObject); });
+	}
+}
+
 //先のCollidersUpdateで別のコライダーにぶつかっていたらオブジェクトを押し戻す
 void ADXCollider::SendPushBack()
 {
@@ -343,9 +363,9 @@ void ADXCollider::SendPushBack()
 //ゲーム内の全てのコライダーが入った配列を入れて使う
 void ADXCollider::CollidersUpdate()
 {
-	for (int i = 0; i < cols.size(); i++)
+	for (int i = 0; i < allColPtr.size(); i++)
 	{
-		cols[i]->collideList.clear();
+		allColPtr[i]->collideList.clear();
 	}
 
 	if (translateDivine)
@@ -359,20 +379,20 @@ void ADXCollider::CollidersUpdate()
 
 		//すべてのコライダーで移動距離÷(最小絶対半径×0.95)を求め、最も大きい値をtranslateDivNumFに入れる
 		float translateDivNumF = 1;
-		for (int i = 0; i < cols.size(); i++)
+		for (int i = 0; i < allColPtr.size(); i++)
 		{
 			ADXVector3 move;
-			move.x = cols[i]->gameObject->position.x - cols[i]->preTranslation.x;
-			move.y = cols[i]->gameObject->position.y - cols[i]->preTranslation.y;
-			move.z = cols[i]->gameObject->position.z - cols[i]->preTranslation.z;
+			move.x = allColPtr[i]->gameObject->position.x - allColPtr[i]->preTranslation.x;
+			move.y = allColPtr[i]->gameObject->position.y - allColPtr[i]->preTranslation.y;
+			move.z = allColPtr[i]->gameObject->position.z - allColPtr[i]->preTranslation.z;
 
-			ADXVector3 scaleX1 = { cols[i]->scale_.x,0,0 };
-			ADXVector3 scaleY1 = { 0,cols[i]->scale_.y,0 };
-			ADXVector3 scaleZ1 = { 0,0,cols[i]->scale_.z };
+			ADXVector3 scaleX1 = { allColPtr[i]->scale_.x,0,0 };
+			ADXVector3 scaleY1 = { 0,allColPtr[i]->scale_.y,0 };
+			ADXVector3 scaleZ1 = { 0,0,allColPtr[i]->scale_.z };
 
-			float worldScaleX1 = ADXMatrix4::transform(scaleX1, ADXMatrix4::ConvertToADXMatrix(cols[i]->gameObject->matWorld.matScale * cols[i]->gameObject->matWorld.matRot)).length();
-			float worldScaleY1 = ADXMatrix4::transform(scaleY1, ADXMatrix4::ConvertToADXMatrix(cols[i]->gameObject->matWorld.matScale * cols[i]->gameObject->matWorld.matRot)).length();
-			float worldScaleZ1 = ADXMatrix4::transform(scaleZ1, ADXMatrix4::ConvertToADXMatrix(cols[i]->gameObject->matWorld.matScale * cols[i]->gameObject->matWorld.matRot)).length();
+			float worldScaleX1 = ADXMatrix4::transform(scaleX1, ADXMatrix4::ConvertToADXMatrix(allColPtr[i]->gameObject->matWorld.matScale * allColPtr[i]->gameObject->matWorld.matRot)).length();
+			float worldScaleY1 = ADXMatrix4::transform(scaleY1, ADXMatrix4::ConvertToADXMatrix(allColPtr[i]->gameObject->matWorld.matScale * allColPtr[i]->gameObject->matWorld.matRot)).length();
+			float worldScaleZ1 = ADXMatrix4::transform(scaleZ1, ADXMatrix4::ConvertToADXMatrix(allColPtr[i]->gameObject->matWorld.matScale * allColPtr[i]->gameObject->matWorld.matRot)).length();
 
 			float minimumWorldRadius1 = 1;
 
@@ -398,11 +418,11 @@ void ADXCollider::CollidersUpdate()
 		translateDivNumF = ceilf(translateDivNumF);
 
 		//全てのオブジェクトを移動する前の座標へ移動させる
-		for (int i = 0; i < cols.size(); i++)
+		for (int i = 0; i < allColPtr.size(); i++)
 		{
-			cols[i]->gameObject->position.x = cols[i]->preTranslation.x;
-			cols[i]->gameObject->position.y = cols[i]->preTranslation.y;
-			cols[i]->gameObject->position.z = cols[i]->preTranslation.z;
+			allColPtr[i]->gameObject->position.x = allColPtr[i]->preTranslation.x;
+			allColPtr[i]->gameObject->position.y = allColPtr[i]->preTranslation.y;
+			allColPtr[i]->gameObject->position.z = allColPtr[i]->preTranslation.z;
 		}
 
 		//行列更新のついでに移動する前の座標を保存
@@ -430,13 +450,13 @@ void ADXCollider::CollidersUpdate()
 			}
 
 			//当たり判定と押し戻しベクトルの算出
-			for (int j = 0; j < cols.size(); j++)
+			for (int j = 0; j < allColPtr.size(); j++)
 			{
-				for (int k = j + 1; k < cols.size(); k++)
+				for (int k = j + 1; k < allColPtr.size(); k++)
 				{
-					cols[j]->Collide(cols[k]);
-					cols[j]->SendPushBack();
-					cols[k]->SendPushBack();
+					allColPtr[j]->Collide(allColPtr[k]);
+					allColPtr[j]->SendPushBack();
+					allColPtr[k]->SendPushBack();
 				}
 			}
 		}
@@ -444,16 +464,17 @@ void ADXCollider::CollidersUpdate()
 	else
 	{
 		//当たり判定と押し戻しベクトルの算出
-		for (int i = 0; i < cols.size(); i++)
+		for (int i = 0; i < allColPtr.size(); i++)
 		{
-			for (int j = i + 1; j < cols.size(); j++)
+			for (int j = i + 1; j < allColPtr.size(); j++)
 			{
-				cols[i]->Collide(cols[j]);
-				cols[i]->SendPushBack();
-				cols[j]->SendPushBack();
+				allColPtr[i]->Collide(allColPtr[j]);
+				allColPtr[i]->SendPushBack();
+				allColPtr[j]->SendPushBack();
 			}
 		}
 	}
 
-	cols.clear();
+	cols = allColPtr;
+	allColPtr.clear();
 }

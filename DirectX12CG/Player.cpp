@@ -130,6 +130,7 @@ void Player::Update()
 		}
 	}
 
+	Object3d::UpdateObjs();
 	kneadedErasers.remove_if([](auto& itr) {return !Object3d::IsValid(&itr); });
 
 	moveSpeedPercentage = max(0,min(moveSpeedPercentage,1));

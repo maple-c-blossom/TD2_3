@@ -56,6 +56,7 @@ void Object3d::Init()
 
 void Object3d::Update(View& view, Projection& projection,bool isBillBord)
 {
+    if (!IsValid(this))return;
     matWorld.SetMatScale(scale.x, scale.y, scale.z);
     matWorld.SetMatRot(rotation.x, rotation.y, rotation.z,false);
     matWorld.SetMatTrans(position.x, position.y, position.z);
@@ -89,6 +90,7 @@ void Object3d::Update(View& view, Projection& projection,bool isBillBord)
 
 void Object3d::Update(View& view, Projection& projection,Quaternion q, bool isBillBord)
 {
+    if (!IsValid(this))return;
     MCBMatrix matRot;
     matRot.MCBMatrixIdentity();
     matWorld.SetMatScale(scale.x, scale.y, scale.z);
@@ -96,7 +98,7 @@ void Object3d::Update(View& view, Projection& projection,Quaternion q, bool isBi
     matWorld.SetMatTrans(position.x, position.y, position.z);
     if (isBillBord)
     {
-        if (parent == nullptr)
+        if (parent == nullptr || !Object3d::IsValid(parent))
         {
             matWorld.UpdataBillBordMatrixWorld(view);
         }
@@ -154,6 +156,7 @@ void Object3d::Draw()
 
 void Object3d::Draw(unsigned short int incremant)
 {
+    if (!IsValid(this))return;
     if (model == nullptr)return;
     if (model->material.constBuffMaterialB1 == nullptr)return;
     Dx12* dx12 = Dx12::GetInstance();
@@ -186,6 +189,7 @@ void Object3d::Draw(unsigned short int incremant)
 
 void MCB::Object3d::Draw(ObjectMaterial* material)
 {
+    if (!IsValid(this))return;
     if (model == nullptr)return;
     if (material->constBuffMaterialB1 == nullptr)return;
     Dx12* dx12 = Dx12::GetInstance();
@@ -216,6 +220,7 @@ void MCB::Object3d::Draw(ObjectMaterial* material)
 
 void MCB::Object3d::FbxUpdate(View& view, Projection& projection, bool isBillBord)
 {
+    if (!IsValid(this))return;
     if (fbxModel == nullptr)return;
     matWorld.SetMatScale(scale.x, scale.y, scale.z);
     matWorld.SetMatRot(rotation.x, rotation.y, rotation.z, false);
@@ -250,6 +255,7 @@ void MCB::Object3d::FbxUpdate(View& view, Projection& projection, bool isBillBor
 
 void MCB::Object3d::FbxUpdate(View& view, Projection& projection, Quaternion q, bool isBillBord)
 {
+    if (!IsValid(this))return;
     if (fbxModel == nullptr)return;
     MCBMatrix matRot;
     matRot.MCBMatrixIdentity();
@@ -313,9 +319,10 @@ void MCB::Object3d::SetLights(LightGroup* lights)
     Object3d::lights = lights;
 }
 
-std::list<Object3d*> MCB::Object3d::GetAllObjs()
+void MCB::Object3d::UpdateObjs()
 {
-    return objs;
+    ADXCollider::UpdateCols();
+    objs.remove_if([](auto& itr) { return !IsValid(itr); });
 }
 
 void MCB::Object3d::UniqueOnColliderHit(ADXCollider* col)
