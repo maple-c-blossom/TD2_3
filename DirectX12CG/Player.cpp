@@ -45,7 +45,7 @@ void Player::Update()
 
 	bool makingKneadedEraserTrigger = input->IsKeyTrigger(keyConfig[8]);
 
-	bool trueMakingKneadedEraser = makingKneadedEraser && shard > 0 && kneadedErasers.size() <= maxKneadedErasers && !rotateMode;
+	bool trueMakingKneadedEraser = makingKneadedEraser && kneadedErasers.size() <= maxKneadedErasers && !rotateMode;
 
 	velocity = position - prevPos;
 	prevPos = position;
@@ -143,6 +143,11 @@ void Player::Update()
 	moveSpeedPercentage = max(0,min(moveSpeedPercentage,1));
 
 	velocity = Vector3D{sin(directionAngle),0,cos(directionAngle)} * moveSpeedPercentage * maxMoveSpeed;
+
+	if (shard <= 0 && trueMakingKneadedEraser)
+	{
+		velocity *= 0.1f;
+	}
 
 	position.x += velocity.ConvertXMFloat3().x;
 	position.y += velocity.ConvertXMFloat3().y;
@@ -305,14 +310,16 @@ void Player::TutorialDraw()
 {
 	float spriteSize = 126.0f;
 	float spriteExtend = 3.0f;
-	float edgeSpace = 2.0f;
+	float edgeSpace = 20;
 	float totalSpriteSize = spriteSize * spriteExtend;
-	float edgedTotalSpriteSize = (spriteSize + edgeSpace) * spriteExtend;
+	float edgedTotalSpriteSize = totalSpriteSize + edgeSpace;
+	float edgedTotalHalfSpriteSize = totalSpriteSize * 0.75 + edgeSpace;
+
 
 	Texture* tutorialTexL = tutorialTexs[0];
-	Texture* tutorialTexR = tutorialTexs[1];
+	Texture* tutorialTexR = tutorialTexs[2];
 
-	if (shard > 15)
+	if (shard > 0.5f)
 	{
 		if (kneadedErasers.size() > 0)
 		{
@@ -333,14 +340,10 @@ void Player::TutorialDraw()
 		{
 			animationTime.Set(10);
 			animeNum = 3;
-			if (shard > 15)
-			{
-				tutorialTexR = tutorialTexs[2];
-			}
 		}
 
-	tutorials[0].SpriteDraw(*tutorialTexL, 0, DxWindow::GetInstance()->window_height - edgedTotalSpriteSize, totalSpriteSize, totalSpriteSize);
-	tutorials[1].SpriteDraw(*tutorialTexR, DxWindow::GetInstance()->window_width - edgedTotalSpriteSize, DxWindow::GetInstance()->window_height - edgedTotalSpriteSize, totalSpriteSize, totalSpriteSize);
+	tutorials[0].SpriteDraw(*tutorialTexL, edgeSpace, DxWindow::GetInstance()->window_height - edgedTotalHalfSpriteSize, totalSpriteSize, totalSpriteSize);
+	tutorials[1].SpriteDraw(*tutorialTexR, DxWindow::GetInstance()->window_width - edgedTotalSpriteSize, DxWindow::GetInstance()->window_height - edgedTotalHalfSpriteSize, totalSpriteSize, totalSpriteSize);
 
 }
 
