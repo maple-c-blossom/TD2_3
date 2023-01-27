@@ -43,8 +43,6 @@ void Player::Update()
 	bool makingKneadedEraser =
 		input->IsKeyDown(keyConfig[8]);
 
-	bool makingKneadedEraserTrigger = input->IsKeyTrigger(keyConfig[8]);
-
 	bool trueMakingKneadedEraser = makingKneadedEraser && kneadedErasers.size() <= maxKneadedErasers && !rotateMode;
 
 	velocity = position - prevPos;
@@ -54,7 +52,7 @@ void Player::Update()
 
 	if (rotateMode)
 	{
-		weight = (1 + kneadedErasers.size()) * 10;
+		weight = 300;
 	}
 	else
 	{
@@ -211,14 +209,6 @@ void Player::Update()
 
 	shard = min(max(0, shard), maxShard);
 
-	if (makingKneadedEraserTrigger && kneadedErasers.size() > 0)
-	{
-		for (auto& itr : kneadedErasers)
-		{
-			itr.deleteFlag = true;
-		}
-	}
-
 	if (trueMakingKneadedEraser)
 	{
 		shard -= velocity.V3Len() * 2;
@@ -331,16 +321,6 @@ void Player::TutorialDraw()
 			animeNum = 3;
 		}
 	}
-
-		if (kneadedErasers.size() > 0)
-		{
-			tutorialTexR = tutorialTexs[7];
-		}
-		else
-		{
-			animationTime.Set(10);
-			animeNum = 3;
-		}
 
 	tutorials[0].SpriteDraw(*tutorialTexL, edgeSpace, DxWindow::GetInstance()->window_height - edgedTotalHalfSpriteSize, totalSpriteSize, totalSpriteSize);
 	tutorials[1].SpriteDraw(*tutorialTexR, DxWindow::GetInstance()->window_width - edgedTotalSpriteSize, DxWindow::GetInstance()->window_height - edgedTotalHalfSpriteSize, totalSpriteSize, totalSpriteSize);

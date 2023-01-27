@@ -111,16 +111,7 @@ namespace MCB
 
         static inline bool IsValid(Object3d* objPtr)
         {
-            try
-            {
-                objPtr->TestCall();
-                return !objPtr->deleteFlag && objPtr->constMapTranceform != nullptr;
-            }
-            catch (bool err)
-            {
-                return false;
-            }
-            return !objPtr->deleteFlag && objPtr->constMapTranceform != nullptr;
+            return objPtr->deleteFlag == false && objPtr->constMapTranceform != nullptr;
         };
 
     protected:
