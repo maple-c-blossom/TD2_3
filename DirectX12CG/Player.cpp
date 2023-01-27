@@ -131,7 +131,7 @@ void Player::Update()
 	}
 
 	Object3d::UpdateObjs();
-	kneadedErasers.remove_if([](auto& itr) {return !Object3d::IsValid(&itr); });
+	kneadedErasers.remove_if([](auto& itr) {return Object3d::DeleteAllowed(&itr); });
 
 	moveSpeedPercentage = max(0,min(moveSpeedPercentage,1));
 
@@ -252,11 +252,7 @@ void Player::Update()
 		}
 	}
 
-	allObjPtr.push_back(this);
-	for (auto& colItr : colliders)
-	{
-		colItr.Update(this);
-	}
+	UpdateData();
 
 	invincible--;
 	invincible = max(invincible, 0);

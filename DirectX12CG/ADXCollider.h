@@ -63,9 +63,6 @@ public:
     void SendPushBack();
     void Collide(ADXCollider* col);
 
-public:
-    static void UpdateCols();
-
 private:
     ADXVector3 preTranslation;
     ADXMatrix4 preMatrix;

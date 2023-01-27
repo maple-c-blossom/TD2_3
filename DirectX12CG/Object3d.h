@@ -71,16 +71,13 @@ namespace MCB
 
         std::list<ADXCollider> colliders{};
 
-        // 【ADXEngine由来】全てのオブジェクトを入れる配列
-        static std::list<Object3d*> allObjPtr;
-        // 【ADXEngine由来】全てのオブジェクトが入った配列
-        static std::list<Object3d*> objs;
-
         void Init();
 
         void Update(View& view, Projection& projection, bool isBillBord = false);
 
         void Update(View& view, Projection& projection, Quaternion q, bool isBillBord = false);
+
+        void UpdateData();
 
         void Draw();
 
@@ -96,7 +93,7 @@ namespace MCB
 
         void FbxDraw(unsigned short int incremant);
 
-        void OnColliderHit(ADXCollider* col);
+        void OnColliderHit(ADXCollider* myCol, ADXCollider* col);
 
         //【ADXEngine由来】静的更新処理
         static void StaticUpdate();
@@ -114,10 +111,24 @@ namespace MCB
             return objPtr->deleteFlag == false && objPtr->constMapTranceform != nullptr;
         };
 
+        static inline bool DeleteAllowed(Object3d* objPtr)
+        {
+            return objPtr->deleteFlag && objPtr->deleteCountDown <= 0;
+        }
+
         static void UpdateObjs();
 
+    private:
+        int deleteCountDown = 3;
+
+    private:
+        // 【ADXEngine由来】全てのオブジェクトを入れる配列
+        static std::list<Object3d*> allObjPtr;
+        // 【ADXEngine由来】全てのオブジェクトが入った配列
+        static std::list<Object3d*> objs;
+
     protected:
-        virtual void UniqueOnColliderHit(ADXCollider* col);
+        virtual void UniqueOnColliderHit(ADXCollider* myCol, ADXCollider* col);
     };
 }
 

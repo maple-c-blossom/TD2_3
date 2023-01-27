@@ -93,25 +93,9 @@ void Enemy::Update()
 	}
 	UniqueUpdate();
 
-	if (capture == nullptr)
+	for (auto& itr : colliders)
 	{
-		for (auto& itr : colliders)
-		{
-			if (!itr.isTrigger)
-			{
-				for (auto& colListItr : itr.collideList)
-				{
-					for (auto& colListItr2 : KneadedEraser::GetAllKneadedEraser())
-					{
-						if (colListItr->gameObject == colListItr2 && capture == nullptr)
-						{
-							capture = colListItr2;
-						}
-					}
-				}
-			}
-			itr.Update(this);
-		}
+		itr.Update(this);
 	}
 
 	if (Player::GetPlayer()->IsInvincible() || (capture != nullptr && !Object3d::IsValid(capture)))
@@ -136,21 +120,30 @@ void Enemy::Update()
 	position.y = 0;
 	
 	allEnemyPtr.push_back(this);
-	allObjPtr.push_back(this);
-
-	for (auto& itr : colliders)
-	{
-		itr.Update(this);
-	}
 	if (hp <= 0)
 	{
 		deleteFlag = true;
 	}
+	UpdateData();
 }
 
 std::list<Enemy*> Enemy::GetAllEnemies()
 {
 	return enemies;
+}
+
+void Enemy::UniqueOnColliderHit(ADXCollider* myCol, ADXCollider* col)
+{
+	if (capture == nullptr && !myCol->isTrigger)
+	{
+		for (auto& colListItr : KneadedEraser::GetAllKneadedEraser())
+		{
+			if (col->gameObject == colListItr)
+			{
+				capture = colListItr;
+			}
+		}
+	}
 }
 
 

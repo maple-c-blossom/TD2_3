@@ -124,6 +124,23 @@ void Object3d::Update(View& view, Projection& projection,Quaternion q, bool isBi
     constMapTranceform->cameraPos.z = view.eye.z;
 }
 
+void MCB::Object3d::UpdateData()
+{
+    if (IsValid(this))
+    {
+        deleteCountDown = 3;
+        allObjPtr.push_back(this);
+        for (auto& colItr : colliders)
+        {
+            colItr.Update(this);
+        }
+    }
+    else
+    {
+        deleteCountDown--;
+    }
+}
+
 void Object3d::Draw()
 {
     if (model == nullptr)return;
@@ -303,9 +320,9 @@ void MCB::Object3d::FbxDraw(unsigned short int incremant)
     fbxModel->Draw();
 }
 
-void MCB::Object3d::OnColliderHit(ADXCollider* col)
+void MCB::Object3d::OnColliderHit(ADXCollider* myCol, ADXCollider* col)
 {
-    UniqueOnColliderHit(col);
+    UniqueOnColliderHit(myCol, col);
 }
 
 void MCB::Object3d::StaticUpdate()
@@ -321,10 +338,9 @@ void MCB::Object3d::SetLights(LightGroup* lights)
 
 void MCB::Object3d::UpdateObjs()
 {
-    ADXCollider::UpdateCols();
     objs.remove_if([](auto& itr) { return !IsValid(itr); });
 }
 
-void MCB::Object3d::UniqueOnColliderHit(ADXCollider* col)
+void MCB::Object3d::UniqueOnColliderHit(ADXCollider* myCol, ADXCollider* col)
 {
 }

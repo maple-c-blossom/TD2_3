@@ -329,16 +329,8 @@ void ADXCollider::Collide(ADXCollider* col)
 		collideList.push_back(col);
 		col->collideList.push_back(this);
 
-		gameObject->OnColliderHit(col);
-		col->gameObject->OnColliderHit(this);
-	}
-}
-
-void ADXCollider::UpdateCols()
-{
-	for (auto& itr : cols)
-	{
-		itr->collideList.remove_if([](auto& colItr) { return !Object3d::IsValid(colItr->gameObject); });
+		gameObject->OnColliderHit(this, col);
+		col->gameObject->OnColliderHit(col, this);
 	}
 }
 

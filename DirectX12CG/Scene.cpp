@@ -284,7 +284,7 @@ void MCB::Scene::Update()
     CheckAllColision();
 
     Object3d::UpdateObjs();
-    enemys.remove_if([](auto& itr){ return !Object3d::IsValid(itr.get()); });
+    enemys.remove_if([](auto& itr){ return Object3d::DeleteAllowed(itr.get()); });
     //s—ñ•ÏŠ·
     MatrixUpdate();
 

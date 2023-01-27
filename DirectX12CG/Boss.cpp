@@ -68,10 +68,6 @@ void Boss::Update()
 	{
 		itr->Update();
 	}
-	for (auto& itr : colliders)
-	{
-		itr.Update(this);
-	}
 	if (imotalFlag)
 	{
 		imotalTimer.Update();
@@ -80,9 +76,8 @@ void Boss::Update()
 			imotalFlag = false;
 		}
 	}
-	allObjPtr.push_back(this);
 	Damage(1);
-
+	UpdateData();
 }
 
 void Boss::Draw()
@@ -123,7 +118,6 @@ void Boss::Damage(int damage)
 					{
 						itr->deleteFlag = true;
 					}
-					Player::GetCaptureList()->clear();//ねり消しの接着リストをリセット
 					imotalTimer.Set(60);
 					imotalFlag = true;
 				}

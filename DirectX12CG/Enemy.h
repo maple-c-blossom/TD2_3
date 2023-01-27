@@ -55,5 +55,8 @@ public:
 	//yADXEngine—R—ˆz
 	static std::list<Enemy*> GetAllEnemies();
 	virtual void Draw() = 0;
+
+private:
+	void UniqueOnColliderHit(ADXCollider* myCol, ADXCollider* col);
 };
 

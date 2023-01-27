@@ -44,16 +44,12 @@ void Handwriting::Update()
 				}
 			}
 		}
-		itr.Update(this);
 	}
 	if (lifeTimer.IsEnd())
 	{
 		deleteFlag = true;
 	}
-	if (Object3d::IsValid(this))
-	{
-		allObjPtr.push_back(this);
-	}
+	UpdateData();
 }
 
 void Handwriting::Draw()
