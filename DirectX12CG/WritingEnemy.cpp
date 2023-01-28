@@ -1,18 +1,26 @@
 #include "WritingEnemy.h"
-std::list<std::unique_ptr<Handwriting>> WritingEnemy::handwriting{};
+std::vector<std::unique_ptr<Handwriting>> WritingEnemy::handwriting{};
 void WritingEnemy::SetHandwritingModel(MCB::Model* model)
 {
 	handwritingModel = model;
 }
 
-std::list<std::unique_ptr<Handwriting>>* WritingEnemy::GetHandWrite()
+std::vector<std::unique_ptr<Handwriting>>* WritingEnemy::GetHandWrite()
 {
 	return &handwriting;
 }
 
 void WritingEnemy::StaticUpdate()
 {
-	handwriting.remove_if([](auto& itr) {return Object3d::DeleteAllowed(itr.get()); });
+
+	for (int i = 0; i < handwriting.size(); i++)
+	{
+		if (Object3d::DeleteAllowed(handwriting[i].get()))
+		{
+			handwriting.erase(handwriting.begin() + i);
+			i--;
+		}
+	}
 	for (auto& itr : handwriting)
 	{
 		itr->Update();

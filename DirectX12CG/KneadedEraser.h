@@ -6,13 +6,13 @@
 class KneadedEraser :public MCB::Object3d
 {
 private:
-	static std::list<KneadedEraser*> allKneadedEraser;
-	static std::list<KneadedEraser*> kneadedErasers;
+	static std::vector<KneadedEraser*> allKneadedEraser;
+	static std::vector<KneadedEraser*> kneadedErasers;
 
 public:
 	void UniqueUpdate();
 
 public:
 	static void StaticUpdate();
-	static std::list<KneadedEraser*> GetAllKneadedEraser() { return kneadedErasers; };
+	static std::vector<KneadedEraser*> GetAllKneadedEraser() { return kneadedErasers; };
 };

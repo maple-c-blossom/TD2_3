@@ -9,7 +9,7 @@ class Player;
 class Boss :public MCB::Object3d
 {
 private:
-	std::list<std::unique_ptr<Enemy>>enemys;
+	std::vector<std::unique_ptr<Enemy>>enemys;
 	int hp;
 	float speed;
 	MCB::Vector3D velocity;

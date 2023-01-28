@@ -69,7 +69,7 @@ namespace MCB
 
         bool trackingFlag = false;
 
-        std::list<ADXCollider> colliders{};
+        std::vector<ADXCollider> colliders{};
 
         void Init();
 
@@ -102,7 +102,7 @@ namespace MCB
         //void CreateModel(const char* fileName);
 
         //【ADXEngine由来】
-        static inline std::list<Object3d*> GetAllObjs() { return objs; };
+        static inline std::vector<Object3d*> GetAllObjs() { return objs; };
 
         inline int TestCall() { return 1; };
 
@@ -113,7 +113,7 @@ namespace MCB
 
         static inline bool DeleteAllowed(Object3d* objPtr)
         {
-            return objPtr->deleteFlag && objPtr->deleteCountDown <= 0;
+            return !IsValid(objPtr) && objPtr->deleteCountDown <= 0;
         }
 
     private:
@@ -121,9 +121,9 @@ namespace MCB
 
     private:
         // 【ADXEngine由来】全てのオブジェクトを入れる配列
-        static std::list<Object3d*> allObjPtr;
+        static std::vector<Object3d*> allObjPtr;
         // 【ADXEngine由来】全てのオブジェクトが入った配列
-        static std::list<Object3d*> objs;
+        static std::vector<Object3d*> objs;
 
     protected:
         virtual void UniqueOnColliderHit(ADXCollider* myCol, ADXCollider* col);

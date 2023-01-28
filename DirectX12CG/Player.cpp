@@ -4,14 +4,14 @@
 using namespace MCB;
 
 Player* Player::playerPtr = nullptr;
-std::list<MCB::Object3d*> Player::captureList = {};
+std::vector<MCB::Object3d*> Player::captureList = {};
 int Player::captureCount = 0;
-std::list<KneadedEraser> Player::GetKneadedErasers()
+std::vector<KneadedEraser> Player::GetKneadedErasers()
 {
 	return kneadedErasers;
 }
 
-std::list<KneadedEraser>* Player::GetKneadedErasersPtr()
+std::vector<KneadedEraser>* Player::GetKneadedErasersPtr()
 {
 	return &kneadedErasers;
 }
@@ -130,7 +130,14 @@ void Player::Update()
 		}
 	}
 
-	kneadedErasers.remove_if([](auto& itr) {return Object3d::DeleteAllowed(&itr); });
+	for (int i = 0; i < kneadedErasers.size();i++)
+	{
+		if (Object3d::DeleteAllowed(&kneadedErasers[i]))
+		{
+			kneadedErasers.erase(kneadedErasers.begin() + i);
+			i--;
+		}
+	}
 
 	moveSpeedPercentage = max(0,min(moveSpeedPercentage,1));
 
@@ -209,15 +216,15 @@ void Player::Update()
 		rotateModeCount = 0;
 		shard -= velocity.V3Len() * 2;
 		if (kneadedErasers.empty()
-			|| Vector3D{ kneadedErasers.front().position.x,kneadedErasers.front().position.y,kneadedErasers.front().position.z }.V3Len() > kneadedEraserDistance)
+			|| Vector3D{ kneadedErasers.back().position.x,kneadedErasers.back().position.y,kneadedErasers.back().position.z }.V3Len() > kneadedEraserDistance)
 		{
-			kneadedErasers.push_front(KneadedEraser{});
-			kneadedErasers.front().parent = this;
-			kneadedErasers.front().model = KneadedEraserModel;
-			kneadedErasers.front().matWorld.matWorld *= matWorld.matWorld;
-			kneadedErasers.front().colliders.push_back(ADXCollider(&kneadedErasers.front()));
-			kneadedErasers.front().colliders.back().isTrigger = true;
-			kneadedErasers.front().colliders.back().collideLayer = 1;
+			kneadedErasers.push_back(KneadedEraser{});
+			kneadedErasers.back().parent = this;
+			kneadedErasers.back().model = KneadedEraserModel;
+			kneadedErasers.back().matWorld.matWorld *= matWorld.matWorld;
+			kneadedErasers.back().colliders.push_back(ADXCollider(&kneadedErasers.back()));
+			kneadedErasers.back().colliders.back().isTrigger = true;
+			kneadedErasers.back().colliders.back().collideLayer = 1;
 		}
 
 		for (auto& itr : kneadedErasers)
@@ -237,17 +244,17 @@ void Player::Update()
 
 	{
 		bool connectedFlag = true;
-		for (auto& itr : kneadedErasers)
+		for (int i = kneadedErasers.size() - 1; i >= 0; i--)
 		{
 			if (connectedFlag)
 			{
-				itr.UniqueUpdate();
+				kneadedErasers[i].UniqueUpdate();
 			}
 			else
 			{
-				itr.deleteFlag = true;
+				kneadedErasers[i].deleteFlag = true;
 			}
-			connectedFlag = IsValid(&itr);
+			connectedFlag = IsValid(&kneadedErasers[i]);
 		}
 	}
 

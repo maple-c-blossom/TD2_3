@@ -78,13 +78,13 @@ namespace MCB
 
 		DebugText debugText;
 
-		std::list<std::unique_ptr<Enemy>>enemys;
+		std::vector<std::unique_ptr<Enemy>>enemys;
 
 		Player substie;
 
 		Boss boss;
 
-		std::list<Object3d> walls;
+		std::vector<Object3d> walls;
 
 		Timer spownTimer;
 #pragma endregion スプライト

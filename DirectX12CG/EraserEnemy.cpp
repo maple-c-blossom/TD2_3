@@ -18,7 +18,7 @@ void EraserEnemy::UniqueUpdate()
 	velocity = Float3(0.f,0.f,0.f);
 	for (auto& itr : *WritingEnemy::GetHandWrite())
 	{
-		if (itr->generatorType == TypeName::Bonus) continue;
+		if (itr->generatorType == TypeName::Bonus || !Object3d::IsValid(&*itr)) continue;
 		MCB::Vector3D temp(position, itr->position);
 		float tempLen = temp.V3Len();
 		if (tempLen < tempNorm)
@@ -26,7 +26,6 @@ void EraserEnemy::UniqueUpdate()
 			temp.V3Norm();
 			velocity = temp;
 			tempNorm = tempLen;
-
 		}
 	}
 

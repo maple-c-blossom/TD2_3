@@ -3,8 +3,8 @@
 #include "Player.h"
 #include "Handwriting.h"
 #include "WritingEnemy.h"
-std::list<Enemy*> Enemy::allEnemyPtr{};
-std::list<Enemy*> Enemy::enemies{};
+std::vector<Enemy*> Enemy::allEnemyPtr{};
+std::vector<Enemy*> Enemy::enemies{};
 
 
 using namespace MCB;
@@ -127,7 +127,7 @@ void Enemy::Update()
 	UpdateData();
 }
 
-std::list<Enemy*> Enemy::GetAllEnemies()
+std::vector<Enemy*> Enemy::GetAllEnemies()
 {
 	return enemies;
 }

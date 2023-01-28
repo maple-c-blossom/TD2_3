@@ -1,7 +1,7 @@
 #include "KneadedEraser.h"
 
-std::list<KneadedEraser*> KneadedEraser::allKneadedEraser{};
-std::list<KneadedEraser*> KneadedEraser::kneadedErasers{};
+std::vector<KneadedEraser*> KneadedEraser::allKneadedEraser{};
+std::vector<KneadedEraser*> KneadedEraser::kneadedErasers{};
 
 void KneadedEraser::UniqueUpdate()
 {

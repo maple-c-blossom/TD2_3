@@ -283,7 +283,14 @@ void MCB::Scene::Update()
 
     CheckAllColision();
 
-    enemys.remove_if([](auto& itr){ return Object3d::DeleteAllowed(itr.get()); });
+    for (int i = 0; i < enemys.size(); i++)
+    {
+        if (Object3d::DeleteAllowed(enemys[i].get()))
+        {
+            enemys.erase(enemys.begin() + i);
+            i--;
+        }
+    }
     //s—ñ•ÏŠ·
     MatrixUpdate();
 

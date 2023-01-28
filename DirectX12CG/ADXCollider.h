@@ -45,7 +45,7 @@ public:
     float radius_ = 1;
     ADXVector3 pos_ = { 0,0,0 };
     ADXVector3 scale_ = { 1,1,1 };
-    std::list<ADXCollider*> collideList{};
+    std::vector<ADXCollider*> collideList{};
     ADXVector3 pushBackVector = { 0,0,0 };
     int collideLayer = 0;
 

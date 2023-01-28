@@ -7,8 +7,8 @@ private:
 	int trunCount = 0;
 	int damage = 1;
 	Timer attackTimer;
-	std::list < ADXCollider> attackCol;
-	std::list<std::unique_ptr<PencilBullet>> bullets;
+	std::vector < ADXCollider> attackCol;
+	std::vector<std::unique_ptr<PencilBullet>> bullets;
 	MCB::Model* bulletModel;
 public:
 	void UniqueInitialize() override;
