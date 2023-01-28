@@ -38,10 +38,10 @@ void Player::Update()
 	bool MoveLeft =
 		input->IsKeyDown(keyConfig[3]) || input->IsKeyDown(keyConfig[7]);
 
-	bool moving = MoveUp || MoveDown || MoveRight || MoveLeft;
+	bool moving = MoveUp || MoveDown || MoveRight || MoveLeft || Vector3D(*gamePadAxisConfig).V3Len() > 0.2f;
 
 	bool makingKneadedEraser =
-		input->IsKeyDown(keyConfig[8]);
+		input->IsKeyDown(keyConfig[8] || gamePadConfig[0] || gamePadConfig[1] || gamePadConfig[2] || gamePadConfig[3]);
 
 	bool trueMakingKneadedEraser = makingKneadedEraser && kneadedErasers.size() <= maxKneadedErasers;
 
@@ -81,6 +81,8 @@ void Player::Update()
 		{
 			walkVec.vec.x -= 1;
 		}
+
+		walkVec += *gamePadAxisConfig;
 
 		if (!rotateTapped)
 		{
