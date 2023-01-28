@@ -12,7 +12,6 @@ std::list<std::unique_ptr<Handwriting>>* WritingEnemy::GetHandWrite()
 
 void WritingEnemy::StaticUpdate()
 {
-	Object3d::UpdateObjs();
 	handwriting.remove_if([](auto& itr) {return Object3d::DeleteAllowed(itr.get()); });
 	for (auto& itr : handwriting)
 	{

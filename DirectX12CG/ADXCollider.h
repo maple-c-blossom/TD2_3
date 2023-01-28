@@ -28,7 +28,6 @@ class ADXCollider
 {
 private:
     static std::vector<ADXCollider*> allColPtr;
-    static std::vector<ADXCollider*> cols;
 
 public:
     static void CollidersUpdate();

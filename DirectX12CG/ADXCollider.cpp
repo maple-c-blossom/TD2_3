@@ -20,7 +20,6 @@ std::vector<collidePattern> ADXCollider::ignorePushBackPatterns = {};
 */
 
 std::vector<ADXCollider*> ADXCollider::allColPtr = {};
-std::vector<ADXCollider*> ADXCollider::cols = {};
 
 ADXCollider::ADXCollider(Object3d* obj)
 {
@@ -467,6 +466,5 @@ void ADXCollider::CollidersUpdate()
 		}
 	}
 
-	cols = allColPtr;
 	allColPtr.clear();
 }

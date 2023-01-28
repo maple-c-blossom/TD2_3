@@ -336,11 +336,6 @@ void MCB::Object3d::SetLights(LightGroup* lights)
     Object3d::lights = lights;
 }
 
-void MCB::Object3d::UpdateObjs()
-{
-    objs.remove_if([](auto& itr) { return !IsValid(itr); });
-}
-
 void MCB::Object3d::UniqueOnColliderHit(ADXCollider* myCol, ADXCollider* col)
 {
 }

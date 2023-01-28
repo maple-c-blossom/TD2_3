@@ -116,8 +116,6 @@ namespace MCB
             return objPtr->deleteFlag && objPtr->deleteCountDown <= 0;
         }
 
-        static void UpdateObjs();
-
     private:
         int deleteCountDown = 3;
 
