@@ -11,7 +11,6 @@ class Player :public MCB::Object3d
 private:
 	static Player* playerPtr;
 	static std::vector<MCB::Object3d*> captureList;
-	static int captureCount;
 private:
 	const float maxShard = 100;
 	const int maxKneadedErasers = 40;

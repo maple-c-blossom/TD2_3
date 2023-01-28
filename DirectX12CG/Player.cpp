@@ -5,7 +5,6 @@ using namespace MCB;
 
 Player* Player::playerPtr = nullptr;
 std::vector<MCB::Object3d*> Player::captureList = {};
-int Player::captureCount = 0;
 std::vector<KneadedEraser> Player::GetKneadedErasers()
 {
 	return kneadedErasers;
@@ -41,7 +40,7 @@ void Player::Update()
 	bool moving = MoveUp || MoveDown || MoveRight || MoveLeft || Vector3D(*gamePadAxisConfig).V3Len() > 0.2f;
 
 	bool makingKneadedEraser =
-		input->IsKeyDown(keyConfig[8] || gamePadConfig[0] || gamePadConfig[1] || gamePadConfig[2] || gamePadConfig[3]);
+		input->IsKeyDown(keyConfig[8]) || input->gamePad->IsButtonDown(gamePadConfig[0] || gamePadConfig[1] || gamePadConfig[2] || gamePadConfig[3]);
 
 	bool trueMakingKneadedEraser = makingKneadedEraser && kneadedErasers.size() <= maxKneadedErasers;
 
@@ -239,7 +238,6 @@ void Player::Update()
 		}
 	}
 
-	captureCount = captureList.size();
 	captureList = {};
 
 	velocity.vec = { 0,0,0 };
@@ -248,15 +246,16 @@ void Player::Update()
 		bool connectedFlag = true;
 		for (int i = kneadedErasers.size() - 1; i >= 0; i--)
 		{
-			if (connectedFlag)
-			{
-				kneadedErasers[i].UniqueUpdate();
-			}
-			else
+			kneadedErasers[i].UniqueUpdate();
+
+			if (!connectedFlag)
 			{
 				kneadedErasers[i].deleteFlag = true;
 			}
-			connectedFlag = IsValid(&kneadedErasers[i]);
+			if (!IsValid(&kneadedErasers[i]))
+			{
+				connectedFlag = false;
+			}
 		}
 	}
 
