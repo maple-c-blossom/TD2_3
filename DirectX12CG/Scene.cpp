@@ -106,7 +106,9 @@ void MCB::Scene::Object3DInit()
     temp->SetHandwritingModel(WritingModel.get());
     enemys.push_back(move(temp));
     spownTimer.Set(30);
-    boss.Initialize({ 0,0,1 }, { -20,0,0 }, bossModel.get(), pencilEnemyModel.get(), WritingModel.get(), 1, &substie);
+    boss.Initialize({ 0,0,1 }, { -20,0,0 }, bossModel.get(), pencilEnemyModel.get(), WritingModel.get(),BossDamegeEffectModelStar.get(),BossDamegeEffectModelSpher.get(), 1, &substie);
+    
+    
     //sphere.Init();
     //sphere.model = BoxModel;
     //sphere.SetCollider(1);
@@ -131,6 +133,8 @@ void MCB::Scene::LoadModel()
     bossModel = std::make_unique<Model>("boss");
     nerikesiModel = std::make_unique<Model>("nerikeshi");
     eraseEnemyModel = std::make_unique<Model>("eraser");
+    BossDamegeEffectModelStar = std::make_unique<Model>("star");
+    BossDamegeEffectModelSpher = std::make_unique<Model>("ball");
     //testModel = new FBXModel();
     //testModel->Load("testFbx");
     //assert(testModel->textureManager->textures.size() < 20);

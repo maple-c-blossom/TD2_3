@@ -14,7 +14,7 @@ void Boss::EnemyPop(MCB::Vector3D velocity, MCB::Float3 position, float speed, i
 	}
 }
 
-void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, MCB::Model* enemyModel, MCB::Model* handwrModel, float speed, Player* playerPtr)
+void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, MCB::Model* enemyModel, MCB::Model* handwrModel, MCB::Model* star, MCB::Model* ball, float speed, Player* playerPtr)
 {
 	this->velocity = velocity;
 	this->position.x = position.x;
@@ -26,6 +26,8 @@ void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* 
 	this->handwrModel = handwrModel;
 	this->playerPtr = playerPtr;
 	this->scale = { 4,4,4 };
+	starModel = star;
+	sphereModel = ball;
 	hp = MAX_HP_BOSS;
 	ADXCollider tempCol(this);
 	colliders.push_back(tempCol);
@@ -76,6 +78,10 @@ void Boss::Update()
 			imotalFlag = false;
 		}
 	}
+	for (auto& itr : effects)
+	{
+		itr->Update();
+	}
 	Damage(1);
 	UpdateData();
 }
@@ -90,12 +96,20 @@ void Boss::Draw()
 	{
 		itr->Draw();
 	}
+	for (auto& itr : effects)
+	{
+		itr->Draw();
+	}
 }
 
 void Boss::UpdateMatrix(MCB::ICamera* camera)
 {
 	Object3d::Update(*camera->GetView(), *camera->GetProjection());
 	for (auto& itr : enemys)
+	{
+		itr->UpdateMatrix(camera);
+	}
+	for (auto& itr : effects)
 	{
 		itr->UpdateMatrix(camera);
 	}
@@ -112,8 +126,31 @@ void Boss::Damage(int damage)
 			{
 				if (itr.IsHit(itr3) && !imotalFlag)
 				{
-					int num = (int)(1.5f * (powf((float)Player::GetCaptureList()->size(),1.6f)) + 1);
-					if(!imotalFlag) hp -= num;
+					int damage = (int)(1.5f * (powf((float)Player::GetCaptureList()->size(),1.6f)) + 1);
+					if (!imotalFlag)
+					{
+						hp -= damage;
+						if (Player::GetCaptureList()->size() >= 5)
+						{
+							for (int i = 0; i < damage; i++)
+							{
+								unique_ptr<BossDamageEffect> effect = make_unique<BossDamageEffect>();
+								effect->Initialize(starModel, { sinf(ConvertRadius((float)GetRand(0,360))) * cosf(ConvertRadius((float)GetRand(0,360))),sinf(ConvertRadius((float)GetRand(0,360))) * sinf(ConvertRadius((float)GetRand(0,360))),cosf(ConvertRadius((float)GetRand(0,360))) },
+									{ position.x + GetRand(0,200) / 100,position.y + GetRand(0,200) / 100,position.z + GetRand(0,200) / 100 }, { (float)damage / 10 + 1,(float)damage / 10 + 1,(float)damage / 10 + 1 }, { 1,1,1,1 }, 0.75f, 30);
+								effects.push_back(std::move(effect));
+							}
+						}
+						else
+						{
+							for (int i = 0; i < damage + 5; i++)
+							{
+								unique_ptr<BossDamageEffect> effect = make_unique<BossDamageEffect>();
+								effect->Initialize(sphereModel, { sinf(ConvertRadius((float)GetRand(0,360))) * cosf(ConvertRadius((float)GetRand(0,360))),sinf(ConvertRadius((float)GetRand(0,360))) * sinf(ConvertRadius((float)GetRand(0,360))),cosf(ConvertRadius((float)GetRand(0,360)))},
+									{ position.x + GetRand(0,200) / 100,position.y + GetRand(0,200) / 100,position.z + GetRand(0,200) / 100 }, { (float)damage / 15 + 1,(float)damage / 15 + 1,(float)damage / 15 + 1 }, { ((float)damage / 20),0,1 - ((float)damage / 20),1 }, 0.75f, 30);
+								effects.push_back(std::move(effect));
+							}
+						}
+					}
 					for (auto& itr : *Player::GetCaptureList())//すでに練りけしについている敵のデリートフラグをOnに
 					{
 						itr->deleteFlag = true;

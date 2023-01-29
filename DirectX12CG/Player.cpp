@@ -84,7 +84,7 @@ void Player::Update()
 		walkVec += {gamePadAxisConfig->x,0,gamePadAxisConfig->y};
 		rotateMoveRecord[rotateMoveRecordNum] = { walkVec.vec.x,walkVec.vec.z };
 		rotateMoveRecordNum++;
-		if(rotateMoveRecordNum > rotateMoveRecord.size())
+		if(rotateMoveRecordNum >= rotateMoveRecord.size())
 		{
 			rotateMoveRecordNum = 0;
 			if ((rotateMoveRecord[0] == rotateMoveRecord[4]) && (rotateMoveRecord[1] == rotateMoveRecord[5])
