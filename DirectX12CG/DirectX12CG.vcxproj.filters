@@ -5,48 +5,11 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="リソース ファイル">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="リソース ファイル\ParticleShader">
-      <UniqueIdentifier>{e72dba48-f07e-4874-b269-9cef8007657c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="リソース ファイル\ParticleShader\GeometoryShader">
-      <UniqueIdentifier>{daa2cbbf-1ac3-4c7d-85e8-b1629cb111ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="リソース ファイル\ParticleShader\PixelShader">
-      <UniqueIdentifier>{469f5d74-e2d0-4c6b-aa92-95a8413b68a1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="リソース ファイル\ParticleShader\ShaderHeader">
-      <UniqueIdentifier>{b4b5eb7f-d159-499e-a0ec-e135aebbf67a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="リソース ファイル\ParticleShader\VertexShader">
-      <UniqueIdentifier>{47a71b20-3487-4592-bf1c-9fbd3d7a5592}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="リソース ファイル\SpriteShader">
-      <UniqueIdentifier>{e3e36a56-89e5-4d0e-ba24-74e15967b994}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Game">
       <UniqueIdentifier>{5b01ddb0-0d69-4f0c-88e3-5984c0578527}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\Scene">
       <UniqueIdentifier>{966289f4-4e0f-4afd-bad8-65a72c07dd0b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="リソース ファイル\BasicShader">
-      <UniqueIdentifier>{6c143c2c-1c7c-48b7-b975-2a3e196d6cdd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="リソース ファイル\BasicShader\PixelShader">
-      <UniqueIdentifier>{060f4353-5dfb-44c4-b1e2-b96183f34f77}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="リソース ファイル\BasicShader\GeometoryShader">
-      <UniqueIdentifier>{eb50deca-a9aa-4027-b35c-5ce823a5136c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="リソース ファイル\BasicShader\VertexShader">
-      <UniqueIdentifier>{de84811d-e66c-4849-a6ff-bca3be5f796f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="リソース ファイル\BasicShader\ShaderHeader">
-      <UniqueIdentifier>{221cc362-ce73-4b12-b724-3af9f026f791}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダー ファイル">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
@@ -177,6 +140,43 @@
     </Filter>
     <Filter Include="ヘッダー ファイル\Game\Player">
       <UniqueIdentifier>{72bbdbe6-87b9-43aa-83ed-b7eafad254d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル\ParticleShader">
+      <UniqueIdentifier>{e72dba48-f07e-4874-b269-9cef8007657c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\ParticleShader\GeometoryShader">
+      <UniqueIdentifier>{daa2cbbf-1ac3-4c7d-85e8-b1629cb111ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\ParticleShader\PixelShader">
+      <UniqueIdentifier>{469f5d74-e2d0-4c6b-aa92-95a8413b68a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\ParticleShader\ShaderHeader">
+      <UniqueIdentifier>{b4b5eb7f-d159-499e-a0ec-e135aebbf67a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\ParticleShader\VertexShader">
+      <UniqueIdentifier>{47a71b20-3487-4592-bf1c-9fbd3d7a5592}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\SpriteShader">
+      <UniqueIdentifier>{e3e36a56-89e5-4d0e-ba24-74e15967b994}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\BasicShader">
+      <UniqueIdentifier>{6c143c2c-1c7c-48b7-b975-2a3e196d6cdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\BasicShader\PixelShader">
+      <UniqueIdentifier>{060f4353-5dfb-44c4-b1e2-b96183f34f77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\BasicShader\GeometoryShader">
+      <UniqueIdentifier>{eb50deca-a9aa-4027-b35c-5ce823a5136c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\BasicShader\VertexShader">
+      <UniqueIdentifier>{de84811d-e66c-4849-a6ff-bca3be5f796f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\BasicShader\ShaderHeader">
+      <UniqueIdentifier>{221cc362-ce73-4b12-b724-3af9f026f791}</UniqueIdentifier>
     </Filter>
     <Filter Include="リソース ファイル\Icon">
       <UniqueIdentifier>{5e185609-a4cf-4ddc-b317-b1c79fef08bf}</UniqueIdentifier>
@@ -392,6 +392,9 @@
     </ClCompile>
     <ClCompile Include="KneadedEraser.cpp">
       <Filter>ソース ファイル\Game\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="BossDamageEffect.cpp">
+      <Filter>ソース ファイル\Game\Any</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -636,6 +639,9 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>ヘッダー ファイル\Game\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="BossDamageEffect.h">
+      <Filter>ヘッダー ファイル\Game\Any</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

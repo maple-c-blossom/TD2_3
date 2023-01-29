@@ -16,6 +16,7 @@
     <ClCompile Include="ADXUtility.cpp" />
     <ClCompile Include="ADXVector3.cpp" />
     <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="BossDamageEffect.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="DebugCamera.cpp" />
@@ -141,6 +142,7 @@
     <ClInclude Include="ADXUtility.h" />
     <ClInclude Include="ADXVector3.h" />
     <ClInclude Include="Boss.h" />
+    <ClInclude Include="BossDamageEffect.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="DebugCamera.h" />

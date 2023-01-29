@@ -40,7 +40,7 @@ void Player::Update()
 	bool moving = MoveUp || MoveDown || MoveRight || MoveLeft || Vector3D(*gamePadAxisConfig).V3Len() > 0.2f;
 
 	bool makingKneadedEraser =
-		input->IsKeyDown(keyConfig[8]) || input->gamePad->IsButtonDown(gamePadConfig[0] || gamePadConfig[1] || gamePadConfig[2] || gamePadConfig[3]);
+		input->IsKeyDown(keyConfig[8]) || input->gamePad->IsButtonDown(gamePadConfig[0] | gamePadConfig[1] | gamePadConfig[2] | gamePadConfig[3]);
 
 	bool trueMakingKneadedEraser = makingKneadedEraser && kneadedErasers.size() <= maxKneadedErasers;
 
@@ -81,8 +81,23 @@ void Player::Update()
 			walkVec.vec.x -= 1;
 		}
 
-		walkVec += *gamePadAxisConfig;
+		walkVec += {gamePadAxisConfig->x,0,gamePadAxisConfig->y};
+		rotateMoveRecord[rotateMoveRecordNum] = { walkVec.vec.x,walkVec.vec.z };
+		rotateMoveRecordNum++;
+		if(rotateMoveRecordNum > rotateMoveRecord.size())
+		{
+			rotateMoveRecordNum = 0;
+			if ((rotateMoveRecord[0] == rotateMoveRecord[4]) && (rotateMoveRecord[1] == rotateMoveRecord[5])
+				&& (rotateMoveRecord[2] == rotateMoveRecord[6]) && (rotateMoveRecord[3] == rotateMoveRecord[7]))
+			{
+				if (rotateMoveRecord[0] != rotateMoveRecord[1] && rotateMoveRecord[0] != rotateMoveRecord[2] && rotateMoveRecord[0] != rotateMoveRecord[3] &&
+					rotateMoveRecord[1] != rotateMoveRecord[2] && rotateMoveRecord[1] != rotateMoveRecord[3] && rotateMoveRecord[2] != rotateMoveRecord[3])
+				{
+					rotateModeCount = 12.6f;
+				}
 
+			}
+		}
 		if (!rotateTapped)
 		{
 			if (MoveUp && MoveDown)
@@ -112,7 +127,7 @@ void Player::Update()
 			{ 
 				rotateMode = false;
 			}
-			else if (abs(rotateModeCount) > 12.56)
+			else if (abs(rotateModeCount) > 12.56f)
 			{
 				rotateMode = true;
 			}

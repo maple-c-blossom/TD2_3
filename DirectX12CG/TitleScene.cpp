@@ -37,7 +37,7 @@ void MCB::TitleScene::MatrixUpdate()
 
 void MCB::TitleScene::Update()
 {
-    if (input->IsKeyTrigger(DIK_SPACE))
+    if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A))
     {
         sceneEnd = true;
     }
