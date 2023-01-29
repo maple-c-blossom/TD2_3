@@ -10,7 +10,7 @@ class Player :public MCB::Object3d
 {
 private:
 	static Player* playerPtr;
-	static std::vector<MCB::Object3d*> captureList;
+	static std::list<MCB::Object3d*> captureList;
 private:
 	const float maxShard = 100;
 	const int maxKneadedErasers = 40;
@@ -25,7 +25,7 @@ private:
 	Float3* gamePadAxisConfig = { &input->gamePad->LStick };
 	std::array<Float2, 8> rotateMoveRecord = {};
 	int rotateMoveRecordNum = 0;
-	std::vector<KneadedEraser> kneadedErasers{};
+	std::list<KneadedEraser> kneadedErasers{};
 	int invincible = 0;
 	bool visible = true;
 	float weight = 1;
@@ -51,8 +51,8 @@ public:
 	bool GetVisible() { return visible; };
 	void Damage(int damage);
 	bool IsInvincible();
-	std::vector<KneadedEraser> GetKneadedErasers();
-	std::vector<KneadedEraser>* GetKneadedErasersPtr();
+	std::list<KneadedEraser> GetKneadedErasers();
+	std::list<KneadedEraser>* GetKneadedErasersPtr();
 	void Initialize();
 	void Update();
 	void Draw();
@@ -65,5 +65,5 @@ public:
 		MCB::Texture* tutorial7, MCB::Texture* tutorial8);
 public:
 	static Player* GetPlayer() { return playerPtr; };
-	static std::vector<MCB::Object3d*>* GetCaptureList() { return &captureList; };
+	static std::list<MCB::Object3d*>* GetCaptureList() { return &captureList; };
 };
