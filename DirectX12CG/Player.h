@@ -44,6 +44,8 @@ private:
 	Timer animationTime;
 	int animeNum;
 public:
+	float shardCost = 2;
+	float shardRotateCost = 0.001f;
 	MCB::Model* KneadedEraserModel = nullptr;
 	int GetHp() { return hp; }
 	bool GetVisible() { return visible; };

@@ -419,6 +419,13 @@ void MCB::Scene::ImGuiUpdate()
                 ImGui::Text("Z %f", substie.position.z);
                 ImGui::TreePop();
             }
+
+            if (ImGui::TreeNode("shard"))
+            {
+                ImGui::SliderFloat("shardCost %f", &substie.shardCost,0,20);
+                ImGui::SliderFloat("shardRotaCost %f", &substie.shardRotateCost,0,20);
+                ImGui::TreePop();
+            }
             ImGui::TreePop();
         }
         //if (ImGui::Button("Genarate"))
