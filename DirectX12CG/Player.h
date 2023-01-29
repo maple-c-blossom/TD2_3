@@ -29,7 +29,7 @@ private:
 	int invincible = 0;
 	bool visible = true;
 	float weight = 1;
-	float shard = 0;
+	float shard = 10;
 	float directionAngle = 0;
 	float moveSpeedPercentage = 0;
 	bool rotateTapped = false;
@@ -44,8 +44,8 @@ private:
 	Timer animationTime;
 	int animeNum;
 public:
-	float shardCost = 2;
-	float shardRotateCost = 0.001f;
+	float shardCost = 1;
+	float shardRotateCost = 0.02f;
 	MCB::Model* KneadedEraserModel = nullptr;
 	int GetHp() { return hp; }
 	bool GetVisible() { return visible; };
