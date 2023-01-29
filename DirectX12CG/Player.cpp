@@ -4,13 +4,13 @@
 using namespace MCB;
 
 Player* Player::playerPtr = nullptr;
-std::vector<MCB::Object3d*> Player::captureList = {};
-std::vector<KneadedEraser> Player::GetKneadedErasers()
+std::list<MCB::Object3d*> Player::captureList = {};
+std::list<KneadedEraser> Player::GetKneadedErasers()
 {
 	return kneadedErasers;
 }
 
-std::vector<KneadedEraser>* Player::GetKneadedErasersPtr()
+std::list<KneadedEraser>* Player::GetKneadedErasersPtr()
 {
 	return &kneadedErasers;
 }
@@ -146,18 +146,11 @@ void Player::Update()
 		}
 	}
 
-	for (int i = 0; i < kneadedErasers.size();i++)
-	{
-		if (Object3d::DeleteAllowed(&kneadedErasers[i]))
-		{
-			kneadedErasers.erase(kneadedErasers.begin() + i);
-			i--;
-		}
-	}
+	kneadedErasers.remove_if([](auto& itr) {return Object3d::DeleteAllowed(&itr); });
 
-	moveSpeedPercentage = max(0,min(moveSpeedPercentage,1));
+	moveSpeedPercentage = max(0, min(moveSpeedPercentage, 1));
 
-	velocity = Vector3D{sin(directionAngle),0,cos(directionAngle)} * moveSpeedPercentage * maxMoveSpeed;
+	velocity = Vector3D{ sin(directionAngle),0,cos(directionAngle) } *moveSpeedPercentage * maxMoveSpeed;
 
 	if (shard <= 0 && trueMakingKneadedEraser)
 	{
@@ -172,8 +165,8 @@ void Player::Update()
 	//temp.x = MCB::Lerp(0, 85,(position.z + 30) / 85);
 	temp.x = (position.z + 30) / 85;
 	Float2 Vartical;
-	Vartical.x = MCB::Lerp(-40, -80,temp.x);
-	Vartical.y = MCB::Lerp(40, 80,temp.x);
+	Vartical.x = MCB::Lerp(-40, -80, temp.x);
+	Vartical.y = MCB::Lerp(40, 80, temp.x);
 	if (position.x < Vartical.x)
 	{
 		position.x = Vartical.x;
@@ -216,10 +209,10 @@ void Player::Update()
 			}
 		}
 
-		shard -= abs(rotateModeCount * shardRotateCost);
+		shard -= abs(rotateModeCount * 0.001);
 		rotation.y += rotateModeCount * 0.03;
 	}
-	else if(!trueMakingKneadedEraser)
+	else if (!trueMakingKneadedEraser)
 	{
 		rotation.y += ADXUtility::AngleDiff(rotation.y, directionAngle);
 	}
@@ -230,17 +223,17 @@ void Player::Update()
 	{
 		rotateMode = false;
 		rotateModeCount = 0;
-		shard -= velocity.V3Len() * shardCost;
+		shard -= velocity.V3Len() * 2;
 		if (kneadedErasers.empty()
-			|| Vector3D{ kneadedErasers.back().position.x,kneadedErasers.back().position.y,kneadedErasers.back().position.z }.V3Len() > kneadedEraserDistance)
+			|| Vector3D{ kneadedErasers.front().position.x,kneadedErasers.front().position.y,kneadedErasers.front().position.z }.V3Len() > kneadedEraserDistance)
 		{
-			kneadedErasers.push_back(KneadedEraser{});
-			kneadedErasers.back().parent = this;
-			kneadedErasers.back().model = KneadedEraserModel;
-			kneadedErasers.back().matWorld.matWorld *= matWorld.matWorld;
-			kneadedErasers.back().colliders.push_back(ADXCollider(&kneadedErasers.back()));
-			kneadedErasers.back().colliders.back().isTrigger = true;
-			kneadedErasers.back().colliders.back().collideLayer = 1;
+			kneadedErasers.push_front(KneadedEraser{});
+			kneadedErasers.front().parent = this;
+			kneadedErasers.front().model = KneadedEraserModel;
+			kneadedErasers.front().matWorld.matWorld *= matWorld.matWorld;
+			kneadedErasers.front().colliders.push_back(ADXCollider(&kneadedErasers.front()));
+			kneadedErasers.front().colliders.back().isTrigger = true;
+			kneadedErasers.front().colliders.back().collideLayer = 1;
 		}
 
 		for (auto& itr : kneadedErasers)
@@ -259,18 +252,17 @@ void Player::Update()
 
 	{
 		bool connectedFlag = true;
-		for (int i = kneadedErasers.size() - 1; i >= 0; i--)
+		for (auto& itr : kneadedErasers)
 		{
-			kneadedErasers[i].UniqueUpdate();
-
-			if (!connectedFlag)
+			if (connectedFlag)
 			{
-				kneadedErasers[i].deleteFlag = true;
+				itr.UniqueUpdate();
 			}
-			if (!IsValid(&kneadedErasers[i]))
+			else
 			{
-				connectedFlag = false;
+				itr.deleteFlag = true;
 			}
+			connectedFlag = IsValid(&itr);
 		}
 	}
 
@@ -290,7 +282,7 @@ void Player::Update()
 			animeNum = 3;
 		}
 	}
-	
+
 }
 
 void Player::UpdateMatrix(MCB::ICamera* camera)
