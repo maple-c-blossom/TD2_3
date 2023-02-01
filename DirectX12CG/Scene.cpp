@@ -14,12 +14,8 @@ MCB::Scene::~Scene()
     WritingEnemy::GetHandWrite()->clear();
     Player::GetCaptureList()->clear();
 
-    delete BoxModel;
-    delete skydomeModel;
-    delete groundModel;
     delete nextScene;
     delete testModel;
-    delete handwrModel;
     //loader->SetDelete(testTex);
     //loader->SetDelete(debugTextTexture);
     //loader->SetDelete(zoomTex);
@@ -61,34 +57,28 @@ void MCB::Scene::Object3DInit()
 
     ground;
     ground.Init();
-    ground.model = groundModel;
+    ground.model = groundModel.get();
     ground.scale = { 90,90,90 };
     ground.position = { 0,-20,0 };
     ;
     Skydome;
     Skydome.Init();
-    Skydome.model = skydomeModel;
+    Skydome.model = skydomeModel.get();
     Skydome.scale = { 4,4,4 };
 
-    testSpher.Init();
-    testSpher.model = BoxModel;
-    testSpher.fbxModel = testModel;
-    testSpher.scale = {1,1,1};
-    testSpher.position = { 0,4,10 };
-    testSpher.rotation = { ConvertRadius(90),0,0 };
 
-    substie.model = playerModel.get();
-    substie.KneadedEraserModel = nerikesiModel.get();
-    substie.scale = { 1,1,1 };
-    substie.position = { 0,0,0 };
-    substie.Initialize();
+    substie->model = playerModel.get();
+    substie->KneadedEraserModel = nerikesiModel.get();
+    substie->scale = { 1,1,1 };
+    substie->position = { 0,0,0 };
+    substie->Initialize();
 
     Object3d wall = Object3d();
     wall.position = { 20,9,-14 };
     wall.scale = { 5.8,10,1.5 };
     wall.rotation = { 0,0,0 };
     wall.Init();
-    wall.model = BoxModel;
+    wall.model = BoxModel.get();
     BoxModel->material.constMapMaterial->color = { 0,0,0,1 };
     walls.push_back(wall);
     walls.back().colliders.push_back(ADXCollider(&walls.back()));
@@ -106,9 +96,9 @@ void MCB::Scene::Object3DInit()
     temp->SetHandwritingModel(WritingModel.get());
     enemys.push_back(move(temp));
     spownTimer.Set(30);
-    boss.Initialize({ 0,0,1 }, { -20,0,0 }, bossModel.get(), pencilEnemyModel.get(), WritingModel.get(), BossDamegeEffectModelStar.get(), BossDamegeEffectModelSpher.get(), 1, &substie);
-    boss.shake = mainCamera.GetShakePtr();
-    mainCamera.player = &substie;
+    boss->Initialize({ 0,0,1 }, { -20,0,0 }, bossModel.get(), pencilEnemyModel.get(), WritingModel.get(), BossDamegeEffectModelStar.get(), BossDamegeEffectModelSpher.get(), 1, substie.get());
+    boss->shake = mainCamera.GetShakePtr();
+    mainCamera.player = substie.get();
     
     
     
@@ -123,12 +113,11 @@ void MCB::Scene::Object3DInit()
 #pragma region 各種リソースの読み込みと初期化
 void MCB::Scene::LoadModel()
 {
-	BoxModel = new Model("Box");
+	BoxModel = std::make_unique<Model>("Box");
 
-	groundModel = new Model("note");
+	groundModel = std::make_unique<Model>("note");
 
-	skydomeModel = new Model("skydome");
-    handwrModel = new Model("Box");
+	skydomeModel = std::make_unique<Model>("skydome");
 
     playerModel = std::make_unique<Model>("player");
     pencilEnemyModel = std::make_unique<Model>("pencil");
@@ -182,7 +171,7 @@ void MCB::Scene::SpriteInit()
     shardSprite.tex = shard->texture.get();
     shardSprite.anchorPoint = { 0,0 };
     debugText.Init(debugTextTexture->texture.get());
-    substie.TutorialInitialize(tutorialTexs[0]->texture.get(), tutorialTexs[1]->texture.get(), tutorialTexs[2]->texture.get(),
+    substie->TutorialInitialize(tutorialTexs[0]->texture.get(), tutorialTexs[1]->texture.get(), tutorialTexs[2]->texture.get(),
         tutorialTexs[3]->texture.get(), tutorialTexs[4]->texture.get(), tutorialTexs[5]->texture.get(), tutorialTexs[6]->texture.get(), tutorialTexs[7]->texture.get());
 }
 
@@ -210,7 +199,7 @@ void MCB::Scene::Update()
 //            sceneEnd = true;
 //        }
 
-        substie.Update();
+        substie->Update();
         spownTimer.Update();
 
         if (spownTimer.IsEnd() && enemys.size() < 6)
@@ -283,7 +272,7 @@ void MCB::Scene::Update()
             itr->Update();
         }
 
-        boss.Update();
+        boss->Update();
 
         lights->UpDate();
         viewCamera->Update();
@@ -301,7 +290,7 @@ void MCB::Scene::Update()
     //行列変換
     MatrixUpdate();
 
-    if (boss.GetHp() <= 0 || substie.GetHp() <= 0)
+    if (boss->GetHp() <= 0 || substie->GetHp() <= 0)
     {
         sceneEnd = true;
     }
@@ -312,9 +301,9 @@ void MCB::Scene::Draw()
     //3Dオブジェクト
     Skydome.Draw();
     ground.Draw();
-    if (substie.GetVisible())
+    if (substie->GetVisible())
     {
-        substie.Draw();
+        substie->Draw();
     }
     for (auto& itr : walls)
     {
@@ -324,7 +313,7 @@ void MCB::Scene::Draw()
     {
         itr->Draw();
     }
-    boss.Draw();
+    boss->Draw();
     WritingEnemy::StaticDraw();
     //human.Draw();
     //testSpher.Draw();
@@ -334,15 +323,15 @@ void MCB::Scene::Draw()
 void MCB::Scene::SpriteDraw()
 {
 
-    substie.TutorialDraw();
+    substie->TutorialDraw();
     playerHpSprite.SpriteDraw(10, 10,360/2,80/2);
-    debugText.Print(15 + 360 / 2, 15, 2, "%d", substie.GetHp());
+    debugText.Print(15 + 360 / 2, 15, 2, "%d", substie->GetHp());
 
     bossHpSprite.SpriteDraw(10, 60, 290/2,80/2);
-    debugText.Print(15 + 290 / 2, 65, 2, "%d", boss.GetHp());
+    debugText.Print(15 + 290 / 2, 65, 2, "%d", boss->GetHp());
 
     shardSprite.SpriteDraw(10, 110,370/2,80/2);
-    debugText.Print(15 + 370 / 2, 115, 2, "%.3f", substie.GetShard());
+    debugText.Print(15 + 370 / 2, 115, 2, "%.3f", substie->GetShard());
 
     //debugText.Print(20, 20, 2, "boss:hp %d",boss.GetHp());
     ////debugText.Print(20, 60, 2, "player:hp %d",substie.GetHp());
@@ -351,11 +340,11 @@ void MCB::Scene::SpriteDraw()
     //debugText.Print(dxWindow->window_width - 300, 20, 2, "Move:WASD");
     //debugText.Print(dxWindow->window_width - 300, 60, 2, "Action:SPACE", substie.GetShard());
     //debugText.Print(dxWindow->window_width - 300, 100, 2, "ActionCost:shard");
-    if (boss.GetHp() <= 0)
+    if (boss->GetHp() <= 0)
     {
         debugText.Print(dxWindow->window_width/2 - 100, dxWindow->window_height/2, 4, "GameClear");
     }
-    else if (substie.GetHp() <= 0)
+    else if (substie->GetHp() <= 0)
     {
         debugText.Print(dxWindow->window_width / 2 - 100, dxWindow->window_height / 2, 4, "GameOver");
     }
@@ -417,16 +406,16 @@ void MCB::Scene::ImGuiUpdate()
         {
             if (ImGui::TreeNode("Position"))
             {
-                ImGui::Text("X %f", substie.position.x);
-                ImGui::Text("Y %f", substie.position.y);
-                ImGui::Text("Z %f", substie.position.z);
+                ImGui::Text("X %f", substie->position.x);
+                ImGui::Text("Y %f", substie->position.y);
+                ImGui::Text("Z %f", substie->position.z);
                 ImGui::TreePop();
             }
 
             if (ImGui::TreeNode("shard"))
             {
-                ImGui::SliderFloat("shardCost %f", &substie.shardCost,0,20);
-                ImGui::SliderFloat("shardRotaCost %f", &substie.shardRotateCost,0,20);
+                ImGui::SliderFloat("shardCost %f", &substie->shardCost,0,20);
+                ImGui::SliderFloat("shardRotaCost %f", &substie->shardRotateCost,0,20);
                 ImGui::TreePop();
             }
             ImGui::TreePop();
@@ -453,9 +442,8 @@ void MCB::Scene::MatrixUpdate()
     viewCamera->Update();
     Skydome.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
     ground.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
-    ground.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
     //testSpher.FbxUpdate(*viewCamera->GetView(), *viewCamera->GetProjection(),false);
-    substie.UpdateMatrix(viewCamera);
+    substie->UpdateMatrix(viewCamera);
     for (auto& itr : enemys)
     {
         itr->UpdateMatrix(viewCamera);
@@ -468,7 +456,7 @@ void MCB::Scene::MatrixUpdate()
             colItr.Update(&itr);
         }
     }
-    boss.UpdateMatrix(viewCamera);
+    boss->UpdateMatrix(viewCamera);
     //testParticle.Updata(matView, matProjection, true);
 }
 

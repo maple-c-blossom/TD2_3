@@ -26,10 +26,9 @@ namespace MCB
 		#pragma region 各種リソース
 		//3Dモデル
 		#pragma region 3Dモデル
-		Model* BoxModel;
-		Model* groundModel;
-		Model* skydomeModel;
-		Model* handwrModel;
+		std::unique_ptr<Model> BoxModel;
+		std::unique_ptr<Model> groundModel;
+		std::unique_ptr<Model> skydomeModel;
 
 		std::unique_ptr<Model> playerModel;
 		std::unique_ptr<Model> pencilEnemyModel;
@@ -82,9 +81,9 @@ namespace MCB
 
 		std::vector<std::unique_ptr<Enemy>>enemys;
 
-		Player substie;
+		std::unique_ptr <Player> substie = std::make_unique<Player>();
 
-		Boss boss;
+		std::unique_ptr <Boss> boss = std::make_unique<Boss>();
 
 		std::vector<Object3d> walls;
 
