@@ -31,6 +31,9 @@ void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* 
 	hp = MAX_HP_BOSS;
 	ADXCollider tempCol(this);
 	colliders.push_back(tempCol);
+	colliders.back().scale_ = { 1.2f,1.7f,0.7f };
+	colliders.back().pos_.y = 0.85f;
+	colliders.back().colType_ = box;
 	for (auto& itr : colliders)
 	{
 		itr.pushable_ = true;
@@ -89,6 +92,31 @@ void Boss::Update()
 			isDown = false;
 		}
 	}
+
+	//Float2 temp;
+//temp.x = MCB::Lerp(0, 85,(position.z + 30) / 85);
+//temp.x = (position.z + 30) / 85;
+//Float2 Vartical;
+//Vartical.x = MCB::Lerp(-40, -80, temp.x);
+//Vartical.y = MCB::Lerp(40, 80, temp.x);
+	if (position.x < -50)
+	{
+		position.x = -50;
+	}
+	if (position.x > 50)
+	{
+		position.x = 50;
+	}
+
+	if (position.z < -40)
+	{
+		position.z = -40;
+	}
+	if (position.z > 40)
+	{
+		position.z = 40;
+	}
+
 
 	if (position.y < 0)
 	{

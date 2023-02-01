@@ -174,28 +174,28 @@ void Player::Update()
 	position.y += velocity.ConvertXMFloat3().y;
 	position.z += velocity.ConvertXMFloat3().z;
 	//à⁄ìÆêßå¿ãÊâÊ--
-	Float2 temp;
+	//Float2 temp;
 	//temp.x = MCB::Lerp(0, 85,(position.z + 30) / 85);
-	temp.x = (position.z + 30) / 85;
-	Float2 Vartical;
-	Vartical.x = MCB::Lerp(-40, -80, temp.x);
-	Vartical.y = MCB::Lerp(40, 80, temp.x);
-	if (position.x < Vartical.x)
+	//temp.x = (position.z + 30) / 85;
+	//Float2 Vartical;
+	//Vartical.x = MCB::Lerp(-40, -80, temp.x);
+	//Vartical.y = MCB::Lerp(40, 80, temp.x);
+	if (position.x < -50)
 	{
-		position.x = Vartical.x;
+		position.x = -50;
 	}
-	if (position.x > Vartical.y)
+	if (position.x > 50)
 	{
-		position.x = Vartical.y;
+		position.x = 50;
 	}
 
-	if (position.z < -30)
+	if (position.z < -40)
 	{
-		position.z = -30;
+		position.z = -40;
 	}
-	if (position.z > 55)
+	if (position.z > 40)
 	{
-		position.z = 55;
+		position.z = 40;
 	}
 
 	position.y = 0;
