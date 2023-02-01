@@ -45,27 +45,62 @@ void Boss::Update()
 	{
 		itr.collideLayer = 3;
 	}
+	
+	velocity = velocity.V3Get(position, playerPtr->position);
+	position.x += velocity.vec.x * moveSpeed;
+	position.z += velocity.vec.z * moveSpeed;
 
-	position.y = 0;
+	if (!isUp && !isDown)
+	{
+		jumpSpeed = 0.25f;
+		isUp = true;
+	}
+	else if(isUp)
+	{
+		jumpSpeed -= 0.01f;
+		if (jumpSpeed < 0)
+		{
+			isDown = true;
+			isUp = false;
+			downSpeed = 0.001;
+		}
+		position.y += jumpSpeed;
+
+		if (position.y > 2.f)
+		{
+			isUp = false;
+			isDown = true;
+			downSpeed = 0.001;
+			position.y = 2.f;
+		}
+
+	}
+	else if (isDown)
+	{
+		downSpeed -= 0.01f;
+		if (downSpeed < -0.5f)
+		{
+			downSpeed = -0.5f;
+		}
+		position.y += downSpeed;
+		if (position.y < 0)
+		{
+			position.y = 0;
+			isDown = false;
+		}
+	}
+
+	if (position.y < 0)
+	{
+		position.y = 0;
+	}
+	if (position.y > 2.f)
+	{
+		position.y = 2.f;
+	}
 
 	velocity.V3Norm();
-	//position.x += velocity.vec.x * speed;
-	//position.y += velocity.vec.y * speed;
-	//position.z += velocity.vec.z * speed;
-	if (position.x < -20 || position.x > 20)
-	{
-		velocity.vec.x *= -1;
-	}
 
-	if (position.y < -20 || position.y > 20)
-	{
-		velocity.vec.y *= -1;
-	}
-
-	if (position.z < -20 || position.z > 20)
-	{
-		velocity.vec.z *= -1;
-	}
 	for (auto& itr : enemys)
 	{
 		itr->Update();

@@ -22,6 +22,11 @@ private:
 	Timer beforeAttackTimer;
 	Timer AttackTimer;
 	Timer imotalTimer;//–³“GŽžŠÔ
+	float moveSpeed = 0.005f;
+	float jumpSpeed = 0.025f;
+	float downSpeed = -0.025f;
+	bool isUp;
+	bool isDown;
 	Model* enemyModel;
 	Model* handwrModel;
 	Model* starModel;
