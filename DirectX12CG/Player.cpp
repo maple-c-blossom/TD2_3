@@ -370,9 +370,13 @@ void Player::TutorialDraw()
 	tutorials[1].SpriteDraw(*tutorialTexR, DxWindow::GetInstance()->window_width - totalSpriteSize - edgeSpace, DxWindow::GetInstance()->window_height - edgedHalfSpriteSize - edgeSpace, totalSpriteSize, totalSpriteSize);
 
 
+	float gaugeSizeX = 114;
+	float gaugeSizeY = 496;
+	float edgeLength = 3;
+
 	kneadedEraserGauges[0].SpriteDraw(*kneadedEraserGaugeTexs[0], edgeSpace, edgeSpace);
-	kneadedEraserGauges[1].size = { 114,496 };
-	kneadedEraserGauges[1].SpriteCuttingDraw(*kneadedEraserGaugeTexs[1], edgeSpace, edgeSpace, { 114,496 }, { 0, 0 });
+	kneadedEraserGauges[1].size = { gaugeSizeX,gaugeSizeY - edgeLength };
+	kneadedEraserGauges[1].SpriteCuttingDraw(*kneadedEraserGaugeTexs[1], edgeSpace, edgeSpace, { gaugeSizeX,gaugeSizeY - edgeLength }, { 0, 0 });
 }
 
 bool Player::IsInvincible()
