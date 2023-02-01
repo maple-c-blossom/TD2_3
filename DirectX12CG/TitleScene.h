@@ -2,6 +2,8 @@
 #include "IScene.h"
 #define _USE_MATH_DEFINES
 #include <cmath>
+#include "Player.h"
+
 namespace MCB
 {
 	class TitleScene :public IScene
@@ -11,14 +13,25 @@ namespace MCB
 		//変換行列
 		View matView;
 		Projection matProjection;
+		Camera camera;
 #pragma endregion 変換行列
 
 #pragma region 各種リソース
 		//3Dモデル
 #pragma region 3Dモデル
-		Model* BoxModel;
-		Model* groundModel;
-		Model* skydomeModel;
+		std::unique_ptr<Model> BoxModel;
+		std::unique_ptr<Model> groundModel;
+		std::unique_ptr<Model> skydomeModel;
+
+		std::unique_ptr<Model> playerModel;
+		std::unique_ptr<Model> pencilEnemyModel;
+		std::unique_ptr<Model> WritingModel;
+		std::unique_ptr<Model> bossModel;
+		std::unique_ptr<Model> nerikesiModel;
+		std::unique_ptr<Model> eraseEnemyModel;
+		std::unique_ptr<Model> BossDamegeEffectModelStar;
+		std::unique_ptr<Model> BossDamegeEffectModelSpher;
+		std::unique_ptr<Model> tutorialBlackBode;
 #pragma endregion 3Dモデル
 
 		//テクスチャ
@@ -44,7 +57,10 @@ namespace MCB
 		Object3d ground;
 		Object3d Skydome;
 		Object3d testSpher;
-
+		Object3d tutorialBode;
+		//std::array<Object3d, 8> tutorialBode;
+		std::unique_ptr <Player> substie = std::make_unique<Player>();
+		
 
 #pragma endregion 3Dオブジェクト
 
