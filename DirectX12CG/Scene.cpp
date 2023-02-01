@@ -58,8 +58,8 @@ void MCB::Scene::Object3DInit()
     ground;
     ground.Init();
     ground.model = groundModel.get();
-    ground.scale = { 90,90,90 };
-    ground.position = { 0,-20,0 };
+    ground.scale = { 36,50,43 };
+    ground.position = { 0,-12,0 };
     ;
     Skydome;
     Skydome.Init();
