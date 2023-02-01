@@ -1,16 +1,13 @@
 #include "KneadedEraser.h"
 
-std::list<KneadedEraser*> KneadedEraser::allKneadedEraser{};
-std::list<KneadedEraser*> KneadedEraser::kneadedErasers{};
+std::vector<KneadedEraser*> KneadedEraser::allKneadedEraser{};
+std::vector<KneadedEraser*> KneadedEraser::kneadedErasers{};
 
 void KneadedEraser::UniqueUpdate()
 {
 	KneadedEraser::allKneadedEraser.push_back(this);
-	allObjPtr.push_back(this);
-	for (auto& colItr : colliders)
-	{
-		colItr.Update(this);
-	}
+
+	UpdateData();
 
 	for (auto& colItr : colliders)
 	{

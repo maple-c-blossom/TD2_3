@@ -4,7 +4,7 @@
 class WritingEnemy :public Enemy
 {
 protected:
-	static std::list<std::unique_ptr<Handwriting>> handwriting;
+	static std::vector<std::unique_ptr<Handwriting>> handwriting;
 	float Movement;
 	MCB::Model* handwritingModel;
 public:
@@ -13,7 +13,7 @@ public:
 	virtual void UniqueUpdate() = 0;
 	virtual void Draw() = 0;
 	virtual void UpdateMatrix(MCB::ICamera* camera) = 0;
-	static std::list<std::unique_ptr<Handwriting>>* GetHandWrite();
+	static std::vector<std::unique_ptr<Handwriting>>* GetHandWrite();
 	static void StaticDraw();
 	static void StaticUpdate();
 };

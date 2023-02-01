@@ -5,7 +5,6 @@ using namespace MCB;
 
 Player* Player::playerPtr = nullptr;
 std::list<MCB::Object3d*> Player::captureList = {};
-int Player::captureCount = 0;
 std::list<KneadedEraser> Player::GetKneadedErasers()
 {
 	return kneadedErasers;
@@ -38,14 +37,12 @@ void Player::Update()
 	bool MoveLeft =
 		input->IsKeyDown(keyConfig[3]) || input->IsKeyDown(keyConfig[7]);
 
-	bool moving = MoveUp || MoveDown || MoveRight || MoveLeft;
+	bool moving = MoveUp || MoveDown || MoveRight || MoveLeft || Vector3D(*gamePadAxisConfig).V3Len() > 0.2f;
 
 	bool makingKneadedEraser =
-		input->IsKeyDown(keyConfig[8]);
+		input->IsKeyDown(keyConfig[8]) || input->gamePad->IsButtonDown(gamePadConfig[0] | gamePadConfig[1] | gamePadConfig[2] | gamePadConfig[3]);
 
-	bool makingKneadedEraserTrigger = input->IsKeyTrigger(keyConfig[8]);
-
-	bool trueMakingKneadedEraser = makingKneadedEraser && shard > 0 && kneadedErasers.size() <= maxKneadedErasers && !rotateMode;
+	bool trueMakingKneadedEraser = makingKneadedEraser && kneadedErasers.size() <= maxKneadedErasers;
 
 	velocity = position - prevPos;
 	prevPos = position;
@@ -54,7 +51,7 @@ void Player::Update()
 
 	if (rotateMode)
 	{
-		weight = (1 + kneadedErasers.size()) * 10;
+		weight = 300;
 	}
 	else
 	{
@@ -84,6 +81,23 @@ void Player::Update()
 			walkVec.vec.x -= 1;
 		}
 
+		walkVec += {gamePadAxisConfig->x,0,gamePadAxisConfig->y};
+		rotateMoveRecord[rotateMoveRecordNum] = { walkVec.vec.x,walkVec.vec.z };
+		rotateMoveRecordNum++;
+		if(rotateMoveRecordNum >= rotateMoveRecord.size())
+		{
+			rotateMoveRecordNum = 0;
+			if ((rotateMoveRecord[0] == rotateMoveRecord[4]) && (rotateMoveRecord[1] == rotateMoveRecord[5])
+				&& (rotateMoveRecord[2] == rotateMoveRecord[6]) && (rotateMoveRecord[3] == rotateMoveRecord[7]))
+			{
+				if (rotateMoveRecord[0] != rotateMoveRecord[1] && rotateMoveRecord[0] != rotateMoveRecord[2] && rotateMoveRecord[0] != rotateMoveRecord[3] &&
+					rotateMoveRecord[1] != rotateMoveRecord[2] && rotateMoveRecord[1] != rotateMoveRecord[3] && rotateMoveRecord[2] != rotateMoveRecord[3])
+				{
+					rotateModeCount = 12.6f;
+				}
+
+			}
+		}
 		if (!rotateTapped)
 		{
 			if (MoveUp && MoveDown)
@@ -113,7 +127,7 @@ void Player::Update()
 			{ 
 				rotateMode = false;
 			}
-			else if (abs(rotateModeCount) > 12.56)
+			else if (abs(rotateModeCount) > 12.56f)
 			{
 				rotateMode = true;
 			}
@@ -132,17 +146,16 @@ void Player::Update()
 		}
 	}
 
-	kneadedErasers.remove_if([](auto& itr) {return !Object3d::IsValid(&itr); });
+	kneadedErasers.remove_if([](auto& itr) {return Object3d::DeleteAllowed(&itr); });
 
-	if (kneadedErasers.size() <= 0)
+	moveSpeedPercentage = max(0, min(moveSpeedPercentage, 1));
+
+	velocity = Vector3D{ sin(directionAngle),0,cos(directionAngle) } *moveSpeedPercentage * maxMoveSpeed;
+
+	if (shard <= 0 && trueMakingKneadedEraser)
 	{
-		rotateModeCount = 0;
-		rotateMode = false;
+		velocity *= 0.1f;
 	}
-
-	moveSpeedPercentage = max(0,min(moveSpeedPercentage,1));
-
-	velocity = Vector3D{sin(directionAngle),0,cos(directionAngle)} * moveSpeedPercentage * maxMoveSpeed;
 
 	position.x += velocity.ConvertXMFloat3().x;
 	position.y += velocity.ConvertXMFloat3().y;
@@ -152,8 +165,8 @@ void Player::Update()
 	//temp.x = MCB::Lerp(0, 85,(position.z + 30) / 85);
 	temp.x = (position.z + 30) / 85;
 	Float2 Vartical;
-	Vartical.x = MCB::Lerp(-40, -80,temp.x);
-	Vartical.y = MCB::Lerp(40, 80,temp.x);
+	Vartical.x = MCB::Lerp(-40, -80, temp.x);
+	Vartical.y = MCB::Lerp(40, 80, temp.x);
 	if (position.x < Vartical.x)
 	{
 		position.x = Vartical.x;
@@ -171,6 +184,8 @@ void Player::Update()
 	{
 		position.z = 55;
 	}
+
+	position.y = 0;
 	//--
 
 	if (shard <= 0)
@@ -197,23 +212,17 @@ void Player::Update()
 		shard -= abs(rotateModeCount * 0.001);
 		rotation.y += rotateModeCount * 0.03;
 	}
-	else if(!trueMakingKneadedEraser)
+	else if (!trueMakingKneadedEraser)
 	{
-		rotation.y += ADXUtility::AngleDiff(rotation.y, directionAngle) / (kneadedErasers.size() / 10.0 + 1);
+		rotation.y += ADXUtility::AngleDiff(rotation.y, directionAngle);
 	}
 
 	shard = min(max(0, shard), maxShard);
 
-	if (makingKneadedEraserTrigger && kneadedErasers.size() > 0)
-	{
-		for (auto& itr : kneadedErasers)
-		{
-			itr.deleteFlag = true;
-		}
-	}
-
 	if (trueMakingKneadedEraser)
 	{
+		rotateMode = false;
+		rotateModeCount = 0;
 		shard -= velocity.V3Len() * 2;
 		if (kneadedErasers.empty()
 			|| Vector3D{ kneadedErasers.front().position.x,kneadedErasers.front().position.y,kneadedErasers.front().position.z }.V3Len() > kneadedEraserDistance)
@@ -237,7 +246,6 @@ void Player::Update()
 		}
 	}
 
-	captureCount = captureList.size();
 	captureList = {};
 
 	velocity.vec = { 0,0,0 };
@@ -258,11 +266,7 @@ void Player::Update()
 		}
 	}
 
-	allObjPtr.push_back(this);
-	for (auto& colItr : colliders)
-	{
-		colItr.Update(this);
-	}
+	UpdateData();
 
 	invincible--;
 	invincible = max(invincible, 0);
@@ -273,12 +277,12 @@ void Player::Update()
 	{
 		animationTime.Set(10);
 		animeNum++;
-		if (animeNum >= tutorialTexs.size())
+		if (animeNum >= tutorialTexs.size() || animeNum >= 7)
 		{
-			animeNum = 2;
+			animeNum = 3;
 		}
 	}
-	
+
 }
 
 void Player::UpdateMatrix(MCB::ICamera* camera)
@@ -301,23 +305,33 @@ void Player::Draw()
 
 void Player::TutorialDraw()
 {
-	if (shard > 15)
+	float spriteSize = 126.0f;
+	float spriteExtend = 3.0f;
+	float edgeSpace = 20;
+	float totalSpriteSize = spriteSize * spriteExtend;
+	float edgedTotalSpriteSize = totalSpriteSize + edgeSpace;
+	float edgedTotalHalfSpriteSize = totalSpriteSize * 0.75 + edgeSpace;
+
+
+	Texture* tutorialTexL = tutorialTexs[0];
+	Texture* tutorialTexR = tutorialTexs[2];
+
+	if (shard > 0.5f)
 	{
-		if (kneadedErasers.size() > 0)
+		if (kneadedErasers.size() > 0 && !rotateMode)
 		{
-			tutorials[2].SpriteDraw(*tutorialTexs[animeNum], DxWindow::GetInstance()->window_width - (128 * 1.5f), 0, 126*1.5f, 126*1.5f);//ここで「ctrlGuide2」という名前の画像を表示//ここで「ctrlGuide3」「ctrlGuide4」「ctrlGuide5」「ctrlGuide6」という名前の画像をアニメーションさせて表示
+			tutorialTexL = tutorialTexs[animeNum];
 		}
 		else
 		{
 			animationTime.Set(10);
-			animeNum = 2;
-			tutorials[1].SpriteDraw(*tutorialTexs[1], DxWindow::GetInstance()->window_width - (128 * 1.5f), 0,126 * 1.5f,126 * 1.5f);//ここで「ctrlGuide2」という名前の画像を表示
+			animeNum = 3;
 		}
 	}
-	else
-	{
-		tutorials[0].SpriteDraw(*tutorialTexs[0], DxWindow::GetInstance()->window_width - (128 * 1.5f), 0,126 * 1.5f,126 * 1.5f);//ここで「ctrlGuide1」という名前の画像を表示
-	}
+
+	tutorials[0].SpriteDraw(*tutorialTexL, edgeSpace, DxWindow::GetInstance()->window_height - edgedTotalHalfSpriteSize, totalSpriteSize, totalSpriteSize);
+	tutorials[1].SpriteDraw(*tutorialTexR, DxWindow::GetInstance()->window_width - edgedTotalSpriteSize, DxWindow::GetInstance()->window_height - edgedTotalHalfSpriteSize, totalSpriteSize, totalSpriteSize);
+
 }
 
 bool Player::IsInvincible()
@@ -327,10 +341,12 @@ bool Player::IsInvincible()
 
 void Player::Erase()
 {
-	shard += 0.5;
+	shard += 0.2;
 }
 
-void Player::TutorialInitialize(MCB::Texture* tutorial1, MCB::Texture* tutorial2, MCB::Texture* tutorial3, MCB::Texture* tutorial4, MCB::Texture* tutorial5, MCB::Texture* tutorial6)
+void Player::TutorialInitialize(MCB::Texture* tutorial1, MCB::Texture* tutorial2, MCB::Texture* tutorial3,
+	MCB::Texture* tutorial4, MCB::Texture* tutorial5, MCB::Texture* tutorial6,
+	MCB::Texture* tutorial7, MCB::Texture* tutorial8)
 {
 	tutorialTexs[0] = tutorial1;//ctrlGuide1
 	tutorialTexs[1] = tutorial2;//ctrlGuide2
@@ -338,6 +354,8 @@ void Player::TutorialInitialize(MCB::Texture* tutorial1, MCB::Texture* tutorial2
 	tutorialTexs[3] = tutorial4;//ctrlGuide4
 	tutorialTexs[4] = tutorial5;//ctrlGuide5
 	tutorialTexs[5] = tutorial6;//ctrlGuide6
+	tutorialTexs[6] = tutorial7;//ctrlGuide7
+	tutorialTexs[7] = tutorial8;//ctrlGuide8
 
 	for(auto&itr:tutorials)
 	{

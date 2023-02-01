@@ -69,18 +69,15 @@ namespace MCB
 
         bool trackingFlag = false;
 
-        std::list<ADXCollider> colliders{};
-
-        // 【ADXEngine由来】全てのオブジェクトを入れる配列
-        static std::list<Object3d*> allObjPtr;
-        // 【ADXEngine由来】全てのオブジェクトが入った配列
-        static std::list<Object3d*> objs;
+        std::vector<ADXCollider> colliders{};
 
         void Init();
 
         void Update(View& view, Projection& projection, bool isBillBord = false);
 
         void Update(View& view, Projection& projection, Quaternion q, bool isBillBord = false);
+
+        void UpdateData();
 
         void Draw();
 
@@ -96,7 +93,7 @@ namespace MCB
 
         void FbxDraw(unsigned short int incremant);
 
-        void OnColliderHit(ADXCollider* col);
+        void OnColliderHit(ADXCollider* myCol, ADXCollider* col);
 
         //【ADXEngine由来】静的更新処理
         static void StaticUpdate();
@@ -105,26 +102,31 @@ namespace MCB
         //void CreateModel(const char* fileName);
 
         //【ADXEngine由来】
-        static std::list<Object3d*> GetAllObjs();
+        static inline std::vector<Object3d*> GetAllObjs() { return objs; };
 
         inline int TestCall() { return 1; };
 
         static inline bool IsValid(Object3d* objPtr)
         {
-            try
-            {
-                objPtr->TestCall();
-                return !objPtr->deleteFlag && objPtr->constMapTranceform != nullptr;
-            }
-            catch (bool err)
-            {
-                return false;
-            }
-            return !objPtr->deleteFlag && objPtr->constMapTranceform != nullptr;
+            return objPtr->deleteFlag == false && objPtr->constMapTranceform != nullptr;
         };
 
+        static inline bool DeleteAllowed(Object3d* objPtr)
+        {
+            return !IsValid(objPtr) && objPtr->deleteCountDown <= 0;
+        }
+
+    private:
+        int deleteCountDown = 3;
+
+    private:
+        // 【ADXEngine由来】全てのオブジェクトを入れる配列
+        static std::vector<Object3d*> allObjPtr;
+        // 【ADXEngine由来】全てのオブジェクトが入った配列
+        static std::vector<Object3d*> objs;
+
     protected:
-        virtual void UniqueOnColliderHit(ADXCollider* col);
+        virtual void UniqueOnColliderHit(ADXCollider* myCol, ADXCollider* col);
     };
 }
 

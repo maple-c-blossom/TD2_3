@@ -76,15 +76,8 @@ void mechanicalPencil::UniqueUpdate()
 
 	AttackCheck();
 	AttackTimerUpdate();
-	allObjPtr.push_back(&attackObj);
-	for (auto& itr : attackObj.colliders)
-	{
-		itr.Update(&attackObj);
-	}
+	attackObj.UpdateData();
 	AttackHit();
-
-
-
 }
 
 void mechanicalPencil::Draw()

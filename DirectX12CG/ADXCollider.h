@@ -2,6 +2,8 @@
 #include "ADXVector3.h"
 #include "ADXMatrix4.h"
 #include <vector>
+#include <list>
+
 
 using namespace MCB;
 
@@ -25,7 +27,7 @@ struct collidePattern
 class ADXCollider
 {
 private:
-    static std::vector<ADXCollider*> cols;
+    static std::vector<ADXCollider*> allColPtr;
 
 public:
     static void CollidersUpdate();
@@ -67,4 +69,5 @@ private:
 private:
     static bool translateDivine;
     static std::vector<collidePattern> ignoreCollidePatterns;
+    static std::vector<collidePattern> ignorePushBackPatterns;
 };

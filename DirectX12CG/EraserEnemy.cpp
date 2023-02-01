@@ -18,7 +18,7 @@ void EraserEnemy::UniqueUpdate()
 	velocity = Float3(0.f,0.f,0.f);
 	for (auto& itr : *WritingEnemy::GetHandWrite())
 	{
-		if (itr->generatorType == TypeName::Bonus) continue;
+		if (itr->generatorType == TypeName::Bonus || !Object3d::IsValid(&*itr)) continue;
 		MCB::Vector3D temp(position, itr->position);
 		float tempLen = temp.V3Len();
 		if (tempLen < tempNorm)
@@ -26,7 +26,6 @@ void EraserEnemy::UniqueUpdate()
 			temp.V3Norm();
 			velocity = temp;
 			tempNorm = tempLen;
-
 		}
 	}
 
@@ -60,34 +59,34 @@ void EraserEnemy::UniqueUpdate()
 			}
 		}
 	}
-	for (auto& itr : colliders)
-	{
-		
-		for (auto& itr2 : enemies)
-		{
-			if (itr2->enemyType == Erase || !Object3d::IsValid(itr2) || !itr2->imotalTimer.IsEnd())continue;
-			for (auto& itr3 : itr2->colliders)
-			{
-				if (!Object3d::IsValid(itr3.gameObject))continue;
-				if (itr3.IsHit(itr))
-				{
-					bool flag = itr2->deleteFlag;
-					itr2->IsDamage(1);
-					if (flag != itr2->deleteFlag)
-					{
-						for (int i = 0; i < 10; i++)
-						{
-							std::unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
-							float angle = ConvertRadius((i * 32.f));
-							temp->Initialize({ position.x + sinf(angle) * 2,position.y,position.z + cosf(angle) * 2 }, handwritingModel);
-							temp->generatorType = TypeName::Bonus;
-							WritingEnemy::GetHandWrite()->push_back(move(temp));
-						}
-					}
-				}
-			}
-		}
-	}
+	//for (auto& itr : colliders)
+	//{
+	//	
+	//	for (auto& itr2 : enemies)
+	//	{
+	//		if (itr2->enemyType == Erase || !Object3d::IsValid(itr2) || !itr2->imotalTimer.IsEnd())continue;
+	//		for (auto& itr3 : itr2->colliders)
+	//		{
+	//			if (!Object3d::IsValid(itr3.gameObject))continue;
+	//			if (itr3.IsHit(itr))
+	//			{
+	//				bool flag = itr2->deleteFlag;
+	//				itr2->IsDamage(1);
+	//				if (flag != itr2->deleteFlag)
+	//				{
+	//					for (int i = 0; i < 10; i++)
+	//					{
+	//						std::unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
+	//						float angle = ConvertRadius((i * 32.f));
+	//						temp->Initialize({ position.x + sinf(angle) * 2,position.y,position.z + cosf(angle) * 2 }, handwritingModel);
+	//						temp->generatorType = TypeName::Bonus;
+	//						WritingEnemy::GetHandWrite()->push_back(move(temp));
+	//					}
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
 
 	Float2 temp;
 	//temp.x = MCB::Lerp(0, 85, (position.z + 30) / 85);

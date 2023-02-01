@@ -11,24 +11,25 @@ class Player :public MCB::Object3d
 private:
 	static Player* playerPtr;
 	static std::list<MCB::Object3d*> captureList;
-	static int captureCount;
 private:
 	const float maxShard = 100;
 	const int maxKneadedErasers = 40;
 	const float kneadedEraserDistance = 1.0f;
 	const float maxMoveSpeed = 0.3;
-	const float maxRotateSpeed = 30;
+	const float maxRotateSpeed = 15;
 
 	MCB::Input* input = MCB::Input::GetInstance();
 	int hp = 10;
 	std::vector<int> keyConfig{ DIK_W,DIK_S,DIK_D,DIK_A,DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE };
-	int gamePadConfig = { GAMEPAD_A };
-	Float3 gamePadAxisConfig = { input->gamePad->LStick };
+	std::vector<int> gamePadConfig = { GAMEPAD_A,GAMEPAD_B,GAMEPAD_X,GAMEPAD_Y };
+	Float3* gamePadAxisConfig = { &input->gamePad->LStick };
+	std::array<Float2, 8> rotateMoveRecord = {};
+	int rotateMoveRecordNum = 0;
 	std::list<KneadedEraser> kneadedErasers{};
 	int invincible = 0;
 	bool visible = true;
 	float weight = 1;
-	float shard = 0;
+	float shard = 10;
 	float directionAngle = 0;
 	float moveSpeedPercentage = 0;
 	bool rotateTapped = false;
@@ -37,12 +38,14 @@ private:
 	float rotateModeCount;
 	MCB::Vector3D prevPos{};
 	MCB::Vector3D velocity{};
-	std::array<MCB::Sprite, 6> tutorials;//‚±‚ñ‚È‚É—v‚ç‚È‚¢‚©‚à
-	std::array<MCB::Texture*, 6> tutorialTexs;
+	std::array<MCB::Sprite, 2> tutorials;//‚±‚ñ‚È‚É—v‚ç‚È‚¢‚©‚à
+	std::array<MCB::Texture*, 8> tutorialTexs;
 
 	Timer animationTime;
 	int animeNum;
 public:
+	float shardCost = 1;
+	float shardRotateCost = 0.02f;
 	MCB::Model* KneadedEraserModel = nullptr;
 	int GetHp() { return hp; }
 	bool GetVisible() { return visible; };
@@ -58,7 +61,8 @@ public:
 	float GetShard() { return shard; };
 	void Erase();
 	void TutorialInitialize(MCB::Texture* tutorial1, MCB::Texture* tutorial2, MCB::Texture* tutorial3,
-							MCB::Texture* tutorial4, MCB::Texture* tutorial5, MCB::Texture* tutorial6);
+		MCB::Texture* tutorial4, MCB::Texture* tutorial5, MCB::Texture* tutorial6,
+		MCB::Texture* tutorial7, MCB::Texture* tutorial8);
 public:
 	static Player* GetPlayer() { return playerPtr; };
 	static std::list<MCB::Object3d*>* GetCaptureList() { return &captureList; };

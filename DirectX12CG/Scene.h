@@ -37,6 +37,8 @@ namespace MCB
 		std::unique_ptr<Model> bossModel;
 		std::unique_ptr<Model> nerikesiModel;
 		std::unique_ptr<Model> eraseEnemyModel;
+		std::unique_ptr<Model> BossDamegeEffectModelStar;
+		std::unique_ptr<Model> BossDamegeEffectModelSpher;
 
 		FBXModel* testModel;
 #pragma endregion 3Dモデル
@@ -47,7 +49,7 @@ namespace MCB
 		TextureCell* debugTextTexture;
 		TextureCell* bossHp;
 		TextureCell* shard;
-		std::array<MCB::TextureCell*, 6> tutorialTexs;
+		std::array<MCB::TextureCell*, 8> tutorialTexs;
 #pragma endregion テクスチャ
 
 		//サウンド
@@ -78,13 +80,13 @@ namespace MCB
 
 		DebugText debugText;
 
-		std::list<std::unique_ptr<Enemy>>enemys;
+		std::vector<std::unique_ptr<Enemy>>enemys;
 
 		Player substie;
 
 		Boss boss;
 
-		std::list<Object3d> walls;
+		std::vector<Object3d> walls;
 
 		Timer spownTimer;
 #pragma endregion スプライト

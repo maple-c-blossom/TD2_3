@@ -106,8 +106,11 @@ void MCB::Scene::Object3DInit()
     temp->SetHandwritingModel(WritingModel.get());
     enemys.push_back(move(temp));
     spownTimer.Set(30);
-    boss.Initialize({ 0,0,1 }, { -20,0,0 }, bossModel.get(), pencilEnemyModel.get(), WritingModel.get(), 1, &substie);
+    boss.Initialize({ 0,0,1 }, { -20,0,0 }, bossModel.get(), pencilEnemyModel.get(), WritingModel.get(), BossDamegeEffectModelStar.get(), BossDamegeEffectModelSpher.get(), 1, &substie);
     boss.shake = &debugCamera.shake;
+    
+    
+    
     
     //sphere.Init();
     //sphere.model = BoxModel;
@@ -133,6 +136,8 @@ void MCB::Scene::LoadModel()
     bossModel = std::make_unique<Model>("boss");
     nerikesiModel = std::make_unique<Model>("nerikeshi");
     eraseEnemyModel = std::make_unique<Model>("eraser");
+    BossDamegeEffectModelStar = std::make_unique<Model>("star");
+    BossDamegeEffectModelSpher = std::make_unique<Model>("ball");
     //testModel = new FBXModel();
     //testModel->Load("testFbx");
     //assert(testModel->textureManager->textures.size() < 20);
@@ -145,12 +150,14 @@ void MCB::Scene::LoadTexture()
 	debugTextTexture = loader->LoadTexture(L"Resources\\debugfont.png");
     bossHp = loader->LoadTexture(L"Resources\\text\\bossHp.png");
     shard = loader->LoadTexture(L"Resources\\text\\shard.png");
-    tutorialTexs[0] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide1.png");
-    tutorialTexs[1] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide2.png");
-    tutorialTexs[2] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide3.png");
-    tutorialTexs[3] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide4.png");
-    tutorialTexs[4] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide5.png");
-    tutorialTexs[5] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide6.png");
+    tutorialTexs[0] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_move.png");
+    tutorialTexs[1] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_base.png");
+    tutorialTexs[2] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_attack.png");
+    tutorialTexs[3] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_spin1.png");
+    tutorialTexs[4] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_spin2.png");
+    tutorialTexs[5] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_spin3.png");
+    tutorialTexs[6] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_spin4.png");
+    tutorialTexs[7] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_remove.png");
 }
 
 void MCB::Scene::LoadSound()
@@ -176,7 +183,7 @@ void MCB::Scene::SpriteInit()
     shardSprite.anchorPoint = { 0,0 };
     debugText.Init(debugTextTexture->texture.get());
     substie.TutorialInitialize(tutorialTexs[0]->texture.get(), tutorialTexs[1]->texture.get(), tutorialTexs[2]->texture.get(),
-        tutorialTexs[3]->texture.get(), tutorialTexs[4]->texture.get(), tutorialTexs[5]->texture.get());
+        tutorialTexs[3]->texture.get(), tutorialTexs[4]->texture.get(), tutorialTexs[5]->texture.get(), tutorialTexs[6]->texture.get(), tutorialTexs[7]->texture.get());
 }
 
 void MCB::Scene::ParticleInit()
@@ -282,10 +289,15 @@ void MCB::Scene::Update()
         viewCamera->Update();
 
     CheckAllColision();
-    enemys.remove_if([](auto& itr)
+
+    for (int i = 0; i < enemys.size(); i++)
+    {
+        if (Object3d::DeleteAllowed(enemys[i].get()))
         {
-            return !Object3d::IsValid(itr.get());
-        });
+            enemys.erase(enemys.begin() + i);
+            i--;
+        }
+    }
     //s—ñ•ÏŠ·
     MatrixUpdate();
 
@@ -408,6 +420,13 @@ void MCB::Scene::ImGuiUpdate()
                 ImGui::Text("X %f", substie.position.x);
                 ImGui::Text("Y %f", substie.position.y);
                 ImGui::Text("Z %f", substie.position.z);
+                ImGui::TreePop();
+            }
+
+            if (ImGui::TreeNode("shard"))
+            {
+                ImGui::SliderFloat("shardCost %f", &substie.shardCost,0,20);
+                ImGui::SliderFloat("shardRotaCost %f", &substie.shardRotateCost,0,20);
                 ImGui::TreePop();
             }
             ImGui::TreePop();

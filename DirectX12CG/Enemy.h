@@ -27,9 +27,9 @@ protected:
 	KneadedEraser* capture = nullptr;
 	KneadedEraser* prevCapture = nullptr;
 	// 【ADXEngine由来】全てのオブジェクトを入れる配列
-	static std::list<Enemy*> allEnemyPtr;
+	static std::vector<Enemy*> allEnemyPtr;
 	// 【ADXEngine由来】全てのオブジェクトが入った配列
-	static std::list<Enemy*> enemies;
+	static std::vector<Enemy*> enemies;
 
 
 	void AttackTimerUpdate();
@@ -53,7 +53,10 @@ public:
 	bool IsAttack();
 	void IsDamage(int damage);
 	//【ADXEngine由来】
-	static std::list<Enemy*> GetAllEnemies();
+	static std::vector<Enemy*> GetAllEnemies();
 	virtual void Draw() = 0;
+
+private:
+	void UniqueOnColliderHit(ADXCollider* myCol, ADXCollider* col);
 };
 

@@ -111,7 +111,6 @@ void PencilEnemy::UniqueUpdate()
 		int num = 0;
 		for (auto& itr : colliders)
 		{
-			itr.Update(this);
 			if (num == 1)
 			{
 				itr.isTrigger = true;
@@ -121,7 +120,6 @@ void PencilEnemy::UniqueUpdate()
 		}
 	}
 
-	allObjPtr.push_back(&attackObj);
 	if (capture == nullptr)
 	{
 		AttackCheck();
@@ -162,7 +160,6 @@ void PencilEnemy::UniqueUpdate()
 	{
 		position.z = 55;
 	}
-
 }
 
 void PencilEnemy::Draw()
