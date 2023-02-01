@@ -52,8 +52,6 @@ void PencilEnemy::UniqueUpdate()
 			writingCount = 0;
 			velocity *= -1;
 		}
-
-
 	}
 
 
