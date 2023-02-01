@@ -216,7 +216,7 @@ void MCB::TitleScene::Object3DInit()
 
     tutorialBode.Init();
     tutorialBode.model = tutorialBlackBode.get();
-    tutorialBode.scale = { 6,6,6 };
+    tutorialBode.scale = { 1,1,1 };
     tutorialBode.position = { 10,0,0 };
 
     camera.player = substie.get();
