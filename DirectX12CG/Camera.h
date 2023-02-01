@@ -35,7 +35,7 @@ namespace MCB
 		Shake shakeY;
 		Shake shakeZ;
 		
-		Float3 distance = {0,45,-60};
+		Float3 distance = {0,30,-40};
 
 		DirectX::XMFLOAT3 eyeStartPos;
 
