@@ -2,7 +2,7 @@
 #include "Object3d.h"
 #include "EraserEnemy.h"
 #include "PencilEnemy.h"
-
+#include "Util.h"
 
 class Player;
 
@@ -23,9 +23,9 @@ private:
 	Model* enemyModel;
 	Model* handwrModel;
 	Player* playerPtr;
-
 	void EnemyPop(MCB::Vector3D velocity, MCB::Float3 position,  float speed,int popNum = 1);
 public:
+	Shake* shake;
 	int GetHp() { return hp; };
 	void Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, MCB::Model* enemyModel, MCB::Model* handwrModel, float speed, Player* playerPtr);
 	void Update();

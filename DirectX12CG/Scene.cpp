@@ -107,6 +107,8 @@ void MCB::Scene::Object3DInit()
     enemys.push_back(move(temp));
     spownTimer.Set(30);
     boss.Initialize({ 0,0,1 }, { -20,0,0 }, bossModel.get(), pencilEnemyModel.get(), WritingModel.get(), 1, &substie);
+    boss.shake = &debugCamera.shake;
+    
     //sphere.Init();
     //sphere.model = BoxModel;
     //sphere.SetCollider(1);

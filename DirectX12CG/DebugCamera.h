@@ -17,7 +17,11 @@ namespace MCB
 		Vector3D eye;
 		Vector3D target;
 		//Vector3D up;
+		
+
 	public:
+		Shake shake;
+		DirectX::XMFLOAT3 eyeStartPos;
 		void Inilialize()override;
 		void Update()override;
 	};
