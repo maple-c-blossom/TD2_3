@@ -79,6 +79,23 @@ void MCB::TitleScene::ImGuiUpdate()
 {
     imgui.Begin();
     ImGui::Begin("Debug");
+    if (ImGui::TreeNode("Tutorial"))
+    {
+        if (ImGui::TreeNode("Position"))
+        {
+            ImGui::SliderFloat("x", &tutorialBode.position.x, -100, 100);
+            ImGui::SliderFloat("y", &tutorialBode.position.y, -100, 100);
+            ImGui::SliderFloat("z", &tutorialBode.position.z, -100, 100);
+            ImGui::TreePop();
+        }
+        if (ImGui::TreeNode("Scale"))
+        {
+            ImGui::SliderFloat("x", &tutorialBode.scale.x, 0, 10);
+            ImGui::SliderFloat("y", &tutorialBode.scale.y, 0, 10);
+            ImGui::SliderFloat("z", &tutorialBode.scale.z, 0, 10);
+            ImGui::TreePop();
+        }
+    }
     if (ImGui::TreeNode("Player"))
     {
         if (ImGui::TreeNode("Position"))

@@ -58,7 +58,7 @@ namespace MCB
 		Object3d Skydome;
 		Object3d testSpher;
 		Object3d tutorialBode;
-		//std::array<Object3d, 5> tutorialBode;
+		//std::array<Object3d, 8> tutorialBode;
 		std::unique_ptr <Player> substie = std::make_unique<Player>();
 		
 
