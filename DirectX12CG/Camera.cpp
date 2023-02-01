@@ -21,13 +21,19 @@ void Camera::WorldPositionInit()
 
 void Camera::Update()
 {
-	
-
+	eyeStartPos = view.eye;
+	view.eye.x = eyeStartPos.x + shake.shakeUpdateR();
+	view.eye.y = eyeStartPos.y + shake.shakeUpdateR();
+	view.eye.z = eyeStartPos.z + shake.shakeUpdateR();
+	view.UpDateMatrixView();
+	projection.UpdataMatrixProjection();
+	view.eye = eyeStartPos;
 }
 
 void Camera::WorldPositionUpdate(DirectX::XMMATRIX playerMatrix, DirectX::XMFLOAT3 playerPosition,bool isBillBord)
 {
 	//object3d->Update(view,projection);
+
 
 	object3d->matWorld.SetMatScale(object3d->scale.x, object3d->scale.y, object3d->scale.z);
 	object3d->matWorld.SetMatRot(object3d->rotation.x, object3d->rotation.y, object3d->rotation.z, false);

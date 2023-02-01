@@ -130,6 +130,7 @@ void Boss::Damage(int damage)
 					if (!imotalFlag)
 					{
 						hp -= damage;
+						if (shake)shake->Setshake(20, 10, damage);
 						if (Player::GetCaptureList()->size() >= 5)
 						{
 							for (int i = 0; i < damage; i++)
@@ -153,6 +154,8 @@ void Boss::Damage(int damage)
 					}
 
 					itr3.gameObject->deleteFlag = true;
+
+
 
 					for (auto& itr : *Player::GetCaptureList())//すでに練りけしについている敵のデリートフラグをOnに
 					{

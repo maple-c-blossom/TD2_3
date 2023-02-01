@@ -1,6 +1,7 @@
 #pragma once
 #include "ICamera.h"
 #include "Object3d.h"
+#include "Util.h"
 
 namespace MCB
 {
@@ -20,7 +21,7 @@ namespace MCB
 		DirectX::XMMATRIX GetMadWorld();
 
 		//WorldMatrix GetMadWorld2();
-
+		Shake* GetShakePtr() { return &shake; }
 
 	private:
 
@@ -28,8 +29,10 @@ namespace MCB
 
 		//Object3d* object3d = nullptr;
 
+		Shake shake;
+		
+		
 
- 
 		DirectX::XMFLOAT3 eyeStartPos;
 
 		//プレイヤーのワールド変換行列
