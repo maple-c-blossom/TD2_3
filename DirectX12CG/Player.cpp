@@ -111,6 +111,11 @@ void Player::Update()
 				rotateModeCount -= 11;
 				rotateTapped = true;
 			}
+
+			if (rotateTapped)
+			{
+				rotateTapTime = 30;
+			}
 		}
 
 		float prevDirectionAngle = directionAngle;
@@ -140,11 +145,19 @@ void Player::Update()
 		rotateTapped = false;
 		rotateCanceled = false;
 		rotateModeCount *= 0.9;
-		if (abs(rotateModeCount) < 1)
+		if (rotateTapTime <= 0 && rotateMode)
 		{
+			postRotateCount = rotateModeCount;
+			rotateModeCount = 0;
+
 			rotateMode = false;
+
 		}
 	}
+	postRotateCount *= 0.9;
+
+	rotateTapTime--;
+	rotateTapTime = max(0, rotateTapTime);
 
 	kneadedErasers.remove_if([](auto& itr) {return Object3d::DeleteAllowed(&itr); });
 
@@ -209,8 +222,12 @@ void Player::Update()
 			}
 		}
 
-		shard -= abs(rotateModeCount * 0.001);
+		shard -= abs(rotateModeCount * 0.01);
 		rotation.y += rotateModeCount * 0.03;
+	}
+	else if (abs(postRotateCount) > 1.0f)
+	{
+		rotation.y += postRotateCount * 0.03;
 	}
 	else if (!trueMakingKneadedEraser)
 	{
@@ -223,7 +240,8 @@ void Player::Update()
 	{
 		rotateMode = false;
 		rotateModeCount = 0;
-		shard -= velocity.V3Len() * 2;
+		postRotateCount = 0;
+		shard -= velocity.V3Len() * 1.5;
 		if (kneadedErasers.empty()
 			|| Vector3D{ kneadedErasers.front().position.x,kneadedErasers.front().position.y,kneadedErasers.front().position.z }.V3Len() > kneadedEraserDistance)
 		{
