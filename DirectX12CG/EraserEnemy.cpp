@@ -59,58 +59,24 @@ void EraserEnemy::UniqueUpdate()
 			}
 		}
 	}
-	//for (auto& itr : colliders)
-	//{
-	//	
-	//	for (auto& itr2 : enemies)
-	//	{
-	//		if (itr2->enemyType == Erase || !Object3d::IsValid(itr2) || !itr2->imotalTimer.IsEnd())continue;
-	//		for (auto& itr3 : itr2->colliders)
-	//		{
-	//			if (!Object3d::IsValid(itr3.gameObject))continue;
-	//			if (itr3.IsHit(itr))
-	//			{
-	//				bool flag = itr2->deleteFlag;
-	//				itr2->IsDamage(1);
-	//				if (flag != itr2->deleteFlag)
-	//				{
-	//					for (int i = 0; i < 10; i++)
-	//					{
-	//						std::unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
-	//						float angle = ConvertRadius((i * 32.f));
-	//						temp->Initialize({ position.x + sinf(angle) * 2,position.y,position.z + cosf(angle) * 2 }, handwritingModel);
-	//						temp->generatorType = TypeName::Bonus;
-	//						WritingEnemy::GetHandWrite()->push_back(move(temp));
-	//					}
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
-
-	Float2 temp;
-	//temp.x = MCB::Lerp(0, 85, (position.z + 30) / 85);
-	temp.x = (position.z + 30) / 85;
-	Float2 Vartical;
-	Vartical.x = MCB::Lerp(-40, -80, temp.x);
-	Vartical.y = MCB::Lerp(40, 80, temp.x);
-	if (position.x < Vartical.x)
+	if (position.x < -50)
 	{
-		position.x = Vartical.x;
+		position.x = -50;
 	}
-	if (position.x > Vartical.y)
+	if (position.x > 50)
 	{
-		position.x = Vartical.y;
+		position.x = 50;
 	}
 
-	if (position.z < -30)
+	if (position.z < -40)
 	{
-		position.z = -30;
+		position.z = -40;
 	}
-	if (position.z > 55)
+	if (position.z > 40)
 	{
-		position.z = 55;
+		position.z = 40;
 	}
+
 
 
 }

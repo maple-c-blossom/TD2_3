@@ -67,22 +67,22 @@ void PencilEnemy::UniqueUpdate()
 		Float2 Vartical;
 		Vartical.x = MCB::Lerp(-40, -80, temp.x);
 		Vartical.y = MCB::Lerp(40, 80, temp.x);
-		if (movePoint[movePointIndex].vec.x < Vartical.x)
+		if (movePoint[movePointIndex].vec.x < -50)
 		{
-			movePoint[movePointIndex].vec.x = Vartical.x;
+			movePoint[movePointIndex].vec.x = -50;
 		}
-		if (movePoint[movePointIndex].vec.x > Vartical.y)
+		if (movePoint[movePointIndex].vec.x > 50)
 		{
-			movePoint[movePointIndex].vec.x = Vartical.y;
+			movePoint[movePointIndex].vec.x = 50;
 		}
 
-		if (movePoint[movePointIndex].vec.z < -30)
+		if (movePoint[movePointIndex].vec.z < -40)
 		{
-			movePoint[movePointIndex].vec.z = -30;
+			movePoint[movePointIndex].vec.z = -40;
 		}
-		if (movePoint[movePointIndex].vec.z > 55)
+		if (movePoint[movePointIndex].vec.z > 40)
 		{
-			movePoint[movePointIndex].vec.z = 55;
+			movePoint[movePointIndex].vec.z = 40;
 		}
 		velocity = Vector3D::normal(movePoint[movePointIndex] - positionVec);
 
@@ -135,29 +135,30 @@ void PencilEnemy::UniqueUpdate()
 	{
 		AttackHit();
 	}
-	Float2 temp;
-	//temp.x = MCB::Lerp(0, 85, (position.z + 30) / 85);
-	temp.x = (position.z + 30) / 85;
-	Float2 Vartical;
-	Vartical.x = MCB::Lerp(-40, -80, temp.x);
-	Vartical.y = MCB::Lerp(40, 80, temp.x);
-	if (position.x < Vartical.x)
+	//Float2 temp;
+//temp.x = MCB::Lerp(0, 85,(position.z + 30) / 85);
+//temp.x = (position.z + 30) / 85;
+//Float2 Vartical;
+//Vartical.x = MCB::Lerp(-40, -80, temp.x);
+//Vartical.y = MCB::Lerp(40, 80, temp.x);
+	if (position.x < -50)
 	{
-		position.x = Vartical.x;
+		position.x = -50;
 	}
-	if (position.x > Vartical.y)
+	if (position.x > 50)
 	{
-		position.x = Vartical.y;
+		position.x = 50;
 	}
 
-	if (position.z < -30)
+	if (position.z < -40)
 	{
-		position.z = -30;
+		position.z = -40;
 	}
-	if (position.z > 55)
+	if (position.z > 40)
 	{
-		position.z = 55;
+		position.z = 40;
 	}
+
 }
 
 void PencilEnemy::Draw()
