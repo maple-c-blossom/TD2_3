@@ -3,6 +3,8 @@
 #include "Object3d.h"
 #include "Util.h"
 
+
+class Player;
 namespace MCB
 {
 	class Camera :public ICamera
@@ -23,17 +25,17 @@ namespace MCB
 		//WorldMatrix GetMadWorld2();
 		Shake* GetShakePtr() { return &shakeX; }
 
+		Player* player;
 	private:
 
 		std::unique_ptr<Object3d> object3d = std::make_unique<Object3d>();
 
 		//Object3d* object3d = nullptr;
-
 		Shake shakeX;
 		Shake shakeY;
 		Shake shakeZ;
 		
-		
+		Float3 distance = {0,20,-10};
 
 		DirectX::XMFLOAT3 eyeStartPos;
 

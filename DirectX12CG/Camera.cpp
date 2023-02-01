@@ -2,6 +2,7 @@
 #include "DirectXMath.h"
 #include "Util.h"
 #include "DxWindow.h"
+#include "Player.h"
 using namespace MCB;
 using namespace DirectX;
 
@@ -21,6 +22,14 @@ void Camera::WorldPositionInit()
 
 void Camera::Update()
 {
+	if (player)
+	{
+		view.eye.x = player->position.x + distance.x;
+		view.eye.y = player->position.y + distance.y;
+		view.eye.z = player->position.z + distance.z;
+		view.target = player->position;
+	}
+
 	eyeStartPos = view.eye;
 	XMFLOAT3 targetStart = view.target;
 	shakeY = shakeX;

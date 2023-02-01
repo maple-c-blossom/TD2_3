@@ -108,7 +108,7 @@ void MCB::Scene::Object3DInit()
     spownTimer.Set(30);
     boss.Initialize({ 0,0,1 }, { -20,0,0 }, bossModel.get(), pencilEnemyModel.get(), WritingModel.get(), BossDamegeEffectModelStar.get(), BossDamegeEffectModelSpher.get(), 1, &substie);
     boss.shake = mainCamera.GetShakePtr();
-    
+    mainCamera.player = &substie;
     
     
     
