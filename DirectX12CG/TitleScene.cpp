@@ -31,6 +31,7 @@ void MCB::TitleScene::MatrixUpdate()
     viewCamera->Update();
     Skydome.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
     ground.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
+    tutorialBode.Update(*viewCamera->GetView(), *viewCamera->GetProjection(),true);
     //testSpher.FbxUpdate(*viewCamera->GetView(), *viewCamera->GetProjection(),false);
     substie->UpdateMatrix(viewCamera);
 
@@ -56,7 +57,7 @@ void MCB::TitleScene::Draw()
     ground.Draw();
     testSpher.Draw();
     substie->Draw();
-
+    tutorialBode.Draw();
 }
 
 void MCB::TitleScene::SpriteDraw()
@@ -77,7 +78,26 @@ void MCB::TitleScene::CheckAllColision()
 void MCB::TitleScene::ImGuiUpdate()
 {
     imgui.Begin();
-    //ImGui::ShowDemoWindow();
+    ImGui::Begin("Debug");
+    if (ImGui::TreeNode("Player"))
+    {
+        if (ImGui::TreeNode("Position"))
+        {
+            ImGui::Text("X %f", substie->position.x);
+            ImGui::Text("Y %f", substie->position.y);
+            ImGui::Text("Z %f", substie->position.z);
+            ImGui::TreePop();
+        }
+
+        if (ImGui::TreeNode("shard"))
+        {
+            ImGui::SliderFloat("shardCost %f", &substie->shardCost, 0, 20);
+            ImGui::SliderFloat("shardRotaCost %f", &substie->shardRotateCost, 0, 20);
+            ImGui::TreePop();
+        }
+        ImGui::TreePop();
+    }
+    ImGui::End();
     imgui.End();
 }
 
@@ -132,6 +152,7 @@ void MCB::TitleScene::LoadModel()
     nerikesiModel = std::make_unique<Model>("nerikeshi");
     eraseEnemyModel = std::make_unique<Model>("eraser");
     BossDamegeEffectModelStar = std::make_unique<Model>("star");
+    tutorialBlackBode = std::make_unique<Model>("blackboard");
     BossDamegeEffectModelSpher = std::make_unique<Model>("ball");
 }
 
@@ -175,6 +196,11 @@ void MCB::TitleScene::Object3DInit()
     substie->scale = { 1,1,1 };
     substie->position = { 0,0,0 };
     substie->Initialize();
+
+    tutorialBode.Init();
+    tutorialBode.model = tutorialBlackBode.get();
+    tutorialBode.scale = { 6,6,6 };
+    tutorialBode.position = { 10,0,0 };
 
     camera.player = substie.get();
 }

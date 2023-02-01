@@ -31,6 +31,7 @@ namespace MCB
 		std::unique_ptr<Model> eraseEnemyModel;
 		std::unique_ptr<Model> BossDamegeEffectModelStar;
 		std::unique_ptr<Model> BossDamegeEffectModelSpher;
+		std::unique_ptr<Model> tutorialBlackBode;
 #pragma endregion 3Dモデル
 
 		//テクスチャ
@@ -56,6 +57,8 @@ namespace MCB
 		Object3d ground;
 		Object3d Skydome;
 		Object3d testSpher;
+		Object3d tutorialBode;
+		//std::array<Object3d, 5> tutorialBode;
 		std::unique_ptr <Player> substie = std::make_unique<Player>();
 		
 

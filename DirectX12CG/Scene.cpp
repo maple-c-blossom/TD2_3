@@ -402,6 +402,9 @@ void MCB::Scene::ImGuiUpdate()
                 ImGui::TreePop();
             }
         }
+        ImGui::TreePop();
+    }
+        //if (ImGui::Button("Genarate"))
         if (ImGui::TreeNode("Player"))
         {
             if (ImGui::TreeNode("Position"))
@@ -420,7 +423,6 @@ void MCB::Scene::ImGuiUpdate()
             }
             ImGui::TreePop();
         }
-        //if (ImGui::Button("Genarate"))
         //{
         //    Object3d wall = Object3d();
         //    wall.scale = { 3,10,1 };
@@ -430,9 +432,9 @@ void MCB::Scene::ImGuiUpdate()
         //    walls.back().colliders.push_back(ADXCollider(&walls.back()));
         //    walls.back().colliders.back().colType_ = box;
         //}
-        ImGui::TreePop();
+ 
 
-    }
+    
     ImGui::End();
     imgui.End();
 }
