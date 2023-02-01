@@ -43,6 +43,12 @@ private:
 	std::array<MCB::Sprite, 2> tutorials;//‚±‚ñ‚È‚É—v‚ç‚È‚¢‚©‚à
 	std::array<MCB::Texture*, 8> tutorialTexs;
 
+	TextureManager* loader = TextureManager::GetInstance();
+
+	std::array<MCB::Sprite, 2> kneadedEraserGauges;
+	std::array<MCB::TextureCell*, 2> kneadedEraserGaugeTexCells;
+	std::array<MCB::Texture*, 2> kneadedEraserGaugeTexs;
+
 	Timer animationTime;
 	int animeNum;
 public:
