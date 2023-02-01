@@ -24,6 +24,9 @@ void Player::Initialize()
 	colliders.back().pushable_ = true;
 	colliders.back().collideLayer = -1;
 	playerPtr = this;
+
+	kneadedEraserGaugeTexCells = { loader->LoadTexture(L"Resources\\gauge\\nerikeshiGauge.png"), loader->LoadTexture(L"Resources\\gauge\\nerikeshiGaugeFill.png") };
+	kneadedEraserGaugeTexs = { kneadedEraserGaugeTexCells[0]->texture.get(), kneadedEraserGaugeTexCells[1]->texture.get() };
 }
 
 void Player::Update()
