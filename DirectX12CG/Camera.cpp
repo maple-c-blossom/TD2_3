@@ -22,12 +22,37 @@ void Camera::WorldPositionInit()
 void Camera::Update()
 {
 	eyeStartPos = view.eye;
-	view.eye.x = eyeStartPos.x + shake.shakeUpdateR();
-	view.eye.y = eyeStartPos.y + shake.shakeUpdateR();
-	view.eye.z = eyeStartPos.z + shake.shakeUpdateR();
+	XMFLOAT3 targetStart = view.target;
+	shakeY = shakeX;
+	shakeZ = shakeX;
+	float offset = shakeX.shakeUpdateR();
+	float offsetY = shakeY.shakeUpdateR();
+	float offsetZ = shakeZ.shakeUpdateR();
+	if (offset != 0)
+	{
+		Vector3D frontVec(view.eye,view.target);
+		frontVec.V3Norm();
+		Vector3D upVec = upVec.GetUpVec(frontVec);
+		upVec.V3Norm();
+		Vector3D RightVec = RightVec.GetRightVec(frontVec,upVec);
+		RightVec.V3Norm();
+		Float3 finalOffSet = {
+			offset * frontVec.vec.x + offset * upVec.vec.x + offset * RightVec.vec.x,
+			offsetY * frontVec.vec.y + offsetY * upVec.vec.y + offsetY * RightVec.vec.y,
+			offsetZ * frontVec.vec.z + offsetZ * upVec.vec.z + offsetZ * RightVec.vec.z
+
+		};
+		view.eye.x = eyeStartPos.x + finalOffSet.x;
+		view.eye.y = eyeStartPos.y + finalOffSet.y;
+		view.eye.z = eyeStartPos.z + finalOffSet.z;
+		view.target.x = targetStart.x + finalOffSet.x;
+		view.target.y = targetStart.y + finalOffSet.y;
+		view.target.z = targetStart.z + finalOffSet.z;
+	}
 	view.UpDateMatrixView();
 	projection.UpdataMatrixProjection();
 	view.eye = eyeStartPos;
+	view.target = targetStart;
 }
 
 void Camera::WorldPositionUpdate(DirectX::XMMATRIX playerMatrix, DirectX::XMFLOAT3 playerPosition,bool isBillBord)

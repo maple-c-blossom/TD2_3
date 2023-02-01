@@ -107,7 +107,7 @@ void MCB::Scene::Object3DInit()
     enemys.push_back(move(temp));
     spownTimer.Set(30);
     boss.Initialize({ 0,0,1 }, { -20,0,0 }, bossModel.get(), pencilEnemyModel.get(), WritingModel.get(), BossDamegeEffectModelStar.get(), BossDamegeEffectModelSpher.get(), 1, &substie);
-    boss.shake = &debugCamera.shake;
+    boss.shake = mainCamera.GetShakePtr();
     
     
     
@@ -450,9 +450,7 @@ void MCB::Scene::ImGuiUpdate()
 
 void MCB::Scene::MatrixUpdate()
 {
-    matProjection.UpdataMatrixProjection();
-    matView.UpDateMatrixView(ybill);
-    viewCamera->MatrixUpdate();
+    viewCamera->Update();
     Skydome.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
     ground.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
     ground.Update(*viewCamera->GetView(), *viewCamera->GetProjection());

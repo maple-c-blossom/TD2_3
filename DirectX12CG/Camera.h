@@ -21,7 +21,7 @@ namespace MCB
 		DirectX::XMMATRIX GetMadWorld();
 
 		//WorldMatrix GetMadWorld2();
-		Shake* GetShakePtr() { return &shake; }
+		Shake* GetShakePtr() { return &shakeX; }
 
 	private:
 
@@ -29,7 +29,9 @@ namespace MCB
 
 		//Object3d* object3d = nullptr;
 
-		Shake shake;
+		Shake shakeX;
+		Shake shakeY;
+		Shake shakeZ;
 		
 		
 

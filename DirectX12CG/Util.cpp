@@ -229,11 +229,16 @@ float MCB::Shake::shakeUpdateR()
 	float ans = 0;
 	endCount.SafeUpdate();
 	shakeRange = Lerp(shakeRangeOrigin, 0, endCount.GetEndTime(), endCount.NowTime());
-	ans = shakeRange * shakeSign;
-	shakeSign *= -1;
+
+	//ans = shakeRange * shakeSign;
+	//shakeSign *= -1;
 	if (endCount.IsEnd())
 	{
 		return 0;
+	}
+	else
+	{
+		ans = GetRand(-shakeRange * 10000, shakeRange * 10000) / 10000.f;
 	}
 	return ans;
 }

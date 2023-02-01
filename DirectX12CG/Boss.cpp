@@ -130,7 +130,7 @@ void Boss::Damage(int damage)
 					if (!imotalFlag)
 					{
 						hp -= damage;
-						if (shake)shake->Setshake(20, 10, damage);
+						if (shake)shake->Setshake(20, 30, damage + 2 > 5 ? 5 : damage + 2);
 						if (Player::GetCaptureList()->size() >= 5)
 						{
 							for (int i = 0; i < damage; i++)
