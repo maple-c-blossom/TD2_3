@@ -148,15 +148,15 @@ void LightGroup::TransferConstBuff()
 
 void LightGroup::DefaultLightSet()
 {
-	dirLights[0].SetIsActive(false);
+	dirLights[0].SetIsActive(true);
 	dirLights[0].SetLightColor({ 1.0f, 1.0f, 1.0f });
 	dirLights[0].SetLightDir({ 0.0f, -1.0f, 0.0f});
-	dirLights[0].SetLightShininess(3.0f);
+	dirLights[0].SetLightShininess(2.5f);
 
-	dirLights[1].SetIsActive(false);
+	dirLights[1].SetIsActive(true);
 	dirLights[1].SetLightColor({ 1.0f, 1.0f, 1.0f });
-	dirLights[1].SetLightDir({ +0.5f, +0.1f, +0.2f });
-	dirLights[1].SetLightShininess(3.0f);
+	dirLights[1].SetLightDir({ +0.0f, +1.0f, +0.0f });
+	dirLights[1].SetLightShininess(2.5f);
 
 	dirLights[2].SetIsActive(false);
 	dirLights[2].SetLightColor({ 1.0f, 1.0f, 1.0f });

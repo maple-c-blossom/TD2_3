@@ -17,6 +17,7 @@ void BossDamageEffect::Initialize(MCB::Model* model, MCB::Vector3D Velocity, MCB
 	nowFrontVec.vec.z = Velocity.vec.z;
 	nowFrontVec.V3Norm();
 	material.Init();
+	material = model->material;
 	material.constMapMaterial->color = color;
 }
 
