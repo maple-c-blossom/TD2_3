@@ -85,7 +85,7 @@ void Enemy::Update()
 	for(auto& itr : colliders)
 	{
 		itr.collideLayer = 3;
-		itr.isTrigger = false;
+		itr.isTrigger = capture != nullptr;
 	}
 	if (!imotalTimer.IsEnd())
 	{
