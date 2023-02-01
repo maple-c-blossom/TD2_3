@@ -31,7 +31,9 @@ private:
 	float weight = 1;
 	float shard = 10;
 	float directionAngle = 0;
+	float holdDirectionAngle = 0;
 	float moveSpeedPercentage = 0;
+	bool prevTrueMakingKneadedEraser = false;
 	bool rotateTapped = false;
 	bool rotateMode = false;
 	bool rotateCanceled = false;
@@ -40,7 +42,7 @@ private:
 	float postRotateCount = 0;
 	MCB::Vector3D prevPos{};
 	MCB::Vector3D velocity{};
-	std::array<MCB::Sprite, 2> tutorials;//‚±‚ñ‚È‚É—v‚ç‚È‚¢‚©‚à
+	std::array<MCB::Sprite, 2> tutorials;
 	std::array<MCB::Texture*, 8> tutorialTexs;
 
 	TextureManager* loader = TextureManager::GetInstance();
