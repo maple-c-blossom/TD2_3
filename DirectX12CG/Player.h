@@ -35,7 +35,9 @@ private:
 	bool rotateTapped = false;
 	bool rotateMode = false;
 	bool rotateCanceled = false;
-	float rotateModeCount;
+	float rotateTapTime = 0;
+	float rotateModeCount = 0;
+	float postRotateCount = 0;
 	MCB::Vector3D prevPos{};
 	MCB::Vector3D velocity{};
 	std::array<MCB::Sprite, 2> tutorials;//‚±‚ñ‚È‚É—v‚ç‚È‚¢‚©‚à
