@@ -151,6 +151,9 @@ void Boss::Damage(int damage)
 							}
 						}
 					}
+
+					itr3.gameObject->deleteFlag = true;
+
 					for (auto& itr : *Player::GetCaptureList())//すでに練りけしについている敵のデリートフラグをOnに
 					{
 						itr->deleteFlag = true;
