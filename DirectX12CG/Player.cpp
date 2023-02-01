@@ -222,7 +222,7 @@ void Player::Update()
 			}
 		}
 
-		shard -= abs(rotateModeCount * 0.001);
+		shard -= abs(rotateModeCount * 0.01);
 		rotation.y += rotateModeCount * 0.03;
 	}
 	else if (abs(postRotateCount) > 1.0f)
@@ -241,7 +241,7 @@ void Player::Update()
 		rotateMode = false;
 		rotateModeCount = 0;
 		postRotateCount = 0;
-		shard -= velocity.V3Len() * 2;
+		shard -= velocity.V3Len() * 1.5;
 		if (kneadedErasers.empty()
 			|| Vector3D{ kneadedErasers.front().position.x,kneadedErasers.front().position.y,kneadedErasers.front().position.z }.V3Len() > kneadedEraserDistance)
 		{
