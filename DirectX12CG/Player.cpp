@@ -29,7 +29,7 @@ void Player::Initialize()
 	kneadedEraserGaugeTexs = { kneadedEraserGaugeTexCells[0]->texture.get(), kneadedEraserGaugeTexCells[1]->texture.get() };
 }
 
-void Player::Update()
+void Player::Update(bool flag)
 {
 	bool MoveUp =
 		input->IsKeyDown(keyConfig[0]) || input->IsKeyDown(keyConfig[4]);
@@ -45,7 +45,7 @@ void Player::Update()
 	bool makingKneadedEraser =
 		input->IsKeyDown(keyConfig[8]) || input->gamePad->IsButtonDown(gamePadConfig[0] | gamePadConfig[1] | gamePadConfig[2] | gamePadConfig[3]);
 
-	bool trueMakingKneadedEraser = makingKneadedEraser && kneadedErasers.size() <= maxKneadedErasers;
+	trueMakingKneadedEraser = makingKneadedEraser && kneadedErasers.size() <= maxKneadedErasers;
 
 	velocity = position - prevPos;
 	prevPos = position;
@@ -183,22 +183,46 @@ void Player::Update()
 	//Float2 Vartical;
 	//Vartical.x = MCB::Lerp(-40, -80, temp.x);
 	//Vartical.y = MCB::Lerp(40, 80, temp.x);
-	if (position.x < -50)
+	if (flag)
 	{
-		position.x = -50;
-	}
-	if (position.x > 50)
-	{
-		position.x = 50;
-	}
+		if (position.x < -50)
+		{
+			position.x = -50;
+		}
+		if (position.x > 50)
+		{
+			position.x = 50;
+		}
 
-	if (position.z < -40)
-	{
-		position.z = -40;
+		if (position.z < -40)
+		{
+			position.z = -40;
+		}
+		if (position.z > 40)
+		{
+			position.z = 40;
+		}
 	}
-	if (position.z > 40)
+	else
 	{
-		position.z = 40;
+
+		if (position.x < -250)
+		{
+			position.x = -250;
+		}
+		if (position.x > 200)
+		{
+			position.x = 200;
+		}
+
+		if (position.z < -20)
+		{
+			position.z = -20;
+		}
+		if (position.z > 20)
+		{
+			position.z = 20;
+		}
 	}
 
 	position.y = 0;

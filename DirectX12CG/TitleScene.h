@@ -3,7 +3,9 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include "Player.h"
-
+#include "Status.h"
+#include "Boss.h"
+#include "PencilEnemy.h"
 namespace MCB
 {
 	class TitleScene :public IScene
@@ -57,11 +59,13 @@ namespace MCB
 		Object3d ground;
 		Object3d Skydome;
 		Object3d testSpher;
-		Object3d tutorialBode;
-		//std::array<Object3d, 8> tutorialBode;
+		//Object3d tutorialBode;
+		std::array<Object3d, 8> tutorialBode;
 		std::unique_ptr <Player> substie = std::make_unique<Player>();
-		
-
+		std::unique_ptr <Boss> boss = std::make_unique<Boss>();
+		unsigned short tutorialSucces = 0b00000;
+		float velocitySum;
+		float RotateFrame;
 #pragma endregion 3Dオブジェクト
 
 #pragma region スプライト

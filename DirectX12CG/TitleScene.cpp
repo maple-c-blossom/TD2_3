@@ -31,7 +31,7 @@ void MCB::TitleScene::MatrixUpdate()
     viewCamera->Update();
     Skydome.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
     ground.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
-    tutorialBode.Update(*viewCamera->GetView(), *viewCamera->GetProjection(),true);
+    for(auto& itr:tutorialBode)itr.Update(*viewCamera->GetView(), *viewCamera->GetProjection(),true);
     //testSpher.FbxUpdate(*viewCamera->GetView(), *viewCamera->GetProjection(),false);
     substie->UpdateMatrix(viewCamera);
 
@@ -39,14 +39,79 @@ void MCB::TitleScene::MatrixUpdate()
 
 void MCB::TitleScene::Update()
 {
-    substie->Update();
+    substie->Update(false);
+
+    
+    for (int i = 2; i < tutorialBode.size(); i++)
+    {
+        if (substie->position.x < tutorialBode[2].position.x - 30)
+        {
+            substie->SetShard(0);
+        }
+        if (substie->position.x <= tutorialBode[i].position.x + 30 && substie->position.x <= tutorialBode[i].position.x - 30)
+        {
+            switch (i - 1)
+            {
+            case 1:
+                if (substie->GetShard() >= 50)
+                {
+                    tutorialSucces |= 0b10000;
+                }
+                break;
+            case 2:
+                if (substie->GetTrueMake())
+                {
+                    velocitySum += substie->GetVelocity().V3Len();
+                }
+                else
+                {
+                    velocitySum = 0;
+                }
+
+                if (velocitySum >= 20)
+                {
+                    tutorialSucces |= 0b01000;
+                }
+                break;
+            case 3:
+
+                if (substie->GetRotaMode())
+                {
+                    RotateFrame++;
+                }
+                if (RotateFrame >= SECOND_FRAME * 5)
+                {
+                    tutorialSucces |= 0b00100;
+                }
+                break;
+            case 4:
+                if (substie.get()->GetCaptureList()->size() >= 5)
+                {
+                    tutorialSucces |= 0b00010;
+                }
+                break;
+            case 5:
+                if (substie->GetShard() >= 50)
+                {
+                    tutorialSucces |= 0b00001;
+                }
+                break;
+            case 6:
+                if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A))
+                {
+                    sceneEnd = true;
+                }
+                break;
+            default:
+                break;
+            }
+            break;
+        }
+    }
 
     MatrixUpdate();
 
-    if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A))
-    {
-        sceneEnd = true;
-    }
+    
 
 }
 
@@ -57,12 +122,12 @@ void MCB::TitleScene::Draw()
     ground.Draw();
     testSpher.Draw();
     substie->Draw();
-    tutorialBode.Draw();
+    for (auto& itr : tutorialBode)itr.Draw();
 }
 
 void MCB::TitleScene::SpriteDraw()
 {
-    titleSprite.SpriteDraw(dxWindow->window_width / 2 - substie->position.x * 30, dxWindow->window_height / 2 - 80);
+    titleSprite.SpriteDraw(dxWindow->window_width / 2 - (substie->position.x + 210) * 30, dxWindow->window_height / 2 - 80);
     //pushSpaceSprite.SpriteDraw(dxWindow->window_width / 2 - substie->position.x * 30, dxWindow->window_height / 2 + 40 + substie->position.z * 30);
     debugText.AllDraw();
 }
@@ -79,7 +144,7 @@ void MCB::TitleScene::ImGuiUpdate()
 {
     imgui.Begin();
     ImGui::Begin("Debug");
-    if (ImGui::TreeNode("Tutorial"))
+    /*if (ImGui::TreeNode("Tutorial"))
     {
         if (ImGui::TreeNode("Position"))
         {
@@ -95,7 +160,7 @@ void MCB::TitleScene::ImGuiUpdate()
             ImGui::SliderFloat("z", &tutorialBode.scale.z, 0, 10);
             ImGui::TreePop();
         }
-    }
+    }*/
     if (ImGui::TreeNode("Player"))
     {
         if (ImGui::TreeNode("Position"))
@@ -108,6 +173,7 @@ void MCB::TitleScene::ImGuiUpdate()
 
         if (ImGui::TreeNode("shard"))
         {
+            ImGui::Text("shard %f", substie->GetShard(), 0, 20);
             ImGui::SliderFloat("shardCost %f", &substie->shardCost, 0, 20);
             ImGui::SliderFloat("shardRotaCost %f", &substie->shardRotateCost, 0, 20);
             ImGui::TreePop();
@@ -195,7 +261,7 @@ void MCB::TitleScene::Object3DInit()
     ground;
     ground.Init();
     ground.model = groundModel.get();
-    ground.scale = { 90,90,90 };
+    ground.scale = { 181,90,181 };
     ground.position = { 0,-20,0 };
 
     Skydome;
@@ -211,13 +277,26 @@ void MCB::TitleScene::Object3DInit()
     substie->model = playerModel.get();
     substie->KneadedEraserModel = nerikesiModel.get();
     substie->scale = { 1,1,1 };
-    substie->position = { 0,0,0 };
+    substie->position = { -210,0,0 };
     substie->Initialize();
 
-    tutorialBode.Init();
-    tutorialBode.model = tutorialBlackBode.get();
-    tutorialBode.scale = { 6,6,6 };
-    tutorialBode.position = { 10,0,0 };
+    boss->Initialize({ 0,0,1 }, { -20,0,0 }, bossModel.get(), pencilEnemyModel.get(), WritingModel.get(), BossDamegeEffectModelStar.get(), BossDamegeEffectModelSpher.get(), 1, substie.get());
+    boss->shake = camera.GetShakePtr();
+    //tutorialBode.Init();
+    //tutorialBode.model = tutorialBlackBode.get();
+    //tutorialBode.scale = { 6,6,6 };
+    //tutorialBode.position = { 10,0,0 };
+    for (int i = 0; i < 8; i++)
+    {
+        tutorialBode[i].Init();
+        tutorialBode[i].model = tutorialBlackBode.get();
+        tutorialBode[i].scale = { 10,10,6 };
+        if (i < 2)continue;
+        tutorialBode[i].position = { 60.f + 60.f * (i - 2) - 210 + 15,0,8.4f};
 
+    }
+
+    tutorialBode[0].position = { -15.f -210,0,8.4f };
+    tutorialBode[1].position = { 15.f - 210,0,8.4f };
     camera.player = substie.get();
 }

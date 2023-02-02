@@ -51,22 +51,27 @@ private:
 
 	Timer animationTime;
 	int animeNum;
+	bool trueMakingKneadedEraser;
 public:
 	float shardCost = 1;
 	float shardRotateCost = 0.02f;
 	MCB::Model* KneadedEraserModel = nullptr;
 	int GetHp() { return hp; }
+	MCB::Vector3D GetVelocity() { return velocity; }
+	bool GetTrueMake() { return trueMakingKneadedEraser; }
+	bool GetRotaMode() { return rotateMode; }
 	bool GetVisible() { return visible; };
 	void Damage(int damage);
 	bool IsInvincible();
 	std::list<KneadedEraser> GetKneadedErasers();
 	std::list<KneadedEraser>* GetKneadedErasersPtr();
 	void Initialize();
-	void Update();
+	void Update(bool moveLimitFlag = true);
 	void Draw();
 	void TutorialDraw();
 	void UpdateMatrix(MCB::ICamera* camera);
 	float GetShard() { return shard; };
+	float SetShard(float num) { return shard = num; };
 	void Erase();
 	void TutorialInitialize(MCB::Texture* tutorial1, MCB::Texture* tutorial2, MCB::Texture* tutorial3,
 		MCB::Texture* tutorial4, MCB::Texture* tutorial5, MCB::Texture* tutorial6,
