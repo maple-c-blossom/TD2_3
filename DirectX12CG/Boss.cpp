@@ -49,7 +49,7 @@ void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* 
 	};
 }
 
-void Boss::Update(bool moverimit)
+void Boss::Update(bool moveLimit)
 {
 	for (auto& itr : colliders)
 	{
@@ -106,7 +106,7 @@ void Boss::Update(bool moverimit)
 //Float2 Vartical;
 //Vartical.x = MCB::Lerp(-40, -80, temp.x);
 //Vartical.y = MCB::Lerp(40, 80, temp.x);
-	if (moverimit)
+	if (moveLimit)
 	{
 		if (position.x < -50)
 		{

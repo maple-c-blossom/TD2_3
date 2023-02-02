@@ -4,6 +4,7 @@
 #include "PencilEnemy.h"
 #include "Util.h"
 #include "BossDamageEffect.h"
+#include "Sprite.h"
 
 class Player;
 
@@ -45,7 +46,7 @@ public:
 	Shake* shake;
 	int GetHp() { return hp; };
 	void Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, MCB::Model* enemyModel, MCB::Model* handwrModel, MCB::Model* star, MCB::Model* ball, float speed, Player* playerPtr);
-	void Update(bool moverimit = true);
+	void Update(bool moveLimit = true);
 	void Draw();
 	void UpdateMatrix(MCB::ICamera* camera);
 	void Damage(int damage);
