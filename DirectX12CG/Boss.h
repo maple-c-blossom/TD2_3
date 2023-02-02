@@ -32,6 +32,13 @@ private:
 	Model* starModel;
 	Model* sphereModel;
 	Player* playerPtr;
+
+	TextureManager* loader = TextureManager::GetInstance();
+
+	std::array<MCB::Sprite, 2> gauges;
+	std::array<MCB::TextureCell*, 2> gaugeTexCells;
+	std::array<MCB::Texture*, 2> gaugeTexs;
+
 	void EnemyPop(MCB::Vector3D velocity, MCB::Float3 position,  float speed,int popNum = 1);
 public:
 	bool IsImotal() { return imotalFlag; }

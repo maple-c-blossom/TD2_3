@@ -39,10 +39,11 @@ private:
 	float postRotateCount = 0;
 	MCB::Vector3D prevPos{};
 	MCB::Vector3D velocity{};
-	std::array<MCB::Sprite, 2> tutorials;
-	std::array<MCB::Texture*, 8> tutorialTexs;
 
 	TextureManager* loader = TextureManager::GetInstance();
+
+	std::array<MCB::Sprite, 2> tutorials;
+	std::array<MCB::Texture*, 8> tutorialTexs;
 
 	std::array<MCB::Sprite, 2> kneadedEraserGauges;
 	std::array<MCB::TextureCell*, 2> kneadedEraserGaugeTexCells;

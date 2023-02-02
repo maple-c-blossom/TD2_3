@@ -40,6 +40,13 @@ void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* 
 	}
 	Object3d::Init();
 
+	gaugeTexCells = { loader->LoadTexture(L"Resources\\gauge\\bossHpGauge.png"), loader->LoadTexture(L"Resources\\gauge\\bossHpGaugeFill.png") };
+	gaugeTexs = { gaugeTexCells[0]->texture.get(), gaugeTexCells[1]->texture.get() };
+	for (auto& itr : gauges)
+	{
+		itr = itr.CreateSprite();
+		itr.anchorPoint = { 0,0 };
+	};
 }
 
 void Boss::Update(bool moverimit)
