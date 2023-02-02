@@ -10,7 +10,7 @@ protected:
 public:
 	virtual void UniqueInitialize() = 0;
 	void SetHandwritingModel(MCB::Model* model);
-	virtual void UniqueUpdate() = 0;
+	virtual void UniqueUpdate(bool limitMove = true) = 0;
 	virtual void Draw() = 0;
 	virtual void UpdateMatrix(MCB::ICamera* camera) = 0;
 	static std::vector<std::unique_ptr<Handwriting>>* GetHandWrite();

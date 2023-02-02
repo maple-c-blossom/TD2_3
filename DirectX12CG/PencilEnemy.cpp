@@ -13,97 +13,99 @@ void PencilEnemy::UniqueInitialize()
 
 }
 
-void PencilEnemy::UniqueUpdate()
+void PencilEnemy::UniqueUpdate(bool movelimit)
 {
-	velocity.V3Norm();
-	if (capture == nullptr)
+	if (movelimit)
 	{
-		if (!attack && !beforeAttack)
+		velocity.V3Norm();
+		if (capture == nullptr)
 		{
-			position.x += velocity.vec.x * speed;
-			position.y += velocity.vec.y * speed;
-			position.z += velocity.vec.z * speed;
-			Movement += speed;
-		}
-		else if (attack)
-		{
-			position.x += attackVec.vec.x * speed * 2;
-			position.y += attackVec.vec.y * speed * 2;
-			position.z += attackVec.vec.z * speed * 2;
-
-			for (auto& itr : movePoint)
+			if (!attack && !beforeAttack)
 			{
-				itr += (attackVec * speed * 2);
+				position.x += velocity.vec.x * speed;
+				position.y += velocity.vec.y * speed;
+				position.z += velocity.vec.z * speed;
+				Movement += speed;
 			}
-			Movement += speed * 2;
-		}
-
-		if (Movement > WRITING_RADIUS)
-		{
-			unique_ptr<Handwriting> temp = make_unique<Handwriting>();
-			temp->Initialize({ position.x,position.y,position.z }, handwritingModel);
-			handwriting.push_back(move(temp));
-			Movement = 0;
-			writingCount++;
-		}
-
-		if (writingCount > 20)
-		{
-			writingCount = 0;
-			velocity *= -1;
-		}
-	}
-
-
-	if (movePoint.size() > 0)
-	{
-		movePointIndex = movePointIndex % movePoint.size();
-
-		Vector3D positionVec = Vector3D(position.x,position.y,position.z);
-
-		Float2 temp;
-		temp.x = MCB::Lerp(0, 85, (movePoint[movePointIndex].vec.z+ 30) / 85);
-		temp.x /= 85;
-		Float2 Vartical;
-		Vartical.x = MCB::Lerp(-40, -80, temp.x);
-		Vartical.y = MCB::Lerp(40, 80, temp.x);
-		if (movePoint[movePointIndex].vec.x < -50)
-		{
-			movePoint[movePointIndex].vec.x = -50;
-		}
-		if (movePoint[movePointIndex].vec.x > 50)
-		{
-			movePoint[movePointIndex].vec.x = 50;
-		}
-
-		if (movePoint[movePointIndex].vec.z < -40)
-		{
-			movePoint[movePointIndex].vec.z = -40;
-		}
-		if (movePoint[movePointIndex].vec.z > 40)
-		{
-			movePoint[movePointIndex].vec.z = 40;
-		}
-		velocity = Vector3D::normal(movePoint[movePointIndex] - positionVec);
-
-		float movePointDistance = (movePoint[movePointIndex] - positionVec).V3Len();
-		if (movePointDistance >= nearestMovePointDistance)
-		{
-			notApproachingCount++;
-			if (notApproachingCount > 10)
+			else if (attack)
 			{
-				movePointIndex++;
-				movePointIndex = movePointIndex % movePoint.size();
-				nearestMovePointDistance = (movePoint[movePointIndex] - positionVec).V3Len();
-				notApproachingCount = 0;
+				position.x += attackVec.vec.x * speed * 2;
+				position.y += attackVec.vec.y * speed * 2;
+				position.z += attackVec.vec.z * speed * 2;
+
+				for (auto& itr : movePoint)
+				{
+					itr += (attackVec * speed * 2);
+				}
+				Movement += speed * 2;
+			}
+
+			if (Movement > WRITING_RADIUS)
+			{
+				unique_ptr<Handwriting> temp = make_unique<Handwriting>();
+				temp->Initialize({ position.x,position.y,position.z }, handwritingModel);
+				handwriting.push_back(move(temp));
+				Movement = 0;
+				writingCount++;
+			}
+
+			if (writingCount > 20)
+			{
+				writingCount = 0;
+				velocity *= -1;
 			}
 		}
-		else
+
+
+		if (movePoint.size() > 0)
 		{
-			nearestMovePointDistance = movePointDistance;
+			movePointIndex = movePointIndex % movePoint.size();
+
+			Vector3D positionVec = Vector3D(position.x, position.y, position.z);
+
+			Float2 temp;
+			temp.x = MCB::Lerp(0, 85, (movePoint[movePointIndex].vec.z + 30) / 85);
+			temp.x /= 85;
+			Float2 Vartical;
+			Vartical.x = MCB::Lerp(-40, -80, temp.x);
+			Vartical.y = MCB::Lerp(40, 80, temp.x);
+			if (movePoint[movePointIndex].vec.x < -50)
+			{
+				movePoint[movePointIndex].vec.x = -50;
+			}
+			if (movePoint[movePointIndex].vec.x > 50)
+			{
+				movePoint[movePointIndex].vec.x = 50;
+			}
+
+			if (movePoint[movePointIndex].vec.z < -40)
+			{
+				movePoint[movePointIndex].vec.z = -40;
+			}
+			if (movePoint[movePointIndex].vec.z > 40)
+			{
+				movePoint[movePointIndex].vec.z = 40;
+			}
+			velocity = Vector3D::normal(movePoint[movePointIndex] - positionVec);
+
+			float movePointDistance = (movePoint[movePointIndex] - positionVec).V3Len();
+			if (movePointDistance >= nearestMovePointDistance)
+			{
+				notApproachingCount++;
+				if (notApproachingCount > 10)
+				{
+					movePointIndex++;
+					movePointIndex = movePointIndex % movePoint.size();
+					nearestMovePointDistance = (movePoint[movePointIndex] - positionVec).V3Len();
+					notApproachingCount = 0;
+				}
+			}
+			else
+			{
+				nearestMovePointDistance = movePointDistance;
+			}
 		}
 	}
-
 	allEnemyPtr.push_back(this);
 	{
 		int num = 0;
@@ -141,24 +143,28 @@ void PencilEnemy::UniqueUpdate()
 //Float2 Vartical;
 //Vartical.x = MCB::Lerp(-40, -80, temp.x);
 //Vartical.y = MCB::Lerp(40, 80, temp.x);
-	if (position.x < -50)
+	if (movelimit)
 	{
-		position.x = -50;
-	}
-	if (position.x > 50)
-	{
-		position.x = 50;
-	}
 
-	if (position.z < -40)
-	{
-		position.z = -40;
-	}
-	if (position.z > 40)
-	{
-		position.z = 40;
-	}
 
+		if (position.x < -50)
+		{
+			position.x = -50;
+		}
+		if (position.x > 50)
+		{
+			position.x = 50;
+		}
+
+		if (position.z < -40)
+		{
+			position.z = -40;
+		}
+		if (position.z > 40)
+		{
+			position.z = 40;
+		}
+	}
 }
 
 void PencilEnemy::Draw()

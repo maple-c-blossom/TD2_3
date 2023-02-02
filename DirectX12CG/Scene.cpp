@@ -64,8 +64,8 @@ void MCB::Scene::Object3DInit()
     Skydome;
     Skydome.Init();
     Skydome.model = skydomeModel.get();
-    Skydome.scale = { 4,4,4 };
-
+    Skydome.scale = { 180,1,180 };
+    Skydome.position = { 0,-15,0 };
 
     substie->model = playerModel.get();
     substie->KneadedEraserModel = nerikesiModel.get();
@@ -117,7 +117,7 @@ void MCB::Scene::LoadModel()
 
 	groundModel = std::make_unique<Model>("note");
 
-	skydomeModel = std::make_unique<Model>("skydome");
+	skydomeModel = std::make_unique<Model>("table");
 
     playerModel = std::make_unique<Model>("player");
     pencilEnemyModel = std::make_unique<Model>("pencil");
