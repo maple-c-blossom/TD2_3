@@ -164,7 +164,7 @@ void MCB::TitleScene::Update()
                 }
                 break;
             case 6:
-                if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A))
+                if ((input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A)) && tutorialSucces == 0b11111)
                 {
                     sceneEnd = true;
                 }
@@ -176,7 +176,7 @@ void MCB::TitleScene::Update()
         }
     }
     substie->Update(false);
-    boss->Update();
+    boss->Update(false);
     boss->position = { 90,0,-15 };
     for (auto& itr : writing)
     {
