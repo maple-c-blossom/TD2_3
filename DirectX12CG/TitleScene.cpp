@@ -31,6 +31,10 @@ void MCB::TitleScene::MatrixUpdate()
     viewCamera->Update();
     Skydome.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
     ground.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
+    for (auto& itr : writing)
+    {
+        itr->Object3d::Update(*viewCamera->GetView(), *viewCamera->GetProjection());
+    }
     for(auto& itr:tutorialBode)itr.Update(*viewCamera->GetView(), *viewCamera->GetProjection(),true);
     //testSpher.FbxUpdate(*viewCamera->GetView(), *viewCamera->GetProjection(),false);
     substie->UpdateMatrix(viewCamera);
@@ -39,26 +43,37 @@ void MCB::TitleScene::MatrixUpdate()
 
 void MCB::TitleScene::Update()
 {
-    substie->Update(false);
 
+    writing.clear();
     
     for (int i = 2; i < tutorialBode.size(); i++)
     {
-        if (substie->position.x < tutorialBode[2].position.x - 30)
-        {
-            substie->SetShard(0);
-        }
+
         if (substie->position.x <= tutorialBode[i].position.x + 30 && substie->position.x <= tutorialBode[i].position.x - 30)
         {
             switch (i - 1)
             {
             case 1:
+
+                for (int j = 0; j < 20; j++)
+                {
+                    unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
+                    temp->Initialize({ tutorialBode[i].position.x - 20 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 }, WritingModel.get());
+                    writing.push_back(move(temp));
+                }
+
                 if (substie->GetShard() >= 50)
                 {
                     tutorialSucces |= 0b10000;
                 }
                 break;
             case 2:
+                for (int j = 0; j < 20; j++)
+                {
+                    unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
+                    temp->Initialize({ tutorialBode[i].position.x - 20 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 }, WritingModel.get());
+                    writing.push_back(move(temp));
+                }
                 if (substie->GetTrueMake())
                 {
                     velocitySum += substie->GetVelocity().V3Len();
@@ -74,7 +89,12 @@ void MCB::TitleScene::Update()
                 }
                 break;
             case 3:
-
+                for (int j = 0; j < 20; j++)
+                {
+                    unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
+                    temp->Initialize({ tutorialBode[i].position.x - 20 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 }, WritingModel.get());
+                    writing.push_back(move(temp));
+                }
                 if (substie->GetRotaMode())
                 {
                     RotateFrame++;
@@ -85,18 +105,36 @@ void MCB::TitleScene::Update()
                 }
                 break;
             case 4:
+                for (int j = 0; j < 20; j++)
+                {
+                    unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
+                    temp->Initialize({ tutorialBode[i].position.x - 20 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 }, WritingModel.get());
+                    writing.push_back(move(temp));
+                }
                 if (substie.get()->GetCaptureList()->size() >= 5)
                 {
                     tutorialSucces |= 0b00010;
                 }
                 break;
             case 5:
+                for (int j = 0; j < 20; j++)
+                {
+                    unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
+                    temp->Initialize({ tutorialBode[i].position.x - 20 + i - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 }, WritingModel.get());
+                    writing.push_back(move(temp));
+                }
                 if (substie->GetShard() >= 50)
                 {
                     tutorialSucces |= 0b00001;
                 }
                 break;
             case 6:
+                for (int j = 0; j < 20; j++)
+                {
+                    unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
+                    temp->Initialize({ tutorialBode[i].position.x - 20 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 }, WritingModel.get());
+                    writing.push_back(move(temp));
+                }
                 if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A))
                 {
                     sceneEnd = true;
@@ -108,9 +146,20 @@ void MCB::TitleScene::Update()
             break;
         }
     }
-
+    for (auto& itr : writing)
+    {
+        itr->Update();
+    }
+    substie->Update(false);
+    if (substie->position.x < tutorialBode[2].position.x - 30)
+    {
+        substie->SetShard(0);
+    }
     MatrixUpdate();
-
+    if (input->IsKeyTrigger(DIK_P) || input->IsKeyTrigger(DIK_RETURN)  || input->gamePad->IsButtonTrigger(GAMEPAD_START))
+    {
+        sceneEnd = true;
+    }
     
 
 }
@@ -122,6 +171,10 @@ void MCB::TitleScene::Draw()
     ground.Draw();
     testSpher.Draw();
     substie->Draw();
+    for (auto& itr : writing)
+    {
+        itr->Draw();
+    }
     for (auto& itr : tutorialBode)itr.Draw();
 }
 
