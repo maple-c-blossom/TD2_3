@@ -49,7 +49,7 @@ void MCB::TitleScene::Update()
     for (int i = 2; i < tutorialBode.size(); i++)
     {
 
-        if (substie->position.x <= tutorialBode[i].position.x + 30 && substie->position.x <= tutorialBode[i].position.x - 30)
+        if (substie->position.x <= tutorialBode[i].position.x + 30 && substie->position.x >= tutorialBode[i].position.x - 30)
         {
             switch (i - 1)
             {
@@ -120,7 +120,7 @@ void MCB::TitleScene::Update()
                 for (int j = 0; j < 20; j++)
                 {
                     unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
-                    temp->Initialize({ tutorialBode[i].position.x - 20 + i - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 }, WritingModel.get());
+                    temp->Initialize({ tutorialBode[i].position.x - 20 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 }, WritingModel.get());
                     writing.push_back(move(temp));
                 }
                 if (substie->GetShard() >= 50)
