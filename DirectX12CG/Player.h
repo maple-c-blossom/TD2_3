@@ -12,10 +12,10 @@ class Player :public MCB::Object3d
 private:
 	static Player* playerPtr;
 	static std::list<MCB::Object3d*> captureList;
-private:
 
+private:
 	MCB::Input* input = MCB::Input::GetInstance();
-	int hp = 10;
+	int hp = maxHP;
 	std::vector<int> keyConfig{ DIK_W,DIK_S,DIK_D,DIK_A,DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE };
 	std::vector<int> gamePadConfig = { GAMEPAD_A,GAMEPAD_B,GAMEPAD_X,GAMEPAD_Y };
 	Float3* gamePadAxisConfig = { &input->gamePad->LStick };
@@ -48,9 +48,17 @@ private:
 	std::array<MCB::TextureCell*, 2> kneadedEraserGaugeTexCells;
 	std::array<MCB::Texture*, 2> kneadedEraserGaugeTexs;
 
+	std::array<MCB::Sprite, maxHP> hearts;
+	MCB::TextureCell* heartTexCell;
+	MCB::Texture* heartTex;
+	MCB::TextureCell* heartBlankTexCell;
+	MCB::Texture* heartBlankTex;
+
+	std::array<MCB::Float2, 3> heartShake;
 	Timer animationTime;
 	int animeNum;
 	bool trueMakingKneadedEraser;
+
 public:
 	float shardCost = 1;
 	float shardRotateCost = 0.02f;
@@ -78,6 +86,7 @@ public:
 	void TutorialInitialize(MCB::Texture* tutorial1, MCB::Texture* tutorial2, MCB::Texture* tutorial3,
 		MCB::Texture* tutorial4, MCB::Texture* tutorial5, MCB::Texture* tutorial6,
 		MCB::Texture* tutorial7, MCB::Texture* tutorial8);
+
 public:
 	static Player* GetPlayer() { return playerPtr; };
 	static std::list<MCB::Object3d*>* GetCaptureList() { return &captureList; };
