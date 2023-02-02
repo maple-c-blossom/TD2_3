@@ -403,9 +403,13 @@ void Player::StatusDraw()
 	float edgeLength = 3;
 	float upperEdgeLength = 16;
 
+	float gaugeRange = gaugeSizeY - edgeLength * 2 - upperEdgeLength;
+	float fillAmount = shard / maxShard;
+	float gaugeAmount = gaugeRange * fillAmount;
+
 	kneadedEraserGauges[0].SpriteDraw(*kneadedEraserGaugeTexs[0], edgeSpace, edgeSpace);
-	kneadedEraserGauges[1].size = { gaugeSizeX,gaugeSizeY };
-	kneadedEraserGauges[1].SpriteCuttingDraw(*kneadedEraserGaugeTexs[1], edgeSpace, edgeSpace, { gaugeSizeX,gaugeSizeY }, { 0, 0 });
+	kneadedEraserGauges[1].size = { gaugeSizeX,gaugeAmount + edgeLength + upperEdgeLength };
+	kneadedEraserGauges[1].SpriteCuttingDraw(*kneadedEraserGaugeTexs[1], edgeSpace, edgeSpace, { gaugeSizeX,(gaugeAmount + edgeLength + upperEdgeLength) }, { 0, 0 });
 }
 
 bool Player::IsInvincible()
