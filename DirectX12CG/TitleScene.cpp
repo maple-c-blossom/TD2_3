@@ -31,6 +31,7 @@ void MCB::TitleScene::MatrixUpdate()
     viewCamera->Update();
     Skydome.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
     ground.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
+    boss->UpdateMatrix(viewCamera);
     for (auto& itr : writing)
     {
         itr->Object3d::Update(*viewCamera->GetView(), *viewCamera->GetProjection());
@@ -43,8 +44,11 @@ void MCB::TitleScene::MatrixUpdate()
 
 void MCB::TitleScene::Update()
 {
-
-    writing.clear();
+    i++;
+    if (i % 180 == 0)
+    {
+        writing.clear();
+    }
     
     for (int i = 2; i < tutorialBode.size(); i++)
     {
@@ -55,11 +59,17 @@ void MCB::TitleScene::Update()
             {
             case 1:
 
-                for (int j = 0; j < 20; j++)
+                if (writing.size() <= 0)
                 {
-                    unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
-                    temp->Initialize({ tutorialBode[i].position.x - 20 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 }, WritingModel.get());
-                    writing.push_back(move(temp));
+                    for (int j = 0; j < 20; j++)
+                    {
+                        for (int k = 0; k < 2; k++)
+                        {
+                            unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
+                            temp->Initialize({ tutorialBode[i].position.x - 8 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 - k * 10 }, WritingModel.get());
+                            writing.push_back(move(temp));
+                        }
+                    }
                 }
 
                 if (substie->GetShard() >= 50)
@@ -67,12 +77,19 @@ void MCB::TitleScene::Update()
                     tutorialSucces |= 0b10000;
                 }
                 break;
+
             case 2:
-                for (int j = 0; j < 20; j++)
+                if (writing.size() <= 0)
                 {
-                    unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
-                    temp->Initialize({ tutorialBode[i].position.x - 20 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 }, WritingModel.get());
-                    writing.push_back(move(temp));
+                    for (int j = 0; j < 20; j++)
+                    {
+                        for (int k = 0; k < 2; k++)
+                        {
+                            unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
+                            temp->Initialize({ tutorialBode[i].position.x - 8 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 - k * 10 }, WritingModel.get());
+                            writing.push_back(move(temp));
+                        }
+                    }
                 }
                 if (substie->GetTrueMake())
                 {
@@ -89,11 +106,17 @@ void MCB::TitleScene::Update()
                 }
                 break;
             case 3:
-                for (int j = 0; j < 20; j++)
+                if (writing.size() <= 0)
                 {
-                    unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
-                    temp->Initialize({ tutorialBode[i].position.x - 20 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 }, WritingModel.get());
-                    writing.push_back(move(temp));
+                    for (int j = 0; j < 20; j++)
+                    {
+                        for (int k = 0; k < 2; k++)
+                        {
+                            unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
+                            temp->Initialize({ tutorialBode[i].position.x - 8 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 - k * 10 }, WritingModel.get());
+                            writing.push_back(move(temp));
+                        }
+                    }
                 }
                 if (substie->GetRotaMode())
                 {
@@ -105,11 +128,17 @@ void MCB::TitleScene::Update()
                 }
                 break;
             case 4:
-                for (int j = 0; j < 20; j++)
+                if (writing.size() <= 0)
                 {
-                    unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
-                    temp->Initialize({ tutorialBode[i].position.x - 20 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 }, WritingModel.get());
-                    writing.push_back(move(temp));
+                    for (int j = 0; j < 20; j++)
+                    {
+                        for (int k = 0; k < 2; k++)
+                        {
+                            unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
+                            temp->Initialize({ tutorialBode[i].position.x - 8 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 - k * 10 }, WritingModel.get());
+                            writing.push_back(move(temp));
+                        }
+                    }
                 }
                 if (substie.get()->GetCaptureList()->size() >= 5)
                 {
@@ -117,11 +146,17 @@ void MCB::TitleScene::Update()
                 }
                 break;
             case 5:
-                for (int j = 0; j < 20; j++)
+                if (writing.size() <= 0)
                 {
-                    unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
-                    temp->Initialize({ tutorialBode[i].position.x - 20 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 }, WritingModel.get());
-                    writing.push_back(move(temp));
+                    for (int j = 0; j < 20; j++)
+                    {
+                        for (int k = 0; k < 2; k++)
+                        {
+                            unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
+                            temp->Initialize({ tutorialBode[i].position.x - 8 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 - k * 10 }, WritingModel.get());
+                            writing.push_back(move(temp));
+                        }
+                    }
                 }
                 if (substie->GetShard() >= 50)
                 {
@@ -129,13 +164,7 @@ void MCB::TitleScene::Update()
                 }
                 break;
             case 6:
-                for (int j = 0; j < 20; j++)
-                {
-                    unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
-                    temp->Initialize({ tutorialBode[i].position.x - 20 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 }, WritingModel.get());
-                    writing.push_back(move(temp));
-                }
-                if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A))
+                if ((input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A)) && tutorialSucces == 0b11111)
                 {
                     sceneEnd = true;
                 }
@@ -146,11 +175,17 @@ void MCB::TitleScene::Update()
             break;
         }
     }
+    substie->Update(false);
+    boss->Update(false);
+    boss->position = { 90,0,-15 };
     for (auto& itr : writing)
     {
         itr->Update();
+        for (auto& itr2 : itr->colliders)
+        {
+            itr2.Update(itr.get());
+        }
     }
-    substie->Update(false);
     if (substie->position.x < tutorialBode[2].position.x - 30)
     {
         substie->SetShard(0);
@@ -171,6 +206,7 @@ void MCB::TitleScene::Draw()
     ground.Draw();
     testSpher.Draw();
     substie->Draw();
+    boss->Draw();
     for (auto& itr : writing)
     {
         itr->Draw();
@@ -335,6 +371,7 @@ void MCB::TitleScene::Object3DInit()
 
     boss->Initialize({ 0,0,1 }, { -20,0,0 }, bossModel.get(), pencilEnemyModel.get(), WritingModel.get(), BossDamegeEffectModelStar.get(), BossDamegeEffectModelSpher.get(), 1, substie.get());
     boss->shake = camera.GetShakePtr();
+    boss->position = { 90,0,-15 };
     //tutorialBode.Init();
     //tutorialBode.model = tutorialBlackBode.get();
     //tutorialBode.scale = { 6,6,6 };
