@@ -71,7 +71,9 @@ public:
 	void StatusDraw();
 	void UpdateMatrix(MCB::ICamera* camera);
 	float GetShard() { return shard; };
-	float SetShard(float num) { return shard = num; };
+	void SetShard(float num) { shard = num; };
+	bool GetMakingKneadedEraserAllow() { return makingKneadedEraserAllow; };
+	void SetMakingKneadedEraserAllow(float setAllow) { makingKneadedEraserAllow = setAllow; };
 	void Erase();
 	void TutorialInitialize(MCB::Texture* tutorial1, MCB::Texture* tutorial2, MCB::Texture* tutorial3,
 		MCB::Texture* tutorial4, MCB::Texture* tutorial5, MCB::Texture* tutorial6,
