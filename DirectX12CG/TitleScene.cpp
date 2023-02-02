@@ -43,8 +43,11 @@ void MCB::TitleScene::MatrixUpdate()
 
 void MCB::TitleScene::Update()
 {
-
-    writing.clear();
+    i++;
+    if (i % 180 == 0)
+    {
+        writing.clear();
+    }
     
     for (int i = 2; i < tutorialBode.size(); i++)
     {
@@ -55,11 +58,17 @@ void MCB::TitleScene::Update()
             {
             case 1:
 
-                for (int j = 0; j < 20; j++)
+                if (writing.size() <= 0)
                 {
-                    unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
-                    temp->Initialize({ tutorialBode[i].position.x - 20 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 }, WritingModel.get());
-                    writing.push_back(move(temp));
+                    for (int j = 0; j < 20; j++)
+                    {
+                        for (int k = 0; k < 2; k++)
+                        {
+                            unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
+                            temp->Initialize({ tutorialBode[i].position.x - 8 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 - k * 10 }, WritingModel.get());
+                            writing.push_back(move(temp));
+                        }
+                    }
                 }
 
                 if (substie->GetShard() >= 50)
@@ -67,12 +76,19 @@ void MCB::TitleScene::Update()
                     tutorialSucces |= 0b10000;
                 }
                 break;
+
             case 2:
-                for (int j = 0; j < 20; j++)
+                if (writing.size() <= 0)
                 {
-                    unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
-                    temp->Initialize({ tutorialBode[i].position.x - 20 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 }, WritingModel.get());
-                    writing.push_back(move(temp));
+                    for (int j = 0; j < 20; j++)
+                    {
+                        for (int k = 0; k < 2; k++)
+                        {
+                            unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
+                            temp->Initialize({ tutorialBode[i].position.x - 8 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 - k * 10 }, WritingModel.get());
+                            writing.push_back(move(temp));
+                        }
+                    }
                 }
                 if (substie->GetTrueMake())
                 {
@@ -89,11 +105,17 @@ void MCB::TitleScene::Update()
                 }
                 break;
             case 3:
-                for (int j = 0; j < 20; j++)
+                if (writing.size() <= 0)
                 {
-                    unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
-                    temp->Initialize({ tutorialBode[i].position.x - 20 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 }, WritingModel.get());
-                    writing.push_back(move(temp));
+                    for (int j = 0; j < 20; j++)
+                    {
+                        for (int k = 0; k < 2; k++)
+                        {
+                            unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
+                            temp->Initialize({ tutorialBode[i].position.x - 8 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 - k * 10 }, WritingModel.get());
+                            writing.push_back(move(temp));
+                        }
+                    }
                 }
                 if (substie->GetRotaMode())
                 {
@@ -105,11 +127,17 @@ void MCB::TitleScene::Update()
                 }
                 break;
             case 4:
-                for (int j = 0; j < 20; j++)
+                if (writing.size() <= 0)
                 {
-                    unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
-                    temp->Initialize({ tutorialBode[i].position.x - 20 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 }, WritingModel.get());
-                    writing.push_back(move(temp));
+                    for (int j = 0; j < 20; j++)
+                    {
+                        for (int k = 0; k < 2; k++)
+                        {
+                            unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
+                            temp->Initialize({ tutorialBode[i].position.x - 8 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 - k * 10 }, WritingModel.get());
+                            writing.push_back(move(temp));
+                        }
+                    }
                 }
                 if (substie.get()->GetCaptureList()->size() >= 5)
                 {
@@ -117,11 +145,17 @@ void MCB::TitleScene::Update()
                 }
                 break;
             case 5:
-                for (int j = 0; j < 20; j++)
+                if (writing.size() <= 0)
                 {
-                    unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
-                    temp->Initialize({ tutorialBode[i].position.x - 20 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 }, WritingModel.get());
-                    writing.push_back(move(temp));
+                    for (int j = 0; j < 20; j++)
+                    {
+                        for (int k = 0; k < 2; k++)
+                        {
+                            unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
+                            temp->Initialize({ tutorialBode[i].position.x - 8 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 - k * 10 }, WritingModel.get());
+                            writing.push_back(move(temp));
+                        }
+                    }
                 }
                 if (substie->GetShard() >= 50)
                 {
@@ -129,11 +163,18 @@ void MCB::TitleScene::Update()
                 }
                 break;
             case 6:
-                for (int j = 0; j < 20; j++)
+                if (writing.size() <= 0)
                 {
-                    unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
-                    temp->Initialize({ tutorialBode[i].position.x - 20 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 }, WritingModel.get());
-                    writing.push_back(move(temp));
+                    for (int j = 0; j < 20; j++)
+                    {
+                        for (int k = 0; k < 2; k++)
+                        {
+                            unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
+                            temp->Initialize({ tutorialBode[i].position.x - 8 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 - k * 10 }, WritingModel.get());
+                            writing.push_back(move(temp));
+                        }
+                    }
+
                 }
                 if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A))
                 {
@@ -146,11 +187,15 @@ void MCB::TitleScene::Update()
             break;
         }
     }
+    substie->Update(false);
     for (auto& itr : writing)
     {
         itr->Update();
+        for (auto& itr2 : itr->colliders)
+        {
+            itr2.Update(itr.get());
+        }
     }
-    substie->Update(false);
     if (substie->position.x < tutorialBode[2].position.x - 30)
     {
         substie->SetShard(0);
