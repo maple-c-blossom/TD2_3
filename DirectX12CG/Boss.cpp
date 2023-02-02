@@ -40,9 +40,16 @@ void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* 
 	}
 	Object3d::Init();
 
+	gaugeTexCells = { loader->LoadTexture(L"Resources\\gauge\\bossHpGauge.png"), loader->LoadTexture(L"Resources\\gauge\\bossHpGaugeFill.png") };
+	gaugeTexs = { gaugeTexCells[0]->texture.get(), gaugeTexCells[1]->texture.get() };
+	for (auto& itr : gauges)
+	{
+		itr = itr.CreateSprite();
+		itr.anchorPoint = { 0,0 };
+	};
 }
 
-void Boss::Update(bool moverimit)
+void Boss::Update(bool moveLimit)
 {
 	for (auto& itr : colliders)
 	{
@@ -99,7 +106,7 @@ void Boss::Update(bool moverimit)
 //Float2 Vartical;
 //Vartical.x = MCB::Lerp(-40, -80, temp.x);
 //Vartical.y = MCB::Lerp(40, 80, temp.x);
-	if (moverimit)
+	if (moveLimit)
 	{
 		if (position.x < -50)
 		{

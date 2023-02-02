@@ -10,6 +10,7 @@ static int ENEMY_BEFORE_ATTACK_TIME = SECOND_FRAME;//攻撃前の溜め時間
 static int MAX_HP_BOSS = 75;//ボスの初期HP
 
 //プレイヤーに関する定数
+const int maxHP = 10;
 const float maxShard = 100;//ねりけしゲージの最大値
 const int maxKneadedErasers = 40;//ねりけしの粒の最大数
 const float kneadedEraserDistance = 1.0f;//これを少なくするとねりけしの密度が濃くなり、最大値に達しやすくなる

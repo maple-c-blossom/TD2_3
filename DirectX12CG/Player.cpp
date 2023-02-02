@@ -27,8 +27,17 @@ void Player::Initialize()
 
 	kneadedEraserGaugeTexCells = { loader->LoadTexture(L"Resources\\gauge\\nerikeshiGauge.png"), loader->LoadTexture(L"Resources\\gauge\\nerikeshiGaugeFill.png") };
 	kneadedEraserGaugeTexs = { kneadedEraserGaugeTexCells[0]->texture.get(), kneadedEraserGaugeTexCells[1]->texture.get() };
-
 	for (auto& itr : kneadedEraserGauges)
+	{
+		itr = itr.CreateSprite();
+		itr.anchorPoint = { 0,0 };
+	};
+
+	heartTexCell = loader->LoadTexture(L"Resources\\gauge\\playerHp.png");
+	heartTex = heartTexCell->texture.get();
+	heartBlankTexCell = loader->LoadTexture(L"Resources\\gauge\\playerHpBlank.png");
+	heartBlankTex = heartBlankTexCell->texture.get();
+	for (auto& itr : hearts)
 	{
 		itr = itr.CreateSprite();
 		itr.anchorPoint = { 0,0 };
@@ -345,6 +354,31 @@ void Player::Update(bool flag)
 		}
 	}
 
+	if(invincible > 60)
+	{
+		int index = 0;
+		for (auto& itr : heartShake)
+		{
+			itr = { sin((float)invincible + index * 2) * (invincible - 60) * 1.3f,cos((float)invincible + index * 2) * (invincible - 60) * 1.3f };
+			index++;
+		}
+	}
+	else if (hp <= 3)
+	{
+		int index = 0;
+		for (auto& itr : heartShake)
+		{
+			itr = { sin((float)clock() / 50 + index * 2) * 1.5f,cos((float)clock() / 50 + index * 2) * 1.5f};
+			index++;
+		}
+	}
+	else
+	{
+		for (auto& itr : heartShake)
+		{
+			itr = { 0,0 };
+		}
+	}
 }
 
 void Player::UpdateMatrix(MCB::ICamera* camera)
@@ -407,9 +441,32 @@ void Player::StatusDraw()
 	float fillAmount = shard / maxShard;
 	float gaugeAmount = gaugeRange * fillAmount;
 
+	float heartScale = 38;
+
+
 	kneadedEraserGauges[0].SpriteDraw(*kneadedEraserGaugeTexs[0], edgeSpace, edgeSpace);
 	kneadedEraserGauges[1].size = { gaugeSizeX,gaugeAmount + edgeLength + upperEdgeLength };
 	kneadedEraserGauges[1].SpriteCuttingDraw(*kneadedEraserGaugeTexs[1], edgeSpace, edgeSpace + gaugeRange - gaugeAmount, { gaugeSizeX,(gaugeAmount + edgeLength + upperEdgeLength) }, { 0, 0 });
+
+	int index = 0;
+	for (auto& itr : hearts)
+	{
+		if (hp <= index)
+		{
+			itr.SpriteDraw(*heartBlankTex, edgeSpace + heartScale * index + heartShake[index % heartShake.size()].x, gaugeSizeY + edgeSpace * 2 + heartShake[index % heartShake.size()].y);
+		}
+		index++;
+	};
+
+	index = 0;
+	for (auto& itr : hearts)
+	{
+		if (hp > index)
+		{
+			itr.SpriteDraw(*heartTex, edgeSpace + heartScale * index + heartShake[index % heartShake.size()].x, gaugeSizeY + edgeSpace * 2 + heartShake[index % heartShake.size()].y);
+		}
+		index++;
+	};
 }
 
 bool Player::IsInvincible()
