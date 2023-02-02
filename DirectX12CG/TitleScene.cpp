@@ -31,6 +31,7 @@ void MCB::TitleScene::MatrixUpdate()
     viewCamera->Update();
     Skydome.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
     ground.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
+    boss->UpdateMatrix(viewCamera);
     for (auto& itr : writing)
     {
         itr->Object3d::Update(*viewCamera->GetView(), *viewCamera->GetProjection());
@@ -163,19 +164,6 @@ void MCB::TitleScene::Update()
                 }
                 break;
             case 6:
-                if (writing.size() <= 0)
-                {
-                    for (int j = 0; j < 20; j++)
-                    {
-                        for (int k = 0; k < 2; k++)
-                        {
-                            unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
-                            temp->Initialize({ tutorialBode[i].position.x - 8 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 - k * 10 }, WritingModel.get());
-                            writing.push_back(move(temp));
-                        }
-                    }
-
-                }
                 if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A))
                 {
                     sceneEnd = true;
@@ -188,6 +176,8 @@ void MCB::TitleScene::Update()
         }
     }
     substie->Update(false);
+    boss->Update();
+    boss->position = { 90,0,-15 };
     for (auto& itr : writing)
     {
         itr->Update();
@@ -216,6 +206,7 @@ void MCB::TitleScene::Draw()
     ground.Draw();
     testSpher.Draw();
     substie->Draw();
+    boss->Draw();
     for (auto& itr : writing)
     {
         itr->Draw();
@@ -380,6 +371,7 @@ void MCB::TitleScene::Object3DInit()
 
     boss->Initialize({ 0,0,1 }, { -20,0,0 }, bossModel.get(), pencilEnemyModel.get(), WritingModel.get(), BossDamegeEffectModelStar.get(), BossDamegeEffectModelSpher.get(), 1, substie.get());
     boss->shake = camera.GetShakePtr();
+    boss->position = { 90,0,-15 };
     //tutorialBode.Init();
     //tutorialBode.model = tutorialBlackBode.get();
     //tutorialBode.scale = { 6,6,6 };
