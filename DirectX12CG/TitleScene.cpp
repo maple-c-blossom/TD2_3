@@ -51,6 +51,9 @@ void MCB::TitleScene::MatrixUpdate()
 
 void MCB::TitleScene::Update()
 {
+    Enemy::StaticUpdate();
+    KneadedEraser::StaticUpdate();
+    WritingEnemy::StaticUpdate();
     i++;
     if (i % 180 == 0)
     {
@@ -261,9 +264,9 @@ void MCB::TitleScene::Update()
             }
             break;
         }
-        enemys_6tutorial.remove_if([](auto& itr) {return itr->deleteFlag; });
-        enemys_7tutorial.remove_if([](auto& itr) {return itr->deleteFlag; });
     }
+    enemys_6tutorial.remove_if([](auto& itr) {return itr->deleteFlag; });
+    enemys_7tutorial.remove_if([](auto& itr) {return itr->deleteFlag; });
     substie->Update(false);
     boss->Update(false);
     boss->position = { 90,0,-15 };
