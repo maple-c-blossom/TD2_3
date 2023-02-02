@@ -476,7 +476,7 @@ bool Player::IsInvincible()
 
 void Player::Erase()
 {
-	shard += 0.2;
+	shard += 0.15;
 }
 
 void Player::TutorialInitialize(MCB::Texture* tutorial1, MCB::Texture* tutorial2, MCB::Texture* tutorial3,
