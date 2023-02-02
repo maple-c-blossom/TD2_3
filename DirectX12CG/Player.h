@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "ICamera.h"
 #include "Sprite.h"
+#include "Status.h"
 
 class Player :public MCB::Object3d
 {
@@ -12,11 +13,6 @@ private:
 	static Player* playerPtr;
 	static std::list<MCB::Object3d*> captureList;
 private:
-	const float maxShard = 100;
-	const int maxKneadedErasers = 40;
-	const float kneadedEraserDistance = 1.0f;
-	const float maxMoveSpeed = 0.3;
-	const float maxRotateSpeed = 15;
 
 	MCB::Input* input = MCB::Input::GetInstance();
 	int hp = 10;

@@ -373,10 +373,11 @@ void Player::TutorialDraw()
 	float gaugeSizeX = 114;
 	float gaugeSizeY = 496;
 	float edgeLength = 3;
+	float upperEdgeLength = 16;
 
 	kneadedEraserGauges[0].SpriteDraw(*kneadedEraserGaugeTexs[0], edgeSpace, edgeSpace);
-	kneadedEraserGauges[1].size = { gaugeSizeX,gaugeSizeY - edgeLength };
-	kneadedEraserGauges[1].SpriteCuttingDraw(*kneadedEraserGaugeTexs[1], edgeSpace, edgeSpace, { gaugeSizeX,gaugeSizeY - edgeLength }, { 0, 0 });
+	kneadedEraserGauges[1].size = { gaugeSizeX,gaugeSizeY + edgeLength + upperEdgeLength };
+	kneadedEraserGauges[1].SpriteCuttingDraw(*kneadedEraserGaugeTexs[1], edgeSpace, edgeSpace, { gaugeSizeX,gaugeSizeY + edgeLength + upperEdgeLength }, { 0, 0 });
 }
 
 bool Player::IsInvincible()
