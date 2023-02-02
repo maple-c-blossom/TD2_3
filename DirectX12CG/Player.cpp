@@ -409,7 +409,7 @@ void Player::StatusDraw()
 
 	kneadedEraserGauges[0].SpriteDraw(*kneadedEraserGaugeTexs[0], edgeSpace, edgeSpace);
 	kneadedEraserGauges[1].size = { gaugeSizeX,gaugeAmount + edgeLength + upperEdgeLength };
-	kneadedEraserGauges[1].SpriteCuttingDraw(*kneadedEraserGaugeTexs[1], edgeSpace, edgeSpace, { gaugeSizeX,(gaugeAmount + edgeLength + upperEdgeLength) }, { 0, 0 });
+	kneadedEraserGauges[1].SpriteCuttingDraw(*kneadedEraserGaugeTexs[1], edgeSpace, edgeSpace + gaugeRange - gaugeAmount, { gaugeSizeX,(gaugeAmount + edgeLength + upperEdgeLength) }, { 0, 0 });
 }
 
 bool Player::IsInvincible()
