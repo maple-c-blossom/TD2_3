@@ -30,6 +30,7 @@ private:
 	float holdDirectionAngle = 0;
 	float moveSpeedPercentage = 0;
 	bool prevTrueMakingKneadedEraser = false;
+	bool makingKneadedEraserAllow = true;
 	bool rotateTapped = false;
 	bool rotateMode = false;
 	bool rotateCanceled = false;
@@ -63,6 +64,7 @@ public:
 	void Update();
 	void Draw();
 	void TutorialDraw();
+	void StatusDraw();
 	void UpdateMatrix(MCB::ICamera* camera);
 	float GetShard() { return shard; };
 	void Erase();

@@ -51,7 +51,7 @@ void Player::Update()
 	bool makingKneadedEraser =
 		input->IsKeyDown(keyConfig[8]) || input->gamePad->IsButtonDown(gamePadConfig[0] | gamePadConfig[1] | gamePadConfig[2] | gamePadConfig[3]);
 
-	bool trueMakingKneadedEraser = makingKneadedEraser && kneadedErasers.size() <= maxKneadedErasers;
+	bool trueMakingKneadedEraser = makingKneadedEraser && makingKneadedEraserAllow && kneadedErasers.size() <= maxKneadedErasers;
 
 	velocity = position - prevPos;
 	prevPos = position;
@@ -368,7 +368,11 @@ void Player::TutorialDraw()
 
 	tutorials[0].SpriteDraw(*tutorialTexL, edgeSpace, DxWindow::GetInstance()->window_height - edgedHalfSpriteSize - edgeSpace, totalSpriteSize, totalSpriteSize);
 	tutorials[1].SpriteDraw(*tutorialTexR, DxWindow::GetInstance()->window_width - totalSpriteSize - edgeSpace, DxWindow::GetInstance()->window_height - edgedHalfSpriteSize - edgeSpace, totalSpriteSize, totalSpriteSize);
+}
 
+void Player::StatusDraw()
+{
+	float edgeSpace = 20;
 
 	float gaugeSizeX = 114;
 	float gaugeSizeY = 496;
@@ -376,8 +380,8 @@ void Player::TutorialDraw()
 	float upperEdgeLength = 16;
 
 	kneadedEraserGauges[0].SpriteDraw(*kneadedEraserGaugeTexs[0], edgeSpace, edgeSpace);
-	kneadedEraserGauges[1].size = { gaugeSizeX,gaugeSizeY + edgeLength + upperEdgeLength };
-	kneadedEraserGauges[1].SpriteCuttingDraw(*kneadedEraserGaugeTexs[1], edgeSpace, edgeSpace, { gaugeSizeX,gaugeSizeY + edgeLength + upperEdgeLength }, { 0, 0 });
+	kneadedEraserGauges[1].size = { gaugeSizeX,gaugeSizeY };
+	kneadedEraserGauges[1].SpriteCuttingDraw(*kneadedEraserGaugeTexs[1], edgeSpace, edgeSpace, { gaugeSizeX,gaugeSizeY }, { 0, 0 });
 }
 
 bool Player::IsInvincible()
