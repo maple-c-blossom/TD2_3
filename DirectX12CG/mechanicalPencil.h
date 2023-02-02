@@ -12,7 +12,7 @@ private:
 	MCB::Model* bulletModel;
 public:
 	void UniqueInitialize() override;
-	void UniqueUpdate() override;
+	void UniqueUpdate(bool flag = true) override;
 	void Draw() override;
 	void UpdateMatrix(MCB::ICamera* camera) override;
 	void AttackCheck();

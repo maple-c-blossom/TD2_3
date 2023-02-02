@@ -39,7 +39,14 @@ void MCB::TitleScene::MatrixUpdate()
     for(auto& itr:tutorialBode)itr.Update(*viewCamera->GetView(), *viewCamera->GetProjection(),true);
     //testSpher.FbxUpdate(*viewCamera->GetView(), *viewCamera->GetProjection(),false);
     substie->UpdateMatrix(viewCamera);
-
+    for (auto& itr : enemys_6tutorial)
+    {
+        itr->UpdateMatrix(viewCamera);
+    }
+    for (auto& itr : enemys_7tutorial)
+    {
+        itr->UpdateMatrix(viewCamera);
+    }
 }
 
 void MCB::TitleScene::Update()
@@ -126,8 +133,47 @@ void MCB::TitleScene::Update()
                 {
                     tutorialSucces |= 0b00100;
                 }
+                enemys_6tutorial.clear();
                 break;
             case 4:
+                if (enemys_6tutorial.size() <= 0)
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
+                        temp->SetHandwritingModel(WritingModel.get());
+                        temp->Initialize({ (float)GetRand(-1,1),0,(float)GetRand(-1,1) }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, pencilEnemyModel.get(), 0.5f);
+                        temp->movePoint = { {-20 + temp->position.x,0,20 + temp->position.z},{ 20 + temp->position.x,0,40 + temp->position.z },{ 20 + temp->position.x,0,20 + temp->position.z } };
+                        switch (i + 1)
+                        {
+                        case 1:
+                            temp->position.x = 38.f;
+                            temp->position.z = -2.5f;
+                            break;
+                        case 2:
+                            temp->position.x = 45.f;
+                            temp->position.z = -2.5f;
+                            break;
+                        case 3:
+                            temp->position.x = 52.f;
+                            temp->position.z = -2.5f;
+                            break;
+                        case 4:
+                            temp->position.x = 41.5f;
+                            temp->position.z = -15.f;
+                            break;
+                        case 5:
+                            temp->position.x = 48.5f;
+                            temp->position.z = -15.0f;
+                            break;
+                        default:
+                            break;
+                        }
+
+                        enemys_6tutorial.push_back(move(temp));
+
+                    }
+                }
                 if (writing.size() <= 0)
                 {
                     for (int j = 0; j < 20; j++)
@@ -144,8 +190,48 @@ void MCB::TitleScene::Update()
                 {
                     tutorialSucces |= 0b00010;
                 }
+                enemys_7tutorial.clear();
                 break;
             case 5:
+                enemys_6tutorial.clear();
+                if (enemys_7tutorial.size() <= 0)
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
+                        temp->SetHandwritingModel(WritingModel.get());
+                        temp->Initialize({ (float)GetRand(-1,1),0,(float)GetRand(-1,1) }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, pencilEnemyModel.get(), 0.5f);
+                        temp->movePoint = { {-20 + temp->position.x,0,20 + temp->position.z},{ 20 + temp->position.x,0,40 + temp->position.z },{ 20 + temp->position.x,0,20 + temp->position.z } };
+                        switch (i + 1)
+                        {
+                        case 1:
+                            temp->position.x = 98.f;
+                            temp->position.z = -2.5f;
+                            break;
+                        case 2:
+                            temp->position.x = 105.f;
+                            temp->position.z = -2.5f;
+                            break;
+                        case 3:
+                            temp->position.x = 112.f;
+                            temp->position.z = -2.5f;
+                            break;
+                        case 4:
+                            temp->position.x = 101.5f;
+                            temp->position.z = -15.f;
+                            break;
+                        case 5:
+                            temp->position.x = 108.5f;
+                            temp->position.z = -15.0f;
+                            break;
+                        default:
+                            break;
+                        }
+
+                        enemys_7tutorial.push_back(move(temp));
+
+                    }
+                }
                 if (writing.size() <= 0)
                 {
                     for (int j = 0; j < 20; j++)
@@ -158,12 +244,13 @@ void MCB::TitleScene::Update()
                         }
                     }
                 }
-                if (substie->GetShard() >= 50)
+                if (boss->IsImotal())
                 {
                     tutorialSucces |= 0b00001;
                 }
                 break;
             case 6:
+                enemys_7tutorial.clear();
                 if ((input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A)) && tutorialSucces == 0b11111)
                 {
                     sceneEnd = true;
@@ -174,6 +261,8 @@ void MCB::TitleScene::Update()
             }
             break;
         }
+        enemys_6tutorial.remove_if([](auto& itr) {return itr->deleteFlag; });
+        enemys_7tutorial.remove_if([](auto& itr) {return itr->deleteFlag; });
     }
     substie->Update(false);
     boss->Update(false);
@@ -185,6 +274,82 @@ void MCB::TitleScene::Update()
         {
             itr2.Update(itr.get());
         }
+    }
+    int i = 0;
+    for (auto& itr : enemys_6tutorial)
+    {
+        itr->Update(false);
+        //for (auto& itr2 : itr->colliders)
+        //{
+        //    itr2.Update(itr.get());
+        //}
+        if (itr->GetcapturePtr() == nullptr)
+        {
+            switch (i + 1)
+            {
+            case 1:
+                itr->position.x = 38.f;
+                itr->position.z = -2.5f;
+                break;
+            case 2:
+                itr->position.x = 45.f;
+                itr->position.z = -2.5f;
+                break;
+            case 3:
+                itr->position.x = 52.f;
+                itr->position.z = -2.5f;
+                break;
+            case 4:
+                itr->position.x = 41.5f;
+                itr->position.z = -15.f;
+                break;
+            case 5:
+                itr->position.x = 48.5f;
+                itr->position.z = -15.0f;
+                break;
+            default:
+                break;
+            }
+        }
+        i++;
+    }
+    i = 0;
+    for (auto& itr : enemys_7tutorial)
+    {
+        itr->Update(false);
+        //for (auto& itr2 : itr->colliders)
+        //{
+        //    itr2.Update(itr.get());
+        //}
+        if (itr->GetcapturePtr() == nullptr)
+        {
+            switch (i + 1)
+            {
+            case 1:
+                itr->position.x = 98.f;
+                itr->position.z = -2.5f;
+                break;
+            case 2:
+                itr->position.x = 105.f;
+                itr->position.z = -2.5f;
+                break;
+            case 3:
+                itr->position.x = 112.f;
+                itr->position.z = -2.5f;
+                break;
+            case 4:
+                itr->position.x = 101.5f;
+                itr->position.z = -15.f;
+                break;
+            case 5:
+                itr->position.x = 108.5f;
+                itr->position.z = -15.0f;
+                break;
+            default:
+                break;
+            }
+        }
+        i++;
     }
     if (substie->position.x < tutorialBode[2].position.x - 30)
     {
@@ -208,6 +373,14 @@ void MCB::TitleScene::Draw()
     substie->Draw();
     boss->Draw();
     for (auto& itr : writing)
+    {
+        itr->Draw();
+    }
+    for (auto& itr : enemys_6tutorial)
+    {
+        itr->Draw();
+    }
+    for (auto& itr : enemys_7tutorial)
     {
         itr->Draw();
     }
@@ -315,7 +488,7 @@ void MCB::TitleScene::LoadModel()
 
     groundModel = std::make_unique<Model>("note");
 
-    skydomeModel = std::make_unique<Model>("skydome");
+    skydomeModel = std::make_unique<Model>("table");
 
     playerModel = std::make_unique<Model>("player");
     pencilEnemyModel = std::make_unique<Model>("pencil");
@@ -356,7 +529,8 @@ void MCB::TitleScene::Object3DInit()
     Skydome;
     Skydome.Init();
     Skydome.model = skydomeModel.get();
-    Skydome.scale = { 4,4,4 };
+    Skydome.scale = { 280,1,280 };
+    Skydome.position = { 0,-25,0 };
 
     testSpher.Init();
     testSpher.model = BoxModel.get();
@@ -385,6 +559,8 @@ void MCB::TitleScene::Object3DInit()
         tutorialBode[i].position = { 60.f + 60.f * (i - 2) - 210 + 15,0,8.4f};
 
     }
+
+
 
     tutorialBode[0].position = { -15.f -210,0,8.4f };
     tutorialBode[1].position = { 15.f - 210,0,8.4f };

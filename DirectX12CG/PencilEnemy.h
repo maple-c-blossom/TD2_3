@@ -19,7 +19,7 @@ private:
 	int writingCount;
 public:
 	void UniqueInitialize() override;
-	void UniqueUpdate() override;
+	void UniqueUpdate(bool limitMove = true) override;
 	void Draw() override;
 	void UpdateMatrix(MCB::ICamera* camera) override;
 	void AttackCheck();
