@@ -27,6 +27,12 @@ void Player::Initialize()
 
 	kneadedEraserGaugeTexCells = { loader->LoadTexture(L"Resources\\gauge\\nerikeshiGauge.png"), loader->LoadTexture(L"Resources\\gauge\\nerikeshiGaugeFill.png") };
 	kneadedEraserGaugeTexs = { kneadedEraserGaugeTexCells[0]->texture.get(), kneadedEraserGaugeTexCells[1]->texture.get() };
+
+	for (auto& itr : kneadedEraserGauges)
+	{
+		itr = itr.CreateSprite();
+		itr.anchorPoint = { 0,0 };
+	};
 }
 
 void Player::Update(bool flag)
@@ -45,7 +51,7 @@ void Player::Update(bool flag)
 	bool makingKneadedEraser =
 		input->IsKeyDown(keyConfig[8]) || input->gamePad->IsButtonDown(gamePadConfig[0] | gamePadConfig[1] | gamePadConfig[2] | gamePadConfig[3]);
 
-	trueMakingKneadedEraser = makingKneadedEraser && kneadedErasers.size() <= maxKneadedErasers;
+	trueMakingKneadedEraser = makingKneadedEraser && makingKneadedEraserAllow && kneadedErasers.size() <= maxKneadedErasers;
 
 	velocity = position - prevPos;
 	prevPos = position;
@@ -59,6 +65,15 @@ void Player::Update(bool flag)
 	else
 	{
 		weight = 10;
+	}
+
+	if (trueMakingKneadedEraser && !prevTrueMakingKneadedEraser)
+	{
+		holdDirectionAngle = directionAngle;
+	}
+	if (!trueMakingKneadedEraser && prevTrueMakingKneadedEraser)
+	{
+		directionAngle = holdDirectionAngle;
 	}
 
 	if (moving)
@@ -258,7 +273,7 @@ void Player::Update(bool flag)
 	}
 	else if (!trueMakingKneadedEraser)
 	{
-		rotation.y += ADXUtility::AngleDiff(rotation.y, directionAngle);
+		rotation.y += ADXUtility::AngleDiff(rotation.y, directionAngle) / 2;
 	}
 
 	shard = min(max(0, shard), maxShard);
@@ -290,6 +305,8 @@ void Player::Update(bool flag)
 			itr.position.z -= rotatedVel.ConvertXMFloat3().z;
 		}
 	}
+
+	prevTrueMakingKneadedEraser = trueMakingKneadedEraser;
 
 	captureList = {};
 
@@ -354,8 +371,7 @@ void Player::TutorialDraw()
 	float spriteExtend = 3.0f;
 	float edgeSpace = 20;
 	float totalSpriteSize = spriteSize * spriteExtend;
-	float edgedTotalSpriteSize = totalSpriteSize + edgeSpace;
-	float edgedTotalHalfSpriteSize = totalSpriteSize * 0.75 + edgeSpace;
+	float edgedHalfSpriteSize = totalSpriteSize * 0.625;
 
 
 	Texture* tutorialTexL = tutorialTexs[0];
@@ -374,9 +390,22 @@ void Player::TutorialDraw()
 		}
 	}
 
-	tutorials[0].SpriteDraw(*tutorialTexL, edgeSpace, DxWindow::GetInstance()->window_height - edgedTotalHalfSpriteSize, totalSpriteSize, totalSpriteSize);
-	tutorials[1].SpriteDraw(*tutorialTexR, DxWindow::GetInstance()->window_width - edgedTotalSpriteSize, DxWindow::GetInstance()->window_height - edgedTotalHalfSpriteSize, totalSpriteSize, totalSpriteSize);
+	tutorials[0].SpriteDraw(*tutorialTexL, edgeSpace, DxWindow::GetInstance()->window_height - edgedHalfSpriteSize - edgeSpace, totalSpriteSize, totalSpriteSize);
+	tutorials[1].SpriteDraw(*tutorialTexR, DxWindow::GetInstance()->window_width - totalSpriteSize - edgeSpace, DxWindow::GetInstance()->window_height - edgedHalfSpriteSize - edgeSpace, totalSpriteSize, totalSpriteSize);
+}
 
+void Player::StatusDraw()
+{
+	float edgeSpace = 20;
+
+	float gaugeSizeX = 114;
+	float gaugeSizeY = 496;
+	float edgeLength = 3;
+	float upperEdgeLength = 16;
+
+	kneadedEraserGauges[0].SpriteDraw(*kneadedEraserGaugeTexs[0], edgeSpace, edgeSpace);
+	kneadedEraserGauges[1].size = { gaugeSizeX,gaugeSizeY };
+	kneadedEraserGauges[1].SpriteCuttingDraw(*kneadedEraserGaugeTexs[1], edgeSpace, edgeSpace, { gaugeSizeX,gaugeSizeY }, { 0, 0 });
 }
 
 bool Player::IsInvincible()

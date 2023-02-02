@@ -290,7 +290,7 @@ void MCB::TitleScene::Object3DInit()
     {
         tutorialBode[i].Init();
         tutorialBode[i].model = tutorialBlackBode.get();
-        tutorialBode[i].scale = { 10,10,6 };
+        tutorialBode[i].scale = { 1,1,1 };
         if (i < 2)continue;
         tutorialBode[i].position = { 60.f + 60.f * (i - 2) - 210 + 15,0,8.4f};
 

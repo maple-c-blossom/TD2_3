@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "ICamera.h"
 #include "Sprite.h"
+#include "Status.h"
 
 class Player :public MCB::Object3d
 {
@@ -12,11 +13,6 @@ private:
 	static Player* playerPtr;
 	static std::list<MCB::Object3d*> captureList;
 private:
-	const float maxShard = 100;
-	const int maxKneadedErasers = 40;
-	const float kneadedEraserDistance = 1.0f;
-	const float maxMoveSpeed = 0.3;
-	const float maxRotateSpeed = 15;
 
 	MCB::Input* input = MCB::Input::GetInstance();
 	int hp = 10;
@@ -31,7 +27,10 @@ private:
 	float weight = 1;
 	float shard = 10;
 	float directionAngle = 0;
+	float holdDirectionAngle = 0;
 	float moveSpeedPercentage = 0;
+	bool prevTrueMakingKneadedEraser = false;
+	bool makingKneadedEraserAllow = true;
 	bool rotateTapped = false;
 	bool rotateMode = false;
 	bool rotateCanceled = false;
@@ -40,7 +39,7 @@ private:
 	float postRotateCount = 0;
 	MCB::Vector3D prevPos{};
 	MCB::Vector3D velocity{};
-	std::array<MCB::Sprite, 2> tutorials;//‚±‚ñ‚È‚É—v‚ç‚È‚¢‚©‚à
+	std::array<MCB::Sprite, 2> tutorials;
 	std::array<MCB::Texture*, 8> tutorialTexs;
 
 	TextureManager* loader = TextureManager::GetInstance();
@@ -69,6 +68,7 @@ public:
 	void Update(bool moveLimitFlag = true);
 	void Draw();
 	void TutorialDraw();
+	void StatusDraw();
 	void UpdateMatrix(MCB::ICamera* camera);
 	float GetShard() { return shard; };
 	float SetShard(float num) { return shard = num; };

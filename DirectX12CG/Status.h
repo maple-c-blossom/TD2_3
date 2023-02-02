@@ -8,3 +8,10 @@ static float WRITING_RADIUS = 1.5f;//筆跡の球の直径(直径分の移動ごとに生成するた
 static int ENEMY_ATTACK_TIME = SECOND_FRAME;//攻撃の持続時間
 static int ENEMY_BEFORE_ATTACK_TIME = SECOND_FRAME;//攻撃前の溜め時間
 static int MAX_HP_BOSS = 75;//ボスの初期HP
+
+//プレイヤーに関する定数
+const float maxShard = 100;//ねりけしゲージの最大値
+const int maxKneadedErasers = 40;//ねりけしの粒の最大数
+const float kneadedEraserDistance = 1.0f;//これを少なくするとねりけしの密度が濃くなり、最大値に達しやすくなる
+const float maxMoveSpeed = 0.3;//最高移動速度
+const float maxRotateSpeed = 15;//回転モードの最大角速度

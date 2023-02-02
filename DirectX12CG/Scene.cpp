@@ -324,6 +324,7 @@ void MCB::Scene::SpriteDraw()
 {
 
     substie->TutorialDraw();
+    substie->StatusDraw();
     playerHpSprite.SpriteDraw(10, 10,360/2,80/2);
     debugText.Print(15 + 360 / 2, 15, 2, "%d", substie->GetHp());
 
