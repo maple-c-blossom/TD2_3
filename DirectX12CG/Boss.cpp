@@ -34,6 +34,7 @@ void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* 
 	colliders.back().scale_ = { 1.2f,1.7f,0.7f };
 	colliders.back().pos_.y = 0.85f;
 	colliders.back().colType_ = box;
+	colliders.back().pushBackPriority = 1;
 	for (auto& itr : colliders)
 	{
 		itr.pushable_ = true;
