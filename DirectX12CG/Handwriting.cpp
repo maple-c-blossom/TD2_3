@@ -10,9 +10,8 @@ void Handwriting::Initialize(MCB::Float3 position, MCB::Model* model)
 	this->position.y = position.y;
 	this->position.z = position.z;
 	this->model = model;
-	material.Init();
-	material.material = model->material.material;
 	Init();
+	color = { 0.1f,0.1f,0.1f,1.0f };
 	colliders.push_back(ADXCollider(this));
 	colliders.back().isTrigger = true;
 	colliders.back().collideLayer = 2;
@@ -21,7 +20,7 @@ void Handwriting::Initialize(MCB::Float3 position, MCB::Model* model)
 void Handwriting::Update()
 {
 	lifeTimer.SafeUpdate();
-	material.constMapMaterial->alpha = MCB::Lerp(1, 0, lifeTimer.GetEndTime(), lifeTimer.NowTime());
+	color.w = MCB::Lerp(1, 0, lifeTimer.GetEndTime(), lifeTimer.NowTime());
 	if (lifeTimer.IsEnd())
 	{
 		deleteFlag = true;
@@ -31,7 +30,7 @@ void Handwriting::Update()
 
 void Handwriting::Draw()
 {
-	Object3d::Draw(&material);
+	Object3d::Draw();
 }
 
 bool Handwriting::GetLifeTimeOver()

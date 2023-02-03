@@ -153,7 +153,7 @@ MCB::SimpleFigure::SimpleFigure()
 	triangleMaterial.CreateVertexBuffer(triangleMaterial.material.HeapProp, D3D12_HEAP_FLAG_NONE, triangleMaterial.material.Resdesc, D3D12_RESOURCE_STATE_GENERIC_READ);
 	triangleMaterial.VertexMaping();
 	triangleMaterial.SetVbView();
-	triangleMaterial.material.constMapMaterial->color = color;
+	triangle.color = color;
 	triangle.model->texture = triangle.model->Loader->CreateNoTextureFileIsTexture();
 }
 
@@ -170,7 +170,7 @@ void MCB::SimpleFigure::DrawTriangle(View view, Projection proj)
 	};
 
 	triangleMaterial.VertexMaping();
-	triangleMaterial.material.constMapMaterial->color = color;
+	triangle.color = color;
 
 
 

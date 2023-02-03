@@ -86,6 +86,8 @@ void Object3d::Update(View& view, Projection& projection,bool isBillBord)
     constMapTranceform->cameraPos.x = view.eye.x;
     constMapTranceform->cameraPos.y = view.eye.y;
     constMapTranceform->cameraPos.z = view.eye.z;
+    constMapTranceform->color = color;
+
 }
 
 void Object3d::Update(View& view, Projection& projection,Quaternion q, bool isBillBord)
@@ -122,6 +124,7 @@ void Object3d::Update(View& view, Projection& projection,Quaternion q, bool isBi
     constMapTranceform->cameraPos.x = view.eye.x;
     constMapTranceform->cameraPos.y = view.eye.y;
     constMapTranceform->cameraPos.z = view.eye.z;
+    constMapTranceform->color = color;
 }
 
 void MCB::Object3d::UpdateData()
@@ -267,6 +270,7 @@ void MCB::Object3d::FbxUpdate(View& view, Projection& projection, bool isBillBor
     constMapTranceform->cameraPos.x = view.eye.x;
     constMapTranceform->cameraPos.y = view.eye.y;
     constMapTranceform->cameraPos.z = view.eye.z;
+    constMapTranceform->color = color;
 }
 
 void MCB::Object3d::FbxUpdate(View& view, Projection& projection, Quaternion q, bool isBillBord)
@@ -304,6 +308,7 @@ void MCB::Object3d::FbxUpdate(View& view, Projection& projection, Quaternion q, 
     constMapTranceform->cameraPos.x = view.eye.x;
     constMapTranceform->cameraPos.y = view.eye.y;
     constMapTranceform->cameraPos.z = view.eye.z;
+    constMapTranceform->color = color;
 }
 
 void MCB::Object3d::FbxDraw()

@@ -32,6 +32,7 @@ namespace MCB
             //DirectX::XMMATRIX mat;
             DirectX::XMMATRIX viewproj;
             DirectX::XMMATRIX world;
+            Float4 color;
             Float3 cameraPos;
 
         };
@@ -49,6 +50,7 @@ namespace MCB
         DirectX::XMFLOAT3 scale = { 1.0f,1.0f,1.0f };
         DirectX::XMFLOAT3 rotation = { 0.0f,0.0f,0.0f };
         DirectX::XMFLOAT3 position = { 0.0f, 0.0f, 0.0f };
+        Float4 color = { 1.0f, 1.0f, 1.0f,1.0f };
         Quaternion quaternion = { 0.f,0.f,0.f,1.f };
         //ÉèÅ[ÉãÉhçsóÒ
         WorldMatrix matWorld = {};

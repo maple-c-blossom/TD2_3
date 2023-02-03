@@ -79,7 +79,7 @@ void MCB::Scene::Object3DInit()
     wall.rotation = { 0,0,0 };
     wall.Init();
     wall.model = BoxModel.get();
-    BoxModel->material.constMapMaterial->color = { 0,0,0,1 };
+    wall.color = { 0,0,0,1 };
     walls.push_back(wall);
     walls.back().colliders.push_back(ADXCollider(&walls.back()));
     walls.back().colliders.back().colType_ = box;
