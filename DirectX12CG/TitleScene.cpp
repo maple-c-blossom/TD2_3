@@ -493,7 +493,14 @@ void MCB::TitleScene::SpriteDraw()
 {
     titleSprite.SpriteDraw(dxWindow->window_width / 2 - (substie->position.x + 210) * 30, dxWindow->window_height / 2 - 80);
     //pushSpaceSprite.SpriteDraw(dxWindow->window_width / 2 - substie->position.x * 30, dxWindow->window_height / 2 + 40 + substie->position.z * 30);
-    tutorialSkipSprite.SpriteDraw(10.f,10.f,480 * 0.85f, 100 * 0.85f);
+    if (substie->position.x >= tutorialBode[2].position.x - 30)
+    {
+        substie->StatusDraw();
+    }
+    else
+    {
+        tutorialSkipSprite.SpriteDraw(10.f,10.f,480 * 0.85f, 100 * 0.85f);
+    }
     debugText.AllDraw();
 }
 
