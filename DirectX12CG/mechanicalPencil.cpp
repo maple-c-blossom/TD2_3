@@ -21,7 +21,7 @@ void mechanicalPencil::UniqueInitialize()
 	attackObj.Init();
 }
 
-void mechanicalPencil::UniqueUpdate()
+void mechanicalPencil::UniqueUpdate(bool flag)
 {
 	velocity.V3Norm();
 	if (capture == nullptr)

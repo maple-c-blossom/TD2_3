@@ -10,73 +10,78 @@ void EraserEnemy::UniqueInitialize()
 
 }
 
-void EraserEnemy::UniqueUpdate()
+void EraserEnemy::UniqueUpdate(bool limitMove)
 {
 	if (!Object3d::IsValid(this))return;
-	velocity.V3Norm();
-	float tempNorm = 1000;
-	velocity = Float3(0.f,0.f,0.f);
-	for (auto& itr : *WritingEnemy::GetHandWrite())
+	if (limitMove)
 	{
-		if (itr->generatorType == TypeName::Bonus || !Object3d::IsValid(&*itr)) continue;
-		MCB::Vector3D temp(position, itr->position);
-		float tempLen = temp.V3Len();
-		if (tempLen < tempNorm)
+		velocity.V3Norm();
+		float tempNorm = 1000;
+		velocity = Float3(0.f,0.f,0.f);
+		for (auto& itr : *WritingEnemy::GetHandWrite())
 		{
-			temp.V3Norm();
-			velocity = temp;
-			tempNorm = tempLen;
-		}
-	}
-
-	for (auto& itr : enemies)
-	{
-		if (itr->enemyType == Erase)continue;
-		MCB::Vector3D temp(position, itr->position);
-		float tempLen = temp.V3Len();
-		if (tempLen < tempNorm)
-		{
-			temp.V3Norm();
-			velocity = temp;
-			tempNorm = tempLen;
-		}
-	}
-	position.x += velocity.vec.x * speed;
-	position.y += velocity.vec.y * speed;
-	position.z += velocity.vec.z * speed;
-	for (auto& itr : *WritingEnemy::GetHandWrite())
-	{
-		if (itr->generatorType == TypeName::Bonus) continue;
-		for (auto& itr2 : itr->colliders)
-		{
-			for (auto& itr3 : colliders)
+			if (itr->generatorType == TypeName::Bonus || !Object3d::IsValid(&*itr)) continue;
+			MCB::Vector3D temp(position, itr->position);
+			float tempLen = temp.V3Len();
+			if (tempLen < tempNorm)
 			{
-				if (itr3.IsHit(itr2))
+				temp.V3Norm();
+				velocity = temp;
+				tempNorm = tempLen;
+			}
+		}
+	
+		for (auto& itr : enemies)
+		{
+			if (itr->enemyType == Erase)continue;
+			MCB::Vector3D temp(position, itr->position);
+			float tempLen = temp.V3Len();
+			if (tempLen < tempNorm)
+			{
+				temp.V3Norm();
+				velocity = temp;
+				tempNorm = tempLen;
+			}
+		}
+		position.x += velocity.vec.x * speed;
+		position.y += velocity.vec.y * speed;
+		position.z += velocity.vec.z * speed;
+		for (auto& itr : *WritingEnemy::GetHandWrite())
+		{
+			if (itr->generatorType == TypeName::Bonus) continue;
+			for (auto& itr2 : itr->colliders)
+			{
+				for (auto& itr3 : colliders)
 				{
-					itr->SetDelete(true);
-
+					if (itr3.IsHit(itr2))
+					{
+						itr->SetDelete(true);
+	
+					}
 				}
 			}
 		}
-	}
-	if (position.x < -50)
-	{
-		position.x = -50;
-	}
-	if (position.x > 50)
-	{
-		position.x = 50;
-	}
+	
+		if (position.x < -50)
+		{
+			position.x = -50;
+		}
+		if (position.x > 50)
+		{
+			position.x = 50;
+		}
+	
+		if (position.z < -40)
+		{
+			position.z = -40;
+		}
+		if (position.z > 40)
+		{
+			position.z = 40;
+		}
+	
 
-	if (position.z < -40)
-	{
-		position.z = -40;
 	}
-	if (position.z > 40)
-	{
-		position.z = 40;
-	}
-
 
 
 }

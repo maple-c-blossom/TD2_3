@@ -80,7 +80,7 @@ void Enemy::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model*
 	UniqueInitialize();
 }
 
-void Enemy::Update()
+void Enemy::Update(bool limitMove)
 {
 	for(auto& itr : colliders)
 	{
@@ -91,7 +91,7 @@ void Enemy::Update()
 	{
 		imotalTimer.Update();
 	}
-	UniqueUpdate();
+	UniqueUpdate(limitMove);
 
 	for (auto& itr : colliders)
 	{

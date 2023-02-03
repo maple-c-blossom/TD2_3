@@ -61,6 +61,8 @@ namespace MCB
 		Object3d testSpher;
 		//Object3d tutorialBode;
 		std::list<std::unique_ptr<Handwriting>> writing;
+		std::list<std::unique_ptr<PencilEnemy>> enemys_6tutorial;
+		std::list<std::unique_ptr<PencilEnemy>> enemys_7tutorial;
 		int i = 0;
 		std::array<Object3d, 8> tutorialBode;
 		std::unique_ptr <Player> substie = std::make_unique<Player>();
