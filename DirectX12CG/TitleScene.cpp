@@ -436,8 +436,8 @@ void MCB::TitleScene::Draw()
         itr->Draw();
     }
 
-    tutorialBode[0].Draw();
-    tutorialBode[1].Draw();
+    tutorialBode[0].Draw(tutorial[0]->texture->incrementNum);
+    tutorialBode[1].Draw(tutorial[1]->texture->incrementNum);
     if (tutorialSucces & 0b10000)
     {
         tutorialBode[2].Draw(tutorial1Succes[tutorial1AnimNum]->texture->incrementNum);
@@ -604,6 +604,9 @@ void MCB::TitleScene::LoadTexture()
     title = loader->LoadTexture(L"Resources\\text\\title.png");
     pushSpace = loader->LoadTexture(L"Resources\\text\\pushSpace.png");
     scopeTex = loader->LoadTexture(L"Resources\\scope.png");
+
+    tutorial[0] = loader->LoadTexture(L"Resources\\tutorial\\title_sousa.png");
+    tutorial[1] = loader->LoadTexture(L"Resources\\tutorial\\title_yazirushi.png");
 #pragma region tutorial1
     tutorial1[0] = loader->LoadTexture(L"Resources\\tutorial\\tutorial1\\tutorial1_1.png");
     tutorial1[1] = loader->LoadTexture(L"Resources\\tutorial\\tutorial1\\tutorial1_2.png");
