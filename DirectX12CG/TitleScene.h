@@ -46,7 +46,7 @@ namespace MCB
 
 
 		int tutorial1AnimNum = 0;
-		std::array<TextureCell*,2> tutorial;
+		std::array<TextureCell*,3> tutorial;
 		std::array<TextureCell*,5> tutorial1;
 		std::array<TextureCell*,5> tutorial1Succes;
 		int tutorial2AnimNum = 0;

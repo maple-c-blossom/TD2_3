@@ -485,6 +485,8 @@ void MCB::TitleScene::Draw()
     {
         tutorialBode[6].Draw(tutorial5[tutorial5AnimNum]->texture->incrementNum);
     }
+    tutorialBode[7].Draw(tutorial[3]->texture->incrementNum);
+  
 }
 
 void MCB::TitleScene::SpriteDraw()
@@ -612,6 +614,7 @@ void MCB::TitleScene::LoadTexture()
     tutorial[0] = loader->LoadTexture(L"Resources\\tutorial\\title_sousa.png");
     tutorialSkipTex = loader->LoadTexture(L"Resources\\tutorial\\skip_1.png");
     tutorial[1] = loader->LoadTexture(L"Resources\\tutorial\\title_yazirushi.png");
+    tutorial[2] = loader->LoadTexture(L"Resources\\tutorial\\start.png");
 #pragma region tutorial1
     tutorial1[0] = loader->LoadTexture(L"Resources\\tutorial\\tutorial1\\tutorial1_1.png");
     tutorial1[1] = loader->LoadTexture(L"Resources\\tutorial\\tutorial1\\tutorial1_2.png");

@@ -332,7 +332,6 @@ void Player::Update(bool flag)
 
 	captureList = {};
 
-	velocity.vec = { 0,0,0 };
 
 	{
 		bool connectedFlag = true;
