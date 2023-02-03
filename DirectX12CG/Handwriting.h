@@ -21,5 +21,8 @@ public:
 	void Draw();
 	bool GetLifeTimeOver();
 	void SetDelete(bool flag) { deleteFlag = flag; };
+
+private:
+	void UniqueOnColliderHit(ADXCollider* myCol, ADXCollider* col);
 };
 

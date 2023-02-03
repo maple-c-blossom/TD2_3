@@ -261,6 +261,7 @@ ADXVector3 ADXCollider::CollideVector(ADXCollider col)
 //相手のコライダーと重なっているか
 bool ADXCollider::IsHit(ADXCollider col)
 {
+	if (!Object3d::IsValid(gameObject) || !Object3d::IsValid(col.gameObject))return false;
 	ADXVector3 closestVec1 = col.ClosestPoint(ClosestPoint(ADXMatrix4::transform(col.pos_, ADXMatrix4::ConvertToADXMatrix(col.gameObject->matWorld.matWorld))));
 	ADXVector3 closestVec2 = ClosestPoint(col.ClosestPoint(ClosestPoint(ADXMatrix4::transform(col.pos_, ADXMatrix4::ConvertToADXMatrix(col.gameObject->matWorld.matWorld)))));
 	float colPointDiff = (closestVec1 - closestVec2).length();
@@ -302,7 +303,7 @@ void ADXCollider::Collide(ADXCollider* col)
 		}
 	}
 
-	if (Object3d::IsValid(gameObject) && Object3d::IsValid(col->gameObject) && IsHit(*col) && enabled && col->enabled && col->gameObject != gameObject)
+	if (IsHit(*col) && enabled && col->enabled && col->gameObject != gameObject)
 	{
 		if (executePushBack && !isTrigger && !col->isTrigger)
 		{

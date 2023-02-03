@@ -143,8 +143,7 @@ void MCB::Object3d::UpdateData()
 
 void Object3d::Draw()
 {
-    if (model == nullptr)return;
-    if (model->material.constBuffMaterialB1 == nullptr)return;
+    if (!IsValid(this) || model == nullptr || model->material.constBuffMaterialB1 == nullptr)return;
     Dx12* dx12 = Dx12::GetInstance();
     ShaderResource* descriptor = ShaderResource::GetInstance();
 

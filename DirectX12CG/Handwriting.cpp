@@ -22,29 +22,6 @@ void Handwriting::Update()
 {
 	lifeTimer.SafeUpdate();
 	material.constMapMaterial->alpha = MCB::Lerp(1, 0, lifeTimer.GetEndTime(), lifeTimer.NowTime());
-	for (auto& itr : colliders)
-	{
-		for (auto& colListItr : itr.collideList)
-		{
-			if (colListItr->gameObject == Player::GetPlayer())
-			{
-				Player::GetPlayer()->Erase();
-				this->deleteFlag = true;
-				continue;
-			}
-			else //ã‚Åcontinue‚µ‚Ä‚é‚©‚ç–{—ˆ‚¢‚ç‚È‚¢‚¯‚Çˆê‰ž
-			{
-				for (auto& itr2 : *Player::GetPlayer()->GetKneadedErasersPtr())//‚Ë‚èÁ‚µ‚É“–‚½‚Á‚Ä‚à•MÕ‚ÍÁ‚·
-				{
-					if(colListItr->gameObject == &itr2)
-					{
-						Player::GetPlayer()->Erase();
-						this->deleteFlag = true;
-					}
-				}
-			}
-		}
-	}
 	if (lifeTimer.IsEnd())
 	{
 		deleteFlag = true;
@@ -60,4 +37,24 @@ void Handwriting::Draw()
 bool Handwriting::GetLifeTimeOver()
 {
 	return lifeTimer.IsEnd();
+}
+
+void Handwriting::UniqueOnColliderHit(ADXCollider* myCol, ADXCollider* col)
+{
+	if (col->gameObject == Player::GetPlayer())
+	{
+		Player::GetPlayer()->Erase();
+		this->deleteFlag = true;
+	}
+	else //ã‚Åcontinue‚µ‚Ä‚é‚©‚ç–{—ˆ‚¢‚ç‚È‚¢‚¯‚Çˆê‰ž
+	{
+		for (auto& itr2 : *Player::GetPlayer()->GetKneadedErasersPtr())//‚Ë‚èÁ‚µ‚É“–‚½‚Á‚Ä‚à•MÕ‚ÍÁ‚·
+		{
+			if (col->gameObject == &itr2)
+			{
+				Player::GetPlayer()->Erase();
+				this->deleteFlag = true;
+			}
+		}
+	}
 }

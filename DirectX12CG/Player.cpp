@@ -60,7 +60,7 @@ void Player::Update(bool flag)
 	bool makingKneadedEraser =
 		input->IsKeyDown(keyConfig[8]) || input->gamePad->IsButtonDown(gamePadConfig[0] | gamePadConfig[1] | gamePadConfig[2] | gamePadConfig[3]);
 
-	trueMakingKneadedEraser = makingKneadedEraser && makingKneadedEraserAllow && kneadedErasers.size() <= maxKneadedErasers;
+	trueMakingKneadedEraser = makingKneadedEraser && makingKneadedEraserAllow;
 
 	velocity = position - prevPos;
 	prevPos = position;
@@ -315,6 +315,19 @@ void Player::Update(bool flag)
 		}
 	}
 
+	if (kneadedErasers.size() > maxKneadedErasers)
+	{
+		int index = 0;
+		for (auto& itr : kneadedErasers)
+		{
+			if (index > maxKneadedErasers)
+			{
+				itr.deleteFlag = true;
+			}
+			index++;
+		}
+	}
+
 	prevTrueMakingKneadedEraser = trueMakingKneadedEraser;
 
 	captureList = {};
@@ -328,12 +341,12 @@ void Player::Update(bool flag)
 			if (connectedFlag)
 			{
 				itr.UniqueUpdate();
+				connectedFlag = IsValid(&itr);
 			}
 			else
 			{
 				itr.deleteFlag = true;
 			}
-			connectedFlag = IsValid(&itr);
 		}
 	}
 
