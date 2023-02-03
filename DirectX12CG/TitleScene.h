@@ -42,6 +42,23 @@ namespace MCB
 		TextureCell* debugTextTexture;
 		TextureCell* pushSpace;
 		TextureCell* scopeTex;
+
+
+		int tutorial1AnimNum = 0;
+		std::array<TextureCell*,5> tutorial1;
+		std::array<TextureCell*,5> tutorial1Succes;
+		int tutorial2AnimNum = 0;
+		std::array<TextureCell*, 5> tutorial2;
+		std::array<TextureCell*, 5> tutorial2Succes;
+		int tutorial3AnimNum = 0;
+		std::array<TextureCell*, 4> tutorial3;
+		std::array<TextureCell*, 4> tutorial3Succes;
+		int tutorial4AnimNum = 0;
+		std::array<TextureCell*, 3> tutorial4;
+		std::array<TextureCell*, 3> tutorial4Succes;
+		int tutorial5AnimNum = 0;
+		std::array<TextureCell*, 4> tutorial5;
+		std::array<TextureCell*, 4> tutorial5Succes;
 #pragma endregion テクスチャ
 
 		//サウンド
@@ -59,6 +76,7 @@ namespace MCB
 		Object3d ground;
 		Object3d Skydome;
 		Object3d testSpher;
+		Timer animTime;
 		//Object3d tutorialBode;
 		std::list<std::unique_ptr<Handwriting>> writing;
 		std::list<std::unique_ptr<PencilEnemy>> enemys_6tutorial;

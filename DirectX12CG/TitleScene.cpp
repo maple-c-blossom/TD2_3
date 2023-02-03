@@ -55,216 +55,44 @@ void MCB::TitleScene::Update()
     KneadedEraser::StaticUpdate();
     WritingEnemy::StaticUpdate();
     i++;
+    animTime.Update();
+    float tempVec = 0;
+    if (animTime.IsEnd())
+    {
+        tutorial1AnimNum++;
+        if (tutorial1AnimNum >= tutorial1.size())
+        {
+            tutorial1AnimNum = 0;
+        }
+        tutorial2AnimNum++;
+        if (tutorial2AnimNum >= tutorial2.size())
+        {
+            tutorial2AnimNum = 0;
+        }
+        tutorial3AnimNum++;
+        if (tutorial3AnimNum >= tutorial3.size())
+        {
+            tutorial3AnimNum = 0;
+        }
+        tutorial4AnimNum++;
+        if (tutorial4AnimNum >= tutorial4.size())
+        {
+            tutorial4AnimNum = 0;
+        }
+        tutorial5AnimNum++;
+        if (tutorial5AnimNum >= tutorial5.size())
+        {
+            tutorial5AnimNum = 0;
+        }
+        animTime.ReSet();
+
+    }
     if (i % 180 == 0)
     {
         writing.clear();
     }
     
-    for (int i = 2; i < tutorialBode.size(); i++)
-    {
 
-        if (substie->position.x <= tutorialBode[i].position.x + 30 && substie->position.x >= tutorialBode[i].position.x - 30)
-        {
-            switch (i - 1)
-            {
-            case 1:
-
-                if (writing.size() <= 0)
-                {
-                    for (int j = 0; j < 20; j++)
-                    {
-                        for (int k = 0; k < 2; k++)
-                        {
-                            unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
-                            temp->Initialize({ tutorialBode[i].position.x - 8 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 - k * 10 }, WritingModel.get());
-                            writing.push_back(move(temp));
-                        }
-                    }
-                }
-
-                if (substie->GetShard() >= 50)
-                {
-                    tutorialSucces |= 0b10000;
-                }
-                break;
-
-            case 2:
-                if (writing.size() <= 0)
-                {
-                    for (int j = 0; j < 20; j++)
-                    {
-                        for (int k = 0; k < 2; k++)
-                        {
-                            unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
-                            temp->Initialize({ tutorialBode[i].position.x - 8 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 - k * 10 }, WritingModel.get());
-                            writing.push_back(move(temp));
-                        }
-                    }
-                }
-                if (substie->GetTrueMake())
-                {
-                    velocitySum += substie->GetVelocity().V3Len();
-                }
-                else
-                {
-                    velocitySum = 0;
-                }
-
-                if (velocitySum >= 20)
-                {
-                    tutorialSucces |= 0b01000;
-                }
-                break;
-            case 3:
-                if (writing.size() <= 0)
-                {
-                    for (int j = 0; j < 20; j++)
-                    {
-                        for (int k = 0; k < 2; k++)
-                        {
-                            unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
-                            temp->Initialize({ tutorialBode[i].position.x - 8 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 - k * 10 }, WritingModel.get());
-                            writing.push_back(move(temp));
-                        }
-                    }
-                }
-                if (substie->GetRotaMode())
-                {
-                    RotateFrame++;
-                }
-                if (RotateFrame >= SECOND_FRAME * 5)
-                {
-                    tutorialSucces |= 0b00100;
-                }
-                enemys_6tutorial.clear();
-                break;
-            case 4:
-                if (enemys_6tutorial.size() <= 0)
-                {
-                    for (int i = 0; i < 5; i++)
-                    {
-                        unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
-                        temp->SetHandwritingModel(WritingModel.get());
-                        temp->Initialize({ (float)GetRand(-1,1),0,(float)GetRand(-1,1) }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, pencilEnemyModel.get(), 0.5f);
-                        temp->movePoint = { {-20 + temp->position.x,0,20 + temp->position.z},{ 20 + temp->position.x,0,40 + temp->position.z },{ 20 + temp->position.x,0,20 + temp->position.z } };
-                        switch (i + 1)
-                        {
-                        case 1:
-                            temp->position.x = 38.f;
-                            temp->position.z = -2.5f;
-                            break;
-                        case 2:
-                            temp->position.x = 45.f;
-                            temp->position.z = -2.5f;
-                            break;
-                        case 3:
-                            temp->position.x = 52.f;
-                            temp->position.z = -2.5f;
-                            break;
-                        case 4:
-                            temp->position.x = 41.5f;
-                            temp->position.z = -15.f;
-                            break;
-                        case 5:
-                            temp->position.x = 48.5f;
-                            temp->position.z = -15.0f;
-                            break;
-                        default:
-                            break;
-                        }
-
-                        enemys_6tutorial.push_back(move(temp));
-
-                    }
-                }
-                if (writing.size() <= 0)
-                {
-                    for (int j = 0; j < 20; j++)
-                    {
-                        for (int k = 0; k < 2; k++)
-                        {
-                            unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
-                            temp->Initialize({ tutorialBode[i].position.x - 8 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 - k * 10 }, WritingModel.get());
-                            writing.push_back(move(temp));
-                        }
-                    }
-                }
-                if (substie.get()->GetCaptureList()->size() >= 5)
-                {
-                    tutorialSucces |= 0b00010;
-                }
-                enemys_7tutorial.clear();
-                break;
-            case 5:
-                enemys_6tutorial.clear();
-                if (enemys_7tutorial.size() <= 0)
-                {
-                    for (int i = 0; i < 5; i++)
-                    {
-                        unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
-                        temp->SetHandwritingModel(WritingModel.get());
-                        temp->Initialize({ (float)GetRand(-1,1),0,(float)GetRand(-1,1) }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, pencilEnemyModel.get(), 0.5f);
-                        temp->movePoint = { {-20 + temp->position.x,0,20 + temp->position.z},{ 20 + temp->position.x,0,40 + temp->position.z },{ 20 + temp->position.x,0,20 + temp->position.z } };
-                        switch (i + 1)
-                        {
-                        case 1:
-                            temp->position.x = 98.f;
-                            temp->position.z = -2.5f;
-                            break;
-                        case 2:
-                            temp->position.x = 105.f;
-                            temp->position.z = -2.5f;
-                            break;
-                        case 3:
-                            temp->position.x = 112.f;
-                            temp->position.z = -2.5f;
-                            break;
-                        case 4:
-                            temp->position.x = 101.5f;
-                            temp->position.z = -15.f;
-                            break;
-                        case 5:
-                            temp->position.x = 108.5f;
-                            temp->position.z = -15.0f;
-                            break;
-                        default:
-                            break;
-                        }
-
-                        enemys_7tutorial.push_back(move(temp));
-
-                    }
-                }
-                if (writing.size() <= 0)
-                {
-                    for (int j = 0; j < 20; j++)
-                    {
-                        for (int k = 0; k < 2; k++)
-                        {
-                            unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
-                            temp->Initialize({ tutorialBode[i].position.x - 8 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 - k * 10 }, WritingModel.get());
-                            writing.push_back(move(temp));
-                        }
-                    }
-                }
-                if (boss->IsImotal())
-                {
-                    tutorialSucces |= 0b00001;
-                }
-                break;
-            case 6:
-                enemys_7tutorial.clear();
-                if ((input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A)) && tutorialSucces == 0b11111)
-                {
-                    sceneEnd = true;
-                }
-                break;
-            default:
-                break;
-            }
-            break;
-        }
-    }
     enemys_6tutorial.remove_if([](auto& itr) {return itr->deleteFlag; });
     enemys_7tutorial.remove_if([](auto& itr) {return itr->deleteFlag; });
     substie->Update(false);
@@ -358,6 +186,226 @@ void MCB::TitleScene::Update()
     {
         substie->SetShard(0);
     }
+    for (int i = 2; i < tutorialBode.size(); i++)
+    {
+
+        if (substie->position.x <= tutorialBode[i].position.x + 30 && substie->position.x >= tutorialBode[i].position.x - 30)
+        {
+            switch (i - 1)
+            {
+            case 1:
+
+                if (writing.size() <= 0)
+                {
+                    for (int j = 0; j < 20; j++)
+                    {
+                        for (int k = 0; k < 2; k++)
+                        {
+                            unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
+                            temp->Initialize({ tutorialBode[i].position.x - 8 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 - k * 10 }, WritingModel.get());
+                            writing.push_back(move(temp));
+                        }
+                    }
+                }
+
+                if (substie->GetShard() >= 10)
+                {
+                    tutorialSucces |= 0b10000;
+                }
+                break;
+
+            case 2:
+                if (writing.size() <= 0)
+                {
+                    for (int j = 0; j < 20; j++)
+                    {
+                        for (int k = 0; k < 2; k++)
+                        {
+                            unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
+                            temp->Initialize({ tutorialBode[i].position.x - 8 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 - k * 10 }, WritingModel.get());
+                            writing.push_back(move(temp));
+                        }
+                    }
+                }
+                 tempVec = substie->GetVelocity().V3Len();
+                if (substie->GetTrueMake())
+                {
+                    velocitySum += tempVec;
+                }
+                else
+                {
+                    //velocitySum = 0;
+                }
+
+                if (velocitySum >= 3)
+                {
+                    tutorialSucces |= 0b01000;
+                }
+                break;
+            case 3:
+                if (writing.size() <= 0)
+                {
+                    for (int j = 0; j < 20; j++)
+                    {
+                        for (int k = 0; k < 2; k++)
+                        {
+                            unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
+                            temp->Initialize({ tutorialBode[i].position.x - 8 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 - k * 10 }, WritingModel.get());
+                            writing.push_back(move(temp));
+                        }
+                    }
+                }
+                if (substie->GetRotaMode())
+                {
+                    RotateFrame++;
+                }
+                if (RotateFrame >= SECOND_FRAME * 5)
+                {
+                    tutorialSucces |= 0b00100;
+                }
+                for (auto& itr : enemys_6tutorial)
+                {
+                    itr->deleteFlag = true;
+                }
+                enemys_6tutorial.clear();
+                break;
+            case 4:
+                if (enemys_6tutorial.size() <= 0)
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
+                        temp->SetHandwritingModel(WritingModel.get());
+                        temp->Initialize({ (float)GetRand(-1,1),0,(float)GetRand(-1,1) }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, pencilEnemyModel.get(), 0.5f);
+                        temp->movePoint = { {-20 + temp->position.x,0,20 + temp->position.z},{ 20 + temp->position.x,0,40 + temp->position.z },{ 20 + temp->position.x,0,20 + temp->position.z } };
+                        switch (i + 1)
+                        {
+                        case 1:
+                            temp->position.x = 38.f;
+                            temp->position.z = -2.5f;
+                            break;
+                        case 2:
+                            temp->position.x = 45.f;
+                            temp->position.z = -2.5f;
+                            break;
+                        case 3:
+                            temp->position.x = 52.f;
+                            temp->position.z = -2.5f;
+                            break;
+                        case 4:
+                            temp->position.x = 41.5f;
+                            temp->position.z = -15.f;
+                            break;
+                        case 5:
+                            temp->position.x = 48.5f;
+                            temp->position.z = -15.0f;
+                            break;
+                        default:
+                            break;
+                        }
+
+                        enemys_6tutorial.push_back(move(temp));
+
+                    }
+                }
+                if (writing.size() <= 0)
+                {
+                    for (int j = 0; j < 20; j++)
+                    {
+                        for (int k = 0; k < 2; k++)
+                        {
+                            unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
+                            temp->Initialize({ tutorialBode[i].position.x - 8 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 - k * 10 }, WritingModel.get());
+                            writing.push_back(move(temp));
+                        }
+                    }
+                }
+                if (substie.get()->GetCaptureList()->size() >= 5)
+                {
+                    tutorialSucces |= 0b00010;
+                }
+
+                for (auto& itr : enemys_7tutorial)
+                {
+                    itr->deleteFlag = true;
+                }
+                break;
+            case 5:
+                for (auto& itr : enemys_6tutorial)
+                {
+                    itr->deleteFlag = true;
+                }
+                if (enemys_7tutorial.size() <= 0)
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
+                        temp->SetHandwritingModel(WritingModel.get());
+                        temp->Initialize({ (float)GetRand(-1,1),0,(float)GetRand(-1,1) }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, pencilEnemyModel.get(), 0.5f);
+                        temp->movePoint = { {-20 + temp->position.x,0,20 + temp->position.z},{ 20 + temp->position.x,0,40 + temp->position.z },{ 20 + temp->position.x,0,20 + temp->position.z } };
+                        switch (i + 1)
+                        {
+                        case 1:
+                            temp->position.x = 98.f;
+                            temp->position.z = -2.5f;
+                            break;
+                        case 2:
+                            temp->position.x = 105.f;
+                            temp->position.z = -2.5f;
+                            break;
+                        case 3:
+                            temp->position.x = 112.f;
+                            temp->position.z = -2.5f;
+                            break;
+                        case 4:
+                            temp->position.x = 101.5f;
+                            temp->position.z = -15.f;
+                            break;
+                        case 5:
+                            temp->position.x = 108.5f;
+                            temp->position.z = -15.0f;
+                            break;
+                        default:
+                            break;
+                        }
+
+                        enemys_7tutorial.push_back(move(temp));
+
+                    }
+                }
+                if (writing.size() <= 0)
+                {
+                    for (int j = 0; j < 20; j++)
+                    {
+                        for (int k = 0; k < 2; k++)
+                        {
+                            unique_ptr<Handwriting> temp = std::make_unique<Handwriting>();
+                            temp->Initialize({ tutorialBode[i].position.x - 8 + j - 2,tutorialBode[i].position.y,tutorialBode[i].position.z - 5 - k * 10 }, WritingModel.get());
+                            writing.push_back(move(temp));
+                        }
+                    }
+                }
+                if (boss->IsImotal())
+                {
+                    tutorialSucces |= 0b00001;
+                }
+                break;
+            case 6:
+                for (auto& itr : enemys_7tutorial)
+                {
+                    itr->deleteFlag = true;
+                }
+                if ((input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A)) && tutorialSucces == 0b11111)
+                {
+                    sceneEnd = true;
+                }
+                break;
+            default:
+                break;
+            }
+            break;
+        }
+    }
     MatrixUpdate();
     if (input->IsKeyTrigger(DIK_P) || input->IsKeyTrigger(DIK_RETURN)  || input->gamePad->IsButtonTrigger(GAMEPAD_START))
     {
@@ -387,7 +435,53 @@ void MCB::TitleScene::Draw()
     {
         itr->Draw();
     }
-    for (auto& itr : tutorialBode)itr.Draw();
+
+    tutorialBode[0].Draw();
+    tutorialBode[1].Draw();
+    if (tutorialSucces & 0b10000)
+    {
+        tutorialBode[2].Draw(tutorial1Succes[tutorial1AnimNum]->texture->incrementNum);
+    }
+    else
+    {
+        tutorialBode[2].Draw(tutorial1[tutorial1AnimNum]->texture->incrementNum);
+    }
+
+    if (tutorialSucces & 0b01000)
+    {
+        tutorialBode[3].Draw(tutorial2Succes[tutorial2AnimNum]->texture->incrementNum);
+    }
+    else
+    {
+        tutorialBode[3].Draw(tutorial2[tutorial2AnimNum]->texture->incrementNum);
+    }
+
+    if (tutorialSucces & 0b00100)
+    {
+        tutorialBode[4].Draw(tutorial3Succes[tutorial3AnimNum]->texture->incrementNum);
+    }
+    else
+    {
+        tutorialBode[4].Draw(tutorial3[tutorial3AnimNum]->texture->incrementNum);
+    }
+
+    if (tutorialSucces & 0b00010)
+    {
+        tutorialBode[5].Draw(tutorial4Succes[tutorial4AnimNum]->texture->incrementNum);
+    }
+    else
+    {
+        tutorialBode[5].Draw(tutorial4[tutorial4AnimNum]->texture->incrementNum);
+    }
+
+    if (tutorialSucces & 0b00001)
+    {
+        tutorialBode[6].Draw(tutorial5Succes[tutorial5AnimNum]->texture->incrementNum);
+    }
+    else
+    {
+        tutorialBode[6].Draw(tutorial5[tutorial5AnimNum]->texture->incrementNum);
+    }
 }
 
 void MCB::TitleScene::SpriteDraw()
@@ -482,7 +576,7 @@ void MCB::TitleScene::Initialize()
     lights->DefaultLightSet();
     lights->UpDate();
     Object3d::SetLights(lights);
-   
+    animTime.Set(30);
 }
 
 void MCB::TitleScene::LoadModel()
@@ -510,6 +604,73 @@ void MCB::TitleScene::LoadTexture()
     title = loader->LoadTexture(L"Resources\\text\\title.png");
     pushSpace = loader->LoadTexture(L"Resources\\text\\pushSpace.png");
     scopeTex = loader->LoadTexture(L"Resources\\scope.png");
+#pragma region tutorial1
+    tutorial1[0] = loader->LoadTexture(L"Resources\\tutorial\\tutorial1\\tutorial1_1.png");
+    tutorial1[1] = loader->LoadTexture(L"Resources\\tutorial\\tutorial1\\tutorial1_2.png");
+    tutorial1[2] = loader->LoadTexture(L"Resources\\tutorial\\tutorial1\\tutorial1_3.png");
+    tutorial1[3] = loader->LoadTexture(L"Resources\\tutorial\\tutorial1\\tutorial1_4.png");
+    tutorial1[4] = loader->LoadTexture(L"Resources\\tutorial\\tutorial1\\tutorial1_5.png");
+
+    tutorial1Succes[0] = loader->LoadTexture(L"Resources\\tutorial\\tutorial1Succes\\tutorial1_maru_1.png");
+    tutorial1Succes[1] = loader->LoadTexture(L"Resources\\tutorial\\tutorial1Succes\\tutorial1_maru_2.png");
+    tutorial1Succes[2] = loader->LoadTexture(L"Resources\\tutorial\\tutorial1Succes\\tutorial1_maru_3.png");
+    tutorial1Succes[3] = loader->LoadTexture(L"Resources\\tutorial\\tutorial1Succes\\tutorial1_maru_4.png");
+    tutorial1Succes[4] = loader->LoadTexture(L"Resources\\tutorial\\tutorial1Succes\\tutorial1_maru_5.png");
+#pragma endregion
+
+#pragma region tutorial2
+    tutorial2[0] = loader->LoadTexture(L"Resources\\tutorial\\tutorial2\\tutorial2_1.png");
+    tutorial2[1] = loader->LoadTexture(L"Resources\\tutorial\\tutorial2\\tutorial2_2.png");
+    tutorial2[2] = loader->LoadTexture(L"Resources\\tutorial\\tutorial2\\tutorial2_3.png");
+    tutorial2[3] = loader->LoadTexture(L"Resources\\tutorial\\tutorial2\\tutorial2_4.png");
+    tutorial2[4] = loader->LoadTexture(L"Resources\\tutorial\\tutorial2\\tutorial2_5.png");
+
+    tutorial2Succes[0] = loader->LoadTexture(L"Resources\\tutorial\\tutorial2Succes\\tutorial2_maru_1.png");
+    tutorial2Succes[1] = loader->LoadTexture(L"Resources\\tutorial\\tutorial2Succes\\tutorial2_maru_2.png");
+    tutorial2Succes[2] = loader->LoadTexture(L"Resources\\tutorial\\tutorial2Succes\\tutorial2_maru_3.png");
+    tutorial2Succes[3] = loader->LoadTexture(L"Resources\\tutorial\\tutorial2Succes\\tutorial2_maru_4.png");
+    tutorial2Succes[4] = loader->LoadTexture(L"Resources\\tutorial\\tutorial2Succes\\tutorial2_maru_5.png");
+#pragma endregion
+
+#pragma region tutorial3
+    tutorial3[0] = loader->LoadTexture(L"Resources\\tutorial\\tutorial3\\tutorial3_1.png");
+    tutorial3[1] = loader->LoadTexture(L"Resources\\tutorial\\tutorial3\\tutorial3_2.png");
+    tutorial3[2] = loader->LoadTexture(L"Resources\\tutorial\\tutorial3\\tutorial3_3.png");
+    tutorial3[3] = loader->LoadTexture(L"Resources\\tutorial\\tutorial3\\tutorial3_4.png");
+
+
+    tutorial3Succes[0] = loader->LoadTexture(L"Resources\\tutorial\\tutorial3Succes\\tutorial3_maru_1.png");
+    tutorial3Succes[1] = loader->LoadTexture(L"Resources\\tutorial\\tutorial3Succes\\tutorial3_maru_2.png");
+    tutorial3Succes[2] = loader->LoadTexture(L"Resources\\tutorial\\tutorial3Succes\\tutorial3_maru_3.png");
+    tutorial3Succes[3] = loader->LoadTexture(L"Resources\\tutorial\\tutorial3Succes\\tutorial3_maru_4.png");
+
+#pragma endregion
+
+#pragma region tutorial4
+    tutorial4[0] = loader->LoadTexture(L"Resources\\tutorial\\tutorial4\\tutorial4_1.png");
+    tutorial4[1] = loader->LoadTexture(L"Resources\\tutorial\\tutorial4\\tutorial4_2.png");
+    tutorial4[2] = loader->LoadTexture(L"Resources\\tutorial\\tutorial4\\tutorial4_3.png");
+
+
+    tutorial4Succes[0] = loader->LoadTexture(L"Resources\\tutorial\\tutorial4Succes\\tutorial4_maru_1.png");
+    tutorial4Succes[1] = loader->LoadTexture(L"Resources\\tutorial\\tutorial4Succes\\tutorial4_maru_2.png");
+    tutorial4Succes[2] = loader->LoadTexture(L"Resources\\tutorial\\tutorial4Succes\\tutorial4_maru_3.png");
+
+#pragma endregion
+
+#pragma region tutorial5
+    tutorial5[0] = loader->LoadTexture(L"Resources\\tutorial\\tutorial5\\tutorial5_1.png");
+    tutorial5[1] = loader->LoadTexture(L"Resources\\tutorial\\tutorial5\\tutorial5_2.png");
+    tutorial5[2] = loader->LoadTexture(L"Resources\\tutorial\\tutorial5\\tutorial5_3.png");
+    tutorial5[3] = loader->LoadTexture(L"Resources\\tutorial\\tutorial5\\tutorial5_3.png");
+
+
+    tutorial5Succes[0] = loader->LoadTexture(L"Resources\\tutorial\\tutorial5Succes\\tutorial5_maru_1.png");
+    tutorial5Succes[1] = loader->LoadTexture(L"Resources\\tutorial\\tutorial5Succes\\tutorial5_maru_2.png");
+    tutorial5Succes[2] = loader->LoadTexture(L"Resources\\tutorial\\tutorial5Succes\\tutorial5_maru_3.png");
+    tutorial5Succes[3] = loader->LoadTexture(L"Resources\\tutorial\\tutorial5Succes\\tutorial5_maru_3.png");
+
+#pragma endregion
 }
 
 void MCB::TitleScene::LoadSound()
