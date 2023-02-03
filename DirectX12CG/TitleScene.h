@@ -42,6 +42,7 @@ namespace MCB
 		TextureCell* debugTextTexture;
 		TextureCell* pushSpace;
 		TextureCell* scopeTex;
+		TextureCell* tutorialSkipTex;
 
 
 		int tutorial1AnimNum = 0;
@@ -97,6 +98,9 @@ namespace MCB
 		Sprite pushSpaceSprite;
 
 		Sprite scopeSprite;
+
+		Sprite tutorialSkipSprite;
+
 
 		DebugText debugText;
 

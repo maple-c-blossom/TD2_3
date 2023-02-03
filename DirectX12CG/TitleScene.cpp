@@ -14,6 +14,9 @@ void MCB::TitleScene::SpriteInit()
     pushSpaceSprite.tex = pushSpace->texture.get();
     scopeSprite.InitMatProje();
     scopeSprite = scopeSprite.CreateSprite();
+    tutorialSkipSprite = scopeSprite.CreateSprite();
+    tutorialSkipSprite.anchorPoint = {0.f,0.f};
+    tutorialSkipSprite.tex = tutorialSkipTex->texture.get();
     debugText.Init(debugTextTexture->texture.get());
 }
 
@@ -488,6 +491,7 @@ void MCB::TitleScene::SpriteDraw()
 {
     titleSprite.SpriteDraw(dxWindow->window_width / 2 - (substie->position.x + 210) * 30, dxWindow->window_height / 2 - 80);
     //pushSpaceSprite.SpriteDraw(dxWindow->window_width / 2 - substie->position.x * 30, dxWindow->window_height / 2 + 40 + substie->position.z * 30);
+    tutorialSkipSprite.SpriteDraw(10.f,10.f,480 * 0.85f, 100 * 0.85f);
     debugText.AllDraw();
 }
 
@@ -606,6 +610,7 @@ void MCB::TitleScene::LoadTexture()
     scopeTex = loader->LoadTexture(L"Resources\\scope.png");
 
     tutorial[0] = loader->LoadTexture(L"Resources\\tutorial\\title_sousa.png");
+    tutorialSkipTex = loader->LoadTexture(L"Resources\\tutorial\\skip_1.png");
     tutorial[1] = loader->LoadTexture(L"Resources\\tutorial\\title_yazirushi.png");
 #pragma region tutorial1
     tutorial1[0] = loader->LoadTexture(L"Resources\\tutorial\\tutorial1\\tutorial1_1.png");
