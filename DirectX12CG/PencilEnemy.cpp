@@ -129,6 +129,9 @@ void PencilEnemy::UniqueUpdate(bool movelimit)
 	{
 		attack = false;
 	}
+
+	bodySlam = attack;
+
 	for (auto& itr : attackCol)
 	{
 		itr.Update(this);
