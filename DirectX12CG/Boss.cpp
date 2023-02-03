@@ -61,6 +61,14 @@ void Boss::Update(bool moveLimit)
 	position.x += velocity.vec.x * moveSpeed;
 	position.z += velocity.vec.z * moveSpeed;
 
+	if (hp <= MAX_HP_BOSS / 10)
+	{
+		gravity = 0.001f * 20;
+	}
+	else
+	{
+		gravity = 0.001f;
+	}
 	if (!isUp && !isDown)
 	{
 		jumpSpeed = 0.25f;
@@ -68,12 +76,12 @@ void Boss::Update(bool moveLimit)
 	}
 	else if(isUp)
 	{
-		jumpSpeed -= 0.01f;
+		jumpSpeed -= gravity;
 		if (jumpSpeed < 0)
 		{
 			isDown = true;
 			isUp = false;
-			downSpeed = 0.001;
+			downSpeed = gravity;
 		}
 		position.y += jumpSpeed;
 
@@ -81,14 +89,14 @@ void Boss::Update(bool moveLimit)
 		{
 			isUp = false;
 			isDown = true;
-			downSpeed = 0.001;
+			downSpeed = gravity;
 			position.y = 2.f;
 		}
 
 	}
 	else if (isDown)
 	{
-		downSpeed -= 0.01f;
+		downSpeed -= gravity;
 		if (downSpeed < -0.5f)
 		{
 			downSpeed = -0.5f;
@@ -157,6 +165,15 @@ void Boss::Update(bool moveLimit)
 	}
 	Damage(1);
 	UpdateData();
+
+	if (attack)
+	{
+		color = { 1.f,0.f,0.f,1.f };
+	}
+	else
+	{
+		color = { 1.f,1.f,1.f,1.f };
+	}
 }
 
 void Boss::Draw()
@@ -240,5 +257,73 @@ void Boss::Damage(int damage)
 			}
 		}
 
+	}
+}
+
+void Boss::AttackCheck()
+{
+	if (Player::GetPlayer() == nullptr || attack)return;
+	int num = 0;
+	for (auto& itr : attackCol)
+	{
+		for (auto& itr2 : Player::GetPlayer()->colliders)
+		{
+			if (itr.IsHit(itr2))
+			{
+				AttackStart();
+
+				//attackObj.position = { position.x + vec.vec.x * 2,position.y + vec.vec.y * 2,position.z + vec.vec.z * 2 };
+			}
+		}
+		num++;
+	}
+}
+
+void Boss::AttackHit()
+{
+	if (!attack)return;
+	int num = 0;
+	for (auto& itr : colliders)
+	{
+		for (auto& itr2 : Player::GetPlayer()->colliders)
+		{
+			if (itr.IsHit(itr2))
+			{
+				Player::GetPlayer()->Damage(1);
+			}
+		}
+		num++;
+	}
+}
+
+
+void Boss::AttackStart()
+{
+	if (!beforeAttack)
+	{
+		beforeAttackTimer.Set(ENEMY_BEFORE_ATTACK_TIME);
+	}
+	beforeAttack = true;
+}
+
+void Boss::AttackTimerUpdate()
+{
+	if (beforeAttack)
+	{
+		beforeAttackTimer.SafeUpdate();
+		if (beforeAttackTimer.IsEnd())
+		{
+			beforeAttack = false;
+			attack = true;
+			AttackTimer.Set(ENEMY_ATTACK_TIME);
+		}
+	}
+	else if (attack)
+	{
+		AttackTimer.SafeUpdate();
+		if (AttackTimer.IsEnd())
+		{
+			attack = false;
+		}
 	}
 }

@@ -13,6 +13,7 @@ class Boss :public MCB::Object3d
 private:
 	std::vector<std::unique_ptr<Enemy>>enemys;
 	std::list<std::unique_ptr<BossDamageEffect>>effects;
+	std::vector<ADXCollider> attackCol;
 	int hp;
 	float speed;
 	MCB::Vector3D velocity;
@@ -26,6 +27,7 @@ private:
 	float moveSpeed = 0.005f;
 	float jumpSpeed = 0.025f;
 	float downSpeed = -0.025f;
+	float gravity = 0.001f;
 	bool isUp;
 	bool isDown;
 	Model* enemyModel;
@@ -50,5 +52,9 @@ public:
 	void Draw();
 	void UpdateMatrix(MCB::ICamera* camera);
 	void Damage(int damage);
+	void AttackCheck();
+	void AttackHit();
+	void AttackStart();
+	void AttackTimerUpdate();
 };
 
