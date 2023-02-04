@@ -409,7 +409,7 @@ void MCB::TitleScene::Update()
             break;
         }
     }
-    MatrixUpdate();
+    //MatrixUpdate();
     if (input->IsKeyTrigger(DIK_P) || input->IsKeyTrigger(DIK_RETURN)  || input->gamePad->IsButtonTrigger(GAMEPAD_START))
     {
         sceneEnd = true;
@@ -485,7 +485,7 @@ void MCB::TitleScene::Draw()
     {
         tutorialBode[6].Draw(tutorial5[tutorial5AnimNum]->texture->incrementNum);
     }
-    tutorialBode[7].Draw(tutorial[3]->texture->incrementNum);
+    tutorialBode[7].Draw(tutorial[2]->texture->incrementNum);
   
 }
 
@@ -609,6 +609,8 @@ void MCB::TitleScene::LoadModel()
     BossDamegeEffectModelStar = std::make_unique<Model>("star");
     tutorialBlackBode = std::make_unique<Model>("blackboard");
     BossDamegeEffectModelSpher = std::make_unique<Model>("ball");
+    BossCover = std::make_unique<Model>("bossCover");
+    //BossCover->texture = loader->LoadTexture(L"Resources\\text\\bossCover\\bossCover.png");
 }
 
 void MCB::TitleScene::LoadTexture()
@@ -725,7 +727,7 @@ void MCB::TitleScene::Object3DInit()
     substie->position = { -210,0,0 };
     substie->Initialize();
 
-    boss->Initialize({ 0,0,1 }, { -20,0,0 }, bossModel.get(), pencilEnemyModel.get(), WritingModel.get(), BossDamegeEffectModelStar.get(), BossDamegeEffectModelSpher.get(), 1, substie.get());
+    boss->Initialize({ 0,0,1 }, { -20,0,0 }, bossModel.get(), pencilEnemyModel.get(), WritingModel.get(), BossDamegeEffectModelStar.get(), BossDamegeEffectModelSpher.get(), BossCover.get(), 1, substie.get());
     boss->shake = camera.GetShakePtr();
     boss->position = { 90,0,-15 };
     //tutorialBode.Init();

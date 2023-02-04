@@ -38,6 +38,7 @@ namespace MCB
 		std::unique_ptr<Model> eraseEnemyModel;
 		std::unique_ptr<Model> BossDamegeEffectModelStar;
 		std::unique_ptr<Model> BossDamegeEffectModelSpher;
+		std::unique_ptr<Model> BossCover;
 
 		FBXModel* testModel;
 #pragma endregion 3Dƒ‚ƒfƒ‹

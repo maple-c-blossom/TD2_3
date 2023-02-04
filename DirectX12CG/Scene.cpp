@@ -96,7 +96,7 @@ void MCB::Scene::Object3DInit()
     temp->SetHandwritingModel(WritingModel.get());
     enemys.push_back(move(temp));
     spownTimer.Set(30);
-    boss->Initialize({ 0,0,1 }, { -20,0,0 }, bossModel.get(), pencilEnemyModel.get(), WritingModel.get(), BossDamegeEffectModelStar.get(), BossDamegeEffectModelSpher.get(), 1, substie.get());
+    boss->Initialize({ 0,0,1 }, { -20,0,0 }, bossModel.get(), pencilEnemyModel.get(), WritingModel.get(), BossDamegeEffectModelStar.get(), BossDamegeEffectModelSpher.get(), BossCover.get(), 1, substie.get());
     boss->shake = mainCamera.GetShakePtr();
     mainCamera.player = substie.get();
     
@@ -127,6 +127,8 @@ void MCB::Scene::LoadModel()
     eraseEnemyModel = std::make_unique<Model>("eraser");
     BossDamegeEffectModelStar = std::make_unique<Model>("star");
     BossDamegeEffectModelSpher = std::make_unique<Model>("ball");
+    BossCover = std::make_unique<Model>("bossCover");
+    //BossCover->texture = loader->LoadTexture(L"Resources\\text\\bossCover\\bossCover.png");
     //testModel = new FBXModel();
     //testModel->Load("testFbx");
     //assert(testModel->textureManager->textures.size() < 20);
@@ -288,7 +290,7 @@ void MCB::Scene::Update()
         }
     }
     //s—ñ•ÏŠ·
-    MatrixUpdate();
+    //MatrixUpdate();
 
     if (boss->GetHp() <= 0 || substie->GetHp() <= 0)
     {

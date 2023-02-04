@@ -57,36 +57,44 @@ void Object3d::Init()
 void Object3d::Update(View& view, Projection& projection,bool isBillBord)
 {
     if (!IsValid(this))return;
-    matWorld.SetMatScale(scale.x, scale.y, scale.z);
-    matWorld.SetMatRot(rotation.x, rotation.y, rotation.z,false);
-    matWorld.SetMatTrans(position.x, position.y, position.z);
-    if (isBillBord)
+    if (quaternionPtr)
     {
-        if (parent == nullptr || !Object3d::IsValid(parent))
+        Update(view, projection, *quaternionPtr, isBillBord);
+    }
+    else
+    {
+        matWorld.SetMatScale(scale.x, scale.y, scale.z);
+        matWorld.SetMatRot(rotation.x, rotation.y, rotation.z,false);
+        matWorld.SetMatTrans(position.x, position.y, position.z);
+        if (isBillBord)
         {
-            matWorld.UpdataBillBordMatrixWorld(view);
+            if (parent == nullptr || !Object3d::IsValid(parent))
+            {
+                matWorld.UpdataBillBordMatrixWorld(view);
+            }
+            else
+            {
+                matWorld.UpdataMatrixWorld();
+            }
         }
         else
         {
             matWorld.UpdataMatrixWorld();
         }
-    }
-    else
-    {
-        matWorld.UpdataMatrixWorld();
-    }
 
-    if (parent != nullptr && Object3d::IsValid(parent))
-    {
-        matWorld.matWorld *= parent->matWorld.matWorld;
+        if (parent != nullptr && Object3d::IsValid(parent))
+        {
+            matWorld.matWorld *= parent->matWorld.matWorld;
+        }
+        if (constMapTranceform == nullptr)return;
+        constMapTranceform->world = matWorld.matWorld * view.mat;
+        constMapTranceform->viewproj = projection.mat;
+        constMapTranceform->cameraPos.x = view.eye.x;
+        constMapTranceform->cameraPos.y = view.eye.y;
+        constMapTranceform->cameraPos.z = view.eye.z;
+        constMapTranceform->color = color;
+
     }
-    if (constMapTranceform == nullptr)return;
-    constMapTranceform->world = matWorld.matWorld * view.mat;
-    constMapTranceform->viewproj = projection.mat;
-    constMapTranceform->cameraPos.x = view.eye.x;
-    constMapTranceform->cameraPos.y = view.eye.y;
-    constMapTranceform->cameraPos.z = view.eye.z;
-    constMapTranceform->color = color;
 
 }
 

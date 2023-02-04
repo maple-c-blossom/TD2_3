@@ -34,6 +34,7 @@ namespace MCB
 		std::unique_ptr<Model> BossDamegeEffectModelStar;
 		std::unique_ptr<Model> BossDamegeEffectModelSpher;
 		std::unique_ptr<Model> tutorialBlackBode;
+		std::unique_ptr<Model> BossCover;
 #pragma endregion 3Dモデル
 
 		//テクスチャ

@@ -81,6 +81,7 @@ void MCB::SceneManager::Update()
 		}
 		Object3d::StaticUpdate();
 		ADXCollider::CollidersUpdate();
+		scene->MatrixUpdate();
 	}
 	else//ƒ[ƒh‰æ–Ê‚Ìˆ—
 	{

@@ -3,15 +3,33 @@
 #define PI 3.14159265358979323846264338327950288f
 using namespace MCB;
 
+MCB::Quaternion::Quaternion(Vector3D vec, float angle)
+{
+	this->SetRota(vec, angle);
+}
+
 void MCB::Quaternion::SetRota(Vector3D vec, float angle)
 {
 	vec.V3Norm();
-	float s = (sinf(angle / 2));
-	x = vec.vec.x * s;
-	y = vec.vec.y * s;
-	z = vec.vec.z * s;
+	float s = sinf(angle / 2);
+	x = s * vec.vec.x;
+	y = s * vec.vec.y;
+	z = s * vec.vec.z;
 	w = cosf(angle / 2);
-	this->QuaternoinNorm();
+	this->Normalize();
+}
+
+MCB::Quaternion::Quaternion()
+{
+	this->Identity();
+}
+
+MCB::Quaternion::Quaternion(float x, float y, float z, float w)
+{
+	this->x = x;
+	this->y = y;
+	this->z = z;
+	this->w = w;
 }
 
 Quaternion MCB::Quaternion::GetConjugated(Quaternion q)
@@ -24,17 +42,26 @@ Quaternion MCB::Quaternion::GetConjugated(Quaternion q)
 
 Quaternion MCB::Quaternion::GetReciprocal(Quaternion q)
 {
-	return GetConjugated(q);
+	Quaternion tempQ = GetConjugated(q);
+	double norm = q.GetNorm();
+	norm *= norm;
+	tempQ = { tempQ.x / (float)norm, tempQ.y / (float)norm, tempQ.z / (float)norm, tempQ.w / (float)norm };
+	return tempQ;
 }
 
-Quaternion MCB::Quaternion::GetCartesianProduct(Quaternion q, Quaternion p)
+double MCB::Quaternion::GetNorm()
+{
+	return sqrt(x * x + y * y + z * z + w * w);
+}
+
+Quaternion MCB::Quaternion::GetDirectProduct(Quaternion q, Quaternion p)
 {
 	Quaternion ans;
 	ans.x = (q.x * p.w) + (q.y * p.z) - (q.z * p.y) + (q.w * p.x);
 	ans.y = (-q.x * p.z) + (q.y * p.w) + (q.z * p.x) + (q.w * p.y);
 	ans.z = (q.x * p.y) - (q.y * p.x) + (q.z * p.w) + (q.w * p.z);
 	ans.w = (-q.x * p.x) - (q.y * p.y) - (q.z * p.z) + (q.w * p.w);
-	ans.QuaternoinNorm();
+	ans.Normalize();
 	return ans;
 }
 
@@ -44,12 +71,28 @@ float MCB::Quaternion::Dot(Quaternion a, Quaternion b)
 	return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
 }
 
-float MCB::Quaternion::GetAngle(Quaternion a, Quaternion b)
+float MCB::Quaternion::GetAngle(Quaternion a, Quaternion b,float& dot,bool& nan)
 {
-	return acosf(Dot(a, b));;
+	dot = Dot(a, b);
+	if (dot < 0)
+	{
+		dot *= -1;
+		nan = true;
+	}
+	return acosf(dot);
 }
 
-Quaternion MCB::Quaternion::SetRotationQuaternion(Vector3D rotationAxisVec, Vector3D PositionVec, float angle)
+float MCB::Quaternion::GetAngle(Quaternion a, Quaternion b)
+{
+	float dot = Dot(a, b);
+	if (dot < 0)
+	{
+		dot *= -1;
+	}
+	return acosf(dot);
+}
+
+Vector3D MCB::Quaternion::SetRotationVector(Vector3D rotationAxisVec, Vector3D PositionVec, float angle)
 {
 	PositionVec.V3Norm();
 	Quaternion position{};
@@ -60,14 +103,14 @@ Quaternion MCB::Quaternion::SetRotationQuaternion(Vector3D rotationAxisVec, Vect
 	Quaternion RotationAngle;
 	RotationAngle.SetRota(rotationAxisVec, angle);
 
-	position = GetCartesianProduct(RotationAngle, position);
-	position = GetCartesianProduct(position, GetReciprocal(RotationAngle));
+	position = GetDirectProduct(RotationAngle, position);
+	position = GetDirectProduct(position, GetReciprocal(RotationAngle));
 
-	position.QuaternoinNorm();
-	return position;
+	position.Normalize();
+	return Vector3D(position.x,position.y,position.z);
 }
 
-Quaternion MCB::Quaternion::SetRotationQuaternion(Quaternion rotationQuaternion, Vector3D PositionVec)
+Vector3D MCB::Quaternion::SetRotationVector(Quaternion rotationQuaternion, Vector3D PositionVec)
 {
 	PositionVec.V3Norm();
 	Quaternion position{};
@@ -76,27 +119,38 @@ Quaternion MCB::Quaternion::SetRotationQuaternion(Quaternion rotationQuaternion,
 	position.z = PositionVec.vec.z;
 	position.w = 0;
 
-	position = GetCartesianProduct(rotationQuaternion, position);
-	position = GetCartesianProduct(position, GetReciprocal(rotationQuaternion));
+	position = GetDirectProduct(rotationQuaternion, position);
+	position = GetDirectProduct(position, GetReciprocal(rotationQuaternion));
 
-	position.QuaternoinNorm();
-	return position;
+	position.Normalize();
+	return Vector3D(position.x, position.y, position.z);
 }
 
-Quaternion MCB::Quaternion::SetRotationQuaternion(Quaternion rotationQuaternion, Quaternion PositionVec)
+Vector3D MCB::Quaternion::SetRotationVector(Quaternion rotationQuaternion, Quaternion PositionVec)
 {
 
 	Quaternion position{};
 
-	position = GetCartesianProduct(rotationQuaternion, PositionVec);
-	position = GetCartesianProduct(PositionVec, GetReciprocal(rotationQuaternion));
+	position = GetDirectProduct(rotationQuaternion, PositionVec);
+	position = GetDirectProduct(PositionVec, GetReciprocal(rotationQuaternion));
 
-	position.QuaternoinNorm();
-	return position;
+	position.Normalize();
+	return Vector3D(position.x, position.y, position.z);
+}
+
+Quaternion MCB::Quaternion::DirToDir(Vector3D u, Vector3D v)
+{
+	u.V3Norm();
+	v.V3Norm();
+	float angle = u.GetV3Dot(v);
+	Vector3D axis = u.GetV3Cross(v);
+	axis.V3Norm();
+	float theta = acosf(angle);
+	return Quaternion(axis,theta);
 }
 
 
-void MCB::Quaternion::QuaternoinNorm()
+void MCB::Quaternion::Normalize()
 {
 	float mag = (float)sqrt(x * x + y * y + z * z + w * w);
 
@@ -139,6 +193,12 @@ MCBMatrix MCB::Quaternion::GetQuaternionRotaMat(Quaternion rotaQ)
 
 
 	return mat;
+}
+
+Quaternion MCB::Quaternion::Normalize(Quaternion q)
+{
+	q.Normalize();
+	return q;
 }
 
 void MCB::Quaternion::SinCos(float* returnSin, float* returnCos, float theta)
@@ -234,23 +294,43 @@ bool MCB::Quaternion::operator==(Quaternion q)
 	return false;
 }
 
+Quaternion MCB::Quaternion::operator-()
+{
+	return {-x,-y,-z,-w};
+}
+
+Quaternion MCB::Quaternion::Identity()
+{
+	return Quaternion(0,0,0,1);
+}
+
 MCB::Quaternion MCB::Quaternion::Slerp(Quaternion start, Quaternion end, int time, int maxTime)
 {
 	float Time = (float)time / (float)maxTime;
 	Quaternion ans;
-	float angle = GetAngle(start, end);
-
-	if (angle < 0)
+	Quaternion startDemo = start;
+	float dot;
+	bool isNan = false;
+	float angle = GetAngle(start, end, dot,isNan);
+	if (isNan)
 	{
-		angle *= -1;
+		startDemo = -start;
 	}
-
+	if (dot >= 1.0f - FLT_EPSILON)
+	{
+		ans.x = (1.f - Time) * startDemo.x + Time * end.x;
+		ans.y = (1.f - Time) * startDemo.y + Time * end.y;
+		ans.z = (1.f - Time) * startDemo.z + Time * end.z;
+		ans.w = (1.f - Time) * startDemo.w + Time * end.w;
+		ans.Normalize();
+		return ans;
+	}
 
 	float st = sinf(angle);
 
 	if (st == 0)
 	{
-		return start;
+		return -startDemo;
 	}
 
 	float sut = sinf(angle * Time);
@@ -264,6 +344,56 @@ MCB::Quaternion MCB::Quaternion::Slerp(Quaternion start, Quaternion end, int tim
 	ans.z = coeff1 * start.z + coeff2 * end.z;
 	ans.w = coeff1 * start.w + coeff2 * end.w;
 
-	ans.QuaternoinNorm();
+	ans.Normalize();
 	return ans;
+}
+
+
+MCB::Quaternion MCB::Quaternion::Slerp(Quaternion start, Quaternion end, float time)//ŒW”‚ð’¼‚Å“ü—Í‚·‚é—p
+{
+	Quaternion ans;
+	float dot;
+	Quaternion startDemo = start;
+	bool isNan = false;
+	float angle = GetAngle(start, end, dot, isNan);
+	if (isNan)
+	{
+		startDemo = -start;
+	}
+
+	if (dot >= 1.0f - FLT_EPSILON)
+	{
+		ans.x = (1.f - time) * startDemo.x + time * end.x;
+		ans.y = (1.f - time) * startDemo.y + time * end.y;
+		ans.z = (1.f - time) * startDemo.z + time * end.z;
+		ans.w = (1.f - time) * startDemo.w + time * end.w;
+		ans.Normalize();
+		return ans;
+	}
+
+	float st = sinf(angle);
+
+	if (st == 0)
+	{
+		return -start;
+	}
+
+	float sut = sinf(angle * time);
+	float sout = sinf(angle * (1.0f - time));
+
+	float coeff1 = sout / st;
+	float coeff2 = sut / st;
+
+	ans.x = coeff1 * start.x + coeff2 * end.x;
+	ans.y = coeff1 * start.y + coeff2 * end.y;
+	ans.z = coeff1 * start.z + coeff2 * end.z;
+	ans.w = coeff1 * start.w + coeff2 * end.w;
+
+	ans.Normalize();
+	return ans;
+}
+
+Quaternion MCB::SetRota(Vector3D vec, float angle)
+{
+	return Quaternion(vec, angle);
 }

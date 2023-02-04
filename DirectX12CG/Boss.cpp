@@ -14,7 +14,7 @@ void Boss::EnemyPop(MCB::Vector3D velocity, MCB::Float3 position, float speed, i
 	}
 }
 
-void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, MCB::Model* enemyModel, MCB::Model* handwrModel, MCB::Model* star, MCB::Model* ball, float speed, Player* playerPtr)
+void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, MCB::Model* enemyModel, MCB::Model* handwrModel, MCB::Model* star, MCB::Model* ball, MCB::Model* cover, float speed, Player* playerPtr)
 {
 	this->velocity = velocity;
 	this->position.x = position.x;
@@ -35,12 +35,21 @@ void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* 
 	colliders.back().pos_.y = 0.85f;
 	colliders.back().colType_ = box;
 	colliders.back().pushBackPriority = 1;
+	attackCol.push_back(tempCol);
+	attackCol.back().pos_.y = 0.85f;
+	attackCol.back().radius_ = 3.f;
+
 	for (auto& itr : colliders)
 	{
 		itr.pushable_ = true;
 	}
 	Object3d::Init();
-
+	this->cover = std::make_unique<Object3d>();
+	this->cover->model = cover;
+	this->cover->parent = this;
+	this->cover->position.x = 1.2f;
+	this->cover->position.z = -0.10f;
+	q.SetRota({ 0,1,0 }, 0);
 	gaugeTexCells = { loader->LoadTexture(L"Resources\\gauge\\bossHpGauge.png"), loader->LoadTexture(L"Resources\\gauge\\bossHpGaugeFill.png") };
 	gaugeTexs = { gaugeTexCells[0]->texture.get(), gaugeTexCells[1]->texture.get() };
 	for (auto& itr : gauges)
@@ -48,6 +57,8 @@ void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* 
 		itr = itr.CreateSprite();
 		itr.anchorPoint = { 0,0 };
 	};
+
+	this->quaternionPtr = &quaternion;
 }
 
 void Boss::Update(bool moveLimit)
@@ -57,58 +68,133 @@ void Boss::Update(bool moveLimit)
 		itr.collideLayer = 3;
 	}
 	
-	velocity = velocity.V3Get(position, playerPtr->position);
-	position.x += velocity.vec.x * moveSpeed;
-	position.z += velocity.vec.z * moveSpeed;
+	AttackTimerUpdate();
 
-	if (hp <= MAX_HP_BOSS / 10)
+	if (!attack && !beforeAttack && !afterAttack)
 	{
-		gravity = 0.001f * 20;
+		velocity = velocity.V3Get(position, playerPtr->position);
+		position.x += velocity.vec.x * moveSpeed;
+		position.z += velocity.vec.z * moveSpeed;
+		for (auto& itr : colliders)
+		{
+			itr.pushable_ = true;
+		}
 	}
 	else
 	{
-		gravity = 0.001f;
+		for (auto& itr : colliders)
+		{
+			itr.pushable_ = false;
+		}
 	}
-	if (!isUp && !isDown)
+	if (!attack && !beforeAttack && !afterAttack)
 	{
-		jumpSpeed = 0.25f;
-		isUp = true;
+		q = q.DirToDir({ 0,0,-1 }, Vector3D({ position.x,0,position.z }, playerPtr->position));
 	}
-	else if(isUp)
+	//else if(afterAttack)
+	//{
+	//	q = q.DirToDir({ 0,0,-1 }, Vector3D(velocity.vec, { playerPtr->position.x, playerPtr->position.y, playerPtr->position.z }));
+
+	//}
+
+	if (beforeAttack)
 	{
-		jumpSpeed -= gravity;
-		if (jumpSpeed < 0)
+		if (angle > 0)
 		{
-			isDown = true;
-			isUp = false;
-			downSpeed = gravity;
+			angle = Lerp(45,0, beforeAttackTimer.GetEndTime(), beforeAttackTimer.NowTime());
+			downAngle = Lerp(0, -25, beforeAttackTimer.GetEndTime(), beforeAttackTimer.NowTime());
 		}
-		position.y += jumpSpeed;
-
-		if (position.y > 2.f)
-		{
-			isUp = false;
-			isDown = true;
-			downSpeed = gravity;
-			position.y = 2.f;
-		}
-
 	}
-	else if (isDown)
+	else if (attack)
 	{
-		downSpeed -= gravity;
-		if (downSpeed < -0.5f)
+		if (AttackTimer.GetEndTime() - 20 >= AttackTimer.NowTime())
 		{
-			downSpeed = -0.5f;
-		}
-		position.y += downSpeed;
-		if (position.y < 0)
-		{
-			position.y = 0;
-			isDown = false;
+			downAngle = Lerp(-25,90, AttackTimer.GetEndTime() - 20, AttackTimer.NowTime());
 		}
 	}
+	else if (afterAttack)
+	{
+		if (downAngle > 0)
+		{
+			downAngle = Lerp(90, 0, afterAttackTimer.GetEndTime() - afterAttackTimer.GetEndTime() / 2, afterAttackTimer.NowTime());
+		}
+		else angle = Lerp(0, 45, afterAttackTimer.GetEndTime() - afterAttackTimer.GetEndTime() / 2, afterAttackTimer.NowTime() - afterAttackTimer.GetEndTime() / 2);
+	}
+	else
+	{
+		downAngle = 0;
+	}
 
+	if (afterAttack || attack || beforeAttack)
+	{
+		Quaternion temp;
+		Vector3D vec = -(velocity.GetV3Cross({ 0,1,0 }));
+		float tempangle = ConvertRadius(downAngle);
+		temp.SetRota(vec, tempangle);
+		quaternion = quaternion.GetDirectProduct(temp,q);
+		quaternion.Normalize();
+	}
+	else
+	{
+		quaternion = q;
+	}
+
+	this->cover->rotation.y = -ConvertRadius(angle);
+
+
+
+
+
+	if (!attack && !beforeAttack && !afterAttack)
+	{
+		if (hp <= MAX_HP_BOSS / 10)
+		{
+			gravity = 0.001f * 20;
+		}
+		else
+		{
+			gravity = 0.001f;
+		}
+		if (!isUp && !isDown)
+		{
+			jumpSpeed = 0.25f;
+			isUp = true;
+		}
+		else if (isUp)
+		{
+			jumpSpeed -= gravity;
+			if (jumpSpeed < 0)
+			{
+				isDown = true;
+				isUp = false;
+				downSpeed = gravity;
+			}
+			position.y += jumpSpeed;
+
+			if (position.y > 2.f)
+			{
+				isUp = false;
+				isDown = true;
+				downSpeed = gravity;
+				position.y = 2.f;
+			}
+
+		}
+		else if (isDown)
+		{
+			downSpeed -= gravity;
+			if (downSpeed < -0.5f)
+			{
+				downSpeed = -0.5f;
+			}
+			position.y += downSpeed;
+			if (position.y < 0)
+			{
+				position.y = 0;
+				isDown = false;
+			}
+		}
+	}
 	//Float2 temp;
 //temp.x = MCB::Lerp(0, 85,(position.z + 30) / 85);
 //temp.x = (position.z + 30) / 85;
@@ -163,10 +249,25 @@ void Boss::Update(bool moveLimit)
 	{
 		itr->Update();
 	}
+
+	
+	AttackCheck();
+	AttackHit();
 	Damage(1);
 	UpdateData();
 
-	if (attack)
+	if (beforeAttack)
+	{
+		if (beforeAttackTimer.NowTime() % 3 == 0)
+		{
+			color = { 1.f,0.f,0.f,1.f };
+		}
+		else
+		{
+			color = { 1.f,1.f,1.f,1.f };
+		}
+	}
+	else if (attack)
 	{
 		color = { 1.f,0.f,0.f,1.f };
 	}
@@ -181,6 +282,7 @@ void Boss::Draw()
 	if (!imotalFlag || imotalTimer.NowTime() % 3 == 0)
 	{
 		Object3d::Draw();
+		cover->Draw();
 	}
 	for (auto& itr : enemys)
 	{
@@ -195,6 +297,7 @@ void Boss::Draw()
 void Boss::UpdateMatrix(MCB::ICamera* camera)
 {
 	Object3d::Update(*camera->GetView(), *camera->GetProjection());
+	cover->Update(*camera->GetView(), *camera->GetProjection());
 	for (auto& itr : enemys)
 	{
 		itr->UpdateMatrix(camera);
@@ -262,7 +365,7 @@ void Boss::Damage(int damage)
 
 void Boss::AttackCheck()
 {
-	if (Player::GetPlayer() == nullptr || attack)return;
+	if (Player::GetPlayer() == nullptr || attack || beforeAttack || afterAttack)return;
 	int num = 0;
 	for (auto& itr : attackCol)
 	{
@@ -299,7 +402,7 @@ void Boss::AttackHit()
 
 void Boss::AttackStart()
 {
-	if (!beforeAttack)
+	if (!beforeAttack &&!attack && !afterAttack)
 	{
 		beforeAttackTimer.Set(ENEMY_BEFORE_ATTACK_TIME);
 	}
@@ -315,7 +418,7 @@ void Boss::AttackTimerUpdate()
 		{
 			beforeAttack = false;
 			attack = true;
-			AttackTimer.Set(ENEMY_ATTACK_TIME);
+			AttackTimer.Set(ENEMY_ATTACK_TIME / 2);
 		}
 	}
 	else if (attack)
@@ -324,6 +427,16 @@ void Boss::AttackTimerUpdate()
 		if (AttackTimer.IsEnd())
 		{
 			attack = false;
+			afterAttack = true;
+			afterAttackTimer.Set(ENEMY_BEFORE_ATTACK_TIME * 2);
+		}
+	}
+	else if (afterAttack)
+	{
+		afterAttackTimer.SafeUpdate();
+		if (afterAttackTimer.IsEnd())
+		{
+			afterAttack = false;
 		}
 	}
 }

@@ -17,12 +17,15 @@ private:
 	int hp;
 	float speed;
 	MCB::Vector3D velocity;
+	Quaternion q;
 	bool attack = false;
 	bool beforeAttack = false;
+	bool afterAttack = false;
 	bool prevBeforeAttack;
 	bool imotalFlag = false;
 	Timer beforeAttackTimer;
 	Timer AttackTimer;
+	Timer afterAttackTimer;
 	Timer imotalTimer;//–³“GŽžŠÔ
 	float moveSpeed = 0.005f;
 	float jumpSpeed = 0.025f;
@@ -35,19 +38,23 @@ private:
 	Model* starModel;
 	Model* sphereModel;
 	Player* playerPtr;
-
+	float downAngle = 0;
 	TextureManager* loader = TextureManager::GetInstance();
 
 	std::array<MCB::Sprite, 2> gauges;
 	std::array<MCB::TextureCell*, 2> gaugeTexCells;
 	std::array<MCB::Texture*, 2> gaugeTexs;
+	std::unique_ptr<Object3d> cover;
+
+	float angle = 25.f;
 
 	void EnemyPop(MCB::Vector3D velocity, MCB::Float3 position,  float speed,int popNum = 1);
 public:
 	bool IsImotal() { return imotalFlag; }
 	Shake* shake;
+	Quaternion GetQ() { return q; }
 	int GetHp() { return hp; };
-	void Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, MCB::Model* enemyModel, MCB::Model* handwrModel, MCB::Model* star, MCB::Model* ball, float speed, Player* playerPtr);
+	void Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, MCB::Model* enemyModel, MCB::Model* handwrModel, MCB::Model* star, MCB::Model* ball, MCB::Model* cover, float speed, Player* playerPtr);
 	void Update(bool moveLimit = true);
 	void Draw();
 	void UpdateMatrix(MCB::ICamera* camera);
