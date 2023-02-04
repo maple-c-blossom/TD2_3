@@ -78,8 +78,7 @@ void MCB::Scene::Object3DInit()
     wall.scale = { 5.8,10,1.5 };
     wall.rotation = { 0,0,0 };
     wall.Init();
-    wall.model = BoxModel.get();
-    wall.color = { 0,0,0,1 };
+    wall.model = creaner.get();
     walls.push_back(wall);
     walls.back().colliders.push_back(ADXCollider(&walls.back()));
     walls.back().colliders.back().colType_ = box;
@@ -124,6 +123,7 @@ void MCB::Scene::LoadModel()
     WritingModel = std::make_unique<Model>("Box");
     bossModel = std::make_unique<Model>("boss");
     nerikesiModel = std::make_unique<Model>("nerikeshi");
+    creaner = std::make_unique<Model>("cleaner");
     eraseEnemyModel = std::make_unique<Model>("eraser");
     BossDamegeEffectModelStar = std::make_unique<Model>("star");
     BossDamegeEffectModelSpher = std::make_unique<Model>("ball");
