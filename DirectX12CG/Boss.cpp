@@ -275,6 +275,8 @@ void Boss::Update(bool moveLimit)
 	{
 		color = { 1.f,1.f,1.f,1.f };
 	}
+
+	cover->color = color;
 }
 
 void Boss::Draw()
