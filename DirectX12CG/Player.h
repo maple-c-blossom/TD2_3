@@ -25,7 +25,7 @@ private:
 	int invincible = 0;
 	bool visible = true;
 	float weight = 1;
-	float shard = 10;
+	float shard = 30;
 	float directionAngle = 0;
 	float holdDirectionAngle = 0;
 	float moveSpeedPercentage = 0;
