@@ -117,6 +117,11 @@ void Boss::Update(bool moveLimit)
 		{
 			downAngle = Lerp(-25,90, AttackTimer.GetEndTime() - 20, AttackTimer.NowTime());
 		}
+		if (AttackTimer.GetEndTime() - 20 == AttackTimer.NowTime())
+		{
+			shake->Setshake(10, 20, 3);
+		}
+
 	}
 	else if (afterAttack)
 	{
