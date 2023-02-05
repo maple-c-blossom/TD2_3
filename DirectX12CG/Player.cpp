@@ -234,9 +234,9 @@ void Player::Update(bool flag)
 		{
 			position.x = -250;
 		}
-		if (position.x > 200)
+		if (position.x > 190)
 		{
-			position.x = 200;
+			position.x = 190;
 		}
 
 		if (position.z < -20)
