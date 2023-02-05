@@ -292,7 +292,7 @@ void Player::Update(bool flag)
 		rotateMode = false;
 		rotateModeCount = 0;
 		postRotateCount = 0;
-		shard -= velocity.V3Len() * 1.5;
+		shard -= velocity.V3Len() * 1;
 		if (kneadedErasers.empty()
 			|| Vector3D{ kneadedErasers.front().position.x,kneadedErasers.front().position.y,kneadedErasers.front().position.z }.V3Len() > kneadedEraserDistance)
 		{
@@ -488,7 +488,7 @@ bool Player::IsInvincible()
 
 void Player::Erase()
 {
-	shard += 0.3;
+	shard += 0.5;
 }
 
 void Player::TutorialInitialize(MCB::Texture* tutorial1, MCB::Texture* tutorial2, MCB::Texture* tutorial3,
