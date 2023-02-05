@@ -145,7 +145,7 @@ void PencilEnemy::UniqueUpdate(bool movelimit)
 		}
 	}
 
-	if (capture == nullptr)
+	if (capture == nullptr && movelimit)
 	{
 		AttackCheck();
 		AttackTimerUpdate();
@@ -153,6 +153,8 @@ void PencilEnemy::UniqueUpdate(bool movelimit)
 	else
 	{
 		attack = false;
+		beforeAttack = false;
+		color = { 1.f,1.f,1.f,1.f }; 
 	}
 
 	bodySlam = attack;
