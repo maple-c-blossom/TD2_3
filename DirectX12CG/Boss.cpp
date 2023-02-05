@@ -67,8 +67,12 @@ void Boss::Update(bool moveLimit)
 	{
 		itr.collideLayer = 3;
 	}
-	
-	AttackTimerUpdate();
+	if (moveLimit)
+	{
+		AttackTimerUpdate();
+		AttackCheck();
+		AttackHit();
+	}
 
 	if (!attack && !beforeAttack && !afterAttack)
 	{
@@ -80,22 +84,24 @@ void Boss::Update(bool moveLimit)
 			itr.pushable_ = true;
 		}
 	}
-	else
+	if (attack || beforeAttack || afterAttack)
 	{
 		for (auto& itr : colliders)
 		{
 			itr.pushable_ = false;
 		}
 	}
+	Quaternion hogeQ;
 	if (!attack && !beforeAttack && !afterAttack)
 	{
 		q = q.DirToDir({ 0,0,-1 }, Vector3D({ position.x,0,position.z }, playerPtr->position));
+		hogeQ = q;
 	}
-	//else if(afterAttack)
-	//{
-	//	q = q.DirToDir({ 0,0,-1 }, Vector3D(velocity.vec, { playerPtr->position.x, playerPtr->position.y, playerPtr->position.z }));
-
-	//}
+	else if(afterAttack)
+	{
+		Quaternion tempQ = q.DirToDir({ 0,0,-1 }, Vector3D(velocity.vec, { playerPtr->position.x, playerPtr->position.y, playerPtr->position.z }));
+		//q = tempQ.Slerp(hogeQ, tempQ, afterAttackTimer.GetEndTime(), afterAttackTimer.NowTime());
+	}
 
 	if (beforeAttack)
 	{
@@ -222,6 +228,10 @@ void Boss::Update(bool moveLimit)
 		}
 
 	}
+	else
+	{
+		quaternion = { 0,0,0,1 };
+	}
 	if (position.y < 0)
 	{
 		position.y = 0;
@@ -250,12 +260,9 @@ void Boss::Update(bool moveLimit)
 		itr->Update();
 	}
 
-	
-	AttackCheck();
-	AttackHit();
+
 	Damage(1);
 	UpdateData();
-
 	if (beforeAttack)
 	{
 		if (beforeAttackTimer.NowTime() % 3 == 0)
@@ -394,7 +401,7 @@ void Boss::AttackHit()
 		{
 			if (itr.IsHit(itr2))
 			{
-				Player::GetPlayer()->Damage(1);
+				Player::GetPlayer()->Damage(2);
 			}
 		}
 		num++;

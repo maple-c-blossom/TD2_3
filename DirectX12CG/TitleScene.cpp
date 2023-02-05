@@ -15,7 +15,7 @@ void MCB::TitleScene::SpriteInit()
     scopeSprite.InitMatProje();
     scopeSprite = scopeSprite.CreateSprite();
     tutorialSkipSprite = scopeSprite.CreateSprite();
-    tutorialSkipSprite.anchorPoint = {0.f,0.f};
+    tutorialSkipSprite.anchorPoint = {1.f,0.f};
     tutorialSkipSprite.tex = tutorialSkipTex->texture.get();
     debugText.Init(debugTextTexture->texture.get());
 }
@@ -497,10 +497,8 @@ void MCB::TitleScene::SpriteDraw()
     {
         substie->StatusDraw();
     }
-    else
-    {
-        tutorialSkipSprite.SpriteDraw(10.f,10.f,480 * 0.85f, 100 * 0.85f);
-    }
+
+    tutorialSkipSprite.SpriteDraw(dxWindow->window_width - 10,10.f,480 * 0.85f, 100 * 0.85f);
     debugText.AllDraw();
 }
 
