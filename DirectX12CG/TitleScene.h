@@ -62,6 +62,7 @@ namespace MCB
 		int tutorial5AnimNum = 0;
 		std::array<TextureCell*, 4> tutorial5;
 		std::array<TextureCell*, 4> tutorial5Succes;
+
 #pragma endregion テクスチャ
 
 		//サウンド

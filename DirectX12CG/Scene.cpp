@@ -95,6 +95,7 @@ void MCB::Scene::Object3DInit()
     temp->SetHandwritingModel(WritingModel.get());
     enemys.push_back(move(temp));
     spownTimer.Set(30);
+    boss->soundmanager = &soundManager;
     boss->Initialize({ 0,0,1 }, { -20,0,0 }, bossModel.get(), pencilEnemyModel.get(), WritingModel.get(), BossDamegeEffectModelStar.get(), BossDamegeEffectModelSpher.get(), BossCover.get(), 1, substie.get());
     boss->shake = mainCamera.GetShakePtr();
     mainCamera.player = substie.get();

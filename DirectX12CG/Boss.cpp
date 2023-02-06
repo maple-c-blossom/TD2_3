@@ -1,5 +1,6 @@
 #include "Boss.h"
 #include "Player.h"
+
 using namespace MCB;
 using namespace std;
 
@@ -57,6 +58,11 @@ void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* 
 		itr = itr.CreateSprite();
 		itr.anchorPoint = { 0,0 };
 	};
+
+	soundEffect[0] = soundmanager->LoadWaveSound("Resources\\sound\\se\\bossAttack.wav");
+	soundEffect[1] = soundmanager->LoadWaveSound("Resources\\sound\\se\\damage.wav");
+	soundmanager->SetVolume(50, soundEffect[0]);
+	soundmanager->SetVolume(50, soundEffect[1]);
 
 	this->quaternionPtr = &quaternion;
 }
@@ -120,6 +126,7 @@ void Boss::Update(bool moveLimit)
 		if (AttackTimer.GetEndTime() - 20 == AttackTimer.NowTime())
 		{
 			shake->Setshake(10, 20, 3);
+			soundmanager->PlaySoundWave(soundEffect[(unsigned int)SoundEffect::FallAttack]);
 		}
 
 	}
@@ -347,6 +354,7 @@ void Boss::UpdateMatrix(MCB::ICamera* camera)
 void Boss::Damage(int damage)
 {
 	if (playerPtr == nullptr)return;
+
 	for (auto& itr : colliders)
 	{
 		for (auto& itr2 : playerPtr->GetKneadedErasers())
@@ -392,6 +400,7 @@ void Boss::Damage(int damage)
 					}
 					imotalTimer.Set(60);
 					imotalFlag = true;
+					soundmanager->PlaySoundWave(soundEffect[(unsigned int)SoundEffect::Damage]);
 				}
 			}
 		}

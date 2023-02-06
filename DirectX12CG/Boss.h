@@ -5,16 +5,26 @@
 #include "Util.h"
 #include "BossDamageEffect.h"
 #include "Sprite.h"
+#include "Sound.h"
+
 
 class Player;
 
 class Boss :public MCB::Object3d
 {
 private:
+	enum class SoundEffect
+	{
+		FallAttack,
+		Damage,
+
+	};
 	std::vector<std::unique_ptr<Enemy>>enemys;
 	std::list<std::unique_ptr<BossDamageEffect>>effects;
 	std::vector<ADXCollider> attackCol;
 	int hp;
+	std::array<int, 2> soundEffect;
+
 	float speed;
 	MCB::Vector3D velocity;
 	Quaternion q;
@@ -45,11 +55,11 @@ private:
 	std::array<MCB::TextureCell*, 2> gaugeTexCells;
 	std::array<MCB::Texture*, 2> gaugeTexs;
 	std::unique_ptr<Object3d> cover;
-
 	float angle = 25.f;
 
 	void EnemyPop(MCB::Vector3D velocity, MCB::Float3 position,  float speed,int popNum = 1);
 public:
+	SoundManager* soundmanager;
 	bool IsImotal() { return imotalFlag; }
 	Shake* shake;
 	Quaternion GetQ() { return q; }
