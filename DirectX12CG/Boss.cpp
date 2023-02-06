@@ -73,6 +73,7 @@ void Boss::Update(bool moveLimit)
 	{
 		itr.collideLayer = 3;
 	}
+
 	if (moveLimit)
 	{
 		AttackTimerUpdate();
@@ -296,14 +297,70 @@ void Boss::Update(bool moveLimit)
 	}
 
 	cover->color = color;
+
+	if (hp <= 0)
+	{
+		beforedethDown = true;
+		beforedethDownTimer.Set(30);
+	}
+
+}
+
+void Boss::DethUpdate()
+{
+
+	color = { 1.f,1.f,1.f,1.f };
+	cover->color = color;
+	DethTimerUpdate();
+	if (beforedethDown)
+	{
+		if (beforedethDownTimer.GetEndTime() - 20 >= beforedethDownTimer.NowTime())
+		{
+			downAngle = Lerp(0, -25, beforedethDownTimer.GetEndTime() - 20, beforedethDownTimer.NowTime());
+		}
+	}
+	else if (dethDown)
+	{
+		if (dethDownTimer.GetEndTime() - 20 >= dethDownTimer.NowTime())
+		{
+			downAngle = Lerp(-25, 90, dethDownTimer.GetEndTime() - 20, dethDownTimer.NowTime());
+		}
+		if (dethDownTimer.GetEndTime() - 20 == dethDownTimer.NowTime())
+		{
+			shake->Setshake(10, 20, 3);
+			soundmanager->PlaySoundWave(soundEffect[(unsigned int)SoundEffect::FallAttack]);
+		}
+
+	}
+
+	if (dethDown || beforedethDown)
+	{
+		Quaternion temp;
+		Vector3D vec = -(velocity.GetV3Cross({ 0,1,0 }));
+		float tempangle = ConvertRadius(downAngle);
+		temp.SetRota(vec, tempangle);
+		quaternion = quaternion.GetDirectProduct(temp, q);
+		quaternion.Normalize();
+	}
+
+	for (auto& itr : effects)
+	{
+		itr->Update();
+	}
+
+
 }
 
 void Boss::Draw()
 {
+	
 	if (!imotalFlag || imotalTimer.NowTime() % 3 == 0)
 	{
-		Object3d::Draw();
-		cover->Draw();
+		if (!afterdethDown)
+		{
+			Object3d::Draw();
+			cover->Draw();
+		}
 	}
 	for (auto& itr : enemys)
 	{
@@ -482,6 +539,38 @@ void Boss::AttackTimerUpdate()
 		if (afterAttackTimer.IsEnd())
 		{
 			afterAttack = false;
+		}
+	}
+}
+
+
+void Boss::DethTimerUpdate()
+{
+	if (beforedethDown)
+	{
+		beforedethDownTimer.SafeUpdate();
+		if (beforedethDownTimer.IsEnd())
+		{
+			beforedethDown = false;
+			dethDown = true;
+			dethDownTimer.Set(ENEMY_ATTACK_TIME);
+		}
+	}
+	else if (dethDown)
+	{
+		dethDownTimer.SafeUpdate();
+		if (dethDownTimer.IsEnd())
+		{
+			dethDown = false;
+			afterdethDown = true;
+			for (int i = 0; i < 30; i++)
+			{
+				unique_ptr<BossDamageEffect> effect = make_unique<BossDamageEffect>();
+				effect->Initialize(sphereModel, { sinf(ConvertRadius((float)GetRand(0,360))) * cosf(ConvertRadius((float)GetRand(0,360))),sinf(ConvertRadius((float)GetRand(0,360))) * sinf(ConvertRadius((float)GetRand(0,360))),cosf(ConvertRadius((float)GetRand(0,360))) },
+					{ position.x + GetRand(0,200) / 100,position.y + GetRand(0,200) / 100,position.z + GetRand(0,200) / 100 }, { (float)25 / 15 + 1,(float)25 / 15 + 1,(float)25 / 15 + 1 }, { ((float)25 / 20),0,1 - ((float)25 / 20),1 }, 0.75f, 30);
+				effect->color = { 0.76078431f,0.30588235,0.51372549f,1.0f };
+				effects.push_back(std::move(effect));
+			}
 		}
 	}
 }

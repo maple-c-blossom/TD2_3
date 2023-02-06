@@ -201,7 +201,8 @@ void MCB::Scene::Update()
 //        {
 //            sceneEnd = true;
 //        }
-
+    if (boss->GetHp() > 0 && substie->GetHp() > 0)
+    {
         substie->Update();
         spownTimer.Update();
 
@@ -276,9 +277,25 @@ void MCB::Scene::Update()
         }
 
         boss->Update();
+    }
+    else if (boss->GetHp() <= 0)
+    {
+        boss->DethUpdate();
+        if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A))
+        {
+            sceneEnd = true;
+        }
+    }
+    else if (substie->GetHp() <= 0)
+    {
+        if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A))
+        {
+            sceneEnd = true;
+        }
+    }
 
-        lights->UpDate();
-        viewCamera->Update();
+    lights->UpDate();
+    viewCamera->Update();
 
     CheckAllColision();
 
@@ -293,10 +310,7 @@ void MCB::Scene::Update()
     //s—ñ•ÏŠ·
     //MatrixUpdate();
 
-    if (boss->GetHp() <= 0 || substie->GetHp() <= 0)
-    {
-        sceneEnd = true;
-    }
+
 }
 
 void MCB::Scene::Draw()
