@@ -561,12 +561,12 @@ void Boss::DethTimerUpdate()
 		{
 			dethDown = false;
 			afterdethDown = true;
-			for (int i = 0; i < 30; i++)
+			for (int i = 0; i < 40; i++)
 			{
 				unique_ptr<BossDamageEffect> effect = make_unique<BossDamageEffect>();
-				effect->Initialize(sphereModel, { sinf(ConvertRadius((float)GetRand(0,360))) * cosf(ConvertRadius((float)GetRand(0,360))),sinf(ConvertRadius((float)GetRand(0,360))) * sinf(ConvertRadius((float)GetRand(0,360))),cosf(ConvertRadius((float)GetRand(0,360))) },
+				effect->Initialize(starModel, { sinf(ConvertRadius((float)GetRand(0,360))) * cosf(ConvertRadius((float)GetRand(0,360))),sinf(ConvertRadius((float)GetRand(0,360))) * sinf(ConvertRadius((float)GetRand(0,360))),cosf(ConvertRadius((float)GetRand(0,360))) },
 					{ position.x + GetRand(0,200) / 100,position.y + GetRand(0,200) / 100,position.z + GetRand(0,200) / 100 }, { (float)25 / 15 + 1,(float)25 / 15 + 1,(float)25 / 15 + 1 }, { ((float)25 / 20),0,1 - ((float)25 / 20),1 }, 0.75f, 30);
-				effect->color = { 0.76078431f,0.30588235,0.51372549f,1.0f };
+				effect->color = { 0.86078431f,0.30588235,0.41372549f,1.0f };
 				effects.push_back(std::move(effect));
 			}
 		}
