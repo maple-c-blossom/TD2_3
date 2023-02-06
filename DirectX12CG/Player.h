@@ -49,6 +49,11 @@ private:
 	std::array<MCB::TextureCell*, 2> kneadedEraserGaugeTexCells;
 	std::array<MCB::Texture*, 2> kneadedEraserGaugeTexs;
 
+	MCB::Sprite shardEmpty;
+	std::array<MCB::TextureCell*, 2> shardEmptyTexCell;
+	std::array<MCB::Texture*, 2> shardEmptyTex;
+	int shardEmptyDisplay;
+
 	std::array<MCB::Sprite, maxHP> hearts;
 	MCB::TextureCell* heartTexCell;
 	MCB::Texture* heartTex;

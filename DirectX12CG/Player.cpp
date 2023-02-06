@@ -42,6 +42,11 @@ void Player::Initialize()
 		itr = itr.CreateSprite();
 		itr.anchorPoint = { 0,0 };
 	};
+
+	shardEmptyTexCell = { loader->LoadTexture(L"Resources\\gauge\\shardEmpty_0.png"),loader->LoadTexture(L"Resources\\gauge\\shardEmpty_1.png") };
+	shardEmptyTex = { shardEmptyTexCell[0]->texture.get(),shardEmptyTexCell[1]->texture.get() };
+	shardEmpty = shardEmpty.CreateSprite();
+	shardEmpty.anchorPoint = { 0,1 };
 }
 
 void Player::Update(bool flag)
@@ -66,6 +71,9 @@ void Player::Update(bool flag)
 	prevPos = position;
 
 	velocity /= 0.8f;
+
+	shardEmptyDisplay--;
+	shardEmptyDisplay = max(shardEmptyDisplay, 0);
 
 	if (rotateMode)
 	{
@@ -178,7 +186,6 @@ void Player::Update(bool flag)
 			rotateModeCount = 0;
 
 			rotateMode = false;
-
 		}
 	}
 	postRotateCount *= 0.9;
@@ -195,6 +202,7 @@ void Player::Update(bool flag)
 	if (shard <= 0 && trueMakingKneadedEraser)
 	{
 		velocity *= 0.1f;
+		shardEmptyDisplay = 1;
 	}
 
 	position.x += velocity.ConvertXMFloat3().x;
@@ -255,6 +263,10 @@ void Player::Update(bool flag)
 	if (shard <= 0)
 	{
 		rotateCanceled = true;
+		if (rotateMode)
+		{
+			shardEmptyDisplay = 60;
+		}
 	}
 
 	rotateModeCount = max(-maxRotateSpeed, min(rotateModeCount, maxRotateSpeed));
@@ -459,6 +471,17 @@ void Player::StatusDraw()
 	kneadedEraserGauges[0].SpriteDraw(*kneadedEraserGaugeTexs[0], edgeSpace, edgeSpace);
 	kneadedEraserGauges[1].size = { gaugeSizeX,gaugeAmount + edgeLength + upperEdgeLength };
 	kneadedEraserGauges[1].SpriteCuttingDraw(*kneadedEraserGaugeTexs[1], edgeSpace, edgeSpace + gaugeRange - gaugeAmount, { gaugeSizeX,(gaugeAmount + edgeLength + upperEdgeLength) }, { 0, 0 });
+
+	Texture* nowShardEmptyTex = shardEmptyTex[0];
+
+	if (clock() % 400 > 200)
+	{
+		nowShardEmptyTex = shardEmptyTex[1];
+	}
+	if (shardEmptyDisplay > 0)
+	{
+		shardEmpty.SpriteDraw(*nowShardEmptyTex, edgeSpace + gaugeSizeX, edgeSpace + gaugeSizeY - edgeLength);
+	}
 
 	int index = 0;
 	for (auto& itr : hearts)
