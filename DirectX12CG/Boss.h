@@ -23,6 +23,7 @@ private:
 	std::list<std::unique_ptr<BossDamageEffect>>effects;
 	std::vector<ADXCollider> attackCol;
 	int hp;
+	float damageAmount;
 	std::array<int, 2> soundEffect;
 
 	float speed;
@@ -59,9 +60,12 @@ private:
 	float downAngle = 0;
 	TextureManager* loader = TextureManager::GetInstance();
 
-	std::array<MCB::Sprite, 2> gauges;
-	std::array<MCB::TextureCell*, 2> gaugeTexCells;
-	std::array<MCB::Texture*, 2> gaugeTexs;
+	std::array<MCB::Sprite, 3> gauges;
+	std::array<MCB::TextureCell*, 3> gaugeTexCells;
+	std::array<MCB::Texture*, 3> gaugeTexs;
+
+	Float2 gaugeShake;
+
 	std::unique_ptr<Object3d> cover;
 	float angle = 25.f;
 

@@ -51,8 +51,8 @@ void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* 
 	this->cover->position.x = 1.2f;
 	this->cover->position.z = -0.10f;
 	q.SetRota({ 0,1,0 }, 0);
-	gaugeTexCells = { loader->LoadTexture(L"Resources\\gauge\\bossHpGauge.png"), loader->LoadTexture(L"Resources\\gauge\\bossHpGaugeFill.png") };
-	gaugeTexs = { gaugeTexCells[0]->texture.get(), gaugeTexCells[1]->texture.get() };
+	gaugeTexCells = { loader->LoadTexture(L"Resources\\gauge\\bossHpGauge.png"), loader->LoadTexture(L"Resources\\gauge\\bossHpGaugeFill.png"),loader->LoadTexture(L"Resources\\gauge\\bossHpGaugeDecrease.png") };
+	gaugeTexs = { gaugeTexCells[0]->texture.get(), gaugeTexCells[1]->texture.get(), gaugeTexCells[2]->texture.get() };
 	for (auto& itr : gauges)
 	{
 		itr = itr.CreateSprite();
@@ -300,10 +300,26 @@ void Boss::Update(bool moveLimit)
 
 	if (hp <= 0)
 	{
+		hp = 0;
+
 		beforedethDown = true;
 		beforedethDownTimer.Set(30);
 	}
 
+	if (imotalFlag && imotalTimer.NowTime() < 15)
+	{
+		gaugeShake = { 0,cos((float)imotalTimer.NowTime()) * (15 - imotalTimer.NowTime()) * 2.0f };
+	}
+	else
+	{
+		gaugeShake = { 0,0 };
+		if (imotalTimer.NowTime() >= 30)
+		{
+			damageAmount -= MAX_HP_BOSS * 0.002f;
+		}
+	}
+
+	damageAmount = max(hp, damageAmount);
 }
 
 void Boss::DethUpdate()
@@ -385,10 +401,15 @@ void Boss::StatusDraw()
 	float fillAmount = (float)hp / MAX_HP_BOSS;
 	float gaugeAmount = gaugeRange * fillAmount;
 
+	float damageFillAmount = damageAmount / MAX_HP_BOSS;
+	float damageGaugeAmount = gaugeRange * damageFillAmount;
 
-	gauges[0].SpriteDraw(*gaugeTexs[0], edgeSpace, edgeSpace);
+
+	gauges[0].SpriteDraw(*gaugeTexs[0], DxWindow::GetInstance()->window_width - gaugeSizeX - edgeSpace, edgeSpace + gaugeShake.y);
 	gauges[1].size = { gaugeAmount + edgeLength ,gaugeSizeY };
-	gauges[1].SpriteCuttingDraw(*gaugeTexs[1], edgeSpace + gaugeRange - gaugeAmount, edgeSpace , { (gaugeAmount + edgeLength),gaugeSizeY }, { 0, 0 });
+	gauges[2].size = { damageGaugeAmount + edgeLength ,gaugeSizeY };
+	gauges[2].SpriteCuttingDraw(*gaugeTexs[2], DxWindow::GetInstance()->window_width - gaugeSizeX - edgeSpace + gaugeRange - damageGaugeAmount, edgeSpace + gaugeShake.y, { (damageGaugeAmount + edgeLength),gaugeSizeY }, { 0, 0 });
+	gauges[1].SpriteCuttingDraw(*gaugeTexs[1], DxWindow::GetInstance()->window_width - gaugeSizeX - edgeSpace + gaugeRange - gaugeAmount, edgeSpace + gaugeShake.y, { (gaugeAmount + edgeLength),gaugeSizeY }, { 0, 0 });
 
 }
 
