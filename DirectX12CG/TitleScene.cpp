@@ -398,7 +398,7 @@ void MCB::TitleScene::Update()
                 {
                     itr->deleteFlag = true;
                 }
-                if ((input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A)) && tutorialSucces == 0b11111)
+                if ((input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A)))
                 {
                     sceneEnd = true;
                 }
