@@ -31,6 +31,14 @@ private:
 	bool attack = false;
 	bool beforeAttack = false;
 	bool afterAttack = false;
+
+
+	bool dethDown = false;
+	bool beforedethDown = false;
+	bool afterdethDown = false;
+	Timer beforedethDownTimer;
+	Timer dethDownTimer;
+
 	bool prevBeforeAttack;
 	bool imotalFlag = false;
 	Timer beforeAttackTimer;
@@ -66,6 +74,7 @@ public:
 	int GetHp() { return hp; };
 	void Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, MCB::Model* enemyModel, MCB::Model* handwrModel, MCB::Model* star, MCB::Model* ball, MCB::Model* cover, float speed, Player* playerPtr);
 	void Update(bool moveLimit = true);
+	void DethUpdate();
 	void Draw();
 	void StatusDraw();
 	void UpdateMatrix(MCB::ICamera* camera);
@@ -74,5 +83,6 @@ public:
 	void AttackHit();
 	void AttackStart();
 	void AttackTimerUpdate();
+	void DethTimerUpdate();
 };
 
