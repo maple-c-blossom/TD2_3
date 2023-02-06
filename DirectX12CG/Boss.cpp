@@ -321,19 +321,17 @@ void Boss::StatusDraw()
 
 	float gaugeSizeX = 640;
 	float gaugeSizeY = 64;
-	float edgeLength = 3;
-	float upperEdgeLength = 16;
+	float edgeLength = 8;
 
-	float gaugeRange = gaugeSizeX - edgeLength * 2 - upperEdgeLength;
-	float fillAmount = hp / MAX_HP_BOSS;
+
+	float gaugeRange = gaugeSizeX - edgeLength * 2;
+	float fillAmount = (float)hp / MAX_HP_BOSS;
 	float gaugeAmount = gaugeRange * fillAmount;
 
-	float heartScale = 38;
 
-
-	gauges[0].SpriteDraw(*gaugeTexs[0], edgeSpace + 240, edgeSpace);
-	gauges[1].size = { gaugeAmount + edgeLength + upperEdgeLength ,gaugeSizeY};
-	gauges[1].SpriteCuttingDraw(*gaugeTexs[1], edgeSpace + gaugeRange - gaugeAmount + 240, edgeSpace , { (gaugeAmount * gaugeSizeX),gaugeSizeY }, { 0, 0 });
+	gauges[0].SpriteDraw(*gaugeTexs[0], edgeSpace, edgeSpace);
+	gauges[1].size = { gaugeAmount + edgeLength ,gaugeSizeY };
+	gauges[1].SpriteCuttingDraw(*gaugeTexs[1], edgeSpace + gaugeRange - gaugeAmount, edgeSpace , { (gaugeAmount + edgeLength),gaugeSizeY }, { 0, 0 });
 
 }
 
