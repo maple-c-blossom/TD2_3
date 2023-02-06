@@ -74,8 +74,8 @@ void MCB::Scene::Object3DInit()
     substie->Initialize();
 
     Object3d wall = Object3d();
-    wall.position = { 20,9,-14 };
-    wall.scale = { 5.8,10,1.5 };
+    wall.position = { 20,5,-14 };
+    wall.scale = { 5.8,5,5.8 };
     wall.rotation = { 0,0,0 };
     wall.Init();
     wall.model = creaner.get();
