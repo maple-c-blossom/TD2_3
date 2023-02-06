@@ -32,13 +32,15 @@ void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* 
 	hp = MAX_HP_BOSS;
 	ADXCollider tempCol(this);
 	colliders.push_back(tempCol);
-	colliders.back().scale_ = { 1.2f,1.7f,0.7f };
-	colliders.back().pos_.y = 0.85f;
+	colliders.back().scale_ = { 1.2f,2.125f,0.7f };
+	colliders.back().pos_.y = 1.275f;
+	colliders.back().pos_.z = 0.5f;
 	colliders.back().colType_ = box;
 	colliders.back().pushBackPriority = 1;
 	attackCol.push_back(tempCol);
 	attackCol.back().pos_.y = 0.85f;
 	attackCol.back().radius_ = 3.f;
+	attackCol.back().isTrigger = true;
 
 	for (auto& itr : colliders)
 	{
