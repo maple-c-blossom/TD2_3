@@ -328,6 +328,8 @@ void MCB::Scene::SpriteDraw()
     substie->TutorialDraw();
     substie->StatusDraw();
 
+    boss->StatusDraw();
+
     bossHpSprite.SpriteDraw(10, 60, 290/2,80/2);
     debugText.Print(15 + 290 / 2, 65, 2, "%d", boss->GetHp());
 

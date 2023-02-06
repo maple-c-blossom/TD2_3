@@ -57,6 +57,7 @@ public:
 	void Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, MCB::Model* enemyModel, MCB::Model* handwrModel, MCB::Model* star, MCB::Model* ball, MCB::Model* cover, float speed, Player* playerPtr);
 	void Update(bool moveLimit = true);
 	void Draw();
+	void StatusDraw();
 	void UpdateMatrix(MCB::ICamera* camera);
 	void Damage(int damage);
 	void AttackCheck();

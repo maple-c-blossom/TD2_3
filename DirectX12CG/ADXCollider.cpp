@@ -373,9 +373,26 @@ void ADXCollider::SendPushBack()
 {
 	if(gameObject != nullptr)
 	{
+		DirectX::XMFLOAT3 tempPos = gameObject->position;
 		gameObject->position.x += pushBackVector.x;
 		gameObject->position.y += pushBackVector.y;
 		gameObject->position.z += pushBackVector.z;
+
+		if (!isfinite(gameObject->position.x))
+		{
+			gameObject->position.x = tempPos.x;
+		}
+
+		if (!isfinite(gameObject->position.y))
+		{
+			gameObject->position.y = tempPos.y;
+		}
+
+		if (!isfinite(gameObject->position.z))
+		{
+			gameObject->position.z = tempPos.z;
+		}
+
 		gameObject->Update(*IScene::GetCamera()->GetView(), *IScene::GetCamera()->GetProjection());
 		preTranslation.x = gameObject->position.x;
 		preTranslation.y = gameObject->position.y;
