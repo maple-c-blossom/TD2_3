@@ -72,6 +72,8 @@ void MCB::Scene::Object3DInit()
     substie->scale = { 1,1,1 };
     substie->position = { 0,0,0 };
     substie->Initialize();
+    substie->sphereModel = BossDamegeEffectModelSpher.get();
+
 
     Object3d wall = Object3d();
     wall.position = { 20,5,-14 };
@@ -288,6 +290,7 @@ void MCB::Scene::Update()
     }
     else if (substie->GetHp() <= 0)
     {
+        substie->DethUpdate();
         if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A))
         {
             sceneEnd = true;
@@ -326,11 +329,14 @@ void MCB::Scene::Draw()
     {
         itr.Draw();
     }
-    for (auto& itr : enemys)
+    if (!(substie->GetHp() <= 0))
     {
-        itr->Draw();
+        for (auto& itr : enemys)
+        {
+            itr->Draw();
+        }
+        boss->Draw();
     }
-    boss->Draw();
     WritingEnemy::StaticDraw();
     //human.Draw();
     //testSpher.Draw();

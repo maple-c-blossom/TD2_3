@@ -51,6 +51,7 @@ void Player::Initialize()
 
 void Player::Update(bool flag)
 {
+
 	bool MoveUp =
 		input->IsKeyDown(keyConfig[0]) || input->IsKeyDown(keyConfig[4]);
 	bool MoveDown =
@@ -403,23 +404,69 @@ void Player::Update(bool flag)
 			itr = { 0,0 };
 		}
 	}
+
+
+
+
+}
+
+void Player::DethUpdate()
+{
+	if (!deth)
+	{
+		for (int i = 0; i < 40; i++)
+		{
+			std::unique_ptr<BossDamageEffect> effect = std::make_unique<BossDamageEffect>();
+			effect->Initialize(sphereModel, { sinf(ConvertRadius((float)GetRand(0,360))) * cosf(ConvertRadius((float)GetRand(0,360))),sinf(ConvertRadius((float)GetRand(0,360))) * sinf(ConvertRadius((float)GetRand(0,360))),cosf(ConvertRadius((float)GetRand(0,360))) },
+				{ position.x + GetRand(0,200) / 100,position.y + GetRand(0,200) / 100,position.z + GetRand(0,200) / 100 }, { (float)25 / 15 + 1,(float)25 / 15 + 1,(float)25 / 15 + 1 }, { ((float)25 / 20),0,1 - ((float)25 / 20),1 }, 0.75f, 30);
+			effect->color = { 0.4f,0.3f,0.8f,1.0f };
+			effects.push_back(std::move(effect));
+		}
+		deth = true;
+	}
+	for (auto& itr : effects)
+	{
+		itr->Update();
+	}
 }
 
 void Player::UpdateMatrix(MCB::ICamera* camera)
 {
-	Object3d::Update(*camera->GetView(), *camera->GetProjection());
-	for (auto& itr : kneadedErasers)
+
+	if (!deth)
 	{
-		itr.Object3d::Update(*camera->GetView(), *camera->GetProjection());
+		Object3d::Update(*camera->GetView(), *camera->GetProjection());
+		for (auto& itr : kneadedErasers)
+		{
+			itr.Object3d::Update(*camera->GetView(), *camera->GetProjection());
+		}
+	}
+	else
+	{
+		for (auto& itr : effects)
+		{
+			itr->UpdateMatrix(camera);
+		}
 	}
 }
 
 void Player::Draw()
 {
-	Object3d::Draw();
-	for (auto& itr : kneadedErasers)
+	if (!deth)
 	{
-		itr.Draw();
+		Object3d::Draw();
+		for (auto& itr : kneadedErasers)
+		{
+			itr.Draw();
+		}
+	}
+	else
+	{
+
+		for (auto& itr : effects)
+		{
+			itr->Draw();
+		}
 	}
 }
 
