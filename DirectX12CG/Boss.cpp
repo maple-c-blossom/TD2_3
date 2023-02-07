@@ -331,7 +331,7 @@ void Boss::Update(bool moveLimit)
 	{
 		hp = 0;
 
-		beforedeathDown = true;
+		beforedethDown = true;
 		beforedeathDownTimer.Set(30);
 	}
 
@@ -355,14 +355,14 @@ void Boss::DethUpdate()
 	color = { 1.f,1.f,1.f,1.f };
 	cover->color = color;
 	DethTimerUpdate();
-	if (beforedeathDown)
+	if (beforedethDown)
 	{
 		if (beforedeathDownTimer.GetEndTime() - 20 >= beforedeathDownTimer.NowTime())
 		{
 			downAngle = Lerp(0, -25, beforedeathDownTimer.GetEndTime() - 20, beforedeathDownTimer.NowTime());
 		}
 	}
-	else if (deathDown)
+	else if (dethDown)
 	{
 		if (deathDownTimer.GetEndTime() - 20 >= deathDownTimer.NowTime())
 		{
@@ -376,7 +376,7 @@ void Boss::DethUpdate()
 
 	}
 
-	if (deathDown || beforedeathDown)
+	if (dethDown || beforedethDown)
 	{
 		Quaternion temp;
 		Vector3D vec = -(velocity.GetV3Cross({ 0,1,0 }));
@@ -399,7 +399,7 @@ void Boss::Draw()
 	
 	if (!imotalFlag || imotalTimer.NowTime() % 3 == 0)
 	{
-		if (!afterdeathDown)
+		if (!afterdethDown)
 		{
 			Object3d::Draw();
 			cover->Draw();
@@ -598,23 +598,23 @@ void Boss::AttackTimerUpdate()
 
 void Boss::DethTimerUpdate()
 {
-	if (beforedeathDown)
+	if (beforedethDown)
 	{
 		beforedeathDownTimer.SafeUpdate();
 		if (beforedeathDownTimer.IsEnd())
 		{
-			beforedeathDown = false;
-			deathDown = true;
+			beforedethDown = false;
+			dethDown = true;
 			deathDownTimer.Set(ENEMY_ATTACK_TIME);
 		}
 	}
-	else if (deathDown)
+	else if (dethDown)
 	{
 		deathDownTimer.SafeUpdate();
 		if (deathDownTimer.IsEnd())
 		{
-			deathDown = false;
-			afterdeathDown = true;
+			dethDown = false;
+			afterdethDown = true;
 			for (int i = 0; i < 40; i++)
 			{
 				unique_ptr<BossDamageEffect> effect = make_unique<BossDamageEffect>();
