@@ -315,13 +315,18 @@ void Boss::Update(bool moveLimit)
 	{
 		gaugeShake = { 0,cos((float)imotalTimer.NowTime()) * (15 - imotalTimer.NowTime()) * 2.0f };
 	}
+	else if(damageAmount > hp)
+	{
+		gaugeShake = { 0,cos((float)clock()) * 2.0f };
+	}
 	else
 	{
 		gaugeShake = { 0,0 };
-		if (imotalTimer.NowTime() >= 30)
-		{
-			damageAmount -= MAX_HP_BOSS * 0.002f;
-		}
+	}
+
+	if (imotalTimer.NowTime() >= 30)
+	{
+		damageAmount -= MAX_HP_BOSS * 0.002f;
 	}
 
 	if (heavyHitNum > 0)
@@ -495,7 +500,7 @@ void Boss::Damage(int damage)
 					imotalFlag = true;
 					soundmanager->PlaySoundWave(soundEffect[(unsigned int)SoundEffect::Hit]);
 
-					heavyHitNum = min(heavyHitNum, 4);
+					heavyHitNum = min(heavyHitNum, 6);
 				}
 			}
 		}

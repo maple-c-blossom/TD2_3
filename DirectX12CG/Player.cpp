@@ -50,7 +50,7 @@ void Player::Initialize()
 
 	soundEffect[(unsigned int)SoundEffect::Damage] = soundmanager->LoadWaveSound("Resources\\sound\\se\\damage.wav");
 
-	soundmanager->SetVolume(6, soundEffect[(unsigned int)SoundEffect::Damage]);
+	soundmanager->SetVolume(13, soundEffect[(unsigned int)SoundEffect::Damage]);
 }
 
 void Player::Update(bool flag)
