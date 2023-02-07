@@ -16,15 +16,15 @@ private:
 	enum class SoundEffect
 	{
 		FallAttack,
-		Damage,
-
+		Hit,
+		HeavyHit,
 	};
 	std::vector<std::unique_ptr<Enemy>>enemys;
 	std::list<std::unique_ptr<BossDamageEffect>>effects;
 	std::vector<ADXCollider> attackCol;
 	int hp;
 	float damageAmount;
-	std::array<int, 2> soundEffect;
+	std::array<int, 3> soundEffect;
 
 	float speed;
 	MCB::Vector3D velocity;

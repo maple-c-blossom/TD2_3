@@ -47,6 +47,10 @@ void Player::Initialize()
 	shardEmptyTex = { shardEmptyTexCell[0]->texture.get(),shardEmptyTexCell[1]->texture.get() };
 	shardEmpty = shardEmpty.CreateSprite();
 	shardEmpty.anchorPoint = { 0,1 };
+
+	soundEffect[(unsigned int)SoundEffect::Damage] = soundmanager->LoadWaveSound("Resources\\sound\\se\\damage.wav");
+
+	soundmanager->SetVolume(6, soundEffect[(unsigned int)SoundEffect::Damage]);
 }
 
 void Player::Update(bool flag)
@@ -590,5 +594,6 @@ void Player::Damage(int damage)
 	{
 		hp -= damage;
 		invincible = 70;
+		soundmanager->PlaySoundWave(soundEffect[(unsigned int)SoundEffect::Damage]);
 	}
 }

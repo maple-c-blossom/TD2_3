@@ -61,10 +61,13 @@ void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* 
 		itr.anchorPoint = { 0,0 };
 	};
 
-	soundEffect[0] = soundmanager->LoadWaveSound("Resources\\sound\\se\\bossAttack.wav");
-	soundEffect[1] = soundmanager->LoadWaveSound("Resources\\sound\\se\\damage.wav");
-	soundmanager->SetVolume(50, soundEffect[0]);
-	soundmanager->SetVolume(50, soundEffect[1]);
+	soundEffect[(unsigned int)SoundEffect::FallAttack] = soundmanager->LoadWaveSound("Resources\\sound\\se\\bossAttack.wav");
+	soundEffect[(unsigned int)SoundEffect::Hit] = soundmanager->LoadWaveSound("Resources\\sound\\se\\slam.wav");
+	soundEffect[(unsigned int)SoundEffect::HeavyHit] = soundmanager->LoadWaveSound("Resources\\sound\\se\\slap.wav");
+
+	soundmanager->SetVolume(50, soundEffect[(unsigned int)SoundEffect::FallAttack]);
+	soundmanager->SetVolume(6, soundEffect[(unsigned int)SoundEffect::Hit]);
+	soundmanager->SetVolume(6, soundEffect[(unsigned int)SoundEffect::HeavyHit]);
 
 	this->quaternionPtr = &quaternion;
 }
@@ -475,10 +478,11 @@ void Boss::Damage(int damage)
 					for (auto& itr : *Player::GetCaptureList())//すでに練りけしについている敵のデリートフラグをOnに
 					{
 						itr->deleteFlag = true;
+						soundmanager->PlaySoundWave(soundEffect[(unsigned int)SoundEffect::HeavyHit]);
 					}
 					imotalTimer.Set(60);
 					imotalFlag = true;
-					soundmanager->PlaySoundWave(soundEffect[(unsigned int)SoundEffect::Damage]);
+					soundmanager->PlaySoundWave(soundEffect[(unsigned int)SoundEffect::Hit]);
 				}
 			}
 		}
