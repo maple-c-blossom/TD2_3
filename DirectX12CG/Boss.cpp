@@ -324,6 +324,17 @@ void Boss::Update(bool moveLimit)
 		}
 	}
 
+	if (heavyHitNum > 0)
+	{
+		heavyHitInterval--;
+		if (heavyHitInterval <= 0)
+		{
+			soundmanager->PlaySoundWave(soundEffect[(unsigned int)SoundEffect::HeavyHit]);
+			heavyHitNum--;
+			heavyHitInterval = 5;
+		}
+	}
+
 	damageAmount = max(hp, damageAmount);
 }
 
@@ -473,16 +484,18 @@ void Boss::Damage(int damage)
 
 					itr3.gameObject->deleteFlag = true;
 
-
+					heavyHitNum = 0;
 
 					for (auto& itr : *Player::GetCaptureList())//すでに練りけしについている敵のデリートフラグをOnに
 					{
 						itr->deleteFlag = true;
-						soundmanager->PlaySoundWave(soundEffect[(unsigned int)SoundEffect::HeavyHit]);
+						heavyHitNum++;
 					}
 					imotalTimer.Set(60);
 					imotalFlag = true;
 					soundmanager->PlaySoundWave(soundEffect[(unsigned int)SoundEffect::Hit]);
+
+					heavyHitNum = min(heavyHitNum, 4);
 				}
 			}
 		}

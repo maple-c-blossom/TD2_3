@@ -33,7 +33,8 @@ private:
 	bool beforeAttack = false;
 	bool afterAttack = false;
 
-
+	int heavyHitInterval = 0;
+	int heavyHitNum = 0;
 	bool deathDown = false;
 	bool beforedeathDown = false;
 	bool afterdeathDown = false;
