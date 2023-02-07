@@ -17,6 +17,22 @@ namespace MCB
 	class Scene :public IScene
 	{
 	private:
+
+		enum class Result
+		{
+			Clear,
+			GameOver,
+			Frame,
+			Title,
+			Space,
+			ABottom,
+			Time,
+			Rank,
+			ARank,
+			BRank,
+			CRank,
+			SRank
+		};
 		#pragma region 変換行列
 		//変換行列
 		View matView;
@@ -51,6 +67,7 @@ namespace MCB
 		TextureCell* bossHp;
 		TextureCell* shard;
 		std::array<MCB::TextureCell*, 8> tutorialTexs;
+		std::array<MCB::TextureCell*, 12> result;
 #pragma endregion テクスチャ
 
 		//サウンド
