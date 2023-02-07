@@ -326,7 +326,10 @@ void MCB::Scene::Draw()
     ground.Draw();
     if (substie->GetVisible())
     {
-        substie->Draw();
+        if (!boss->afterdethDown)
+        {
+            substie->Draw();
+        }
     }
     if (!(substie->GetHp() <= 0))
     {
@@ -351,19 +354,17 @@ void MCB::Scene::Draw()
 
 void MCB::Scene::SpriteDraw()
 {
+    if (!(substie->GetHp() <= 0))
+    {
+        if (!boss->afterdethDown)
+        {
+            substie->TutorialDraw();
+            substie->StatusDraw();
 
-    substie->TutorialDraw();
-    substie->StatusDraw();
+            boss->StatusDraw();
+        }
+    }
 
-    boss->StatusDraw();
-
-    //debugText.Print(20, 20, 2, "boss:hp %d",boss.GetHp());
-    ////debugText.Print(20, 60, 2, "player:hp %d",substie.GetHp());
-    //debugText.Print(20, 60, 2, "position x:%fz:%f", substie.position.x,substie.position.z);
-    //debugText.Print(20, 100, 2, "player:shard %f", substie.GetShard());
-    //debugText.Print(dxWindow->window_width - 300, 20, 2, "Move:WASD");
-    //debugText.Print(dxWindow->window_width - 300, 60, 2, "Action:SPACE", substie.GetShard());
-    //debugText.Print(dxWindow->window_width - 300, 100, 2, "ActionCost:shard");
     if (boss->GetHp() <= 0)
     {
         debugText.Print(dxWindow->window_width/2 - 100, dxWindow->window_height/2, 4, "GameClear");

@@ -33,31 +33,40 @@ void Camera::Update()
 			eyeEaseStartPos = view.eye;
 			view.target = player->position;
 			targetEaseStartPos = view.target;
-			timer.Set(240);
+			timer.Set(300);
 		}
 		else if (boss->afterdethDown)
 		{
 			timer.SafeUpdate();
-			view.eye.x = InOutQuad(eyeEaseStartPos.x, 0, timer.GetEndTime(), timer.NowTime());
-			view.eye.y = InOutQuad(eyeEaseStartPos.y, 75, timer.GetEndTime(), timer.NowTime());
-			view.eye.z = InOutQuad(eyeEaseStartPos.z, -10, timer.GetEndTime(), timer.NowTime());
-			view.target.x = InOutQuad(targetEaseStartPos.x, 0, timer.GetEndTime(), timer.NowTime());
-			view.target.y = InOutQuad(targetEaseStartPos.y, 0, timer.GetEndTime(), timer.NowTime());
-			view.target.z = InOutQuad(targetEaseStartPos.z, -10, timer.GetEndTime(), timer.NowTime());
-			view.up.z = InOutQuad(0, 1, timer.GetEndTime(), timer.NowTime());
-			view.up.y = InOutQuad(1,0, timer.GetEndTime(), timer.NowTime());
+			int interval = 60;
+			if (timer.NowTime() >= interval)
+			{
+				view.eye.x = InOutQuad(eyeEaseStartPos.x, 0, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.eye.y = InOutQuad(eyeEaseStartPos.y, 75, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.eye.z = InOutQuad(eyeEaseStartPos.z, -10, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.target.x = InOutQuad(targetEaseStartPos.x, 0, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.target.y = InOutQuad(targetEaseStartPos.y, 0, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.target.z = InOutQuad(targetEaseStartPos.z, -10, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.up.z = InOutQuad(0, 1, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.up.y = InOutQuad(1,0, timer.GetEndTime() - interval, timer.NowTime() - interval);
+
+			}
 		}
 		else if (player->deth)
 		{
 			timer.SafeUpdate();
-			view.eye.x = InOutQuad(eyeEaseStartPos.x, 0, timer.GetEndTime(), timer.NowTime());
-			view.eye.y = InOutQuad(eyeEaseStartPos.y, 75, timer.GetEndTime(), timer.NowTime());
-			view.eye.z = InOutQuad(eyeEaseStartPos.z, -10, timer.GetEndTime(), timer.NowTime());
-			view.target.x = InOutQuad(targetEaseStartPos.x, 0, timer.GetEndTime(), timer.NowTime());
-			view.target.y = InOutQuad(targetEaseStartPos.y, 0, timer.GetEndTime(), timer.NowTime());
-			view.target.z = InOutQuad(targetEaseStartPos.z, -10, timer.GetEndTime(), timer.NowTime());
-			view.up.z = InOutQuad(0, 1, timer.GetEndTime(), timer.NowTime());
-			view.up.y = InOutQuad(1, 0, timer.GetEndTime(), timer.NowTime());
+			int interval = 60;
+			if (timer.NowTime() >= interval)
+			{
+				view.eye.x = InOutQuad(eyeEaseStartPos.x, 0, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.eye.y = InOutQuad(eyeEaseStartPos.y, 75, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.eye.z = InOutQuad(eyeEaseStartPos.z, -10, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.target.x = InOutQuad(targetEaseStartPos.x, 0, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.target.y = InOutQuad(targetEaseStartPos.y, 0, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.target.z = InOutQuad(targetEaseStartPos.z, -10, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.up.z = InOutQuad(0, 1, timer.GetEndTime(), timer.NowTime() - interval);
+				view.up.y = InOutQuad(1, 0, timer.GetEndTime(), timer.NowTime() - interval);
+			}
 		}
 
 

@@ -460,7 +460,7 @@ void Boss::UpdateMatrix(MCB::ICamera* camera)
 void Boss::Damage(int damage)
 {
 	if (playerPtr == nullptr)return;
-
+	bool isHit = false;
 	for (auto& itr : colliders)
 	{
 		for (auto& itr2 : playerPtr->GetKneadedErasers())
@@ -473,6 +473,7 @@ void Boss::Damage(int damage)
 					if (!imotalFlag)
 					{
 						hp -= damage;
+						isHit = true;
 						if (shake)shake->Setshake(20, 30, damage + 2 > 5 ? 5 : damage + 2);
 						if (Player::GetCaptureList()->size() >= 5)
 						{
@@ -507,7 +508,6 @@ void Boss::Damage(int damage)
 					}
 					imotalTimer.Set(60);
 					imotalFlag = true;
-					soundmanager->PlaySoundWave(soundEffect[(unsigned int)SoundEffect::Hit]);
 
 					heavyHitNum = min(heavyHitNum, 6);
 				}
@@ -515,6 +515,7 @@ void Boss::Damage(int damage)
 		}
 
 	}
+		if(isHit) soundmanager->PlaySoundWave(soundEffect[(unsigned int)SoundEffect::Hit]);
 }
 
 void Boss::AttackCheck()
