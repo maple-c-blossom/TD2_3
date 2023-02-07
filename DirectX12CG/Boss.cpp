@@ -307,7 +307,7 @@ void Boss::Update(bool moveLimit)
 	UpdateData();
 	if (beforeAttack)
 	{
-		if (beforeAttackTimer.NowTime() % 3 == 0)
+		if (beforeAttackTimer.NowTime() % 5 == 0)
 		{
 			color = { 1.f,0.f,0.f,1.f };
 		}
@@ -325,6 +325,14 @@ void Boss::Update(bool moveLimit)
 		color = { 1.f,1.f,1.f,1.f };
 	}
 
+	if (!imotalFlag)
+	{
+		color.w = 1.f;
+	}
+	else
+	{
+		color.w = 0.15f;
+	}
 	cover->color = color;
 
 	if (hp <= 0)
@@ -397,13 +405,11 @@ void Boss::DethUpdate()
 void Boss::Draw()
 {
 	
-	if (!imotalFlag || imotalTimer.NowTime() % 3 == 0)
+
+	if (!afterdethDown)
 	{
-		if (!afterdethDown)
-		{
-			Object3d::Draw();
-			cover->Draw();
-		}
+		Object3d::Draw();
+		cover->Draw();
 	}
 	if (!afterdethDown)
 	{

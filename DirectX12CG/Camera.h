@@ -31,6 +31,8 @@ namespace MCB
 
 		bool isok = false;
 		Timer timer;
+
+		Timer isOktimer;
 	private:
 
 		std::unique_ptr<Object3d> object3d = std::make_unique<Object3d>();

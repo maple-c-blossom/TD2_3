@@ -34,6 +34,7 @@ void Camera::Update()
 			view.target = player->position;
 			targetEaseStartPos = view.target;
 			timer.Set(300);
+			isOktimer.Set(30);
 		}
 		else if (boss->afterdethDown)
 		{
@@ -51,10 +52,16 @@ void Camera::Update()
 				view.up.y = InOutQuad(1,0, timer.GetEndTime() - interval, timer.NowTime() - interval);
 
 			}
-			if (timer.IsEnd())
+
+			if (isOktimer.IsEnd() && timer.IsEnd())
 			{
 				isok = true;
 			}
+			else if(timer.IsEnd())
+			{
+				isOktimer.Update();
+			}
+
 		}
 		else if (player->deth)
 		{
@@ -71,10 +78,16 @@ void Camera::Update()
 				view.up.z = InOutQuad(0, 1, timer.GetEndTime(), timer.NowTime() - interval);
 				view.up.y = InOutQuad(1, 0, timer.GetEndTime(), timer.NowTime() - interval);
 			}
-			if (timer.IsEnd())
+			if (isOktimer.IsEnd() && timer.IsEnd())
 			{
 				isok = true;
 			}
+			else if (timer.IsEnd())
+			{
+				isOktimer.Update();
+			}
+
+
 		}
 
 
