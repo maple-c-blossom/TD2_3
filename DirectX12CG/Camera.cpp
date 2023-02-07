@@ -38,7 +38,7 @@ void Camera::Update()
 		else if (boss->afterdethDown)
 		{
 			timer.SafeUpdate();
-			int interval = 60;
+			int interval = 150;
 			if (timer.NowTime() >= interval)
 			{
 				view.eye.x = InOutQuad(eyeEaseStartPos.x, 0, timer.GetEndTime() - interval, timer.NowTime() - interval);
@@ -55,7 +55,7 @@ void Camera::Update()
 		else if (player->deth)
 		{
 			timer.SafeUpdate();
-			int interval = 60;
+			int interval = 150;
 			if (timer.NowTime() >= interval)
 			{
 				view.eye.x = InOutQuad(eyeEaseStartPos.x, 0, timer.GetEndTime() - interval, timer.NowTime() - interval);
