@@ -15,6 +15,29 @@ void Boss::EnemyPop(MCB::Vector3D velocity, MCB::Float3 position, float speed, i
 	}
 }
 
+void Boss::GaugeUpdate()
+{
+	if (imotalFlag && imotalTimer.NowTime() < 15)
+	{
+		gaugeShake = { 0,cos((float)imotalTimer.NowTime()) * (15 - imotalTimer.NowTime()) * 2.0f };
+	}
+	else if (damageAmount > hp)
+	{
+		gaugeShake = { 0,cos((float)clock()) * 2.0f };
+	}
+	else
+	{
+		gaugeShake = { 0,0 };
+	}
+
+	if (imotalTimer.NowTime() >= 30)
+	{
+		damageAmount -= MAX_HP_BOSS * 0.002f;
+	}
+
+	damageAmount = max(hp, damageAmount);
+}
+
 void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, MCB::Model* enemyModel, MCB::Model* handwrModel, MCB::Model* star, MCB::Model* ball, MCB::Model* cover, float speed, Player* playerPtr)
 {
 	this->velocity = velocity;
@@ -311,24 +334,6 @@ void Boss::Update(bool moveLimit)
 		beforedeathDownTimer.Set(30);
 	}
 
-	if (imotalFlag && imotalTimer.NowTime() < 15)
-	{
-		gaugeShake = { 0,cos((float)imotalTimer.NowTime()) * (15 - imotalTimer.NowTime()) * 2.0f };
-	}
-	else if(damageAmount > hp)
-	{
-		gaugeShake = { 0,cos((float)clock()) * 2.0f };
-	}
-	else
-	{
-		gaugeShake = { 0,0 };
-	}
-
-	if (imotalTimer.NowTime() >= 30)
-	{
-		damageAmount -= MAX_HP_BOSS * 0.002f;
-	}
-
 	if (heavyHitNum > 0)
 	{
 		heavyHitInterval--;
@@ -340,7 +345,7 @@ void Boss::Update(bool moveLimit)
 		}
 	}
 
-	damageAmount = max(hp, damageAmount);
+	GaugeUpdate();
 }
 
 void Boss::DethUpdate()
@@ -385,7 +390,7 @@ void Boss::DethUpdate()
 		itr->Update();
 	}
 
-
+	GaugeUpdate();
 }
 
 void Boss::Draw()

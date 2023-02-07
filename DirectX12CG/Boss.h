@@ -70,7 +70,9 @@ private:
 	std::unique_ptr<Object3d> cover;
 	float angle = 25.f;
 
-	void EnemyPop(MCB::Vector3D velocity, MCB::Float3 position,  float speed,int popNum = 1);
+	void EnemyPop(MCB::Vector3D velocity, MCB::Float3 position, float speed, int popNum = 1);
+	void GaugeUpdate();
+
 public:
 	SoundManager* soundmanager;
 	bool IsImotal() { return imotalFlag; }
@@ -90,4 +92,3 @@ public:
 	void AttackTimerUpdate();
 	void DethTimerUpdate();
 };
-
