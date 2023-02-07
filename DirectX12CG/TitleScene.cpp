@@ -569,6 +569,64 @@ MCB::TitleScene::~TitleScene()
     debugTextTexture->free = true;
     pushSpace->free = true;
     scopeTex->free = true;
+    tutorialSkipTex->free = true;
+
+    for (auto& itr : tutorial)
+    {
+        itr->free = true;
+    }
+
+    for (auto& itr : tutorial1)
+    {
+        itr->free = true;
+    }
+
+    for (auto& itr : tutorial1Succes)
+    {
+        itr->free = true;
+    }
+
+    for (auto& itr : tutorial2)
+    {
+        itr->free = true;
+    }
+
+    for (auto& itr : tutorial2Succes)
+    {
+        itr->free = true;
+    }
+
+    for (auto& itr : tutorial3)
+    {
+        itr->free = true;
+    }
+
+    for (auto& itr : tutorial3Succes)
+    {
+        itr->free = true;
+    }
+
+    for (auto& itr : tutorial4)
+    {
+        itr->free = true;
+    }
+
+    for (auto& itr : tutorial4Succes)
+    {
+        itr->free = true;
+    }
+
+    for (auto& itr : tutorial5)
+    {
+        itr->free = true;
+    }
+
+    for (auto& itr : tutorial5Succes)
+    {
+        itr->free = true;
+    }
+
+
 }
 
 void MCB::TitleScene::Initialize()
@@ -748,4 +806,5 @@ void MCB::TitleScene::Object3DInit()
     tutorialBode[0].position = { -15.f -210,0,8.4f };
     tutorialBode[1].position = { 15.f - 210,0,8.4f };
     camera.player = substie.get();
+    camera.boss = boss.get();
 }

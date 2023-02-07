@@ -57,8 +57,8 @@ private:
 	int shardEmptyDisplay;
 
 	std::array<MCB::Sprite, maxHP> hearts;
-	MCB::TextureCell* heartTexCell;
 	MCB::Texture* heartTex;
+	MCB::TextureCell* heartTexCell;
 	MCB::TextureCell* heartBlankTexCell;
 	MCB::Texture* heartBlankTex;
 
@@ -66,8 +66,9 @@ private:
 	Timer animationTime;
 	int animeNum;
 	bool trueMakingKneadedEraser;
-	bool deth = false;
 public:
+	~Player();
+	bool deth = false;
 	Model* sphereModel;
 	float shardCost = 1;
 	float shardRotateCost = 0.02f;

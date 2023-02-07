@@ -34,9 +34,7 @@ private:
 	bool afterAttack = false;
 
 
-	bool dethDown = false;
-	bool beforedethDown = false;
-	bool afterdethDown = false;
+
 	Timer beforedethDownTimer;
 	Timer dethDownTimer;
 
@@ -71,6 +69,9 @@ private:
 
 	void EnemyPop(MCB::Vector3D velocity, MCB::Float3 position,  float speed,int popNum = 1);
 public:
+	bool afterdethDown = false;
+	bool dethDown = false;
+	bool beforedethDown = false;
 	SoundManager* soundmanager;
 	bool IsImotal() { return imotalFlag; }
 	Shake* shake;
@@ -88,5 +89,6 @@ public:
 	void AttackStart();
 	void AttackTimerUpdate();
 	void DethTimerUpdate();
+	~Boss();
 };
 

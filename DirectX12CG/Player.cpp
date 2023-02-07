@@ -581,6 +581,22 @@ void Player::TutorialInitialize(MCB::Texture* tutorial1, MCB::Texture* tutorial2
 	};
 }
 
+Player::~Player()
+{
+	for (auto& itr : kneadedEraserGaugeTexCells)
+	{
+		itr->free = true;
+	}
+
+	for (auto& itr : shardEmptyTexCell)
+	{
+		itr->free = true;
+	}
+
+	heartTexCell->free = true;
+	heartBlankTexCell->free = true;
+}
+
 void Player::Damage(int damage)
 {
 	if(invincible <= 0)

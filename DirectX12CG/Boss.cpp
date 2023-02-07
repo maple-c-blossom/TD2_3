@@ -86,6 +86,7 @@ void Boss::Update(bool moveLimit)
 	if (!attack && !beforeAttack && !afterAttack)
 	{
 		velocity = velocity.V3Get(position, playerPtr->position);
+		nowFrontVec = velocity;
 		position.x += velocity.vec.x * moveSpeed;
 		position.z += velocity.vec.z * moveSpeed;
 		for (auto& itr : colliders)
@@ -108,7 +109,7 @@ void Boss::Update(bool moveLimit)
 	}
 	else if(afterAttack)
 	{
-		Quaternion tempQ = q.DirToDir({ 0,0,-1 }, Vector3D(velocity.vec, { playerPtr->position.x, playerPtr->position.y, playerPtr->position.z }));
+		//Quaternion tempQ = q.DirToDir({ 0,0,-1 }, Vector3D(velocity.vec, { playerPtr->position.x, playerPtr->position.y, playerPtr->position.z }));
 		//q = tempQ.Slerp(hogeQ, tempQ, afterAttackTimer.GetEndTime(), afterAttackTimer.NowTime());
 	}
 
@@ -380,9 +381,12 @@ void Boss::Draw()
 			cover->Draw();
 		}
 	}
-	for (auto& itr : enemys)
+	if (!afterdethDown)
 	{
-		itr->Draw();
+		for (auto& itr : enemys)
+		{
+			itr->Draw();
+		}
 	}
 	for (auto& itr : effects)
 	{
@@ -593,5 +597,13 @@ void Boss::DethTimerUpdate()
 				effects.push_back(std::move(effect));
 			}
 		}
+	}
+}
+
+Boss::~Boss()
+{
+	for (auto& itr : gaugeTexCells)
+	{
+		itr->free = true;
 	}
 }

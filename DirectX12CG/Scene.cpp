@@ -29,6 +29,7 @@ MCB::Scene::~Scene()
         itr->free = true;
     }
 
+
 }
 
 #pragma region 通常変数の初期化と3Dオブジェクトの初期化
@@ -101,6 +102,7 @@ void MCB::Scene::Object3DInit()
     boss->Initialize({ 0,0,1 }, { -20,0,0 }, bossModel.get(), pencilEnemyModel.get(), WritingModel.get(), BossDamegeEffectModelStar.get(), BossDamegeEffectModelSpher.get(), BossCover.get(), 1, substie.get());
     boss->shake = mainCamera.GetShakePtr();
     mainCamera.player = substie.get();
+    mainCamera.boss = boss.get();
     
     
     
@@ -325,15 +327,18 @@ void MCB::Scene::Draw()
     {
         substie->Draw();
     }
-    for (auto& itr : walls)
-    {
-        itr.Draw();
-    }
     if (!(substie->GetHp() <= 0))
     {
-        for (auto& itr : enemys)
+        if (!boss->afterdethDown)
         {
-            itr->Draw();
+            for (auto& itr : walls)
+            {
+                itr.Draw();
+            }
+            for (auto& itr : enemys)
+            {
+                itr->Draw();
+            }
         }
         boss->Draw();
     }
