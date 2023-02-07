@@ -6,13 +6,15 @@
 #include "ICamera.h"
 #include "Sprite.h"
 #include "Status.h"
+#include "BossDamageEffect.h"
+
 
 class Player :public MCB::Object3d
 {
 private:
 	static Player* playerPtr;
 	static std::list<MCB::Object3d*> captureList;
-
+	std::list<std::unique_ptr<BossDamageEffect>>effects;
 private:
 	MCB::Input* input = MCB::Input::GetInstance();
 	int hp = maxHP;
@@ -64,8 +66,9 @@ private:
 	Timer animationTime;
 	int animeNum;
 	bool trueMakingKneadedEraser;
-
+	bool deth = false;
 public:
+	Model* sphereModel;
 	float shardCost = 1;
 	float shardRotateCost = 0.02f;
 	MCB::Model* KneadedEraserModel = nullptr;
@@ -80,6 +83,7 @@ public:
 	std::list<KneadedEraser>* GetKneadedErasersPtr();
 	void Initialize();
 	void Update(bool moveLimitFlag = true);
+	void DethUpdate();
 	void Draw();
 	void TutorialDraw();
 	void StatusDraw();
