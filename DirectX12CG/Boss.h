@@ -34,11 +34,11 @@ private:
 	bool afterAttack = false;
 
 
-	bool dethDown = false;
-	bool beforedethDown = false;
-	bool afterdethDown = false;
-	Timer beforedethDownTimer;
-	Timer dethDownTimer;
+	bool deathDown = false;
+	bool beforedeathDown = false;
+	bool afterdeathDown = false;
+	Timer beforedeathDownTimer;
+	Timer deathDownTimer;
 
 	bool prevBeforeAttack;
 	bool imotalFlag = false;

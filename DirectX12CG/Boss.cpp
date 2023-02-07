@@ -304,8 +304,8 @@ void Boss::Update(bool moveLimit)
 	{
 		hp = 0;
 
-		beforedethDown = true;
-		beforedethDownTimer.Set(30);
+		beforedeathDown = true;
+		beforedeathDownTimer.Set(30);
 	}
 
 	if (imotalFlag && imotalTimer.NowTime() < 15)
@@ -330,20 +330,20 @@ void Boss::DethUpdate()
 	color = { 1.f,1.f,1.f,1.f };
 	cover->color = color;
 	DethTimerUpdate();
-	if (beforedethDown)
+	if (beforedeathDown)
 	{
-		if (beforedethDownTimer.GetEndTime() - 20 >= beforedethDownTimer.NowTime())
+		if (beforedeathDownTimer.GetEndTime() - 20 >= beforedeathDownTimer.NowTime())
 		{
-			downAngle = Lerp(0, -25, beforedethDownTimer.GetEndTime() - 20, beforedethDownTimer.NowTime());
+			downAngle = Lerp(0, -25, beforedeathDownTimer.GetEndTime() - 20, beforedeathDownTimer.NowTime());
 		}
 	}
-	else if (dethDown)
+	else if (deathDown)
 	{
-		if (dethDownTimer.GetEndTime() - 20 >= dethDownTimer.NowTime())
+		if (deathDownTimer.GetEndTime() - 20 >= deathDownTimer.NowTime())
 		{
-			downAngle = Lerp(-25, 90, dethDownTimer.GetEndTime() - 20, dethDownTimer.NowTime());
+			downAngle = Lerp(-25, 90, deathDownTimer.GetEndTime() - 20, deathDownTimer.NowTime());
 		}
-		if (dethDownTimer.GetEndTime() - 20 == dethDownTimer.NowTime())
+		if (deathDownTimer.GetEndTime() - 20 == deathDownTimer.NowTime())
 		{
 			shake->Setshake(10, 20, 3);
 			soundmanager->PlaySoundWave(soundEffect[(unsigned int)SoundEffect::FallAttack]);
@@ -351,7 +351,7 @@ void Boss::DethUpdate()
 
 	}
 
-	if (dethDown || beforedethDown)
+	if (deathDown || beforedeathDown)
 	{
 		Quaternion temp;
 		Vector3D vec = -(velocity.GetV3Cross({ 0,1,0 }));
@@ -374,7 +374,7 @@ void Boss::Draw()
 	
 	if (!imotalFlag || imotalTimer.NowTime() % 3 == 0)
 	{
-		if (!afterdethDown)
+		if (!afterdeathDown)
 		{
 			Object3d::Draw();
 			cover->Draw();
@@ -567,23 +567,23 @@ void Boss::AttackTimerUpdate()
 
 void Boss::DethTimerUpdate()
 {
-	if (beforedethDown)
+	if (beforedeathDown)
 	{
-		beforedethDownTimer.SafeUpdate();
-		if (beforedethDownTimer.IsEnd())
+		beforedeathDownTimer.SafeUpdate();
+		if (beforedeathDownTimer.IsEnd())
 		{
-			beforedethDown = false;
-			dethDown = true;
-			dethDownTimer.Set(ENEMY_ATTACK_TIME);
+			beforedeathDown = false;
+			deathDown = true;
+			deathDownTimer.Set(ENEMY_ATTACK_TIME);
 		}
 	}
-	else if (dethDown)
+	else if (deathDown)
 	{
-		dethDownTimer.SafeUpdate();
-		if (dethDownTimer.IsEnd())
+		deathDownTimer.SafeUpdate();
+		if (deathDownTimer.IsEnd())
 		{
-			dethDown = false;
-			afterdethDown = true;
+			deathDown = false;
+			afterdeathDown = true;
 			for (int i = 0; i < 40; i++)
 			{
 				unique_ptr<BossDamageEffect> effect = make_unique<BossDamageEffect>();
