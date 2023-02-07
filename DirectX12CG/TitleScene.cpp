@@ -646,6 +646,8 @@ void MCB::TitleScene::Initialize()
     lights->UpDate();
     Object3d::SetLights(lights);
     animTime.Set(30);
+    soundManager.PlaySoundWave(bgm, true);
+    soundManager.SetVolume(volume, bgm);
 }
 
 void MCB::TitleScene::LoadModel()
@@ -751,9 +753,8 @@ void MCB::TitleScene::LoadTexture()
 
 void MCB::TitleScene::LoadSound()
 {
-    testSound = soundManager.LoadWaveSound("Resources\\cat1.wav");
-    test2Sound = soundManager.LoadWaveSound("Resources\\fanfare.wav");
-    soundManager.SetVolume(100, testSound);
+    bgm = soundManager.LoadWaveSound("Resources\\sound\\bgm\\title.wav");
+
 }
 
 void MCB::TitleScene::Object3DInit()

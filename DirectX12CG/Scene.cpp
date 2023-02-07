@@ -182,9 +182,9 @@ void MCB::Scene::LoadTexture()
 
 void MCB::Scene::LoadSound()
 {
-	testSound = soundManager.LoadWaveSound("Resources\\cat1.wav");
-    test2Sound = soundManager.LoadWaveSound("Resources\\fanfare.wav");
-    soundManager.SetVolume(100, testSound);
+    bgm = soundManager.LoadWaveSound("Resources\\sound\\bgm\\title.wav");
+    clearbgm = soundManager.LoadWaveSound("Resources\\sound\\bgm\\clear.wav");
+    gameOverbgm = soundManager.LoadWaveSound("Resources\\sound\\bgm\\gameover.wav");
 }
 
 void MCB::Scene::SpriteInit()

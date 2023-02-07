@@ -73,10 +73,11 @@ namespace MCB
 
 		//サウンド
 		#pragma region サウンド
-		int testSound;
-		int test2Sound;
+		int bgm;
+		int clearbgm;
+		int gameOverbgm;
 
-		int volume = 255;
+		int volume = 25;
 #pragma endregion サウンド
 
 #pragma endregion 各種リソース
