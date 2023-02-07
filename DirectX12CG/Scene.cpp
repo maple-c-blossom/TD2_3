@@ -68,6 +68,7 @@ void MCB::Scene::Object3DInit()
     Skydome.scale = { 180,1,180 };
     Skydome.position = { 0,-15,0 };
 
+    substie->soundmanager = &soundManager;
     substie->model = playerModel.get();
     substie->KneadedEraserModel = nerikesiModel.get();
     substie->scale = { 1,1,1 };

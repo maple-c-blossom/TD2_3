@@ -47,6 +47,10 @@ void Player::Initialize()
 	shardEmptyTex = { shardEmptyTexCell[0]->texture.get(),shardEmptyTexCell[1]->texture.get() };
 	shardEmpty = shardEmpty.CreateSprite();
 	shardEmpty.anchorPoint = { 0,1 };
+
+	soundEffect[(unsigned int)SoundEffect::Damage] = soundmanager->LoadWaveSound("Resources\\sound\\se\\damage.wav");
+
+	soundmanager->SetVolume(13, soundEffect[(unsigned int)SoundEffect::Damage]);
 }
 
 void Player::Update(bool flag)
@@ -306,25 +310,28 @@ void Player::Update(bool flag)
 		rotateModeCount = 0;
 		postRotateCount = 0;
 		shard -= velocity.V3Len() * 1;
-		if (kneadedErasers.empty()
-			|| Vector3D{ kneadedErasers.front().position.x,kneadedErasers.front().position.y,kneadedErasers.front().position.z }.V3Len() > kneadedEraserDistance)
+		if (shard > velocity.V3Len() * 1)
 		{
-			kneadedErasers.push_front(KneadedEraser{});
-			kneadedErasers.front().parent = this;
-			kneadedErasers.front().model = KneadedEraserModel;
-			kneadedErasers.front().matWorld.matWorld *= matWorld.matWorld;
-			kneadedErasers.front().colliders.push_back(ADXCollider(&kneadedErasers.front()));
-			kneadedErasers.front().colliders.back().isTrigger = true;
-			kneadedErasers.front().colliders.back().collideLayer = 1;
-		}
+			if (kneadedErasers.empty()
+				|| Vector3D{ kneadedErasers.front().position.x,kneadedErasers.front().position.y,kneadedErasers.front().position.z }.V3Len() > kneadedEraserDistance)
+			{
+				kneadedErasers.push_front(KneadedEraser{});
+				kneadedErasers.front().parent = this;
+				kneadedErasers.front().model = KneadedEraserModel;
+				kneadedErasers.front().matWorld.matWorld *= matWorld.matWorld;
+				kneadedErasers.front().colliders.push_back(ADXCollider(&kneadedErasers.front()));
+				kneadedErasers.front().colliders.back().isTrigger = true;
+				kneadedErasers.front().colliders.back().collideLayer = 1;
+			}
 
-		for (auto& itr : kneadedErasers)
-		{
-			Vector3D rotatedVel = MCB::MCBMatrix::transform(velocity, MCB::MCBMatrix::MCBMatrixConvertXMMatrix(matWorld.matRot).Inverse());
+			for (auto& itr : kneadedErasers)
+			{
+				Vector3D rotatedVel = MCB::MCBMatrix::transform(velocity, MCB::MCBMatrix::MCBMatrixConvertXMMatrix(matWorld.matRot).Inverse());
 
-			itr.position.x -= rotatedVel.ConvertXMFloat3().x;
-			itr.position.y -= rotatedVel.ConvertXMFloat3().y;
-			itr.position.z -= rotatedVel.ConvertXMFloat3().z;
+				itr.position.x -= rotatedVel.ConvertXMFloat3().x;
+				itr.position.y -= rotatedVel.ConvertXMFloat3().y;
+				itr.position.z -= rotatedVel.ConvertXMFloat3().z;
+			}
 		}
 	}
 
@@ -603,5 +610,6 @@ void Player::Damage(int damage)
 	{
 		hp -= damage;
 		invincible = 70;
+		soundmanager->PlaySoundWave(soundEffect[(unsigned int)SoundEffect::Damage]);
 	}
 }

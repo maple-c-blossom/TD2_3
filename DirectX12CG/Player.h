@@ -7,6 +7,7 @@
 #include "Sprite.h"
 #include "Status.h"
 #include "BossDamageEffect.h"
+#include "Sound.h"
 
 
 class Player :public MCB::Object3d
@@ -16,6 +17,14 @@ private:
 	static std::list<MCB::Object3d*> captureList;
 	std::list<std::unique_ptr<BossDamageEffect>>effects;
 private:
+	enum class SoundEffect
+	{
+		Damage,
+		Spin,
+	};
+
+	std::array<int, 2> soundEffect;
+
 	MCB::Input* input = MCB::Input::GetInstance();
 	int hp = maxHP;
 	std::vector<int> keyConfig{ DIK_W,DIK_S,DIK_D,DIK_A,DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE };
@@ -69,6 +78,8 @@ private:
 public:
 	~Player();
 	bool deth = false;
+public:
+	SoundManager* soundmanager;
 	Model* sphereModel;
 	float shardCost = 1;
 	float shardRotateCost = 0.02f;

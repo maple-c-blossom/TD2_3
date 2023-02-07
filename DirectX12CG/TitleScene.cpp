@@ -777,6 +777,7 @@ void MCB::TitleScene::Object3DInit()
     testSpher.scale = { 3,3,3 };
     testSpher.position = { 0,4,10 };
 
+    substie->soundmanager = &soundManager;
     substie->model = playerModel.get();
     substie->KneadedEraserModel = nerikesiModel.get();
     substie->scale = { 1,1,1 };

@@ -16,15 +16,15 @@ private:
 	enum class SoundEffect
 	{
 		FallAttack,
-		Damage,
-
+		Hit,
+		HeavyHit,
 	};
 	std::vector<std::unique_ptr<Enemy>>enemys;
 	std::list<std::unique_ptr<BossDamageEffect>>effects;
 	std::vector<ADXCollider> attackCol;
 	int hp;
 	float damageAmount;
-	std::array<int, 2> soundEffect;
+	std::array<int, 3> soundEffect;
 
 	float speed;
 	MCB::Vector3D velocity;
@@ -33,10 +33,11 @@ private:
 	bool beforeAttack = false;
 	bool afterAttack = false;
 
+	int heavyHitInterval = 0;
+	int heavyHitNum = 0;
 
-
-	Timer beforedethDownTimer;
-	Timer dethDownTimer;
+	Timer beforedeathDownTimer;
+	Timer deathDownTimer;
 
 	bool prevBeforeAttack;
 	bool imotalFlag = false;
@@ -67,7 +68,9 @@ private:
 	std::unique_ptr<Object3d> cover;
 	float angle = 25.f;
 
-	void EnemyPop(MCB::Vector3D velocity, MCB::Float3 position,  float speed,int popNum = 1);
+	void EnemyPop(MCB::Vector3D velocity, MCB::Float3 position, float speed, int popNum = 1);
+	void GaugeUpdate();
+
 public:
 	bool afterdethDown = false;
 	bool dethDown = false;

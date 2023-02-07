@@ -15,6 +15,29 @@ void Boss::EnemyPop(MCB::Vector3D velocity, MCB::Float3 position, float speed, i
 	}
 }
 
+void Boss::GaugeUpdate()
+{
+	if (imotalFlag && imotalTimer.NowTime() < 15)
+	{
+		gaugeShake = { 0,cos((float)imotalTimer.NowTime()) * (15 - imotalTimer.NowTime()) * 2.0f };
+	}
+	else if (damageAmount > hp)
+	{
+		gaugeShake = { 0,cos((float)clock()) * 2.0f };
+	}
+	else
+	{
+		gaugeShake = { 0,0 };
+	}
+
+	if (imotalTimer.NowTime() >= 30)
+	{
+		damageAmount -= MAX_HP_BOSS * 0.002f;
+	}
+
+	damageAmount = max(hp, damageAmount);
+}
+
 void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, MCB::Model* enemyModel, MCB::Model* handwrModel, MCB::Model* star, MCB::Model* ball, MCB::Model* cover, float speed, Player* playerPtr)
 {
 	this->velocity = velocity;
@@ -61,10 +84,13 @@ void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* 
 		itr.anchorPoint = { 0,0 };
 	};
 
-	soundEffect[0] = soundmanager->LoadWaveSound("Resources\\sound\\se\\bossAttack.wav");
-	soundEffect[1] = soundmanager->LoadWaveSound("Resources\\sound\\se\\damage.wav");
-	soundmanager->SetVolume(50, soundEffect[0]);
-	soundmanager->SetVolume(50, soundEffect[1]);
+	soundEffect[(unsigned int)SoundEffect::FallAttack] = soundmanager->LoadWaveSound("Resources\\sound\\se\\bossAttack.wav");
+	soundEffect[(unsigned int)SoundEffect::Hit] = soundmanager->LoadWaveSound("Resources\\sound\\se\\slam.wav");
+	soundEffect[(unsigned int)SoundEffect::HeavyHit] = soundmanager->LoadWaveSound("Resources\\sound\\se\\slap.wav");
+
+	soundmanager->SetVolume(50, soundEffect[(unsigned int)SoundEffect::FallAttack]);
+	soundmanager->SetVolume(6, soundEffect[(unsigned int)SoundEffect::Hit]);
+	soundmanager->SetVolume(6, soundEffect[(unsigned int)SoundEffect::HeavyHit]);
 
 	this->quaternionPtr = &quaternion;
 }
@@ -305,24 +331,22 @@ void Boss::Update(bool moveLimit)
 	{
 		hp = 0;
 
-		beforedethDown = true;
-		beforedethDownTimer.Set(30);
+		beforedeathDown = true;
+		beforedeathDownTimer.Set(30);
 	}
 
-	if (imotalFlag && imotalTimer.NowTime() < 15)
+	if (heavyHitNum > 0)
 	{
-		gaugeShake = { 0,cos((float)imotalTimer.NowTime()) * (15 - imotalTimer.NowTime()) * 2.0f };
-	}
-	else
-	{
-		gaugeShake = { 0,0 };
-		if (imotalTimer.NowTime() >= 30)
+		heavyHitInterval--;
+		if (heavyHitInterval <= 0)
 		{
-			damageAmount -= MAX_HP_BOSS * 0.002f;
+			soundmanager->PlaySoundWave(soundEffect[(unsigned int)SoundEffect::HeavyHit]);
+			heavyHitNum--;
+			heavyHitInterval = 5;
 		}
 	}
 
-	damageAmount = max(hp, damageAmount);
+	GaugeUpdate();
 }
 
 void Boss::DethUpdate()
@@ -331,20 +355,20 @@ void Boss::DethUpdate()
 	color = { 1.f,1.f,1.f,1.f };
 	cover->color = color;
 	DethTimerUpdate();
-	if (beforedethDown)
+	if (beforedeathDown)
 	{
-		if (beforedethDownTimer.GetEndTime() - 20 >= beforedethDownTimer.NowTime())
+		if (beforedeathDownTimer.GetEndTime() - 20 >= beforedeathDownTimer.NowTime())
 		{
-			downAngle = Lerp(0, -25, beforedethDownTimer.GetEndTime() - 20, beforedethDownTimer.NowTime());
+			downAngle = Lerp(0, -25, beforedeathDownTimer.GetEndTime() - 20, beforedeathDownTimer.NowTime());
 		}
 	}
-	else if (dethDown)
+	else if (deathDown)
 	{
-		if (dethDownTimer.GetEndTime() - 20 >= dethDownTimer.NowTime())
+		if (deathDownTimer.GetEndTime() - 20 >= deathDownTimer.NowTime())
 		{
-			downAngle = Lerp(-25, 90, dethDownTimer.GetEndTime() - 20, dethDownTimer.NowTime());
+			downAngle = Lerp(-25, 90, deathDownTimer.GetEndTime() - 20, deathDownTimer.NowTime());
 		}
-		if (dethDownTimer.GetEndTime() - 20 == dethDownTimer.NowTime())
+		if (deathDownTimer.GetEndTime() - 20 == deathDownTimer.NowTime())
 		{
 			shake->Setshake(10, 20, 3);
 			soundmanager->PlaySoundWave(soundEffect[(unsigned int)SoundEffect::FallAttack]);
@@ -352,7 +376,7 @@ void Boss::DethUpdate()
 
 	}
 
-	if (dethDown || beforedethDown)
+	if (deathDown || beforedeathDown)
 	{
 		Quaternion temp;
 		Vector3D vec = -(velocity.GetV3Cross({ 0,1,0 }));
@@ -367,7 +391,7 @@ void Boss::DethUpdate()
 		itr->Update();
 	}
 
-
+	GaugeUpdate();
 }
 
 void Boss::Draw()
@@ -375,7 +399,7 @@ void Boss::Draw()
 	
 	if (!imotalFlag || imotalTimer.NowTime() % 3 == 0)
 	{
-		if (!afterdethDown)
+		if (!afterdeathDown)
 		{
 			Object3d::Draw();
 			cover->Draw();
@@ -474,15 +498,18 @@ void Boss::Damage(int damage)
 
 					itr3.gameObject->deleteFlag = true;
 
-
+					heavyHitNum = 0;
 
 					for (auto& itr : *Player::GetCaptureList())//すでに練りけしについている敵のデリートフラグをOnに
 					{
 						itr->deleteFlag = true;
+						heavyHitNum++;
 					}
 					imotalTimer.Set(60);
 					imotalFlag = true;
-					soundmanager->PlaySoundWave(soundEffect[(unsigned int)SoundEffect::Damage]);
+					soundmanager->PlaySoundWave(soundEffect[(unsigned int)SoundEffect::Hit]);
+
+					heavyHitNum = min(heavyHitNum, 6);
 				}
 			}
 		}
@@ -571,23 +598,23 @@ void Boss::AttackTimerUpdate()
 
 void Boss::DethTimerUpdate()
 {
-	if (beforedethDown)
+	if (beforedeathDown)
 	{
-		beforedethDownTimer.SafeUpdate();
-		if (beforedethDownTimer.IsEnd())
+		beforedeathDownTimer.SafeUpdate();
+		if (beforedeathDownTimer.IsEnd())
 		{
-			beforedethDown = false;
-			dethDown = true;
-			dethDownTimer.Set(ENEMY_ATTACK_TIME);
+			beforedeathDown = false;
+			deathDown = true;
+			deathDownTimer.Set(ENEMY_ATTACK_TIME);
 		}
 	}
-	else if (dethDown)
+	else if (deathDown)
 	{
-		dethDownTimer.SafeUpdate();
-		if (dethDownTimer.IsEnd())
+		deathDownTimer.SafeUpdate();
+		if (deathDownTimer.IsEnd())
 		{
-			dethDown = false;
-			afterdethDown = true;
+			deathDown = false;
+			afterdeathDown = true;
 			for (int i = 0; i < 40; i++)
 			{
 				unique_ptr<BossDamageEffect> effect = make_unique<BossDamageEffect>();

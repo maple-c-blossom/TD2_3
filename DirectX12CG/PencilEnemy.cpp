@@ -29,9 +29,9 @@ void PencilEnemy::UniqueUpdate(bool movelimit)
 			}
 			else if (attack)
 			{
-				position.x += attackVec.vec.x * speed * 2;
-				position.y += attackVec.vec.y * speed * 2;
-				position.z += attackVec.vec.z * speed * 2;
+				position.x += attackVec.vec.x * speed;
+				position.y += attackVec.vec.y * speed;
+				position.z += attackVec.vec.z * speed;
 
 				std::array<Vector3D, 3> PrevmovePoint = {};
 				bool flag = false;
