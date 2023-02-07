@@ -29,6 +29,10 @@ MCB::Scene::~Scene()
         itr->free = true;
     }
 
+    for (auto& itr : result)
+    {
+        itr->free = true;
+    }
 
 }
 
@@ -147,6 +151,8 @@ void MCB::Scene::LoadTexture()
 	debugTextTexture = loader->LoadTexture(L"Resources\\debugfont.png");
     bossHp = loader->LoadTexture(L"Resources\\text\\bossHp.png");
     shard = loader->LoadTexture(L"Resources\\text\\shard.png");
+
+#pragma region tutorial
     tutorialTexs[0] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_move.png");
     tutorialTexs[1] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_base.png");
     tutorialTexs[2] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_attack.png");
@@ -155,6 +161,23 @@ void MCB::Scene::LoadTexture()
     tutorialTexs[5] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_spin3.png");
     tutorialTexs[6] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_spin4.png");
     tutorialTexs[7] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_remove.png");
+#pragma endregion
+
+#pragma region result
+    result[(int)Result::Clear] = loader->LoadTexture(L"Resources\\result\\clear.png");
+    result[(int)Result::GameOver] = loader->LoadTexture(L"Resources\\result\\gameover.png");
+    result[(int)Result::Frame] = loader->LoadTexture(L"Resources\\result\\frame.png");
+    result[(int)Result::Title] = loader->LoadTexture(L"Resources\\result\\title.png");
+    result[(int)Result::Space] = loader->LoadTexture(L"Resources\\result\\space.png");
+    result[(int)Result::ABottom] = loader->LoadTexture(L"Resources\\result\\a.png");
+    result[(int)Result::Time] = loader->LoadTexture(L"Resources\\result\\time.png");
+    result[(int)Result::Rank] = loader->LoadTexture(L"Resources\\result\\rank.png");
+    result[(int)Result::ARank] = loader->LoadTexture(L"Resources\\result\\rank_a.png");
+    result[(int)Result::BRank] = loader->LoadTexture(L"Resources\\result\\rank_b.png");
+    result[(int)Result::CRank] = loader->LoadTexture(L"Resources\\result\\rank_c.png");
+    result[(int)Result::SRank] = loader->LoadTexture(L"Resources\\result\\rank_s.png");
+#pragma endregion
+
 }
 
 void MCB::Scene::LoadSound()
@@ -178,6 +201,25 @@ void MCB::Scene::SpriteInit()
     shardSprite = shardSprite.CreateSprite();
     shardSprite.tex = shard->texture.get();
     shardSprite.anchorPoint = { 0,0 };
+
+    for(auto& itr: resultSprite)
+    {
+        itr = make_unique<Sprite>();
+        *itr = shardSprite.CreateSprite();
+    }
+    resultSprite[(int)Result::Clear]->tex = result[(int)Result::Clear]->texture.get();
+    resultSprite[(int)Result::GameOver]->tex = result[(int)Result::GameOver]->texture.get();
+    resultSprite[(int)Result::Frame]->tex = result[(int)Result::Frame]->texture.get();
+    resultSprite[(int)Result::Title]->tex = result[(int)Result::Title]->texture.get();
+    resultSprite[(int)Result::Space]->tex = result[(int)Result::Space]->texture.get();
+    resultSprite[(int)Result::ABottom]->tex = result[(int)Result::ABottom]->texture.get();
+    resultSprite[(int)Result::Time]->tex = result[(int)Result::Time]->texture.get();
+    resultSprite[(int)Result::Rank]->tex = result[(int)Result::Rank]->texture.get();
+    resultSprite[(int)Result::ARank]->tex = result[(int)Result::ARank]->texture.get();
+    resultSprite[(int)Result::BRank]->tex = result[(int)Result::BRank]->texture.get();
+    resultSprite[(int)Result::CRank]->tex = result[(int)Result::CRank]->texture.get();
+    resultSprite[(int)Result::SRank]->tex = result[(int)Result::SRank]->texture.get();
+
     debugText.Init(debugTextTexture->texture.get());
     substie->TutorialInitialize(tutorialTexs[0]->texture.get(), tutorialTexs[1]->texture.get(), tutorialTexs[2]->texture.get(),
         tutorialTexs[3]->texture.get(), tutorialTexs[4]->texture.get(), tutorialTexs[5]->texture.get(), tutorialTexs[6]->texture.get(), tutorialTexs[7]->texture.get());
@@ -365,13 +407,21 @@ void MCB::Scene::SpriteDraw()
         }
     }
 
-    if (boss->GetHp() <= 0)
+    if (mainCamera.isok && boss->GetHp() <= 0 )
     {
-        debugText.Print(dxWindow->window_width/2 - 100, dxWindow->window_height/2, 4, "GameClear");
+        resultSprite[(int)Result::Clear]->SpriteDraw(dxWindow->window_width / 2, 90, 576, 60);
+        resultSprite[(int)Result::Frame]->SpriteDraw(dxWindow->window_width / 2, dxWindow->window_height / 2, 448 * 2, 446);
+        resultSprite[(int)Result::Title]->SpriteDraw(dxWindow->window_width / 2 - 224, dxWindow->window_height / 2);
+        resultSprite[(int)Result::Space]->SpriteDraw(dxWindow->window_width / 2 + 224, dxWindow->window_height / 2 - 113);
+        resultSprite[(int)Result::ABottom]->SpriteDraw(dxWindow->window_width / 2 + 224, dxWindow->window_height / 2 + 113);
     }
-    else if (substie->GetHp() <= 0)
+    else if (mainCamera.isok && substie->GetHp() <= 0)
     {
-        debugText.Print(dxWindow->window_width / 2 - 100, dxWindow->window_height / 2, 4, "GameOver");
+        resultSprite[(int)Result::GameOver]->SpriteDraw(dxWindow->window_width / 2, 90, 576, 80);
+        resultSprite[(int)Result::Frame]->SpriteDraw(dxWindow->window_width / 2, dxWindow->window_height / 2, 448 * 2, 446);
+        resultSprite[(int)Result::Title]->SpriteDraw(dxWindow->window_width / 2 - 224, dxWindow->window_height / 2);
+        resultSprite[(int)Result::Space]->SpriteDraw(dxWindow->window_width / 2 + 224, dxWindow->window_height / 2 - 113);
+        resultSprite[(int)Result::ABottom]->SpriteDraw(dxWindow->window_width / 2 + 224, dxWindow->window_height / 2 + 113);
     }
 
     debugText.AllDraw();

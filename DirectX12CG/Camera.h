@@ -29,6 +29,7 @@ namespace MCB
 		Player* player = nullptr;
 		Boss* boss = nullptr;
 
+		bool isok = false;
 		Timer timer;
 	private:
 

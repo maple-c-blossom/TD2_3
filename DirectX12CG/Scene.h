@@ -68,6 +68,7 @@ namespace MCB
 		TextureCell* shard;
 		std::array<MCB::TextureCell*, 8> tutorialTexs;
 		std::array<MCB::TextureCell*, 12> result;
+		std::array< std::unique_ptr<MCB::Sprite>, 12> resultSprite;
 #pragma endregion テクスチャ
 
 		//サウンド

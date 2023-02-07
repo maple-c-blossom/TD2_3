@@ -51,6 +51,10 @@ void Camera::Update()
 				view.up.y = InOutQuad(1,0, timer.GetEndTime() - interval, timer.NowTime() - interval);
 
 			}
+			if (timer.IsEnd())
+			{
+				isok = true;
+			}
 		}
 		else if (player->deth)
 		{
@@ -66,6 +70,10 @@ void Camera::Update()
 				view.target.z = InOutQuad(targetEaseStartPos.z, -10, timer.GetEndTime() - interval, timer.NowTime() - interval);
 				view.up.z = InOutQuad(0, 1, timer.GetEndTime(), timer.NowTime() - interval);
 				view.up.y = InOutQuad(1, 0, timer.GetEndTime(), timer.NowTime() - interval);
+			}
+			if (timer.IsEnd())
+			{
+				isok = true;
 			}
 		}
 
