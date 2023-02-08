@@ -302,69 +302,71 @@ void ADXCollider::Collide(ADXCollider* col)
 			executePushBack = false;
 		}
 	}
-
-	if (IsHit(*col) && enabled && col->enabled && col->gameObject != gameObject)
+	if (col->gameObject != nullptr)
 	{
-		if (executePushBack && !isTrigger && !col->isTrigger)
+		if (IsHit(*col) && enabled && col->enabled && col->gameObject != gameObject)
 		{
-			ADXVector3 myPushBack = CollideVector(*col);
-			ADXVector3 targetPushBack = col->CollideVector(*this);
+			if (executePushBack && !isTrigger && !col->isTrigger)
+			{
+				ADXVector3 myPushBack = CollideVector(*col);
+				ADXVector3 targetPushBack = col->CollideVector(*this);
 
-			int conditionState[4][3] = { {0,0,0},{1,1,1},{2,2,2},{3,1,2} };
+				int conditionState[4][3] = { {0,0,0},{1,1,1},{2,2,2},{3,1,2} };
 
-			int pushableCondition = 0;
-			int priorityCondition = 0;
+				int pushableCondition = 0;
+				int priorityCondition = 0;
 
-			if (pushable_ && col->pushable_)
-			{
-				pushableCondition = 3;
-			}
-			else if (pushable_)
-			{
-				pushableCondition = 1;
-			}
-			else if (col->pushable_)
-			{
-				pushableCondition = 2;
+				if (pushable_ && col->pushable_)
+				{
+					pushableCondition = 3;
+				}
+				else if (pushable_)
+				{
+					pushableCondition = 1;
+				}
+				else if (col->pushable_)
+				{
+					pushableCondition = 2;
+				}
+
+				if (pushBackPriority == col->pushBackPriority)
+				{
+					priorityCondition = 0;
+				}
+				else if (pushBackPriority < col->pushBackPriority)
+				{
+					priorityCondition = 1;
+				}
+				else if (pushBackPriority > col->pushBackPriority)
+				{
+					priorityCondition = 2;
+				}
+
+				int ConditionStateResult = conditionState[pushableCondition][priorityCondition];
+
+				switch (ConditionStateResult)
+				{
+				case 1:
+					pushBackVector += myPushBack;
+					break;
+				case 2:
+					col->pushBackVector += targetPushBack;
+					break;
+				case 3:
+					pushBackVector += myPushBack * 0.5f;
+					col->pushBackVector += targetPushBack * 0.5f;
+					break;
+				default:
+					break;
+				}
 			}
 
-			if (pushBackPriority == col->pushBackPriority)
-			{
-				priorityCondition = 0;
-			}
-			else if (pushBackPriority < col->pushBackPriority)
-			{
-				priorityCondition = 1;
-			}
-			else if (pushBackPriority > col->pushBackPriority)
-			{
-				priorityCondition = 2;
-			}
+			collideList.push_back(col);
+			col->collideList.push_back(this);
 
-			int ConditionStateResult = conditionState[pushableCondition][priorityCondition];
-
-			switch (ConditionStateResult)
-			{
-			case 1:
-				pushBackVector += myPushBack;
-				break;
-			case 2:
-				col->pushBackVector += targetPushBack;
-				break;
-			case 3:
-				pushBackVector += myPushBack * 0.5f;
-				col->pushBackVector += targetPushBack * 0.5f;
-				break;
-			default:
-				break;
-			}
+			gameObject->OnColliderHit(this, col);
+			col->gameObject->OnColliderHit(col, this);
 		}
-
-		collideList.push_back(col);
-		col->collideList.push_back(this);
-
-		gameObject->OnColliderHit(this, col);
-		col->gameObject->OnColliderHit(col, this);
 	}
 }
 
