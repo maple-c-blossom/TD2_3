@@ -248,7 +248,10 @@ void MCB::Scene::Update()
     if (boss->GetHp() > 0 && substie->GetHp() > 0)
     {
         time++;
-
+        for (auto& itr : walls)
+        {
+            itr.Update();
+        }
         substie->Update();
         spownTimer.Update();
 

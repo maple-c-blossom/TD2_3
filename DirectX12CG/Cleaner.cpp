@@ -17,22 +17,25 @@ void Cleaner::Inilialize(MCB::Model* model)
     movePoint[1].vec = { 38.f , 0.f , 25.f };
     movePoint[2].vec = { -38.f , 0.f , -34.f };
     movePoint[3].vec = { 38.f , 0.f , -34.f };
+    //position.x = movePoint[0].vec.x;
+    //position.y = movePoint[0].vec.y;
+    //position.z = movePoint[0].vec.z;
 }
 
 void Cleaner::Update()
 {
 	moveTime.SafeUpdate();
-    if (moveTime.NowTime() >= SECOND_FRAME * 2)
-    {
-        position.x = Lerp(movePoint[moveindex].vec.x, movePoint[moveEndindex].vec.x, moveTime.GetEndTime() -  SECOND_FRAME * 2, moveTime.NowTime() - SECOND_FRAME * 2);
-        position.y = Lerp(movePoint[moveindex].vec.y, movePoint[moveEndindex].vec.y, moveTime.GetEndTime() - SECOND_FRAME * 2, moveTime.NowTime() - SECOND_FRAME * 2);
-        position.z = Lerp(movePoint[moveindex].vec.z, movePoint[moveEndindex].vec.z, moveTime.GetEndTime() - SECOND_FRAME * 2, moveTime.NowTime() - SECOND_FRAME * 2);
-        rotation.y = ConvertRadius(Lerp(0, 360, moveTime.GetEndTime() - SECOND_FRAME * 2, moveTime.NowTime() - SECOND_FRAME * 2));
-    }
+    //if (moveTime.NowTime() >= SECOND_FRAME * 2)
+    //{
+    //    /*position.x = Lerp(movePoint[moveindex].vec.x, movePoint[moveEndindex].vec.x, moveTime.GetEndTime() -  SECOND_FRAME * 2, moveTime.NowTime() - SECOND_FRAME * 2);
+        /*position.y = Lerp(movePoint[moveindex].vec.y, movePoint[moveEndindex].vec.y, moveTime.GetEndTime() - SECOND_FRAME * 2, moveTime.NowTime() - SECOND_FRAME * 2);
+        position.z = Lerp(movePoint[moveindex].vec.z, movePoint[moveEndindex].vec.z, moveTime.GetEndTime() - SECOND_FRAME * 2, moveTime.NowTime() - SECOND_FRAME * 2);*/
+        rotation.y = ConvertRadius(Lerp(0, 360, moveTime.GetEndTime(), moveTime.NowTime() ));
+    //}
     if (moveTime.IsEnd())
     {
         moveTime.ReSet();
-        moveindex++;
+       /* moveindex++;
         moveEndindex = moveindex + 1;
         if (movePoint.size() <= moveindex)
         {
@@ -42,6 +45,6 @@ void Cleaner::Update()
         if (movePoint.size() <= moveEndindex)
         {
             moveEndindex = 0;
-        }
+        }*/
     }
 }
