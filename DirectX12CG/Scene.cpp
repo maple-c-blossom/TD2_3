@@ -108,7 +108,7 @@ void MCB::Scene::Object3DInit()
     boss->shake = mainCamera.GetShakePtr();
     mainCamera.player = substie.get();
     mainCamera.boss = boss.get();
-    
+    resultSizeTimer.Set(360);
     
     
     //sphere.Init();
@@ -324,10 +324,14 @@ void MCB::Scene::Update()
         }
 
         boss->Update();
+
     }
     else if (boss->GetHp() <= 0)
     {
         boss->DethUpdate();
+        resultSize = sinf(ConvertRadius((float)resultSizeTimer.NowTime() >= 180 ? resultSizeTimer.NowTime()  * -1: resultSizeTimer.NowTime())) * 0.25f + 0.75f;
+        resultSizeTimer.SafeUpdate();
+        resultSizeTimer.ReSet();
         if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A))
         {
             sceneEnd = true;
@@ -336,6 +340,9 @@ void MCB::Scene::Update()
     else if (substie->GetHp() <= 0)
     {
         substie->DethUpdate();
+        resultSize = sinf(ConvertRadius((float)resultSizeTimer.NowTime() >= 180 ? resultSizeTimer.NowTime() * -1 : resultSizeTimer.NowTime())) * 0.25f + 0.75f;
+        resultSizeTimer.SafeUpdate();
+        resultSizeTimer.ReSet();
         if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A))
         {
             sceneEnd = true;
@@ -412,16 +419,16 @@ void MCB::Scene::SpriteDraw()
         resultSprite[(int)Result::Clear]->SpriteDraw(dxWindow->window_width / 2, 90, 576, 60);
         resultSprite[(int)Result::Frame]->SpriteDraw(dxWindow->window_width / 2, dxWindow->window_height / 2, 448 * 2, 446);
         resultSprite[(int)Result::Title]->SpriteDraw(dxWindow->window_width / 2 - 224, dxWindow->window_height / 2);
-        resultSprite[(int)Result::Space]->SpriteDraw(dxWindow->window_width / 2 + 224, dxWindow->window_height / 2 - 113);
-        resultSprite[(int)Result::ABottom]->SpriteDraw(dxWindow->window_width / 2 + 224, dxWindow->window_height / 2 + 113);
+        resultSprite[(int)Result::Space]->SpriteDraw(dxWindow->window_width / 2 + 224, dxWindow->window_height / 2 - 113, 248 * resultSize, 62 * resultSize);
+        resultSprite[(int)Result::ABottom]->SpriteDraw(dxWindow->window_width / 2 + 224, dxWindow->window_height / 2 + 113, 66 * resultSize, 66 * resultSize);
     }
     else if (mainCamera.isok && substie->GetHp() <= 0)
     {
         resultSprite[(int)Result::GameOver]->SpriteDraw(dxWindow->window_width / 2, 90, 576, 80);
         resultSprite[(int)Result::Frame]->SpriteDraw(dxWindow->window_width / 2, dxWindow->window_height / 2, 448 * 2, 446);
         resultSprite[(int)Result::Title]->SpriteDraw(dxWindow->window_width / 2 - 224, dxWindow->window_height / 2);
-        resultSprite[(int)Result::Space]->SpriteDraw(dxWindow->window_width / 2 + 224, dxWindow->window_height / 2 - 113);
-        resultSprite[(int)Result::ABottom]->SpriteDraw(dxWindow->window_width / 2 + 224, dxWindow->window_height / 2 + 113);
+        resultSprite[(int)Result::Space]->SpriteDraw(dxWindow->window_width / 2 + 224, dxWindow->window_height / 2 - 113,248 * resultSize,62 * resultSize);
+        resultSprite[(int)Result::ABottom]->SpriteDraw(dxWindow->window_width / 2 + 224, dxWindow->window_height / 2 + 113,66 * resultSize,66 * resultSize);
     }
 
     debugText.AllDraw();
