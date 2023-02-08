@@ -158,6 +158,7 @@ void Boss::Update(bool moveLimit)
 		{
 			shake->Setshake(10, 20, 3);
 			soundmanager->PlaySoundWave(soundEffect[(unsigned int)SoundEffect::FallAttack]);
+			soundmanager->SetVolume(60,soundEffect[(unsigned int)SoundEffect::FallAttack]);
 		}
 
 	}
@@ -350,6 +351,7 @@ void Boss::Update(bool moveLimit)
 		if (heavyHitInterval <= 0)
 		{
 			soundmanager->PlaySoundWave(soundEffect[(unsigned int)SoundEffect::HeavyHit]);
+			soundmanager->SetVolume(10,soundEffect[(unsigned int)SoundEffect::HeavyHit]);
 			heavyHitNum--;
 			heavyHitInterval = 5;
 		}
@@ -381,6 +383,7 @@ void Boss::DethUpdate()
 		{
 			shake->Setshake(10, 20, 3);
 			soundmanager->PlaySoundWave(soundEffect[(unsigned int)SoundEffect::FallAttack]);
+			soundmanager->SetVolume(90,soundEffect[(unsigned int)SoundEffect::FallAttack]);
 		}
 
 	}
@@ -523,6 +526,7 @@ void Boss::Damage(int damage)
 
 	}
 		if(isHit) soundmanager->PlaySoundWave(soundEffect[(unsigned int)SoundEffect::Hit]);
+		if(isHit) soundmanager->SetVolume(10,soundEffect[(unsigned int)SoundEffect::Hit]);
 }
 
 void Boss::AttackCheck()
@@ -632,6 +636,7 @@ void Boss::DethTimerUpdate()
 				effects.push_back(std::move(effect));
 			}
 			soundmanager->PlaySoundWave(dieSound);
+			soundmanager->SetVolume(80,dieSound);
 		}
 	}
 }

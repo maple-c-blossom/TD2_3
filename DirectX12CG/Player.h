@@ -50,6 +50,8 @@ private:
 	float postRotateCount = 0;
 	bool rotateSoundPlay;
 	int dieSound;
+	int shardEmptySound;
+	bool shardEmptySoundPlay;
 	MCB::Vector3D prevPos{};
 	MCB::Vector3D velocity{};
 
@@ -76,6 +78,7 @@ private:
 	std::array<MCB::Float2, 3> heartShake;
 	Timer animationTime;
 	int animeNum;
+	int eraseSound;
 	bool trueMakingKneadedEraser;
 public:
 	std::list<std::unique_ptr<KneadedEraser, MCB::MyDeleter<KneadedEraser>>> kneadedErasers{};
