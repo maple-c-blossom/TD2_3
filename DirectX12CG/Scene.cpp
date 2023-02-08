@@ -321,7 +321,7 @@ void MCB::Scene::Update()
                 }
             }
 
-            spownTimer.Set(60);
+            spownTimer.Set(30);
         }
 
         for (auto& itr : enemys)
