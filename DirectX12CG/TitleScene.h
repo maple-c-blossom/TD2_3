@@ -42,6 +42,11 @@ namespace MCB
 		TextureCell* debugTextTexture;
 		TextureCell* pushSpace;
 		TextureCell* scopeTex;
+		std::array<TextureCell*,5> tutorial1;
+		std::array<TextureCell*,5> tutorial1Succes;
+		Timer tutorialAnimationTimer;
+		std::array<int, 8>tutorial;
+
 #pragma endregion テクスチャ
 
 		//サウンド
