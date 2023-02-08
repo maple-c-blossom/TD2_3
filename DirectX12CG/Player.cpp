@@ -601,7 +601,7 @@ bool Player::IsInvincible()
 
 void Player::Erase()
 {
-	shard += 0.5;
+	shard += 0.45;
 	soundmanager->PlaySoundWave(eraseSound);
 	soundmanager->SetVolume(40, eraseSound);
 }
