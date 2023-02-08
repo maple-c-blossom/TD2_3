@@ -87,10 +87,11 @@ void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* 
 	soundEffect[(unsigned int)SoundEffect::FallAttack] = soundmanager->LoadWaveSound("Resources\\sound\\se\\bossAttack.wav");
 	soundEffect[(unsigned int)SoundEffect::Hit] = soundmanager->LoadWaveSound("Resources\\sound\\se\\slam.wav");
 	soundEffect[(unsigned int)SoundEffect::HeavyHit] = soundmanager->LoadWaveSound("Resources\\sound\\se\\slap.wav");
-	dieSound = soundmanager->LoadWaveSound("Resources\\sound\\se\\pop.wav");
+	dieSound = soundmanager->LoadWaveSound("Resources\\sound\\se\\death.wav");
 	soundmanager->SetVolume(50, soundEffect[(unsigned int)SoundEffect::FallAttack]);
 	soundmanager->SetVolume(6, soundEffect[(unsigned int)SoundEffect::Hit]);
 	soundmanager->SetVolume(6, soundEffect[(unsigned int)SoundEffect::HeavyHit]);
+	soundmanager->SetVolume(13, dieSound);
 
 	this->quaternionPtr = &quaternion;
 }
