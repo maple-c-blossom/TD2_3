@@ -114,6 +114,7 @@ void Boss::Update(bool moveLimit)
 	{
 		velocity = velocity.V3Get(position, playerPtr->position);
 		nowFrontVec = velocity;
+		velocity.V3Norm();
 		position.x += velocity.vec.x * moveSpeed;
 		position.z += velocity.vec.z * moveSpeed;
 		for (auto& itr : colliders)
