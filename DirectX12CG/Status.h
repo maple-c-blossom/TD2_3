@@ -12,7 +12,7 @@ static int MAX_HP_BOSS = 100;//ボスの初期HP
 //プレイヤーに関する定数
 const int maxHP = 7;
 const float maxShard = 100;//ねりけしゲージの最大値
-const int maxKneadedErasers = 30;//ねりけしの粒の最大数
+const int maxKneadedErasers = 25;//ねりけしの粒の最大数
 const float kneadedEraserDistance = 1.0f;//これを少なくするとねりけしの密度が濃くなり、最大値に達しやすくなる
 const float maxMoveSpeed = 0.35;//最高移動速度
 const float maxRotateSpeed = 15;//回転モードの最大角速度
