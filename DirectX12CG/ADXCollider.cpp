@@ -302,7 +302,7 @@ void ADXCollider::Collide(ADXCollider* col)
 			executePushBack = false;
 		}
 	}
-	if (col->gameObject != nullptr)
+	if (col->gameObject != nullptr && col->collideList.size() <= 1000000)
 	{
 		if (IsHit(*col) && enabled && col->enabled && col->gameObject != gameObject)
 		{
