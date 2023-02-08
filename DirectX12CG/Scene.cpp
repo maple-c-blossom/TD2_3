@@ -339,10 +339,13 @@ void MCB::Scene::Update()
         resultSize = sinf(ConvertRadius((float)resultSizeTimer.NowTime() >= 180 ? resultSizeTimer.NowTime()  * -1: resultSizeTimer.NowTime())) * 0.25f + 0.75f;
         resultSizeTimer.SafeUpdate();
         resultSizeTimer.ReSet();
-        if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A))
+        if (mainCamera.isok)
         {
-            sceneEnd = true;
-            soundManager.PlaySoundWave(selectSound);
+            if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A))
+            {
+                sceneEnd = true;
+                soundManager.PlaySoundWave(selectSound);
+            }
         }
     }
     else if (substie->GetHp() <= 0)
@@ -352,10 +355,13 @@ void MCB::Scene::Update()
         resultSize = sinf(ConvertRadius((float)resultSizeTimer.NowTime() >= 180 ? resultSizeTimer.NowTime() * -1 : resultSizeTimer.NowTime())) * 0.25f + 0.75f;
         resultSizeTimer.SafeUpdate();
         resultSizeTimer.ReSet();
-        if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A))
+        if (mainCamera.isok)
         {
-            sceneEnd = true;
-            soundManager.PlaySoundWave(selectSound);
+            if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A))
+            {
+                sceneEnd = true;
+                soundManager.PlaySoundWave(selectSound);
+            }
         }
     }
     if (boss->GetHp() <= 0 || substie->GetHp() <= 0)
