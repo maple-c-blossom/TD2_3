@@ -45,7 +45,7 @@ private:
 	Timer AttackTimer;
 	Timer afterAttackTimer;
 	Timer imotalTimer;//–³“GŽžŠÔ
-	float moveSpeed = 0.05f;
+	float moveSpeed = 0.055f;
 	float jumpSpeed = 0.025f;
 	float downSpeed = -0.025f;
 	float gravity = 0.001f;

@@ -278,7 +278,7 @@ void MCB::Scene::Update()
                 temp->movePoint = { {-20 + temp->position.x,0,20 + temp->position.z},{ 20 + temp->position.x,0,40 + temp->position.z },{ 20 + temp->position.x,0,20 + temp->position.z } };
                 enemys.push_back(move(temp));
             }
-            else if (countErase <= 1)
+            else if (countErase <= 2)
             {
                 unique_ptr<EraserEnemy, MyDeleter<EraserEnemy>> temp(new EraserEnemy);
                 temp->Initialize({ 0,0,1 }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, eraseEnemyModel.get(), 0.15f);
