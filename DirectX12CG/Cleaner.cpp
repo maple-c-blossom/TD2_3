@@ -17,9 +17,6 @@ void Cleaner::Inilialize(MCB::Model* model)
     movePoint[1].vec = { 38.f , 0.f , 25.f };
     movePoint[2].vec = { -38.f , 0.f , -34.f };
     movePoint[3].vec = { 38.f , 0.f , -34.f };
-    position.x = movePoint[0].vec.x;
-    position.y = movePoint[0].vec.y;
-    position.z = movePoint[0].vec.z;
 }
 
 void Cleaner::Update()
