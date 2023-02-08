@@ -82,6 +82,7 @@ public:
 	bool deth = false;
 public:
 	int rotateSound;
+	float rotateMoveAngle;
 	SoundManager* soundmanager;
 	Model* sphereModel;
 	float shardCost = 1;

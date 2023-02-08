@@ -57,7 +57,7 @@ void Player::Initialize()
 
 void Player::Update(bool flag)
 {
-
+	float prevAngle = rotation.y;
 	bool MoveUp =
 		input->IsKeyDown(keyConfig[0]) || input->IsKeyDown(keyConfig[4]);
 	bool MoveDown =
@@ -87,8 +87,8 @@ void Player::Update(bool flag)
 		weight = 300;
 		if (!rotateSoundPlay)
 		{
-			rotateSoundPlay = true;
-			soundmanager->PlaySoundWave(rotateSound, true);
+
+			//soundmanager->PlaySoundWave(rotateSound);
 		}
 	}
 	else
@@ -300,6 +300,14 @@ void Player::Update(bool flag)
 
 		shard -= abs(rotateModeCount * 0.01);
 		rotation.y += rotateModeCount * 0.03;
+		rotateMoveAngle += ADXUtility::AngleDiff(prevAngle, rotation.y);
+
+		if (abs(rotateMoveAngle) >= ConvertRadius(360))
+		{
+			soundmanager->PlaySoundWave(rotateSound);
+			rotateMoveAngle = 0;
+		}
+		
 	}
 	else if (abs(postRotateCount) > 1.0f)
 	{
@@ -419,7 +427,6 @@ void Player::Update(bool flag)
 			itr = { 0,0 };
 		}
 	}
-
 
 
 
