@@ -454,6 +454,8 @@ void MCB::Scene::SpriteDraw()
         resultSprite[(int)Result::ABottom]->SpriteDraw(dxWindow->window_width / 2 + 224, dxWindow->window_height / 2 + 63,66 * resultSize,66 * resultSize);
     }
 
+    debugText.Print(50, 50, 100, "TIME");
+
     debugText.AllDraw();
 }
 
