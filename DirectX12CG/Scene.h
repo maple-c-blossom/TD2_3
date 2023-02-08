@@ -115,6 +115,7 @@ namespace MCB
 #pragma endregion
 		#pragma region ’Êí•Ï”
 		float resultSize = 1.f;
+		bool soundPlayed = false;
 		Timer resultSizeTimer;
 		bool loopFlag = true;
 		bool startPositionReset = true;

@@ -647,7 +647,7 @@ void MCB::TitleScene::Initialize()
     Object3d::SetLights(lights);
     animTime.Set(30);
     soundManager.PlaySoundWave(bgm, true);
-    soundManager.SetVolume(volume, bgm);
+    soundManager.SetVolume(10, bgm);
 }
 
 void MCB::TitleScene::LoadModel()

@@ -54,7 +54,8 @@ void MCB::Scene::Initialize()
     lights->DefaultLightSet();
     lights->UpDate();
     Object3d::SetLights(lights);
-
+    soundManager.PlaySoundWave(bgm, true);
+    soundManager.SetVolume(10, bgm);
 }
 
 void MCB::Scene::Object3DInit()
@@ -182,9 +183,10 @@ void MCB::Scene::LoadTexture()
 
 void MCB::Scene::LoadSound()
 {
-    bgm = soundManager.LoadWaveSound("Resources\\sound\\bgm\\title.wav");
+    bgm = soundManager.LoadWaveSound("Resources\\sound\\bgm\\game.wav");
     clearbgm = soundManager.LoadWaveSound("Resources\\sound\\bgm\\clear.wav");
     gameOverbgm = soundManager.LoadWaveSound("Resources\\sound\\bgm\\gameover.wav");
+
 }
 
 void MCB::Scene::SpriteInit()
@@ -241,6 +243,7 @@ IScene* MCB::Scene::GetNextScene()
 
 void MCB::Scene::Update()
 {
+
     Enemy::StaticUpdate();
     KneadedEraser::StaticUpdate();
     WritingEnemy::StaticUpdate();
@@ -348,7 +351,10 @@ void MCB::Scene::Update()
             sceneEnd = true;
         }
     }
-
+    if (boss->GetHp() <= 0 || substie->GetHp() <= 0)
+    {
+        soundManager.StopSoundWave(bgm);
+    }
     lights->UpDate();
     viewCamera->Update();
 
@@ -416,6 +422,12 @@ void MCB::Scene::SpriteDraw()
 
     if (mainCamera.isok && boss->GetHp() <= 0 )
     {
+        if (!soundPlayed)
+        {
+            soundManager.PlaySoundWave(clearbgm, true);
+            soundManager.SetVolume(10, clearbgm);
+            soundPlayed = true;
+        }
         resultSprite[(int)Result::Clear]->SpriteDraw(dxWindow->window_width / 2, 90, 576, 60);
         resultSprite[(int)Result::Frame]->SpriteDraw(dxWindow->window_width / 2, dxWindow->window_height / 2, 448 * 2, 446);
         resultSprite[(int)Result::Title]->SpriteDraw(dxWindow->window_width / 2 - 224, dxWindow->window_height / 2);
@@ -424,6 +436,12 @@ void MCB::Scene::SpriteDraw()
     }
     else if (mainCamera.isok && substie->GetHp() <= 0)
     {
+        if (!soundPlayed)
+        {
+            soundManager.PlaySoundWave(gameOverbgm);
+            soundManager.SetVolume(10, gameOverbgm);
+            soundPlayed = true;
+        }
         resultSprite[(int)Result::GameOver]->SpriteDraw(dxWindow->window_width / 2, 90, 576, 80);
         resultSprite[(int)Result::Frame]->SpriteDraw(dxWindow->window_width / 2, dxWindow->window_height / 2, 448 * 2, 446);
         resultSprite[(int)Result::Title]->SpriteDraw(dxWindow->window_width / 2 - 224, dxWindow->window_height / 2);
