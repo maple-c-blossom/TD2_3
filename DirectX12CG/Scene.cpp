@@ -274,7 +274,7 @@ void MCB::Scene::Update()
                     countErase++;
                 }
             }
-            if (count < 2)
+            if (count < 3)
             {
                 unique_ptr<PencilEnemy, MyDeleter<PencilEnemy>> temp(new PencilEnemy);
                 temp->SetHandwritingModel(WritingModel.get());
@@ -283,6 +283,13 @@ void MCB::Scene::Update()
                 enemys.push_back(move(temp));
             }
             else if (countErase <= 1)
+            {
+                unique_ptr<EraserEnemy, MyDeleter<EraserEnemy>> temp(new EraserEnemy);
+                temp->Initialize({ 0,0,1 }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, eraseEnemyModel.get(), 0.15f);
+                temp->handwritingModel = WritingModel.get();
+                enemys.push_back(move(temp));
+            }
+            else if (count >= 5)
             {
                 unique_ptr<EraserEnemy, MyDeleter<EraserEnemy>> temp(new EraserEnemy);
                 temp->Initialize({ 0,0,1 }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, eraseEnemyModel.get(), 0.15f);
