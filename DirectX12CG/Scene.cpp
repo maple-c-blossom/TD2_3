@@ -445,15 +445,15 @@ void MCB::Scene::SpriteDraw()
         resultSprite[(int)Result::Clear]->SpriteDraw(dxWindow->window_width / 2, 90, 576, 60);
         resultSprite[(int)Result::Frame]->SpriteDraw(dxWindow->window_width / 2, dxWindow->window_height / 2, 448 * 2, 446);
         resultSprite[(int)Result::Rank]->SpriteDraw(dxWindow->window_width / 2 - 224, dxWindow->window_height / 2 - 83);
-        if (time <= SECOND_FRAME * 45)
+        if (time < SECOND_FRAME * 46)
         {
             resultSprite[(int)Result::SRank]->SpriteDraw(dxWindow->window_width / 2 - 224, dxWindow->window_height / 2 + 43,48 * 1.5f,80 * 1.5f);
         }
-        else if (time <= SECOND_FRAME * 55)
+        else if (time < SECOND_FRAME * 56)
         {
             resultSprite[(int)Result::ARank]->SpriteDraw(dxWindow->window_width / 2 - 224, dxWindow->window_height / 2 + 43, 48 * 1.5f, 80 * 1.5f);
         }
-        else if (time <= SECOND_FRAME * 75)
+        else if (time < SECOND_FRAME * 76)
         {
             resultSprite[(int)Result::BRank]->SpriteDraw(dxWindow->window_width / 2 - 224, dxWindow->window_height / 2 + 43, 48 * 1.5f, 80 * 1.5f);
         }
