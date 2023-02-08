@@ -54,8 +54,8 @@ void Player::Initialize()
 	rotateSound = soundmanager->LoadWaveSound("Resources\\sound\\se\\swing.wav");
 	soundmanager->SetVolume(16, rotateSound);
 
-	dieSound = soundmanager->LoadWaveSound("Resources\\sound\\se\\death.wav");
-	soundmanager->SetVolume(13, dieSound);
+	dieSound = soundmanager->LoadWaveSound("Resources\\sound\\se\\pop.wav");
+	soundmanager->SetVolume(50, dieSound);
 
 	shardEmptySound = soundmanager->LoadWaveSound("Resources\\sound\\se\\noneShard.wav");
 	eraseSound = soundmanager->LoadWaveSound("Resources\\sound\\se\\erase.wav");
