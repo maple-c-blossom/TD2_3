@@ -305,6 +305,7 @@ void Player::Update(bool flag)
 		if (abs(rotateMoveAngle) >= ConvertRadius(360))
 		{
 			soundmanager->PlaySoundWave(rotateSound);
+			soundmanager->SetVolume(80,rotateSound);
 			rotateMoveAngle = 0;
 		}
 		
@@ -447,6 +448,7 @@ void Player::DethUpdate()
 			effects.push_back(std::move(effect));
 		}
 		soundmanager->PlaySoundWave(dieSound);
+		soundmanager->SetVolume(80,dieSound);
 		deth = true;
 	}
 	for (auto& itr : effects)
@@ -629,5 +631,6 @@ void Player::Damage(int damage)
 		hp -= damage;
 		invincible = 70;
 		soundmanager->PlaySoundWave(soundEffect[(unsigned int)SoundEffect::Damage]);
+		soundmanager->SetVolume(80,soundEffect[(unsigned int)SoundEffect::Damage]);
 	}
 }
