@@ -51,8 +51,10 @@ void EraserEnemy::UniqueUpdate(bool limitMove)
 			if (itr->generatorType == TypeName::Bonus) continue;
 			for (auto& itr2 : itr->colliders)
 			{
+				if (&itr2 == nullptr) continue;
 				for (auto& itr3 : colliders)
 				{
+					if (&itr3 == nullptr) continue;
 					if (itr3.IsHit(itr2))
 					{
 						itr->SetDelete(true);
