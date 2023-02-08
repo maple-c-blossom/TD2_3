@@ -100,7 +100,7 @@ namespace MCB
 
 		DebugText debugText;
 
-		std::vector<std::unique_ptr<Enemy>>enemys;
+		std::vector<std::unique_ptr<Enemy,MyDeleter<Enemy>>>enemys;
 
 		std::unique_ptr <Player> substie = std::make_unique<Player>();
 

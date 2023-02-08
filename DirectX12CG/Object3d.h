@@ -111,11 +111,13 @@ namespace MCB
 
         static inline bool IsValid(Object3d* objPtr)
         {
+            if (objPtr == nullptr) return false;
             return objPtr->deleteFlag == false && objPtr->constMapTranceform != nullptr;
         };
 
         static inline bool DeleteAllowed(Object3d* objPtr)
         {
+            if (objPtr == nullptr) return false;
             return !IsValid(objPtr) && objPtr->deleteCountDown <= 0;
         }
 

@@ -47,9 +47,9 @@ void Handwriting::UniqueOnColliderHit(ADXCollider* myCol, ADXCollider* col)
 	}
 	else //ã‚Åcontinue‚µ‚Ä‚é‚©‚ç–{—ˆ‚¢‚ç‚È‚¢‚¯‚Çˆê‰ž
 	{
-		for (auto& itr2 : *Player::GetPlayer()->GetKneadedErasersPtr())//‚Ë‚èÁ‚µ‚É“–‚½‚Á‚Ä‚à•MÕ‚ÍÁ‚·
+		for (auto& itr2 : Player::GetPlayer()->kneadedErasers)//‚Ë‚èÁ‚µ‚É“–‚½‚Á‚Ä‚à•MÕ‚ÍÁ‚·
 		{
-			if (col->gameObject == &itr2)
+			if (col->gameObject == itr2.get())
 			{
 				Player::GetPlayer()->Erase();
 				this->deleteFlag = true;

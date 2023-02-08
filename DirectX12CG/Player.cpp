@@ -5,15 +5,15 @@ using namespace MCB;
 
 Player* Player::playerPtr = nullptr;
 std::list<MCB::Object3d*> Player::captureList = {};
-std::list<KneadedEraser> Player::GetKneadedErasers()
-{
-	return kneadedErasers;
-}
-
-std::list<KneadedEraser>* Player::GetKneadedErasersPtr()
-{
-	return &kneadedErasers;
-}
+//std::list<KneadedEraser> Player::GetKneadedErasers()
+//{
+//	return kneadedErasers;
+//}
+//
+//std::list<KneadedEraser>* Player::GetKneadedErasersPtr()
+//{
+//	return kneadedErasers;
+//}
 
 void Player::Initialize()
 {
@@ -206,7 +206,7 @@ void Player::Update(bool flag)
 
 	rotateTapTime--;
 	rotateTapTime = max(0, rotateTapTime);
-	kneadedErasers.remove_if([](auto& itr) {return Object3d::DeleteAllowed(&itr); });
+	kneadedErasers.remove_if([](auto& itr) {return Object3d::DeleteAllowed(itr.get()); });
 
 	moveSpeedPercentage = max(0, min(moveSpeedPercentage, 1));
 
@@ -329,24 +329,25 @@ void Player::Update(bool flag)
 		if (shard > velocity.V3Len() * 1)
 		{
 			if (kneadedErasers.empty()
-				|| Vector3D{ kneadedErasers.front().position.x,kneadedErasers.front().position.y,kneadedErasers.front().position.z }.V3Len() > kneadedEraserDistance)
+				|| Vector3D{ kneadedErasers.front()->position.x,kneadedErasers.front()->position.y,kneadedErasers.front()->position.z }.V3Len() > kneadedEraserDistance)
 			{
-				kneadedErasers.push_front(KneadedEraser{});
-				kneadedErasers.front().parent = this;
-				kneadedErasers.front().model = KneadedEraserModel;
-				kneadedErasers.front().matWorld.matWorld *= matWorld.matWorld;
-				kneadedErasers.front().colliders.push_back(ADXCollider(&kneadedErasers.front()));
-				kneadedErasers.front().colliders.back().isTrigger = true;
-				kneadedErasers.front().colliders.back().collideLayer = 1;
+				std::unique_ptr<KneadedEraser, MyDeleter<KneadedEraser>> temp(new KneadedEraser);
+				kneadedErasers.push_front(std::move(temp));
+				kneadedErasers.front()->parent = this;
+				kneadedErasers.front()->model = KneadedEraserModel;
+				kneadedErasers.front()->matWorld.matWorld *= matWorld.matWorld;
+				kneadedErasers.front()->colliders.push_back(ADXCollider(kneadedErasers.front().get()));
+				kneadedErasers.front()->colliders.back().isTrigger = true;
+				kneadedErasers.front()->colliders.back().collideLayer = 1;
 			}
 
 			for (auto& itr : kneadedErasers)
 			{
 				Vector3D rotatedVel = MCB::MCBMatrix::transform(velocity, MCB::MCBMatrix::MCBMatrixConvertXMMatrix(matWorld.matRot).Inverse());
 
-				itr.position.x -= rotatedVel.ConvertXMFloat3().x;
-				itr.position.y -= rotatedVel.ConvertXMFloat3().y;
-				itr.position.z -= rotatedVel.ConvertXMFloat3().z;
+				itr->position.x -= rotatedVel.ConvertXMFloat3().x;
+				itr->position.y -= rotatedVel.ConvertXMFloat3().y;
+				itr->position.z -= rotatedVel.ConvertXMFloat3().z;
 			}
 		}
 	}
@@ -358,7 +359,7 @@ void Player::Update(bool flag)
 		{
 			if (index > maxKneadedErasers)
 			{
-				itr.deleteFlag = true;
+				itr->deleteFlag = true;
 			}
 			index++;
 		}
@@ -375,12 +376,12 @@ void Player::Update(bool flag)
 		{
 			if (connectedFlag)
 			{
-				itr.UniqueUpdate();
-				connectedFlag = IsValid(&itr);
+				itr->UniqueUpdate();
+				connectedFlag = IsValid(itr.get());
 			}
 			else
 			{
-				itr.deleteFlag = true;
+				itr->deleteFlag = true;
 			}
 		}
 	}
@@ -438,7 +439,8 @@ void Player::DethUpdate()
 	{
 		for (int i = 0; i < 40; i++)
 		{
-			std::unique_ptr<BossDamageEffect> effect = std::make_unique<BossDamageEffect>();
+
+			std::unique_ptr<BossDamageEffect,MyDeleter<BossDamageEffect>> effect(new BossDamageEffect);
 			effect->Initialize(sphereModel, { sinf(ConvertRadius((float)GetRand(0,360))) * cosf(ConvertRadius((float)GetRand(0,360))),sinf(ConvertRadius((float)GetRand(0,360))) * sinf(ConvertRadius((float)GetRand(0,360))),cosf(ConvertRadius((float)GetRand(0,360))) },
 				{ position.x + GetRand(0,200) / 100,position.y + GetRand(0,200) / 100,position.z + GetRand(0,200) / 100 }, { (float)25 / 15 + 1,(float)25 / 15 + 1,(float)25 / 15 + 1 }, { ((float)25 / 20),0,1 - ((float)25 / 20),1 }, 0.75f, 60);
 			effect->color = { 0.4f,0.3f,0.8f,1.0f };
@@ -461,7 +463,7 @@ void Player::UpdateMatrix(MCB::ICamera* camera)
 		Object3d::Update(*camera->GetView(), *camera->GetProjection());
 		for (auto& itr : kneadedErasers)
 		{
-			itr.Object3d::Update(*camera->GetView(), *camera->GetProjection());
+			itr->Object3d::Update(*camera->GetView(), *camera->GetProjection());
 		}
 	}
 	else
@@ -480,7 +482,7 @@ void Player::Draw()
 		Object3d::Draw();
 		for (auto& itr : kneadedErasers)
 		{
-			itr.Draw();
+			itr->Draw();
 		}
 	}
 	else

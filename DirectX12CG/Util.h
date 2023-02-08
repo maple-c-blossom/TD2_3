@@ -58,5 +58,43 @@ namespace MCB
 		void  DrawTriangle(View view, Projection proj);
 
 	};
+
+	template<typename T = void>
+	struct MyDeleter
+	{
+		constexpr MyDeleter() noexcept = default;
+
+		// 別の Deleter オブジェクトから Deleter オブジェクトを構築します。
+		// このコンストラクタは U* が T* に暗黙に変換可能な場合にのみ、オーバーロード解決に参加します。
+		template<
+			typename U,
+			typename std::enable_if<std::is_convertible<U*, T*>::value, std::nullptr_t>::type = nullptr
+		>
+			MyDeleter(const MyDeleter<U>&) noexcept {}
+
+		void operator()(T* ptr) const {
+			delete ptr;
+			ptr = nullptr;
+		}
+	};
+
+	template<typename T>
+	struct MyDeleter<T[]>
+	{
+		constexpr MyDeleter() noexcept = default;
+
+		// 別の Deleter オブジェクトから Deleter オブジェクトを構築します。
+		// このコンストラクタは U(*)[] が T(*)[] に暗黙に変換可能な場合にのみ、オーバーロード解決に参加します。
+		template<
+			typename U,
+			typename std::enable_if<std::is_convertible<U(*)[], T(*)[]>::value, std::nullptr_t>::type = nullptr
+		>
+			MyDeleter(const MyDeleter<U[]>&) noexcept {}
+
+		void operator()(T* ptr) const {
+			delete[] ptr;
+			for(auto& itr:ptr)itr = nullptr;
+		}
+	};
 }
 

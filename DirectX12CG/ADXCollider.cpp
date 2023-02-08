@@ -408,6 +408,7 @@ void ADXCollider::CollidersUpdate()
 {
 	for (int i = 0; i < allColPtr.size(); i++)
 	{
+		if (allColPtr[i]->collideList.size() <= 0)continue;
 		allColPtr[i]->collideList.clear();
 	}
 

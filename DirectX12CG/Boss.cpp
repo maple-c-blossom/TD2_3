@@ -469,9 +469,9 @@ void Boss::Damage(int damage)
 	bool isHit = false;
 	for (auto& itr : colliders)
 	{
-		for (auto& itr2 : playerPtr->GetKneadedErasers())
+		for (auto& itr2 : playerPtr->kneadedErasers)
 		{
-			for (auto& itr3 : itr2.colliders)
+			for (auto& itr3 : itr2->colliders)
 			{
 				if (itr.IsHit(itr3) && !imotalFlag)
 				{

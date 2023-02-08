@@ -92,17 +92,17 @@ void MCB::Scene::Object3DInit()
     walls.back().colliders.push_back(ADXCollider(&walls.back()));
     walls.back().colliders.back().colType_ = box;
 
-    unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
+    unique_ptr<PencilEnemy,MyDeleter<PencilEnemy>> temp (new PencilEnemy);
     temp->Enemy::Initialize({ 0,0,1 }, { 20,0,10 }, pencilEnemyModel.get(), 0.5f);
     temp->movePoint = { {20,0,10},{ 20,0,20 },{ -20,0,10 } };
     temp->SetHandwritingModel(WritingModel.get());
     enemys.push_back(move(temp));
 
-    temp = make_unique<PencilEnemy>();
-    temp->Enemy::Initialize({ 1,0,0 }, { -20,0,-10 }, pencilEnemyModel.get(), 0.5f);
-    temp->movePoint = { {-20,0,-10},{ -20,0,-20 },{ 20,0,-10 } };
-    temp->SetHandwritingModel(WritingModel.get());
-    enemys.push_back(move(temp));
+    unique_ptr<PencilEnemy, MyDeleter<PencilEnemy>> temp2(new PencilEnemy);
+    temp2->Enemy::Initialize({ 1,0,0 }, { -20,0,-10 }, pencilEnemyModel.get(), 0.5f);
+    temp2->movePoint = { {-20,0,-10},{ -20,0,-20 },{ 20,0,-10 } };
+    temp2->SetHandwritingModel(WritingModel.get());
+    enemys.push_back(move(temp2));
     spownTimer.Set(30);
     boss->soundmanager = &soundManager;
     boss->Initialize({ 0,0,1 }, { -20,0,0 }, bossModel.get(), pencilEnemyModel.get(), WritingModel.get(), BossDamegeEffectModelStar.get(), BossDamegeEffectModelSpher.get(), BossCover.get(), 1, substie.get());
@@ -274,7 +274,7 @@ void MCB::Scene::Update()
             }
             if (count < 2)
             {
-                unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
+                unique_ptr<PencilEnemy, MyDeleter<PencilEnemy>> temp(new PencilEnemy);
                 temp->SetHandwritingModel(WritingModel.get());
                 temp->Initialize({ (float)GetRand(-1,1),0,(float)GetRand(-1,1) }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, pencilEnemyModel.get(), 0.5f);
                 temp->movePoint = { {-20 + temp->position.x,0,20 + temp->position.z},{ 20 + temp->position.x,0,40 + temp->position.z },{ 20 + temp->position.x,0,20 + temp->position.z } };
@@ -282,7 +282,7 @@ void MCB::Scene::Update()
             }
             else if (countErase <= 1)
             {
-                unique_ptr<EraserEnemy> temp = make_unique<EraserEnemy>();
+                unique_ptr<EraserEnemy, MyDeleter<EraserEnemy>> temp(new EraserEnemy);
                 temp->Initialize({ 0,0,1 }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, eraseEnemyModel.get(), 0.15f);
                 temp->handwritingModel = WritingModel.get();
                 enemys.push_back(move(temp));
@@ -293,7 +293,7 @@ void MCB::Scene::Update()
                 {
                 case 1:
                 {
-                    unique_ptr<PencilEnemy> temp = make_unique<PencilEnemy>();
+                    unique_ptr<PencilEnemy, MyDeleter<PencilEnemy>> temp(new PencilEnemy);
                     temp->SetHandwritingModel(WritingModel.get());
                     temp->Initialize({ (float)GetRand(-1,1),0,(float)GetRand(-1,1) }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, pencilEnemyModel.get(), 0.5f);
                     temp->movePoint = { {-20 + temp->position.x,0,20 + temp->position.z},{ 20 + temp->position.x,0,40 + temp->position.z },{ 20 + temp->position.x,0,20 + temp->position.z } };
@@ -302,7 +302,7 @@ void MCB::Scene::Update()
                 break;
                 case 2:
                 {
-                    unique_ptr<EraserEnemy> temp = make_unique<EraserEnemy>();
+                    unique_ptr<EraserEnemy, MyDeleter<EraserEnemy>> temp(new EraserEnemy);
                     temp->Initialize({ 0,0,1 }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, eraseEnemyModel.get(), 0.15f);
                     temp->handwritingModel = WritingModel.get();
                     enemys.push_back(move(temp));
@@ -310,7 +310,7 @@ void MCB::Scene::Update()
                 break;
                 default:
                 {
-                    unique_ptr<EraserEnemy> temp = make_unique<EraserEnemy>();
+                    unique_ptr<EraserEnemy, MyDeleter<EraserEnemy>> temp(new EraserEnemy);
                     temp->Initialize({ 0,0,1 }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, eraseEnemyModel.get(), 0.15f);
                     temp->handwritingModel = WritingModel.get();
                     enemys.push_back(move(temp));

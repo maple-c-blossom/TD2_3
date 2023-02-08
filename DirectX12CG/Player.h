@@ -8,14 +8,14 @@
 #include "Status.h"
 #include "BossDamageEffect.h"
 #include "Sound.h"
-
+#include "Util.h"
 
 class Player :public MCB::Object3d
 {
 private:
 	static Player* playerPtr;
 	static std::list<MCB::Object3d*> captureList;
-	std::list<std::unique_ptr<BossDamageEffect>>effects;
+	std::list<std::unique_ptr<BossDamageEffect,MCB::MyDeleter<BossDamageEffect>>>effects;
 private:
 	enum class SoundEffect
 	{
@@ -32,7 +32,7 @@ private:
 	Float3* gamePadAxisConfig = { &input->gamePad->LStick };
 	std::array<Float2, 8> rotateMoveRecord = {};
 	int rotateMoveRecordNum = 0;
-	std::list<KneadedEraser> kneadedErasers{};
+	
 	int invincible = 0;
 	bool visible = true;
 	float weight = 1;
@@ -78,6 +78,7 @@ private:
 	int animeNum;
 	bool trueMakingKneadedEraser;
 public:
+	std::list<std::unique_ptr<KneadedEraser, MCB::MyDeleter<KneadedEraser>>> kneadedErasers{};
 	~Player();
 	bool deth = false;
 public:
@@ -95,8 +96,8 @@ public:
 	bool GetVisible() { return visible; };
 	void Damage(int damage);
 	bool IsInvincible();
-	std::list<KneadedEraser> GetKneadedErasers();
-	std::list<KneadedEraser>* GetKneadedErasersPtr();
+	//std::list<KneadedEraser> GetKneadedErasers();
+	//std::list<KneadedEraser>* GetKneadedErasersPtr();
 	void Initialize();
 	void Update(bool moveLimitFlag = true);
 	void DethUpdate();
