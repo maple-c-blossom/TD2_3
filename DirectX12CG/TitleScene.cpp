@@ -590,7 +590,7 @@ MCB::TitleScene::~TitleScene()
     title->free = true;
     debugTextTexture->free = true;
     pushSpace->free = true;
-    scopeTex->free = true;
+    //scopeTex->free = true;
     tutorialSkipTex->free = true;
 
     for (auto& itr : tutorial)
@@ -698,7 +698,7 @@ void MCB::TitleScene::LoadTexture()
     debugTextTexture = loader->LoadTexture(L"Resources\\debugfont.png");
     title = loader->LoadTexture(L"Resources\\text\\title.png");
     pushSpace = loader->LoadTexture(L"Resources\\text\\pushSpace.png");
-    scopeTex = loader->LoadTexture(L"Resources\\scope.png");
+    //scopeTex = loader->LoadTexture(L"Resources\\scope.png");
 
     tutorial[0] = loader->LoadTexture(L"Resources\\tutorial\\title_sousa.png");
     tutorialSkipTex = loader->LoadTexture(L"Resources\\tutorial\\skip_1.png");
