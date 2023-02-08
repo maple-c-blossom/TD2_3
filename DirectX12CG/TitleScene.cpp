@@ -187,7 +187,7 @@ void MCB::TitleScene::Update()
     }
     if (substie->position.x < tutorialBode[2].position.x - 30)
     {
-        substie->SetShard(0);
+        substie->SetShard(1);
     }
     for (int i = 2; i < tutorialBode.size(); i++)
     {

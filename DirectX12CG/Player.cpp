@@ -53,6 +53,8 @@ void Player::Initialize()
 
 	soundmanager->SetVolume(13, soundEffect[(unsigned int)SoundEffect::Damage]);
 	dieSound = soundmanager->LoadWaveSound("Resources\\sound\\se\\pop.wav");
+	shardEmptySound = soundmanager->LoadWaveSound("Resources\\sound\\se\\noneShard.wav");
+	eraseSound = soundmanager->LoadWaveSound("Resources\\sound\\se\\erase.wav");
 }
 
 void Player::Update(bool flag)
@@ -217,7 +219,17 @@ void Player::Update(bool flag)
 		velocity *= 0.1f;
 		shardEmptyDisplay = 1;
 	}
+	if (shardEmptyDisplay > 0 && !shardEmptySoundPlay)
+	{
+		shardEmptySoundPlay = true;
+		soundmanager->PlaySoundWave(shardEmptySound);
+		soundmanager->SetVolume(60,shardEmptySound);
 
+	}
+	else if(shardEmptyDisplay <= 0)
+	{
+		shardEmptySoundPlay = false;
+	}
 	position.x += velocity.ConvertXMFloat3().x;
 	position.y += velocity.ConvertXMFloat3().y;
 	position.z += velocity.ConvertXMFloat3().z;
@@ -586,6 +598,8 @@ bool Player::IsInvincible()
 void Player::Erase()
 {
 	shard += 0.5;
+	soundmanager->PlaySoundWave(eraseSound);
+	soundmanager->SetVolume(40, eraseSound);
 }
 
 void Player::TutorialInitialize(MCB::Texture* tutorial1, MCB::Texture* tutorial2, MCB::Texture* tutorial3,
