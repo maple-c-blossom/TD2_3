@@ -49,10 +49,10 @@ void Player::Initialize()
 	shardEmpty.anchorPoint = { 0,1 };
 
 	soundEffect[(unsigned int)SoundEffect::Damage] = soundmanager->LoadWaveSound("Resources\\sound\\se\\damage.wav");
-	rotateSound = soundmanager->LoadWaveSound("Resources\\sound\\se\\swing.wav");
-	soundmanager->SetVolume(6, rotateSound);
+	soundmanager->SetVolume(9, soundEffect[(unsigned int)SoundEffect::Damage]);
 
-	soundmanager->SetVolume(13, soundEffect[(unsigned int)SoundEffect::Damage]);
+	rotateSound = soundmanager->LoadWaveSound("Resources\\sound\\se\\swing.wav");
+	soundmanager->SetVolume(16, rotateSound);
 
 	dieSound = soundmanager->LoadWaveSound("Resources\\sound\\se\\death.wav");
 	soundmanager->SetVolume(13, dieSound);
@@ -321,7 +321,7 @@ void Player::Update(bool flag)
 		if (abs(rotateMoveAngle) >= ConvertRadius(360))
 		{
 			soundmanager->PlaySoundWave(rotateSound);
-			soundmanager->SetVolume(80,rotateSound);
+			soundmanager->SetVolume(16,rotateSound);
 			rotateMoveAngle = 0;
 		}
 		
