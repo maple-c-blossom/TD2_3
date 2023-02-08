@@ -332,6 +332,7 @@ void MCB::Scene::Update()
     }
     else if (boss->GetHp() <= 0)
     {
+        soundManager.StopSoundWave(substie->rotateSound);
         boss->DethUpdate();
         resultSize = sinf(ConvertRadius((float)resultSizeTimer.NowTime() >= 180 ? resultSizeTimer.NowTime()  * -1: resultSizeTimer.NowTime())) * 0.25f + 0.75f;
         resultSizeTimer.SafeUpdate();
@@ -344,6 +345,7 @@ void MCB::Scene::Update()
     }
     else if (substie->GetHp() <= 0)
     {
+        soundManager.StopSoundWave(substie->rotateSound);
         substie->DethUpdate();
         resultSize = sinf(ConvertRadius((float)resultSizeTimer.NowTime() >= 180 ? resultSizeTimer.NowTime() * -1 : resultSizeTimer.NowTime())) * 0.25f + 0.75f;
         resultSizeTimer.SafeUpdate();

@@ -49,7 +49,6 @@ private:
 	float rotateModeCount = 0;
 	float postRotateCount = 0;
 	bool rotateSoundPlay;
-	int rotateSound;
 	int dieSound;
 	MCB::Vector3D prevPos{};
 	MCB::Vector3D velocity{};
@@ -82,6 +81,7 @@ public:
 	~Player();
 	bool deth = false;
 public:
+	int rotateSound;
 	SoundManager* soundmanager;
 	Model* sphereModel;
 	float shardCost = 1;
