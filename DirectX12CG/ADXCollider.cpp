@@ -261,6 +261,7 @@ ADXVector3 ADXCollider::CollideVector(ADXCollider col)
 //相手のコライダーと重なっているか
 bool ADXCollider::IsHit(ADXCollider col)
 {
+	if (!Object3d::IsValid(gameObject) || !Object3d::IsValid(col.gameObject))return false;
 	ADXVector3 closestVec1 = col.ClosestPoint(ClosestPoint(ADXMatrix4::transform(col.pos_, ADXMatrix4::ConvertToADXMatrix(col.gameObject->matWorld.matWorld))));
 	ADXVector3 closestVec2 = ClosestPoint(col.ClosestPoint(ClosestPoint(ADXMatrix4::transform(col.pos_, ADXMatrix4::ConvertToADXMatrix(col.gameObject->matWorld.matWorld)))));
 	float colPointDiff = (closestVec1 - closestVec2).length();
@@ -302,26 +303,60 @@ void ADXCollider::Collide(ADXCollider* col)
 		}
 	}
 
-	if (Object3d::IsValid(gameObject) && Object3d::IsValid(col->gameObject) && IsHit(*col) && enabled && col->enabled && col->gameObject != gameObject)
+	if (IsHit(*col) && enabled && col->enabled && col->gameObject != gameObject)
 	{
 		if (executePushBack && !isTrigger && !col->isTrigger)
 		{
 			ADXVector3 myPushBack = CollideVector(*col);
 			ADXVector3 targetPushBack = col->CollideVector(*this);
 
+			int conditionState[4][3] = { {0,0,0},{1,1,1},{2,2,2},{3,1,2} };
+
+			int pushableCondition = 0;
+			int priorityCondition = 0;
+
 			if (pushable_ && col->pushable_)
 			{
-				myPushBack = myPushBack * 0.5f;
-				targetPushBack = targetPushBack * 0.5f;
+				pushableCondition = 3;
+			}
+			else if (pushable_)
+			{
+				pushableCondition = 1;
+			}
+			else if (col->pushable_)
+			{
+				pushableCondition = 2;
 			}
 
-			if (pushable_)
+			if (pushBackPriority == col->pushBackPriority)
 			{
-				pushBackVector += myPushBack;
+				priorityCondition = 0;
 			}
-			if (col->pushable_)
+			else if (pushBackPriority < col->pushBackPriority)
 			{
+				priorityCondition = 1;
+			}
+			else if (pushBackPriority > col->pushBackPriority)
+			{
+				priorityCondition = 2;
+			}
+
+			int ConditionStateResult = conditionState[pushableCondition][priorityCondition];
+
+			switch (ConditionStateResult)
+			{
+			case 1:
+				pushBackVector += myPushBack;
+				break;
+			case 2:
 				col->pushBackVector += targetPushBack;
+				break;
+			case 3:
+				pushBackVector += myPushBack * 0.5f;
+				col->pushBackVector += targetPushBack * 0.5f;
+				break;
+			default:
+				break;
 			}
 		}
 
@@ -338,9 +373,26 @@ void ADXCollider::SendPushBack()
 {
 	if(gameObject != nullptr)
 	{
+		DirectX::XMFLOAT3 tempPos = gameObject->position;
 		gameObject->position.x += pushBackVector.x;
 		gameObject->position.y += pushBackVector.y;
 		gameObject->position.z += pushBackVector.z;
+
+		if (!isfinite(gameObject->position.x))
+		{
+			gameObject->position.x = tempPos.x;
+		}
+
+		if (!isfinite(gameObject->position.y))
+		{
+			gameObject->position.y = tempPos.y;
+		}
+
+		if (!isfinite(gameObject->position.z))
+		{
+			gameObject->position.z = tempPos.z;
+		}
+
 		gameObject->Update(*IScene::GetCamera()->GetView(), *IScene::GetCamera()->GetProjection());
 		preTranslation.x = gameObject->position.x;
 		preTranslation.y = gameObject->position.y;

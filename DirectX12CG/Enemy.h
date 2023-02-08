@@ -43,6 +43,7 @@ public:
 	Timer imotalTimer;
 	int hp;
 	int enemyType = Writing;
+	bool bodySlam = false;
 	virtual void UniqueInitialize() = 0;
 	virtual void UniqueUpdate(bool limitMove = true) = 0;
 	static void StaticUpdate();

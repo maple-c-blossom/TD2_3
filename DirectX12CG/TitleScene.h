@@ -34,6 +34,7 @@ namespace MCB
 		std::unique_ptr<Model> BossDamegeEffectModelStar;
 		std::unique_ptr<Model> BossDamegeEffectModelSpher;
 		std::unique_ptr<Model> tutorialBlackBode;
+		std::unique_ptr<Model> BossCover;
 #pragma endregion 3Dモデル
 
 		//テクスチャ
@@ -42,19 +43,33 @@ namespace MCB
 		TextureCell* debugTextTexture;
 		TextureCell* pushSpace;
 		TextureCell* scopeTex;
+		TextureCell* tutorialSkipTex;
+
+
+		int tutorial1AnimNum = 0;
+		std::array<TextureCell*,3> tutorial;
 		std::array<TextureCell*,5> tutorial1;
 		std::array<TextureCell*,5> tutorial1Succes;
-		Timer tutorialAnimationTimer;
-		std::array<int, 8>tutorial;
+		int tutorial2AnimNum = 0;
+		std::array<TextureCell*, 5> tutorial2;
+		std::array<TextureCell*, 5> tutorial2Succes;
+		int tutorial3AnimNum = 0;
+		std::array<TextureCell*, 4> tutorial3;
+		std::array<TextureCell*, 4> tutorial3Succes;
+		int tutorial4AnimNum = 0;
+		std::array<TextureCell*, 3> tutorial4;
+		std::array<TextureCell*, 3> tutorial4Succes;
+		int tutorial5AnimNum = 0;
+		std::array<TextureCell*, 4> tutorial5;
+		std::array<TextureCell*, 4> tutorial5Succes;
 
 #pragma endregion テクスチャ
 
 		//サウンド
 #pragma region サウンド
-		int testSound;
-		int test2Sound;
+		int bgm;
 
-		int volume = 255;
+		int volume = 25;
 #pragma endregion サウンド
 
 #pragma endregion 各種リソース
@@ -64,6 +79,7 @@ namespace MCB
 		Object3d ground;
 		Object3d Skydome;
 		Object3d testSpher;
+		Timer animTime;
 		//Object3d tutorialBode;
 		std::list<std::unique_ptr<Handwriting>> writing;
 		std::list<std::unique_ptr<PencilEnemy>> enemys_6tutorial;
@@ -83,6 +99,9 @@ namespace MCB
 		Sprite pushSpaceSprite;
 
 		Sprite scopeSprite;
+
+		Sprite tutorialSkipSprite;
+
 
 		DebugText debugText;
 

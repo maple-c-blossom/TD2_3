@@ -57,35 +57,45 @@ void Object3d::Init()
 void Object3d::Update(View& view, Projection& projection,bool isBillBord)
 {
     if (!IsValid(this))return;
-    matWorld.SetMatScale(scale.x, scale.y, scale.z);
-    matWorld.SetMatRot(rotation.x, rotation.y, rotation.z,false);
-    matWorld.SetMatTrans(position.x, position.y, position.z);
-    if (isBillBord)
+    if (quaternionPtr)
     {
-        if (parent == nullptr || !Object3d::IsValid(parent))
+        Update(view, projection, *quaternionPtr, isBillBord);
+    }
+    else
+    {
+        matWorld.SetMatScale(scale.x, scale.y, scale.z);
+        matWorld.SetMatRot(rotation.x, rotation.y, rotation.z,false);
+        matWorld.SetMatTrans(position.x, position.y, position.z);
+        if (isBillBord)
         {
-            matWorld.UpdataBillBordMatrixWorld(view);
+            if (parent == nullptr || !Object3d::IsValid(parent))
+            {
+                matWorld.UpdataBillBordMatrixWorld(view);
+            }
+            else
+            {
+                matWorld.UpdataMatrixWorld();
+            }
         }
         else
         {
             matWorld.UpdataMatrixWorld();
         }
-    }
-    else
-    {
-        matWorld.UpdataMatrixWorld();
+
+        if (parent != nullptr && Object3d::IsValid(parent))
+        {
+            matWorld.matWorld *= parent->matWorld.matWorld;
+        }
+        if (constMapTranceform == nullptr)return;
+        constMapTranceform->world = matWorld.matWorld * view.mat;
+        constMapTranceform->viewproj = projection.mat;
+        constMapTranceform->cameraPos.x = view.eye.x;
+        constMapTranceform->cameraPos.y = view.eye.y;
+        constMapTranceform->cameraPos.z = view.eye.z;
+        constMapTranceform->color = color;
+
     }
 
-    if (parent != nullptr && Object3d::IsValid(parent))
-    {
-        matWorld.matWorld *= parent->matWorld.matWorld;
-    }
-    if (constMapTranceform == nullptr)return;
-    constMapTranceform->world = matWorld.matWorld * view.mat;
-    constMapTranceform->viewproj = projection.mat;
-    constMapTranceform->cameraPos.x = view.eye.x;
-    constMapTranceform->cameraPos.y = view.eye.y;
-    constMapTranceform->cameraPos.z = view.eye.z;
 }
 
 void Object3d::Update(View& view, Projection& projection,Quaternion q, bool isBillBord)
@@ -122,6 +132,7 @@ void Object3d::Update(View& view, Projection& projection,Quaternion q, bool isBi
     constMapTranceform->cameraPos.x = view.eye.x;
     constMapTranceform->cameraPos.y = view.eye.y;
     constMapTranceform->cameraPos.z = view.eye.z;
+    constMapTranceform->color = color;
 }
 
 void MCB::Object3d::UpdateData()
@@ -143,8 +154,7 @@ void MCB::Object3d::UpdateData()
 
 void Object3d::Draw()
 {
-    if (model == nullptr)return;
-    if (model->material.constBuffMaterialB1 == nullptr)return;
+    if (!IsValid(this) || model == nullptr || model->material.constBuffMaterialB1 == nullptr)return;
     Dx12* dx12 = Dx12::GetInstance();
     ShaderResource* descriptor = ShaderResource::GetInstance();
 
@@ -268,6 +278,7 @@ void MCB::Object3d::FbxUpdate(View& view, Projection& projection, bool isBillBor
     constMapTranceform->cameraPos.x = view.eye.x;
     constMapTranceform->cameraPos.y = view.eye.y;
     constMapTranceform->cameraPos.z = view.eye.z;
+    constMapTranceform->color = color;
 }
 
 void MCB::Object3d::FbxUpdate(View& view, Projection& projection, Quaternion q, bool isBillBord)
@@ -305,6 +316,7 @@ void MCB::Object3d::FbxUpdate(View& view, Projection& projection, Quaternion q, 
     constMapTranceform->cameraPos.x = view.eye.x;
     constMapTranceform->cameraPos.y = view.eye.y;
     constMapTranceform->cameraPos.z = view.eye.z;
+    constMapTranceform->color = color;
 }
 
 void MCB::Object3d::FbxDraw()

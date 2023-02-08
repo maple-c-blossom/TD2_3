@@ -29,13 +29,37 @@ void PencilEnemy::UniqueUpdate(bool movelimit)
 			}
 			else if (attack)
 			{
-				position.x += attackVec.vec.x * speed * 2;
-				position.y += attackVec.vec.y * speed * 2;
-				position.z += attackVec.vec.z * speed * 2;
+				position.x += attackVec.vec.x * speed;
+				position.y += attackVec.vec.y * speed;
+				position.z += attackVec.vec.z * speed;
 
+				std::array<Vector3D, 3> PrevmovePoint = {};
+				bool flag = false;
+				int num = 0;
 				for (auto& itr : movePoint)
 				{
+					PrevmovePoint[num] = itr;
 					itr += (attackVec * speed * 2);
+					if (itr.vec.x < -50)
+					{
+						 flag = true;
+					}
+					if (itr.vec.x > 50)
+					{
+						flag = true;
+					}
+
+					if (itr.vec.z < -40)
+					{
+						flag = true;
+					}
+					if (itr.vec.z > 40)
+					{
+						flag = true;
+					}
+
+					itr = PrevmovePoint[num];
+					num++;
 				}
 				Movement += speed * 2;
 			}
@@ -60,6 +84,7 @@ void PencilEnemy::UniqueUpdate(bool movelimit)
 		if (movePoint.size() > 0)
 		{
 			movePointIndex = movePointIndex % movePoint.size();
+			Vector3D PrevmovePoint = movePoint[movePointIndex];
 
 			Vector3D positionVec = Vector3D(position.x, position.y, position.z);
 
@@ -71,20 +96,20 @@ void PencilEnemy::UniqueUpdate(bool movelimit)
 			Vartical.y = MCB::Lerp(40, 80, temp.x);
 			if (movePoint[movePointIndex].vec.x < -50)
 			{
-				movePoint[movePointIndex].vec.x = -50;
+				movePoint[movePointIndex].vec.x = PrevmovePoint.vec.x;
 			}
 			if (movePoint[movePointIndex].vec.x > 50)
 			{
-				movePoint[movePointIndex].vec.x = 50;
+				movePoint[movePointIndex].vec.x = PrevmovePoint.vec.x;
 			}
 
 			if (movePoint[movePointIndex].vec.z < -40)
 			{
-				movePoint[movePointIndex].vec.z = -40;
+				movePoint[movePointIndex].vec.z = PrevmovePoint.vec.z;
 			}
 			if (movePoint[movePointIndex].vec.z > 40)
 			{
-				movePoint[movePointIndex].vec.z = 40;
+				movePoint[movePointIndex].vec.z = PrevmovePoint.vec.z;
 			}
 			velocity = Vector3D::normal(movePoint[movePointIndex] - positionVec);
 
@@ -120,7 +145,7 @@ void PencilEnemy::UniqueUpdate(bool movelimit)
 		}
 	}
 
-	if (capture == nullptr)
+	if (capture == nullptr && movelimit)
 	{
 		AttackCheck();
 		AttackTimerUpdate();
@@ -128,7 +153,12 @@ void PencilEnemy::UniqueUpdate(bool movelimit)
 	else
 	{
 		attack = false;
+		beforeAttack = false;
+		color = { 1.f,1.f,1.f,1.f }; 
 	}
+
+	bodySlam = attack;
+
 	for (auto& itr : attackCol)
 	{
 		itr.Update(this);

@@ -16,9 +16,7 @@ void BossDamageEffect::Initialize(MCB::Model* model, MCB::Vector3D Velocity, MCB
 	nowFrontVec.vec.y = Velocity.vec.y;
 	nowFrontVec.vec.z = Velocity.vec.z;
 	nowFrontVec.V3Norm();
-	material.Init();
-	material = model->material;
-	material.constMapMaterial->color = color;
+	this->color = color;
 }
 
 void BossDamageEffect::Update()
@@ -28,7 +26,7 @@ void BossDamageEffect::Update()
 	scale.x = InQuad(defaultScale.x, 0, lifeTimer.GetEndTime(), lifeTimer.NowTime());
 	scale.y = InQuad(defaultScale.y, 0, lifeTimer.GetEndTime(), lifeTimer.NowTime());
 	scale.z = InQuad(defaultScale.z, 0, lifeTimer.GetEndTime(), lifeTimer.NowTime());
-	material.constMapMaterial->color.w = InQuad(1, 0, lifeTimer.GetEndTime(), lifeTimer.NowTime());
+	color.w = InQuad(1, 0, lifeTimer.GetEndTime(), lifeTimer.NowTime());
 	position.x += nowFrontVec.vec.x * speed;
 	position.y += nowFrontVec.vec.y * speed;
 	position.z += nowFrontVec.vec.z * speed;
@@ -46,5 +44,5 @@ void BossDamageEffect::UpdateMatrix(MCB::ICamera* camera)
 
 void BossDamageEffect::Draw()
 {
-	Object3d::Draw(&material);
+	Object3d::Draw();
 }

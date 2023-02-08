@@ -3,6 +3,7 @@
 #include "Util.h"
 #include "DxWindow.h"
 #include "Player.h"
+#include "Boss.h"
 using namespace MCB;
 using namespace DirectX;
 
@@ -22,46 +23,108 @@ void Camera::WorldPositionInit()
 
 void Camera::Update()
 {
-	if (player)
+	XMFLOAT3 targetStart;
+	if (player && boss)
 	{
-		view.eye.x = player->position.x + distance.x;
-		view.eye.y = player->position.y + distance.y;
-		view.eye.z = player->position.z + distance.z;
-		view.target = player->position;
-	}
+		if ((!player->deth) && !(boss->afterdethDown) && !(boss->beforedethDown) &&!(boss->dethDown))
+		{
+			view.eye.x = player->position.x + distance.x;
+			view.eye.y = player->position.y + distance.y;
+			view.eye.z = player->position.z + distance.z;
+			eyeEaseStartPos = view.eye;
+			view.target = player->position;
+			targetEaseStartPos = view.target;
+			timer.Set(300);
+			isOktimer.Set(30);
+		}
+		else if (boss->afterdethDown)
+		{
+			timer.SafeUpdate();
+			int interval = 150;
+			if (timer.NowTime() >= interval)
+			{
+				view.eye.x = InOutQuad(eyeEaseStartPos.x, 0, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.eye.y = InOutQuad(eyeEaseStartPos.y, 75, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.eye.z = InOutQuad(eyeEaseStartPos.z, -10, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.target.x = InOutQuad(targetEaseStartPos.x, 0, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.target.y = InOutQuad(targetEaseStartPos.y, 0, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.target.z = InOutQuad(targetEaseStartPos.z, -10, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.up.z = InOutQuad(0, 1, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.up.y = InOutQuad(1,0, timer.GetEndTime() - interval, timer.NowTime() - interval);
 
-	eyeStartPos = view.eye;
-	XMFLOAT3 targetStart = view.target;
-	shakeY = shakeX;
-	shakeZ = shakeX;
-	float offset = shakeX.shakeUpdateR();
-	float offsetY = shakeY.shakeUpdateR();
-	float offsetZ = shakeZ.shakeUpdateR();
-	if (offset != 0)
-	{
-		Vector3D frontVec(view.eye,view.target);
-		frontVec.V3Norm();
-		Vector3D upVec = upVec.GetUpVec(frontVec);
-		upVec.V3Norm();
-		Vector3D RightVec = RightVec.GetRightVec(frontVec,upVec);
-		RightVec.V3Norm();
-		Float3 finalOffSet = {
-			offset * frontVec.vec.x + offset * upVec.vec.x + offset * RightVec.vec.x,
-			offsetY * frontVec.vec.y + offsetY * upVec.vec.y + offsetY * RightVec.vec.y,
-			offsetZ * frontVec.vec.z + offsetZ * upVec.vec.z + offsetZ * RightVec.vec.z
+			}
 
-		};
-		view.eye.x = eyeStartPos.x + finalOffSet.x;
-		view.eye.y = eyeStartPos.y + finalOffSet.y;
-		view.eye.z = eyeStartPos.z + finalOffSet.z;
-		view.target.x = targetStart.x + finalOffSet.x;
-		view.target.y = targetStart.y + finalOffSet.y;
-		view.target.z = targetStart.z + finalOffSet.z;
+			if (isOktimer.IsEnd() && timer.IsEnd())
+			{
+				isok = true;
+			}
+			else if(timer.IsEnd())
+			{
+				isOktimer.Update();
+			}
+
+		}
+		else if (player->deth)
+		{
+			timer.SafeUpdate();
+			int interval = 150;
+			if (timer.NowTime() >= interval)
+			{
+				view.eye.x = InOutQuad(eyeEaseStartPos.x, 0, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.eye.y = InOutQuad(eyeEaseStartPos.y, 75, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.eye.z = InOutQuad(eyeEaseStartPos.z, -10, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.target.x = InOutQuad(targetEaseStartPos.x, 0, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.target.y = InOutQuad(targetEaseStartPos.y, 0, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.target.z = InOutQuad(targetEaseStartPos.z, -10, timer.GetEndTime() - interval, timer.NowTime() - interval);
+				view.up.z = InOutQuad(0, 1, timer.GetEndTime(), timer.NowTime() - interval);
+				view.up.y = InOutQuad(1, 0, timer.GetEndTime(), timer.NowTime() - interval);
+			}
+			if (isOktimer.IsEnd() && timer.IsEnd())
+			{
+				isok = true;
+			}
+			else if (timer.IsEnd())
+			{
+				isOktimer.Update();
+			}
+
+
+		}
+
+
+		eyeStartPos = view.eye;
+		targetStart = view.target;
+		shakeY = shakeX;
+		shakeZ = shakeX;
+		float offset = shakeX.shakeUpdateR();
+		float offsetY = shakeY.shakeUpdateR();
+		float offsetZ = shakeZ.shakeUpdateR();
+		if (offset != 0)
+		{
+			Vector3D frontVec(view.eye, view.target);
+			frontVec.V3Norm();
+			Vector3D upVec = upVec.GetUpVec(frontVec);
+			upVec.V3Norm();
+			Vector3D RightVec = RightVec.GetRightVec(frontVec, upVec);
+			RightVec.V3Norm();
+			Float3 finalOffSet = {
+				offset * frontVec.vec.x + offset * upVec.vec.x + offset * RightVec.vec.x,
+				offsetY * frontVec.vec.y + offsetY * upVec.vec.y + offsetY * RightVec.vec.y,
+				offsetZ * frontVec.vec.z + offsetZ * upVec.vec.z + offsetZ * RightVec.vec.z
+
+			};
+			view.eye.x = eyeStartPos.x + finalOffSet.x;
+			view.eye.y = eyeStartPos.y + finalOffSet.y;
+			view.eye.z = eyeStartPos.z + finalOffSet.z;
+			view.target.x = targetStart.x + finalOffSet.x;
+			view.target.y = targetStart.y + finalOffSet.y;
+			view.target.z = targetStart.z + finalOffSet.z;
+		}
 	}
-	view.UpDateMatrixView();
-	projection.UpdataMatrixProjection();
-	view.eye = eyeStartPos;
-	view.target = targetStart;
+		view.UpDateMatrixView();
+		projection.UpdataMatrixProjection();
+		view.eye = eyeStartPos;
+		view.target = targetStart;
 }
 
 void Camera::WorldPositionUpdate(DirectX::XMMATRIX playerMatrix, DirectX::XMFLOAT3 playerPosition,bool isBillBord)

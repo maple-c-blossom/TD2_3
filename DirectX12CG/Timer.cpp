@@ -6,6 +6,11 @@ void Timer::Set(int end)
 	timer = 0;
 }
 
+void Timer::ReSet()
+{
+	if (IsEnd())Set(end);
+}
+
 void Timer::TimeSet(int timer, int end)
 {
 	this->timer = timer;
@@ -20,6 +25,12 @@ void Timer::SetIf(int end, bool flag)
 void Timer::Update()
 {
 	timer++;
+}
+
+void Timer::LoopUpdate()
+{
+	Update();
+	ReSet();
 }
 
 void Timer::SafeDownUpdate()

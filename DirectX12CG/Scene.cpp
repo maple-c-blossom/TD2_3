@@ -29,6 +29,11 @@ MCB::Scene::~Scene()
         itr->free = true;
     }
 
+    for (auto& itr : result)
+    {
+        itr->free = true;
+    }
+
 }
 
 #pragma region 通常変数の初期化と3Dオブジェクトの初期化
@@ -67,19 +72,21 @@ void MCB::Scene::Object3DInit()
     Skydome.scale = { 180,1,180 };
     Skydome.position = { 0,-15,0 };
 
+    substie->soundmanager = &soundManager;
     substie->model = playerModel.get();
     substie->KneadedEraserModel = nerikesiModel.get();
     substie->scale = { 1,1,1 };
     substie->position = { 0,0,0 };
     substie->Initialize();
+    substie->sphereModel = BossDamegeEffectModelSpher.get();
+
 
     Object3d wall = Object3d();
-    wall.position = { 20,9,-14 };
-    wall.scale = { 5.8,10,1.5 };
+    wall.position = { 20,5,-14 };
+    wall.scale = { 5.8,5,5.8 };
     wall.rotation = { 0,0,0 };
     wall.Init();
-    wall.model = BoxModel.get();
-    BoxModel->material.constMapMaterial->color = { 0,0,0,1 };
+    wall.model = creaner.get();
     walls.push_back(wall);
     walls.back().colliders.push_back(ADXCollider(&walls.back()));
     walls.back().colliders.back().colType_ = box;
@@ -96,9 +103,11 @@ void MCB::Scene::Object3DInit()
     temp->SetHandwritingModel(WritingModel.get());
     enemys.push_back(move(temp));
     spownTimer.Set(30);
-    boss->Initialize({ 0,0,1 }, { -20,0,0 }, bossModel.get(), pencilEnemyModel.get(), WritingModel.get(), BossDamegeEffectModelStar.get(), BossDamegeEffectModelSpher.get(), 1, substie.get());
+    boss->soundmanager = &soundManager;
+    boss->Initialize({ 0,0,1 }, { -20,0,0 }, bossModel.get(), pencilEnemyModel.get(), WritingModel.get(), BossDamegeEffectModelStar.get(), BossDamegeEffectModelSpher.get(), BossCover.get(), 1, substie.get());
     boss->shake = mainCamera.GetShakePtr();
     mainCamera.player = substie.get();
+    mainCamera.boss = boss.get();
     
     
     
@@ -124,9 +133,12 @@ void MCB::Scene::LoadModel()
     WritingModel = std::make_unique<Model>("Box");
     bossModel = std::make_unique<Model>("boss");
     nerikesiModel = std::make_unique<Model>("nerikeshi");
+    creaner = std::make_unique<Model>("cleaner");
     eraseEnemyModel = std::make_unique<Model>("eraser");
     BossDamegeEffectModelStar = std::make_unique<Model>("star");
     BossDamegeEffectModelSpher = std::make_unique<Model>("ball");
+    BossCover = std::make_unique<Model>("bossCover");
+    //BossCover->texture = loader->LoadTexture(L"Resources\\text\\bossCover\\bossCover.png");
     //testModel = new FBXModel();
     //testModel->Load("testFbx");
     //assert(testModel->textureManager->textures.size() < 20);
@@ -139,6 +151,8 @@ void MCB::Scene::LoadTexture()
 	debugTextTexture = loader->LoadTexture(L"Resources\\debugfont.png");
     bossHp = loader->LoadTexture(L"Resources\\text\\bossHp.png");
     shard = loader->LoadTexture(L"Resources\\text\\shard.png");
+
+#pragma region tutorial
     tutorialTexs[0] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_move.png");
     tutorialTexs[1] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_base.png");
     tutorialTexs[2] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_attack.png");
@@ -147,13 +161,30 @@ void MCB::Scene::LoadTexture()
     tutorialTexs[5] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_spin3.png");
     tutorialTexs[6] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_spin4.png");
     tutorialTexs[7] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_remove.png");
+#pragma endregion
+
+#pragma region result
+    result[(int)Result::Clear] = loader->LoadTexture(L"Resources\\result\\clear.png");
+    result[(int)Result::GameOver] = loader->LoadTexture(L"Resources\\result\\gameover.png");
+    result[(int)Result::Frame] = loader->LoadTexture(L"Resources\\result\\frame.png");
+    result[(int)Result::Title] = loader->LoadTexture(L"Resources\\result\\title.png");
+    result[(int)Result::Space] = loader->LoadTexture(L"Resources\\result\\space.png");
+    result[(int)Result::ABottom] = loader->LoadTexture(L"Resources\\result\\a.png");
+    result[(int)Result::Time] = loader->LoadTexture(L"Resources\\result\\time.png");
+    result[(int)Result::Rank] = loader->LoadTexture(L"Resources\\result\\rank.png");
+    result[(int)Result::ARank] = loader->LoadTexture(L"Resources\\result\\rank_a.png");
+    result[(int)Result::BRank] = loader->LoadTexture(L"Resources\\result\\rank_b.png");
+    result[(int)Result::CRank] = loader->LoadTexture(L"Resources\\result\\rank_c.png");
+    result[(int)Result::SRank] = loader->LoadTexture(L"Resources\\result\\rank_s.png");
+#pragma endregion
+
 }
 
 void MCB::Scene::LoadSound()
 {
-	testSound = soundManager.LoadWaveSound("Resources\\cat1.wav");
-    test2Sound = soundManager.LoadWaveSound("Resources\\fanfare.wav");
-    soundManager.SetVolume(100, testSound);
+    bgm = soundManager.LoadWaveSound("Resources\\sound\\bgm\\title.wav");
+    clearbgm = soundManager.LoadWaveSound("Resources\\sound\\bgm\\clear.wav");
+    gameOverbgm = soundManager.LoadWaveSound("Resources\\sound\\bgm\\gameover.wav");
 }
 
 void MCB::Scene::SpriteInit()
@@ -170,6 +201,25 @@ void MCB::Scene::SpriteInit()
     shardSprite = shardSprite.CreateSprite();
     shardSprite.tex = shard->texture.get();
     shardSprite.anchorPoint = { 0,0 };
+
+    for(auto& itr: resultSprite)
+    {
+        itr = make_unique<Sprite>();
+        *itr = shardSprite.CreateSprite();
+    }
+    resultSprite[(int)Result::Clear]->tex = result[(int)Result::Clear]->texture.get();
+    resultSprite[(int)Result::GameOver]->tex = result[(int)Result::GameOver]->texture.get();
+    resultSprite[(int)Result::Frame]->tex = result[(int)Result::Frame]->texture.get();
+    resultSprite[(int)Result::Title]->tex = result[(int)Result::Title]->texture.get();
+    resultSprite[(int)Result::Space]->tex = result[(int)Result::Space]->texture.get();
+    resultSprite[(int)Result::ABottom]->tex = result[(int)Result::ABottom]->texture.get();
+    resultSprite[(int)Result::Time]->tex = result[(int)Result::Time]->texture.get();
+    resultSprite[(int)Result::Rank]->tex = result[(int)Result::Rank]->texture.get();
+    resultSprite[(int)Result::ARank]->tex = result[(int)Result::ARank]->texture.get();
+    resultSprite[(int)Result::BRank]->tex = result[(int)Result::BRank]->texture.get();
+    resultSprite[(int)Result::CRank]->tex = result[(int)Result::CRank]->texture.get();
+    resultSprite[(int)Result::SRank]->tex = result[(int)Result::SRank]->texture.get();
+
     debugText.Init(debugTextTexture->texture.get());
     substie->TutorialInitialize(tutorialTexs[0]->texture.get(), tutorialTexs[1]->texture.get(), tutorialTexs[2]->texture.get(),
         tutorialTexs[3]->texture.get(), tutorialTexs[4]->texture.get(), tutorialTexs[5]->texture.get(), tutorialTexs[6]->texture.get(), tutorialTexs[7]->texture.get());
@@ -198,7 +248,8 @@ void MCB::Scene::Update()
 //        {
 //            sceneEnd = true;
 //        }
-
+    if (boss->GetHp() > 0 && substie->GetHp() > 0)
+    {
         substie->Update();
         spownTimer.Update();
 
@@ -273,9 +324,26 @@ void MCB::Scene::Update()
         }
 
         boss->Update();
+    }
+    else if (boss->GetHp() <= 0)
+    {
+        boss->DethUpdate();
+        if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A))
+        {
+            sceneEnd = true;
+        }
+    }
+    else if (substie->GetHp() <= 0)
+    {
+        substie->DethUpdate();
+        if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A))
+        {
+            sceneEnd = true;
+        }
+    }
 
-        lights->UpDate();
-        viewCamera->Update();
+    lights->UpDate();
+    viewCamera->Update();
 
     CheckAllColision();
 
@@ -288,12 +356,9 @@ void MCB::Scene::Update()
         }
     }
     //行列変換
-    MatrixUpdate();
+    //MatrixUpdate();
 
-    if (boss->GetHp() <= 0 || substie->GetHp() <= 0)
-    {
-        sceneEnd = true;
-    }
+
 }
 
 void MCB::Scene::Draw()
@@ -303,17 +368,26 @@ void MCB::Scene::Draw()
     ground.Draw();
     if (substie->GetVisible())
     {
-        substie->Draw();
+        if (!boss->afterdethDown)
+        {
+            substie->Draw();
+        }
     }
-    for (auto& itr : walls)
+    if (!(substie->GetHp() <= 0))
     {
-        itr.Draw();
+        if (!boss->afterdethDown)
+        {
+            for (auto& itr : walls)
+            {
+                itr.Draw();
+            }
+            for (auto& itr : enemys)
+            {
+                itr->Draw();
+            }
+        }
+        boss->Draw();
     }
-    for (auto& itr : enemys)
-    {
-        itr->Draw();
-    }
-    boss->Draw();
     WritingEnemy::StaticDraw();
     //human.Draw();
     //testSpher.Draw();
@@ -322,27 +396,32 @@ void MCB::Scene::Draw()
 
 void MCB::Scene::SpriteDraw()
 {
-
-    substie->TutorialDraw();
-    substie->StatusDraw();
-
-    bossHpSprite.SpriteDraw(10, 60, 290/2,80/2);
-    debugText.Print(15 + 290 / 2, 65, 2, "%d", boss->GetHp());
-
-    //debugText.Print(20, 20, 2, "boss:hp %d",boss.GetHp());
-    ////debugText.Print(20, 60, 2, "player:hp %d",substie.GetHp());
-    //debugText.Print(20, 60, 2, "position x:%fz:%f", substie.position.x,substie.position.z);
-    //debugText.Print(20, 100, 2, "player:shard %f", substie.GetShard());
-    //debugText.Print(dxWindow->window_width - 300, 20, 2, "Move:WASD");
-    //debugText.Print(dxWindow->window_width - 300, 60, 2, "Action:SPACE", substie.GetShard());
-    //debugText.Print(dxWindow->window_width - 300, 100, 2, "ActionCost:shard");
-    if (boss->GetHp() <= 0)
+    if (!(substie->GetHp() <= 0))
     {
-        debugText.Print(dxWindow->window_width/2 - 100, dxWindow->window_height/2, 4, "GameClear");
+        if (!boss->afterdethDown)
+        {
+            substie->TutorialDraw();
+            substie->StatusDraw();
+
+            boss->StatusDraw();
+        }
     }
-    else if (substie->GetHp() <= 0)
+
+    if (mainCamera.isok && boss->GetHp() <= 0 )
     {
-        debugText.Print(dxWindow->window_width / 2 - 100, dxWindow->window_height / 2, 4, "GameOver");
+        resultSprite[(int)Result::Clear]->SpriteDraw(dxWindow->window_width / 2, 90, 576, 60);
+        resultSprite[(int)Result::Frame]->SpriteDraw(dxWindow->window_width / 2, dxWindow->window_height / 2, 448 * 2, 446);
+        resultSprite[(int)Result::Title]->SpriteDraw(dxWindow->window_width / 2 - 224, dxWindow->window_height / 2);
+        resultSprite[(int)Result::Space]->SpriteDraw(dxWindow->window_width / 2 + 224, dxWindow->window_height / 2 - 113);
+        resultSprite[(int)Result::ABottom]->SpriteDraw(dxWindow->window_width / 2 + 224, dxWindow->window_height / 2 + 113);
+    }
+    else if (mainCamera.isok && substie->GetHp() <= 0)
+    {
+        resultSprite[(int)Result::GameOver]->SpriteDraw(dxWindow->window_width / 2, 90, 576, 80);
+        resultSprite[(int)Result::Frame]->SpriteDraw(dxWindow->window_width / 2, dxWindow->window_height / 2, 448 * 2, 446);
+        resultSprite[(int)Result::Title]->SpriteDraw(dxWindow->window_width / 2 - 224, dxWindow->window_height / 2);
+        resultSprite[(int)Result::Space]->SpriteDraw(dxWindow->window_width / 2 + 224, dxWindow->window_height / 2 - 113);
+        resultSprite[(int)Result::ABottom]->SpriteDraw(dxWindow->window_width / 2 + 224, dxWindow->window_height / 2 + 113);
     }
 
     debugText.AllDraw();

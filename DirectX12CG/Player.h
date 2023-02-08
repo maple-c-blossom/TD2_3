@@ -6,14 +6,25 @@
 #include "ICamera.h"
 #include "Sprite.h"
 #include "Status.h"
+#include "BossDamageEffect.h"
+#include "Sound.h"
+
 
 class Player :public MCB::Object3d
 {
 private:
 	static Player* playerPtr;
 	static std::list<MCB::Object3d*> captureList;
-
+	std::list<std::unique_ptr<BossDamageEffect>>effects;
 private:
+	enum class SoundEffect
+	{
+		Damage,
+		Spin,
+	};
+
+	std::array<int, 2> soundEffect;
+
 	MCB::Input* input = MCB::Input::GetInstance();
 	int hp = maxHP;
 	std::vector<int> keyConfig{ DIK_W,DIK_S,DIK_D,DIK_A,DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE };
@@ -25,7 +36,7 @@ private:
 	int invincible = 0;
 	bool visible = true;
 	float weight = 1;
-	float shard = 10;
+	float shard = 30;
 	float directionAngle = 0;
 	float holdDirectionAngle = 0;
 	float moveSpeedPercentage = 0;
@@ -49,9 +60,14 @@ private:
 	std::array<MCB::TextureCell*, 2> kneadedEraserGaugeTexCells;
 	std::array<MCB::Texture*, 2> kneadedEraserGaugeTexs;
 
+	MCB::Sprite shardEmpty;
+	std::array<MCB::TextureCell*, 2> shardEmptyTexCell;
+	std::array<MCB::Texture*, 2> shardEmptyTex;
+	int shardEmptyDisplay;
+
 	std::array<MCB::Sprite, maxHP> hearts;
-	MCB::TextureCell* heartTexCell;
 	MCB::Texture* heartTex;
+	MCB::TextureCell* heartTexCell;
 	MCB::TextureCell* heartBlankTexCell;
 	MCB::Texture* heartBlankTex;
 
@@ -59,8 +75,12 @@ private:
 	Timer animationTime;
 	int animeNum;
 	bool trueMakingKneadedEraser;
-
 public:
+	~Player();
+	bool deth = false;
+public:
+	SoundManager* soundmanager;
+	Model* sphereModel;
 	float shardCost = 1;
 	float shardRotateCost = 0.02f;
 	MCB::Model* KneadedEraserModel = nullptr;
@@ -75,6 +95,7 @@ public:
 	std::list<KneadedEraser>* GetKneadedErasersPtr();
 	void Initialize();
 	void Update(bool moveLimitFlag = true);
+	void DethUpdate();
 	void Draw();
 	void TutorialDraw();
 	void StatusDraw();

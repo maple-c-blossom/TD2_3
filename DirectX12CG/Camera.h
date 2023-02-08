@@ -2,9 +2,10 @@
 #include "ICamera.h"
 #include "Object3d.h"
 #include "Util.h"
-
+#include "Timer.h"
 
 class Player;
+class Boss;
 namespace MCB
 {
 	class Camera :public ICamera
@@ -25,7 +26,13 @@ namespace MCB
 		//WorldMatrix GetMadWorld2();
 		Shake* GetShakePtr() { return &shakeX; }
 
-		Player* player;
+		Player* player = nullptr;
+		Boss* boss = nullptr;
+
+		bool isok = false;
+		Timer timer;
+
+		Timer isOktimer;
 	private:
 
 		std::unique_ptr<Object3d> object3d = std::make_unique<Object3d>();
@@ -38,6 +45,9 @@ namespace MCB
 		Float3 distance = {0,30,-40};
 
 		DirectX::XMFLOAT3 eyeStartPos;
+
+		DirectX::XMFLOAT3 eyeEaseStartPos;
+		DirectX::XMFLOAT3 targetEaseStartPos;
 
 		//プレイヤーのワールド変換行列
 		DirectX::XMMATRIX playerMatrix_;

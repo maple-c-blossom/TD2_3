@@ -91,6 +91,9 @@ void Enemy::Update(bool limitMove)
 	{
 		imotalTimer.Update();
 	}
+
+	bodySlam = false;
+
 	UniqueUpdate(limitMove);
 
 	for (auto& itr : colliders)
@@ -115,9 +118,34 @@ void Enemy::Update(bool limitMove)
 		Vector3D positionVec = MCBMatrix::transform(captureLocalPos, MCB::MCBMatrix::MCBMatrixConvertXMMatrix(capture->matWorld.matWorld));
 		position = positionVec.ConvertXMFloat3();
 		Player::GetCaptureList()->push_back(this);//プレイヤーがもっているキャプチャしている敵のリストに格納(攻撃当てた時に敵を消すためのリスト）
+		bodySlam = false;
 	}
 
 	position.y = 0;
+
+	color = { 1.0f,1.0f,1.0f,1.0f };
+	if (bodySlam)
+	{
+		if (clock() % 10 < 5)
+		{
+			color = { 1.0f,0.0f,0.0f,1.0f };
+		}
+		else
+		{
+			color = { 1.0f,1.0f,0.0f,1.0f };
+		}
+	}
+	else if (beforeAttack)
+	{
+		if (clock() % 20 < 5)
+		{
+			color = { 1.0f,0.3f,0.3f,1.0f };
+		}
+		else
+		{
+			color = { 1.0f,0.8f,0.8f,1.0f };
+		}
+	}
 	
 	allEnemyPtr.push_back(this);
 	if (hp <= 0)

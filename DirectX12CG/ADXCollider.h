@@ -47,6 +47,7 @@ public:
     ADXVector3 scale_ = { 1,1,1 };
     std::vector<ADXCollider*> collideList{};
     ADXVector3 pushBackVector = { 0,0,0 };
+    float pushBackPriority = 0;
     int collideLayer = 0;
 
     ADXCollider(Object3d* obj);
