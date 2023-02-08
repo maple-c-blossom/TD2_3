@@ -195,7 +195,7 @@ void Boss::Update(bool moveLimit)
 
 	if (!attack && !beforeAttack && !afterAttack)
 	{
-		if (hp <= MAX_HP_BOSS / 10)
+		if (hp <= MAX_HP_BOSS / 4)
 		{
 			gravity = 0.001f * 20;
 		}
