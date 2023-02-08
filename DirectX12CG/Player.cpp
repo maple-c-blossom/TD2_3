@@ -49,10 +49,13 @@ void Player::Initialize()
 	shardEmpty.anchorPoint = { 0,1 };
 
 	soundEffect[(unsigned int)SoundEffect::Damage] = soundmanager->LoadWaveSound("Resources\\sound\\se\\damage.wav");
-	rotateSound = soundmanager->LoadWaveSound("Resources\\sound\\se\\kaiten.wav");
+	rotateSound = soundmanager->LoadWaveSound("Resources\\sound\\se\\swing.wav");
+	soundmanager->SetVolume(6, rotateSound);
 
 	soundmanager->SetVolume(13, soundEffect[(unsigned int)SoundEffect::Damage]);
-	dieSound = soundmanager->LoadWaveSound("Resources\\sound\\se\\pop.wav");
+
+	dieSound = soundmanager->LoadWaveSound("Resources\\sound\\se\\death.wav");
+	soundmanager->SetVolume(13, dieSound);
 }
 
 void Player::Update(bool flag)
