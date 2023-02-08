@@ -23,6 +23,7 @@ void Camera::WorldPositionInit()
 
 void Camera::Update()
 {
+	XMFLOAT3 targetStart = view.target;
 	if (player && boss)
 	{
 		if ((!player->deth) && !(boss->afterdethDown) && !(boss->beforedethDown) &&!(boss->dethDown))
@@ -92,7 +93,7 @@ void Camera::Update()
 
 
 		eyeStartPos = view.eye;
-		XMFLOAT3 targetStart = view.target;
+		targetStart = view.target;
 		shakeY = shakeX;
 		shakeZ = shakeX;
 		float offset = shakeX.shakeUpdateR();
@@ -119,11 +120,11 @@ void Camera::Update()
 			view.target.y = targetStart.y + finalOffSet.y;
 			view.target.z = targetStart.z + finalOffSet.z;
 		}
-		view.eye = eyeStartPos;
-		view.target = targetStart;
 	}
 		view.UpDateMatrixView();
 		projection.UpdataMatrixProjection();
+		view.eye = eyeStartPos;
+		view.target = targetStart;
 }
 
 void Camera::WorldPositionUpdate(DirectX::XMMATRIX playerMatrix, DirectX::XMFLOAT3 playerPosition,bool isBillBord)
