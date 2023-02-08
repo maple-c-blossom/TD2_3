@@ -50,6 +50,7 @@ private:
 	float postRotateCount = 0;
 	bool rotateSoundPlay;
 	int rotateSound;
+	int dieSound;
 	MCB::Vector3D prevPos{};
 	MCB::Vector3D velocity{};
 

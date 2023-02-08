@@ -52,6 +52,7 @@ void Player::Initialize()
 	rotateSound = soundmanager->LoadWaveSound("Resources\\sound\\se\\kaiten.wav");
 
 	soundmanager->SetVolume(13, soundEffect[(unsigned int)SoundEffect::Damage]);
+	dieSound = soundmanager->LoadWaveSound("Resources\\sound\\se\\pop.wav");
 }
 
 void Player::Update(bool flag)
@@ -205,7 +206,6 @@ void Player::Update(bool flag)
 
 	rotateTapTime--;
 	rotateTapTime = max(0, rotateTapTime);
-
 	kneadedErasers.remove_if([](auto& itr) {return Object3d::DeleteAllowed(&itr); });
 
 	moveSpeedPercentage = max(0, min(moveSpeedPercentage, 1));
@@ -437,6 +437,7 @@ void Player::DethUpdate()
 			effect->color = { 0.4f,0.3f,0.8f,1.0f };
 			effects.push_back(std::move(effect));
 		}
+		soundmanager->PlaySoundWave(dieSound);
 		deth = true;
 	}
 	for (auto& itr : effects)
