@@ -8,6 +8,7 @@
 
 #include "Player.h"
 #include "Boss.h"
+#include "Cleaner.h"
 
 #pragma endregion ゲーム系.h include
 
@@ -106,7 +107,7 @@ namespace MCB
 
 		std::unique_ptr <Boss> boss = std::make_unique<Boss>();
 
-		std::vector<Object3d> walls;
+		std::vector<Cleaner> walls;
 
 		Timer spownTimer;
 #pragma endregion スプライト

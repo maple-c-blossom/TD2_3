@@ -81,16 +81,9 @@ void MCB::Scene::Object3DInit()
     substie->Initialize();
     substie->sphereModel = BossDamegeEffectModelSpher.get();
 
-
-    Object3d wall = Object3d();
-    wall.position = { 20,4,-14 };
-    wall.scale = { 5.8,4,5.8 };
-    wall.rotation = { 0,0,0 };
-    wall.Init();
-    wall.model = creaner.get();
-    walls.push_back(wall);
-    walls.back().colliders.push_back(ADXCollider(&walls.back()));
-    walls.back().colliders.back().colType_ = box;
+    Cleaner tempC;
+    tempC.Inilialize(creaner.get());
+    walls.push_back(std::move(tempC));
 
     unique_ptr<PencilEnemy,MyDeleter<PencilEnemy>> temp (new PencilEnemy);
     temp->Enemy::Initialize({ 0,0,1 }, { 20,0,10 }, pencilEnemyModel.get(), 0.5f);
@@ -255,7 +248,10 @@ void MCB::Scene::Update()
     if (boss->GetHp() > 0 && substie->GetHp() > 0)
     {
         time++;
-
+        for (auto& itr : walls)
+        {
+            itr.Update();
+        }
         substie->Update();
         spownTimer.Update();
 
@@ -593,7 +589,7 @@ void MCB::Scene::MatrixUpdate()
     }
     for (auto& itr : walls)
     {
-        itr.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
+        itr.Object3d::Update(*viewCamera->GetView(), *viewCamera->GetProjection());
         for (auto& colItr : itr.colliders)
         {
             colItr.Update(&itr);

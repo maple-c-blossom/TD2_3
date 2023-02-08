@@ -18,6 +18,7 @@
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="BossDamageEffect.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Cleaner.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="DebugCamera.cpp" />
     <ClCompile Include="DebugText.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="Boss.h" />
     <ClInclude Include="BossDamageEffect.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Cleaner.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="DebugCamera.h" />
     <ClInclude Include="DebugText.h" />

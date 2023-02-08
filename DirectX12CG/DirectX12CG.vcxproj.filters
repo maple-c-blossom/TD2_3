@@ -396,6 +396,9 @@
     <ClCompile Include="BossDamageEffect.cpp">
       <Filter>ソース ファイル\Game\Any</Filter>
     </ClCompile>
+    <ClCompile Include="Cleaner.cpp">
+      <Filter>ソース ファイル\Game\Any</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\ParticleShader\ParticleGeometryShader.hlsl">
@@ -641,6 +644,9 @@
       <Filter>ヘッダー ファイル\Game\Player</Filter>
     </ClInclude>
     <ClInclude Include="BossDamageEffect.h">
+      <Filter>ヘッダー ファイル\Game\Any</Filter>
+    </ClInclude>
+    <ClInclude Include="Cleaner.h">
       <Filter>ヘッダー ファイル\Game\Any</Filter>
     </ClInclude>
   </ItemGroup>
