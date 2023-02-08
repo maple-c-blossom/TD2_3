@@ -254,6 +254,8 @@ void MCB::Scene::Update()
 //        }
     if (boss->GetHp() > 0 && substie->GetHp() > 0)
     {
+        time++;
+
         substie->Update();
         spownTimer.Update();
 
@@ -454,7 +456,7 @@ void MCB::Scene::SpriteDraw()
         resultSprite[(int)Result::ABottom]->SpriteDraw(dxWindow->window_width / 2 + 224, dxWindow->window_height / 2 + 63,66 * resultSize,66 * resultSize);
     }
 
-    debugText.Print(50, 50, 100, "TIME");
+    debugText.Print(150, 40, 1, "%02d:%02d", time / SECOND_FRAME / 60, time / SECOND_FRAME % 60);
 
     debugText.AllDraw();
 }
