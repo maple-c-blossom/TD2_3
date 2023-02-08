@@ -442,7 +442,7 @@ void Player::DethUpdate()
 
 			std::unique_ptr<BossDamageEffect,MyDeleter<BossDamageEffect>> effect(new BossDamageEffect);
 			effect->Initialize(sphereModel, { sinf(ConvertRadius((float)GetRand(0,360))) * cosf(ConvertRadius((float)GetRand(0,360))),sinf(ConvertRadius((float)GetRand(0,360))) * sinf(ConvertRadius((float)GetRand(0,360))),cosf(ConvertRadius((float)GetRand(0,360))) },
-				{ position.x + GetRand(0,200) / 100,position.y + GetRand(0,200) / 100,position.z + GetRand(0,200) / 100 }, { (float)25 / 15 + 1,(float)25 / 15 + 1,(float)25 / 15 + 1 }, { ((float)25 / 20),0,1 - ((float)25 / 20),1 }, 0.75f, 60);
+				{ position.x + GetRand(0,200) / 100,position.y + GetRand(0,200) / 100,position.z + GetRand(0,200) / 100 }, { 2.f,2.f,2.f }, { ((float)25 / 20),0,1 - ((float)25 / 20),1 }, 0.75f, 60);
 			effect->color = { 0.4f,0.3f,0.8f,1.0f };
 			effects.push_back(std::move(effect));
 		}
