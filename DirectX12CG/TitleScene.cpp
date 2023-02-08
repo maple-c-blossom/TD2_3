@@ -262,7 +262,7 @@ void MCB::TitleScene::Update()
                 {
                     RotateFrame++;
                 }
-                if (RotateFrame >= SECOND_FRAME * 5)
+                if (RotateFrame >= SECOND_FRAME * 1)
                 {
                     tutorialSucces |= 0b00100;
                 }
