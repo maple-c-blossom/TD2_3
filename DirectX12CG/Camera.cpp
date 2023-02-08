@@ -23,7 +23,7 @@ void Camera::WorldPositionInit()
 
 void Camera::Update()
 {
-	XMFLOAT3 targetStart;
+	XMFLOAT3 targetStart = view.target;
 	if (player && boss)
 	{
 		if ((!player->deth) && !(boss->afterdethDown) && !(boss->beforedethDown) &&!(boss->dethDown))
