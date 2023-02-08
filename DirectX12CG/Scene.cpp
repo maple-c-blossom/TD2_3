@@ -152,6 +152,7 @@ void MCB::Scene::LoadTexture()
 	debugTextTexture = loader->LoadTexture(L"Resources\\debugfont.png");
     bossHp = loader->LoadTexture(L"Resources\\text\\bossHp.png");
     shard = loader->LoadTexture(L"Resources\\text\\shard.png");
+    selectSound = soundManager.LoadWaveSound("Resources\\sound\\se\\select.wav");
 
 #pragma region tutorial
     tutorialTexs[0] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_move.png");
@@ -338,6 +339,7 @@ void MCB::Scene::Update()
         if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A))
         {
             sceneEnd = true;
+            soundManager.PlaySoundWave(selectSound);
         }
     }
     else if (substie->GetHp() <= 0)
@@ -349,6 +351,7 @@ void MCB::Scene::Update()
         if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A))
         {
             sceneEnd = true;
+            soundManager.PlaySoundWave(selectSound);
         }
     }
     if (boss->GetHp() <= 0 || substie->GetHp() <= 0)

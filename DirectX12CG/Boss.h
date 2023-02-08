@@ -62,7 +62,7 @@ private:
 	std::array<MCB::Sprite, 3> gauges;
 	std::array<MCB::TextureCell*, 3> gaugeTexCells;
 	std::array<MCB::Texture*, 3> gaugeTexs;
-
+	int dieSound;
 	Float2 gaugeShake;
 
 	std::unique_ptr<Object3d> cover;

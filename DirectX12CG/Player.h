@@ -48,6 +48,8 @@ private:
 	float rotateTapTime = 0;
 	float rotateModeCount = 0;
 	float postRotateCount = 0;
+	bool rotateSoundPlay;
+	int rotateSound;
 	MCB::Vector3D prevPos{};
 	MCB::Vector3D velocity{};
 

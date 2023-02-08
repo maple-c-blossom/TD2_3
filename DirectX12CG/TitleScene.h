@@ -68,7 +68,8 @@ namespace MCB
 		//サウンド
 #pragma region サウンド
 		int bgm;
-
+		int succeseSound;
+		int selectSound;
 		int volume = 25;
 #pragma endregion サウンド
 

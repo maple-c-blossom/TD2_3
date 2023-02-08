@@ -76,7 +76,7 @@ namespace MCB
 		int bgm;
 		int clearbgm;
 		int gameOverbgm;
-
+		int selectSound;
 		int volume = 25;
 #pragma endregion ƒTƒEƒ“ƒh
 

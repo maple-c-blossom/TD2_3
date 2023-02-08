@@ -49,6 +49,7 @@ void Player::Initialize()
 	shardEmpty.anchorPoint = { 0,1 };
 
 	soundEffect[(unsigned int)SoundEffect::Damage] = soundmanager->LoadWaveSound("Resources\\sound\\se\\damage.wav");
+	rotateSound = soundmanager->LoadWaveSound("Resources\\sound\\se\\kaiten.wav");
 
 	soundmanager->SetVolume(13, soundEffect[(unsigned int)SoundEffect::Damage]);
 }
@@ -83,10 +84,17 @@ void Player::Update(bool flag)
 	if (rotateMode)
 	{
 		weight = 300;
+		if (!rotateSoundPlay)
+		{
+			rotateSoundPlay = true;
+			soundmanager->PlaySoundWave(rotateSound, true);
+		}
 	}
 	else
 	{
 		weight = 10;
+		rotateSoundPlay = false;
+		soundmanager->StopSoundWave(rotateSound);
 	}
 
 	if (trueMakingKneadedEraser && !prevTrueMakingKneadedEraser)

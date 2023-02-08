@@ -213,6 +213,10 @@ void MCB::TitleScene::Update()
 
                 if (substie->GetShard() >= 10)
                 {
+                    if (!(tutorialSucces & 0b10000))
+                    {
+                        soundManager.PlaySoundWave(succeseSound);
+                    }
                     tutorialSucces |= 0b10000;
                 }
                 break;
@@ -242,6 +246,10 @@ void MCB::TitleScene::Update()
 
                 if (velocitySum >= 3)
                 {
+                    if (!(tutorialSucces & 0b01000))
+                    {
+                        soundManager.PlaySoundWave(succeseSound);
+                    }
                     tutorialSucces |= 0b01000;
                 }
                 break;
@@ -264,6 +272,10 @@ void MCB::TitleScene::Update()
                 }
                 if (RotateFrame >= SECOND_FRAME * 1)
                 {
+                    if (!(tutorialSucces & 0b00100))
+                    {
+                        soundManager.PlaySoundWave(succeseSound);
+                    }
                     tutorialSucces |= 0b00100;
                 }
                 for (auto& itr : enemys_6tutorial)
@@ -325,6 +337,10 @@ void MCB::TitleScene::Update()
                 }
                 if (substie.get()->GetCaptureList()->size() >= 5)
                 {
+                    if (!(tutorialSucces & 0b00010))
+                    {
+                        soundManager.PlaySoundWave(succeseSound);
+                    }
                     tutorialSucces |= 0b00010;
                 }
 
@@ -390,6 +406,10 @@ void MCB::TitleScene::Update()
                 }
                 if (boss->IsImotal())
                 {
+                    if (!(tutorialSucces & 0b00001))
+                    {
+                        soundManager.PlaySoundWave(succeseSound);
+                    }
                     tutorialSucces |= 0b00001;
                 }
                 break;
@@ -401,6 +421,7 @@ void MCB::TitleScene::Update()
                 if ((input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A)))
                 {
                     sceneEnd = true;
+                    soundManager.PlaySoundWave(selectSound);
                 }
                 break;
             default:
@@ -413,6 +434,7 @@ void MCB::TitleScene::Update()
     if (input->IsKeyTrigger(DIK_P) || input->IsKeyTrigger(DIK_RETURN)  || input->gamePad->IsButtonTrigger(GAMEPAD_START))
     {
         sceneEnd = true;
+        soundManager.PlaySoundWave(selectSound);
     }
     
 
@@ -754,6 +776,8 @@ void MCB::TitleScene::LoadTexture()
 void MCB::TitleScene::LoadSound()
 {
     bgm = soundManager.LoadWaveSound("Resources\\sound\\bgm\\title.wav");
+    succeseSound = soundManager.LoadWaveSound("Resources\\sound\\se\\pinpon.wav");
+    selectSound = soundManager.LoadWaveSound("Resources\\sound\\se\\select.wav");
 
 }
 
