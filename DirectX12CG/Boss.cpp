@@ -378,7 +378,7 @@ void Boss::DethUpdate()
 	{
 		if (deathDownTimer.GetEndTime() - 20 >= deathDownTimer.NowTime())
 		{
-			downAngle = Lerp(-25, 90, deathDownTimer.GetEndTime() - 20, deathDownTimer.NowTime());
+			downAngle = InQuad(-25, 90, deathDownTimer.GetEndTime() - 20, deathDownTimer.NowTime());
 		}
 		if (deathDownTimer.GetEndTime() - 20 == deathDownTimer.NowTime())
 		{
