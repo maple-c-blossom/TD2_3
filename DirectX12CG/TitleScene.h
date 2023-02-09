@@ -92,6 +92,8 @@ namespace MCB
 		unsigned short tutorialSucces = 0b00000;
 		float velocitySum;
 		float RotateFrame;
+		float resultSize;
+		Timer resultSizeTimer;
 #pragma endregion 3Dオブジェクト
 
 #pragma region スプライト

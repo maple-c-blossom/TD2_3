@@ -60,6 +60,9 @@ void MCB::TitleScene::Update()
     i++;
     animTime.Update();
     float tempVec = 0;
+    resultSize = sinf(ConvertRadius((float)resultSizeTimer.NowTime() >= 180 ? resultSizeTimer.NowTime() * -1 : resultSizeTimer.NowTime())) * 0.25f + 1.2f;
+    resultSizeTimer.SafeUpdate();
+    resultSizeTimer.ReSet();
     if (animTime.IsEnd())
     {
         tutorial1AnimNum++;
@@ -513,7 +516,7 @@ void MCB::TitleScene::Draw()
 
 void MCB::TitleScene::SpriteDraw()
 {
-    titleSprite.SpriteDraw(dxWindow->window_width / 2 - (substie->position.x + 210) * 30, dxWindow->window_height / 2 - 80,512 * 1.2f,128 * 1.2f);
+   titleSprite.SpriteDraw(dxWindow->window_width / 2 - (substie->position.x + 210) * 30, dxWindow->window_height / 2 - 80,512 * resultSize,128 * resultSize);
     //pushSpaceSprite.SpriteDraw(dxWindow->window_width / 2 - substie->position.x * 30, dxWindow->window_height / 2 + 40 + substie->position.z * 30);
     if (substie->position.x >= tutorialBode[2].position.x - 30)
     {
@@ -670,6 +673,7 @@ void MCB::TitleScene::Initialize()
     animTime.Set(30);
     soundManager.PlaySoundWave(bgm, true);
     soundManager.SetVolume(10, bgm);
+    resultSizeTimer.Set(360);
 }
 
 void MCB::TitleScene::LoadModel()
