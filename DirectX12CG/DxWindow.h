@@ -27,7 +27,7 @@ namespace MCB
             // ウィンドウサイズ{ X座標 Y座標 横幅 縦幅 }
         RECT wrc = { 0, 0, window_width, window_height };
         HWND hwnd;
-        const wchar_t* windowName = L"MapleEngine";
+        const wchar_t* windowName = L"2302_Grafight";
 
 
         // ウィンドウプロシージャ 
