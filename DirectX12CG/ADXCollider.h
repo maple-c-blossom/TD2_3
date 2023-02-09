@@ -58,8 +58,10 @@ public:
     ADXVector3 EdgePoint(ADXVector3 pos, ADXVector3 prePos);
     ADXVector3 CollidePoint(ADXVector3 pos, ADXVector3 colSenter, ADXVector3 move);
     ADXVector3 CollideVector(ADXCollider col);
+
+    bool IsHit(ADXCollider& col);
     
-    bool IsHit(ADXCollider col);
+
     void SendPushBack();
     void Collide(ADXCollider* col);
 
