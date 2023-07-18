@@ -116,7 +116,7 @@ void mechanicalPencil::AttackHit()
 {
 	if (!attack)return;
 	std::unique_ptr<PencilBullet> temp = std::make_unique<PencilBullet>();
-	temp->Initialize(bulletModel, 1, nowFrontVec, { position.x,position.y,position.z });
+	temp->Initialize(bulletModel, 1, nowFrontVec_, { position.x,position.y,position.z });
 	bullets.push_back(std::move(temp));
 	attack = false;
 }
