@@ -13,10 +13,10 @@ MCB::Scene::~Scene()
     soundManager_->AllDeleteSound();
     WritingEnemy::GetHandWrite()->clear();
     Player::GetCaptureList()->clear();
-    //loader->SetDelete(testTex);
-    //loader->SetDelete(debugTextTexture);
-    //loader->SetDelete(zoomTex);
-    //loader->SetDelete(scopeTex);
+    //loader_->SetDelete(testTex);
+    //loader_->SetDelete(debugTextTexture);
+    //loader_->SetDelete(zoomTex);
+    //loader_->SetDelete(scopeTex);
     shard->free = true;
     debugTextTexture->free = true;
     playerHp->free = true;
@@ -47,7 +47,7 @@ void MCB::Scene::Initialize()
     Object3DInit();
     SpriteInit();
     ParticleInit();
-    //soundManager.PlaySoundWave(testSound, loopFlag);
+    //soundManager_->PlaySoundWave(testSound, loopFlag);
     lights_->DefaultLightSet();
     lights_->UpDate();
     Object3d::SetLights(lights_);
@@ -129,7 +129,7 @@ void MCB::Scene::LoadModel()
     BossDamegeEffectModelStar = std::make_unique<Model>("star");
     BossDamegeEffectModelSpher = std::make_unique<Model>("ball");
     BossCover = std::make_unique<Model>("bossCover");
-    //BossCover->texture = loader->LoadTexture(L"Resources\\text\\bossCover\\bossCover.png");
+    //BossCover->texture = loader_->LoadTexture(L"Resources\\text\\bossCover\\bossCover.png");
     //testModel = new FBXModel();
     //testModel->Load("testFbx");
     //assert(testModel->textureManager->textures.size() < 20);
@@ -138,62 +138,62 @@ void MCB::Scene::LoadModel()
 
 void MCB::Scene::LoadTexture()
 {
-	playerHp = loader->LoadTexture(L"Resources\\text\\playerHp.png");
-	debugTextTexture = loader->LoadTexture(L"Resources\\debugfont.png");
-    bossHp = loader->LoadTexture(L"Resources\\text\\bossHp.png");
-    shard = loader->LoadTexture(L"Resources\\text\\shard.png");
-    selectSound = soundManager.LoadWaveSound("Resources\\sound\\se\\select.wav");
+	playerHp = loader_->LoadTexture(L"Resources\\text\\playerHp.png");
+	debugTextTexture = loader_->LoadTexture(L"Resources\\debugfont.png");
+    bossHp = loader_->LoadTexture(L"Resources\\text\\bossHp.png");
+    shard = loader_->LoadTexture(L"Resources\\text\\shard.png");
+    selectSound = soundManager_->LoadWaveSound("Resources\\sound\\se\\select.wav");
 
 #pragma region tutorial
-    tutorialTexs[0] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_move.png");
-    tutorialTexs[1] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_base.png");
-    tutorialTexs[2] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_attack.png");
-    tutorialTexs[3] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_spin1.png");
-    tutorialTexs[4] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_spin2.png");
-    tutorialTexs[5] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_spin3.png");
-    tutorialTexs[6] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_spin4.png");
-    tutorialTexs[7] = loader->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_remove.png");
+    tutorialTexs[0] = loader_->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_move.png");
+    tutorialTexs[1] = loader_->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_base.png");
+    tutorialTexs[2] = loader_->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_attack.png");
+    tutorialTexs[3] = loader_->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_spin1.png");
+    tutorialTexs[4] = loader_->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_spin2.png");
+    tutorialTexs[5] = loader_->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_spin3.png");
+    tutorialTexs[6] = loader_->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_spin4.png");
+    tutorialTexs[7] = loader_->LoadTexture(L"Resources\\ctrlGuide\\ctrlGuide_remove.png");
 #pragma endregion
 
 #pragma region result
-    result[(int)Result::Clear] = loader->LoadTexture(L"Resources\\result\\clear.png");
-    result[(int)Result::GameOver] = loader->LoadTexture(L"Resources\\result\\gameover.png");
-    result[(int)Result::Frame] = loader->LoadTexture(L"Resources\\result\\frame.png");
-    result[(int)Result::Title] = loader->LoadTexture(L"Resources\\result\\title.png");
-    result[(int)Result::Space] = loader->LoadTexture(L"Resources\\result\\space.png");
-    result[(int)Result::ABottom] = loader->LoadTexture(L"Resources\\result\\a.png");
-    result[(int)Result::Time] = loader->LoadTexture(L"Resources\\result\\time.png");
-    result[(int)Result::Rank] = loader->LoadTexture(L"Resources\\result\\rank.png");
-    result[(int)Result::ARank] = loader->LoadTexture(L"Resources\\result\\rank_a.png");
-    result[(int)Result::BRank] = loader->LoadTexture(L"Resources\\result\\rank_b.png");
-    result[(int)Result::CRank] = loader->LoadTexture(L"Resources\\result\\rank_c.png");
-    result[(int)Result::SRank] = loader->LoadTexture(L"Resources\\result\\rank_s.png");
+    result[(int)Result::Clear] = loader_->LoadTexture(L"Resources\\result\\clear.png");
+    result[(int)Result::GameOver] = loader_->LoadTexture(L"Resources\\result\\gameover.png");
+    result[(int)Result::Frame] = loader_->LoadTexture(L"Resources\\result\\frame.png");
+    result[(int)Result::Title] = loader_->LoadTexture(L"Resources\\result\\title.png");
+    result[(int)Result::Space] = loader_->LoadTexture(L"Resources\\result\\space.png");
+    result[(int)Result::ABottom] = loader_->LoadTexture(L"Resources\\result\\a.png");
+    result[(int)Result::Time] = loader_->LoadTexture(L"Resources\\result\\time.png");
+    result[(int)Result::Rank] = loader_->LoadTexture(L"Resources\\result\\rank.png");
+    result[(int)Result::ARank] = loader_->LoadTexture(L"Resources\\result\\rank_a.png");
+    result[(int)Result::BRank] = loader_->LoadTexture(L"Resources\\result\\rank_b.png");
+    result[(int)Result::CRank] = loader_->LoadTexture(L"Resources\\result\\rank_c.png");
+    result[(int)Result::SRank] = loader_->LoadTexture(L"Resources\\result\\rank_s.png");
 #pragma endregion
 
 }
 
 void MCB::Scene::LoadSound()
 {
-    bgm = soundManager.LoadWaveSound("Resources\\sound\\bgm\\game.wav");
-    clearbgm = soundManager.LoadWaveSound("Resources\\sound\\bgm\\clear.wav");
-    gameOverbgm = soundManager.LoadWaveSound("Resources\\sound\\bgm\\gameover.wav");
+    bgm = soundManager_->LoadWaveSound("Resources\\sound\\bgm\\game.wav");
+    clearbgm = soundManager_->LoadWaveSound("Resources\\sound\\bgm\\clear.wav");
+    gameOverbgm = soundManager_->LoadWaveSound("Resources\\sound\\bgm\\gameover.wav");
 
 }
 
 void MCB::Scene::SpriteInit()
 {
     playerHpSprite.InitMatProje();
-    playerHpSprite = playerHpSprite.CreateSprite();
-    playerHpSprite.anchorPoint = { 0,0 };
+    playerHpSprite.CreateSprite();
+    playerHpSprite.anchorPoint_ = { 0,0 };
     playerHpSprite.tex = playerHp->texture.get();
     bossHpSprite.InitMatProje();
-    bossHpSprite = bossHpSprite.CreateSprite();
+    bossHpSprite.CreateSprite();
     bossHpSprite.tex = bossHp->texture.get();
-    bossHpSprite.anchorPoint = { 0,0 };
+    bossHpSprite.anchorPoint_ = { 0,0 };
     shardSprite.InitMatProje();
-    shardSprite = shardSprite.CreateSprite();
+    shardSprite.CreateSprite();
     shardSprite.tex = shard->texture.get();
-    shardSprite.anchorPoint = { 0,0 };
+    shardSprite.anchorPoint_ = { 0,0 };
 
     for(auto& itr: resultSprite)
     {
@@ -227,7 +227,7 @@ void MCB::Scene::ParticleInit()
 
 IScene* MCB::Scene::GetNextScene()
 {
-    return new TitleScene(rootparamsPtr,depth,pipeline);
+    return new TitleScene(rootparamsPtr_,depth_,pipeline_);
 }
 
 #pragma endregion 各種リソースの読み込みと初期化
@@ -238,9 +238,9 @@ void MCB::Scene::Update()
     Enemy::StaticUpdate();
     KneadedEraser::StaticUpdate();
     WritingEnemy::StaticUpdate();
-//        if (input->IsKeyTrigger(DIK_SPACE))
+//        if (input_->IsKeyTrigger(DIK_SPACE))
 //        {
-//            sceneEnd = true;
+//            sceneEnd_ = true;
 //        }
     if (boss->GetHp() > 0 && substie->GetHp() > 0)
     {
@@ -272,7 +272,7 @@ void MCB::Scene::Update()
                 unique_ptr<PencilEnemy, MyDeleter<PencilEnemy>> temp(new PencilEnemy);
                 temp->SetHandwritingModel(WritingModel.get());
                 temp->Initialize({ (float)GetRand(-1,1),0,(float)GetRand(-1,1) }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, pencilEnemyModel.get(), 0.5f);
-                temp->movePoint = { {-20 + temp->position.x,0,20 + temp->position.z},{ 20 + temp->position.x,0,40 + temp->position.z },{ 20 + temp->position.x,0,20 + temp->position.z } };
+                temp->movePoint = { {-20 + temp->position_.x,0,20 + temp->position_.z},{ 20 + temp->position_.x,0,40 + temp->position_.z },{ 20 + temp->position_.x,0,20 + temp->position_.z } };
                 enemys.push_back(move(temp));
             }
             else if (countErase <= 2)
@@ -298,7 +298,7 @@ void MCB::Scene::Update()
                     unique_ptr<PencilEnemy, MyDeleter<PencilEnemy>> temp(new PencilEnemy);
                     temp->SetHandwritingModel(WritingModel.get());
                     temp->Initialize({ (float)GetRand(-1,1),0,(float)GetRand(-1,1) }, { (float)GetRand(-4000,4000) / 100,0,(float)GetRand(-3000,3000) / 100 }, pencilEnemyModel.get(), 0.5f);
-                    temp->movePoint = { {-20 + temp->position.x,0,20 + temp->position.z},{ 20 + temp->position.x,0,40 + temp->position.z },{ 20 + temp->position.x,0,20 + temp->position.z } };
+                    temp->movePoint = { {-20 + temp->position_.x,0,20 + temp->position_.z},{ 20 + temp->position_.x,0,40 + temp->position_.z },{ 20 + temp->position_.x,0,20 + temp->position_.z } };
                     enemys.push_back(move(temp));
                 }
                 break;
@@ -334,42 +334,42 @@ void MCB::Scene::Update()
     }
     else if (boss->GetHp() <= 0)
     {
-        soundManager.StopSoundWave(substie->rotateSound);
+        soundManager_->StopSoundWave(substie->rotateSound);
         boss->DethUpdate();
         resultSize = sinf(ConvertRadius((float)resultSizeTimer.NowTime() >= 180 ? resultSizeTimer.NowTime()  * -1: resultSizeTimer.NowTime())) * 0.25f + 0.75f;
         resultSizeTimer.SafeUpdate();
         resultSizeTimer.ReSet();
         if (mainCamera.isok)
         {
-            if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A))
+            if (input_->IsKeyTrigger(DIK_SPACE) || input_->gamePad_->IsButtonTrigger(GAMEPAD_A))
             {
-                sceneEnd = true;
-                soundManager.PlaySoundWave(selectSound);
+                sceneEnd_ = true;
+                soundManager_->PlaySoundWave(selectSound);
             }
         }
     }
     else if (substie->GetHp() <= 0)
     {
-        soundManager.StopSoundWave(substie->rotateSound);
+        soundManager_->StopSoundWave(substie->rotateSound);
         substie->DethUpdate();
         resultSize = sinf(ConvertRadius((float)resultSizeTimer.NowTime() >= 180 ? resultSizeTimer.NowTime() * -1 : resultSizeTimer.NowTime())) * 0.25f + 0.75f;
         resultSizeTimer.SafeUpdate();
         resultSizeTimer.ReSet();
         if (mainCamera.isok)
         {
-            if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_A))
+            if (input_->IsKeyTrigger(DIK_SPACE) || input_->gamePad_->IsButtonTrigger(GAMEPAD_A))
             {
-                sceneEnd = true;
-                soundManager.PlaySoundWave(selectSound);
+                sceneEnd_ = true;
+                soundManager_->PlaySoundWave(selectSound);
             }
         }
     }
     if (boss->GetHp() <= 0 || substie->GetHp() <= 0)
     {
-        soundManager.StopSoundWave(bgm);
+        soundManager_->StopSoundWave(bgm);
     }
-    lights->UpDate();
-    viewCamera->Update();
+    lights_->UpDate();
+    viewCamera_->Update();
 
     CheckAllColision();
 
@@ -438,8 +438,8 @@ void MCB::Scene::SpriteDraw()
     {
         if (!soundPlayed)
         {
-            soundManager.PlaySoundWave(clearbgm, true);
-            soundManager.SetVolume(10, clearbgm);
+            soundManager_->PlaySoundWave(clearbgm, true);
+            soundManager_->SetVolume(10, clearbgm);
             soundPlayed = true;
         }
         resultSprite[(int)Result::Clear]->SpriteDraw(dxWindow->sWINDOW_WIDTH_ / 2, 90, 576, 60);
@@ -470,8 +470,8 @@ void MCB::Scene::SpriteDraw()
     {
         if (!soundPlayed)
         {
-            soundManager.PlaySoundWave(gameOverbgm);
-            soundManager.SetVolume(10, gameOverbgm);
+            soundManager_->PlaySoundWave(gameOverbgm);
+            soundManager_->SetVolume(10, gameOverbgm);
             soundPlayed = true;
         }
         resultSprite[(int)Result::GameOver]->SpriteDraw(dxWindow->sWINDOW_WIDTH_ / 2, 90, 576, 80);
@@ -503,7 +503,7 @@ void MCB::Scene::CheckAllColision()
 
 void MCB::Scene::ImGuiUpdate()
 {
-    imgui.Begin();
+    imgui_.Begin();
     //ImGui::ShowDemoWindow();
     ImGui::Begin("Debug");
     
@@ -516,23 +516,23 @@ void MCB::Scene::ImGuiUpdate()
             ImGui::Text("Wall%d", i);
             if (ImGui::TreeNode("Position"))
             {
-                ImGui::SliderFloat("x", &itr.position.x, -100, 100);
-                ImGui::SliderFloat("y", &itr.position.y, -100, 100);
-                ImGui::SliderFloat("z", &itr.position.z, -100, 100);
+                ImGui::SliderFloat("x", &itr.position_.x, -100, 100);
+                ImGui::SliderFloat("y", &itr.position_.y, -100, 100);
+                ImGui::SliderFloat("z", &itr.position_.z, -100, 100);
                 ImGui::TreePop();
             }
             if (ImGui::TreeNode("Scale"))
             {
-                ImGui::SliderFloat("x", &itr.scale.x, 0, 10);
-                ImGui::SliderFloat("y", &itr.scale.y, 0, 10);
-                ImGui::SliderFloat("z", &itr.scale.z, 0, 10);
+                ImGui::SliderFloat("x", &itr.scale_.x, 0, 10);
+                ImGui::SliderFloat("y", &itr.scale_.y, 0, 10);
+                ImGui::SliderFloat("z", &itr.scale_.z, 0, 10);
                 ImGui::TreePop();
             }
             if (ImGui::TreeNode("Rotation"))
             {
-                ImGui::SliderFloat("x", &itr.rotation.x, 0, 2 * PI);
-                ImGui::SliderFloat("y", &itr.rotation.y, 0, 2 * PI);
-                ImGui::SliderFloat("z", &itr.rotation.z, 0, 2 * PI);
+                ImGui::SliderFloat("x", &itr.rotation_.x, 0, 2 * PI);
+                ImGui::SliderFloat("y", &itr.rotation_.y, 0, 2 * PI);
+                ImGui::SliderFloat("z", &itr.rotation_.z, 0, 2 * PI);
                 ImGui::TreePop();
             }
         }
@@ -543,9 +543,9 @@ void MCB::Scene::ImGuiUpdate()
         {
             if (ImGui::TreeNode("Position"))
             {
-                ImGui::Text("X %f", substie->position.x);
-                ImGui::Text("Y %f", substie->position.y);
-                ImGui::Text("Z %f", substie->position.z);
+                ImGui::Text("X %f", substie->position_.x);
+                ImGui::Text("Y %f", substie->position_.y);
+                ImGui::Text("Z %f", substie->position_.z);
                 ImGui::TreePop();
             }
 
@@ -570,36 +570,36 @@ void MCB::Scene::ImGuiUpdate()
 
     
     ImGui::End();
-    imgui.End();
+    imgui_.End();
 }
 
 void MCB::Scene::MatrixUpdate()
 {
-    viewCamera->Update();
-    Skydome.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
-    ground.Update(*viewCamera->GetView(), *viewCamera->GetProjection());
-    //testSpher.FbxUpdate(*viewCamera->GetView(), *viewCamera->GetProjection(),false);
-    substie->UpdateMatrix(viewCamera);
+    viewCamera_->Update();
+    Skydome.Update();
+    ground.Update();
+    //testSpher.FbxUpdate(*viewCamera_->GetView(), *viewCamera_->GetProjection(),false);
+    substie->UpdateMatrix(viewCamera_);
     for (auto& itr : enemys)
     {
-        itr->UpdateMatrix(viewCamera);
+        itr->UpdateMatrix(viewCamera_);
     }
     for (auto& itr : walls)
     {
-        itr.Object3d::Update(*viewCamera->GetView(), *viewCamera->GetProjection());
+        itr.Object3d::Update();
         for (auto& colItr : itr.colliders)
         {
             colItr.Update(&itr);
         }
     }
-    boss->UpdateMatrix(viewCamera);
+    boss->UpdateMatrix(viewCamera_);
     //testParticle.Updata(matView, matProjection, true);
 }
 
 MCB::Scene::Scene(RootParameter* root, Depth* depthptr,PipeLineManager* pipeline)
 {
-	rootparamsPtr = root;
-    depth = depthptr;
-    this->pipeline = pipeline;
+	rootparamsPtr_ = root;
+    depth_ = depthptr;
+    this->pipeline_ = pipeline;
 }
 
