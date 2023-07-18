@@ -110,7 +110,7 @@ namespace MCB
 
        static void StaticUpdate();
 
-       static void SetLights(LightGroup* light);
+
        //void CreateModel(const char* fileName);
 
        //yADXEngine—R—ˆz
