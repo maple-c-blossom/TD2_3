@@ -6,12 +6,12 @@
 void Handwriting::Initialize(MCB::Float3 position, MCB::Model* model)
 {
 	lifeTimer.Set(MAX_LIFE_TIME_HAND_WRITING);
-	this->position.x = position.x;
-	this->position.y = position.y;
-	this->position.z = position.z;
-	nowFrontVec_.vec_ = model;
+	this->position_.x = position.x_;
+	this->position_.y = position.y_;
+	this->position_.z = position.z_;
+	this->model_ = model;
 	Init();
-	color = { 0.1f,0.1f,0.1f,1.0f };
+	color_ = { 0.1f,0.1f,0.1f,1.0f };
 	colliders.push_back(ADXCollider(this));
 	colliders.back().isTrigger = true;
 	colliders.back().collideLayer = 2;
@@ -20,7 +20,7 @@ void Handwriting::Initialize(MCB::Float3 position, MCB::Model* model)
 void Handwriting::Update()
 {
 	lifeTimer.SafeUpdate();
-	color.w = MCB::Lerp(1, 0, lifeTimer.GetEndTime(), lifeTimer.NowTime());
+	color_.w_ = MCB::Lerp(1, 0, lifeTimer.GetEndTime(), lifeTimer.NowTime());
 	if (lifeTimer.IsEnd())
 	{
 		deleteFlag_ = true;

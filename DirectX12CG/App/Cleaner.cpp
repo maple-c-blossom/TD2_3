@@ -8,7 +8,7 @@ void Cleaner::Inilialize(MCB::Model* model)
     scale_ = { 5.8,4,5.8 };
     rotation_ = { 0,0,0 };
     Init();
-    nowFrontVec_.vec_ = model;
+    this->model_ = model;
     colliders.push_back(ADXCollider(this));
     colliders.back().colType_ = box;
     moveTime.Set(SECOND_FRAME * 9);

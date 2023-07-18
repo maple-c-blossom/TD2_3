@@ -2,7 +2,7 @@
 
 void BossDamageEffect::Initialize(MCB::Model* model, MCB::Vector3D Velocity, MCB::Float3 position, MCB::Float3 scale, MCB::Float4 color, float speed, int lifeTime)
 {
-	this->model_ = model;
+	this->model_ = model;;
 	this->position_.x = position.x_;
 	this->position_.y = position.y_;
 	this->position_.z = position.z_;

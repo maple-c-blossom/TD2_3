@@ -67,7 +67,7 @@ void Enemy::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model*
 	this->position_.x = position.x_;
 	this->position_.y = position.y_;
 	this->position_.z = position.z_;
-	this->model_ = model;
+	this->model_ = model;;
 	this->speed = speed;
 	this->hp = 5;
 	Object3d::Init();
