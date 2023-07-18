@@ -21,6 +21,8 @@ public:
 	float Dot(const ADXVector3& v) const;
 	ADXVector3 Cross(const ADXVector3& v) const;
 
+	Vector3D ConvertToVector3D();
+
 	ADXVector3 operator+() const;
 	ADXVector3 operator-() const;
 
