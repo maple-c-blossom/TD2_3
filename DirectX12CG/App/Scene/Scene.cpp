@@ -10,12 +10,9 @@ using namespace std;
 
 MCB::Scene::~Scene()
 {
-    soundManager.AllDeleteSound();
+    soundManager_->AllDeleteSound();
     WritingEnemy::GetHandWrite()->clear();
     Player::GetCaptureList()->clear();
-
-    delete nextScene;
-    delete testModel;
     //loader->SetDelete(testTex);
     //loader->SetDelete(debugTextTexture);
     //loader->SetDelete(zoomTex);
@@ -41,9 +38,9 @@ void MCB::Scene::Initialize()
 {
     debugCamera.Inilialize();
     mainCamera.Inilialize();
-    viewCamera = &mainCamera;
+    viewCamera_ = &mainCamera;
     matView.CreateMatrixView(XMFLOAT3(0.0f, 0.0f, -10.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 1.0f, 0.0f));
-    matProjection.CreateMatrixProjection(XMConvertToRadians(45.0f), (float)dxWindow->window_width / dxWindow->window_height, 0.1f, 4000.0f);
+    matProjection.CreateMatrixProjection(XMConvertToRadians(45.0f), (float)dxWindow_->sWINDOW_WIDTH_ / dxWindow_->sWINDOW_HEIGHT_, 0.1f, 4000.0f);
     LoadTexture();
     LoadModel();
     LoadSound();
@@ -51,11 +48,11 @@ void MCB::Scene::Initialize()
     SpriteInit();
     ParticleInit();
     //soundManager.PlaySoundWave(testSound, loopFlag);
-    lights->DefaultLightSet();
-    lights->UpDate();
-    Object3d::SetLights(lights);
-    soundManager.PlaySoundWave(bgm, true);
-    soundManager.SetVolume(10, bgm);
+    lights_->DefaultLightSet();
+    lights_->UpDate();
+    Object3d::SetLights(lights_);
+    soundManager_->PlaySoundWave(bgm, true);
+    soundManager_->SetVolume(10, bgm);
 }
 
 void MCB::Scene::Object3DInit()
@@ -63,9 +60,9 @@ void MCB::Scene::Object3DInit()
 
     ground;
     ground.Init();
-    ground.model = groundModel.get();
-    ground.scale = { 36,50,43 };
-    ground.position = { 0,-12,0 };
+    ground.model_ = groundModel.get();
+    ground.scale_ = { 36,50,43 };
+    ground.position_ = { 0,-12,0 };
     ;
     Skydome;
     Skydome.Init();

@@ -22,10 +22,10 @@ Vector3D ADXUtility::Lerp(Vector3D nowPos, Vector3D newPos, float progress)
 //角度の差を求める　目的の角度へゆっくり向ける時に使ってみよう
 float ADXUtility::AngleDiff(float angle1, float angle2)
 {
-	angle1 = fmod(angle1, 2 * 3.1415);
-	angle2 = fmod(angle2, 2 * 3.1415);
-	float angle3 = angle2 - 2 * 3.1415;
-	float angle4 = angle2 + 2 * 3.1415;
+	angle1 = fmod(angle1, 2.f * 3.1415f);
+	angle2 = fmod(angle2, 2.f * 3.1415f);
+	float angle3 = angle2 - 2.f * 3.1415f;
+	float angle4 = angle2 + 2.f * 3.1415f;
 
 	float nearestAngleDiff = angle2 - angle1;
 	if (fabsf(nearestAngleDiff) > fabsf(angle3 - angle1))

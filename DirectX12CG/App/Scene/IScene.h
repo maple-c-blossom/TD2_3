@@ -59,6 +59,9 @@
 
 #include "LevelLoader.h"
 #include "PostEffect.h"
+
+#include "DebugCamera.h"
+#include "Camera.h"
 #pragma endregion é©çÏ.h include
 #pragma region pragma comment
 

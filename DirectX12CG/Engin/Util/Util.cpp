@@ -142,55 +142,55 @@ MCB::SimpleFigure::SimpleFigure()
 {
 
 	triangle.Init();
-	triangle.model = &triangleMaterial;
-	triangleMaterial.vertices = {
+	triangle.model_ = &triangleMaterial;
+	triangleMaterial.vertices_ = {
 		{PointA,{1,1,1},{0,0}},
 		{PointB,{1,1,1},{0,0}},
 		{PointC,{1,1,1},{0,0}}
 	};
 	triangleMaterial.SetSizeVB();
-	triangleMaterial.material.SetVertexBuffer(D3D12_HEAP_TYPE_UPLOAD, D3D12_RESOURCE_DIMENSION_BUFFER, triangleMaterial.sizeVB, 1, 1, 1, 1, D3D12_TEXTURE_LAYOUT_ROW_MAJOR);
-	triangleMaterial.CreateVertexBuffer(triangleMaterial.material.HeapProp, D3D12_HEAP_FLAG_NONE, triangleMaterial.material.Resdesc, D3D12_RESOURCE_STATE_GENERIC_READ);
+	triangleMaterial.material_.SetVertexBuffer(D3D12_HEAP_TYPE_UPLOAD, D3D12_RESOURCE_DIMENSION_BUFFER, triangleMaterial.sizeVB_, 1, 1, 1, 1, D3D12_TEXTURE_LAYOUT_ROW_MAJOR);
+	triangleMaterial.CreateVertexBuffer(triangleMaterial.material_.HeapProp_, D3D12_HEAP_FLAG_NONE, triangleMaterial.material_.Resdesc_, D3D12_RESOURCE_STATE_GENERIC_READ);
 	triangleMaterial.VertexMaping();
 	triangleMaterial.SetVbView();
-	triangle.color = color;
-	triangle.model->texture = triangle.model->Loader->CreateNoTextureFileIsTexture();
+	triangle.color_ = color;
+	triangle.model_->texture_ = triangle.model_->loader_->CreateNoTextureFileIsTexture();
 }
 
-void MCB::SimpleFigure::DrawTriangle(View view, Projection proj)
+void MCB::SimpleFigure::DrawTriangle()
 {
 
 	Dx12* dx12 = Dx12::GetInstance();
 	ShaderResource* descriptor = ShaderResource::GetInstance();
 
-	triangleMaterial.vertices = {
+	triangleMaterial.vertices_ = {
 		{PointA,{1,1,1},{0,0}},
 		{PointB,{1,1,1},{0,0}},
 		{PointC,{1,1,1},{0,0}}
 	};
 
 	triangleMaterial.VertexMaping();
-	triangle.color = color;
+	triangle.color_ = color;
 
 
 
-	triangle.Update(view,proj);
+	triangle.Update();
 
 	//定数バッファビュー(CBV)の設定コマンド
-	dx12->commandList->SetGraphicsRootConstantBufferView(2, triangleMaterial.material.constBuffMaterialB1->GetGPUVirtualAddress());
+	dx12->commandList_->SetGraphicsRootConstantBufferView(2, triangleMaterial.material_.constBuffMaterialB1_->GetGPUVirtualAddress());
 
 	//SRVヒープの先頭アドレスを取得
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = descriptor->srvHeap->GetGPUDescriptorHandleForHeapStart();
-	srvGpuHandle.ptr += triangle.model->texture->texture->incrementNum * dx12->device.Get()->GetDescriptorHandleIncrementSize(descriptor->srvHeapDesc.Type);
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = descriptor->srvHeap_->GetGPUDescriptorHandleForHeapStart();
+	srvGpuHandle.ptr += triangle.model_->texture_->texture->incrementNum_ * dx12->device_.Get()->GetDescriptorHandleIncrementSize(descriptor->srvHeapDesc_.Type);
 	//SRVヒープの先頭にあるSRVをパラメータ1番に設定
-	dx12->commandList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+	dx12->commandList_->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
 	//頂点データ
-	dx12->commandList->IASetVertexBuffers(0, 1, &triangleMaterial.vbView);
+	dx12->commandList_->IASetVertexBuffers(0, 1, &triangleMaterial.vbView_);
 	//定数バッファビュー(CBV)の設定コマンド
-	dx12->commandList->SetGraphicsRootConstantBufferView(0, triangle.constBuffTranceform->GetGPUVirtualAddress());
+	dx12->commandList_->SetGraphicsRootConstantBufferView(0, triangle.GetConstBuffTrans()->GetGPUVirtualAddress());
 	//描画コマンド
-	dx12->commandList->DrawInstanced((UINT)triangleMaterial.vertices.size(), 1, 0, 0);
+	dx12->commandList_->DrawInstanced((UINT)triangleMaterial.vertices_.size(), 1, 0, 0);
 }
 
 void MCB::Shake::Setshake(int shakeTime, float endCount, float shakeRange)
