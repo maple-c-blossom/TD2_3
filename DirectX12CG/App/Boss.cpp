@@ -80,7 +80,7 @@ void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* 
 	gaugeTexs = { gaugeTexCells[0]->texture.get(), gaugeTexCells[1]->texture.get(), gaugeTexCells[2]->texture.get() };
 	for (auto& itr : gauges)
 	{
-		itr = itr.CreateSprite();
+		itr.CreateSprite();
 		itr.anchorPoint_ = { 0,0 };
 	};
 
