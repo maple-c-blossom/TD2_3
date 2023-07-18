@@ -66,15 +66,15 @@ void MCB::Scene::Object3DInit()
     ;
     Skydome;
     Skydome.Init();
-    Skydome.model = skydomeModel.get();
-    Skydome.scale = { 180,1,180 };
-    Skydome.position = { 0,-15,0 };
+    Skydome.model_ = skydomeModel.get();
+    Skydome.scale_ = { 180,1,180 };
+    Skydome.position_ = { 0,-15,0 };
 
-    substie->soundmanager = &soundManager;
-    substie->model = playerModel.get();
+    substie->soundmanager = soundManager_;
+    substie->model_ = playerModel.get();
     substie->KneadedEraserModel = nerikesiModel.get();
-    substie->scale = { 1,1,1 };
-    substie->position = { 0,0,0 };
+    substie->scale_ = { 1,1,1 };
+    substie->position_ = { 0,0,0 };
     substie->Initialize();
     substie->sphereModel = BossDamegeEffectModelSpher.get();
 
@@ -94,7 +94,7 @@ void MCB::Scene::Object3DInit()
     temp2->SetHandwritingModel(WritingModel.get());
     enemys.push_back(move(temp2));
     spownTimer.Set(30);
-    boss->soundmanager = &soundManager;
+    boss->soundmanager = soundManager_;
     boss->Initialize({ 0,0,1 }, { -20,0,0 }, bossModel.get(), pencilEnemyModel.get(), WritingModel.get(), BossDamegeEffectModelStar.get(), BossDamegeEffectModelSpher.get(), BossCover.get(), 1, substie.get());
     boss->shake = mainCamera.GetShakePtr();
     mainCamera.player = substie.get();
