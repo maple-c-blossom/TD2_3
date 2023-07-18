@@ -104,7 +104,7 @@ void Object3d::Update(bool isBillBord)
     constMapTranceform_->cameraPos.y_ = camera_->GetView()->eye_.y;
     constMapTranceform_->cameraPos.z_ = camera_->GetView()->eye_.z;
     constMapTranceform_->shaderNum = shaderNum_;
-    constMapTranceform_->color = color_;
+    constMapTranceform_->color_ = color_;
     if(collider_)collider_->Update();
 }
 

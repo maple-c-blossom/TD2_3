@@ -436,9 +436,9 @@ void ADXCollider::CollidersUpdate()
 			ADXVector3 scaleY1 = { 0,allColPtr[i]->scale_.y,0 };
 			ADXVector3 scaleZ1 = { 0,0,allColPtr[i]->scale_.z };
 
-			float worldScaleX1 = ADXMatrix4::transform(scaleX1, ADXMatrix4::ConvertToADXMatrix(allColPtr[i]->gameObject->matWorld_.matScale * allColPtr[i]->gameObject->matWorld_.matRot)).length();
-			float worldScaleY1 = ADXMatrix4::transform(scaleY1, ADXMatrix4::ConvertToADXMatrix(allColPtr[i]->gameObject->matWorld_.matScale * allColPtr[i]->gameObject->matWorld_.matRot)).length();
-			float worldScaleZ1 = ADXMatrix4::transform(scaleZ1, ADXMatrix4::ConvertToADXMatrix(allColPtr[i]->gameObject->matWorld_.matScale * allColPtr[i]->gameObject->matWorld_.matRot)).length();
+			float worldScaleX1 = ADXMatrix4::transform(scaleX1, ADXMatrix4::ConvertToADXMatrix(allColPtr[i]->gameObject->matWorld_.matScale * allColPtr[i]->gameObject->matWorld_.matRot_)).length();
+			float worldScaleY1 = ADXMatrix4::transform(scaleY1, ADXMatrix4::ConvertToADXMatrix(allColPtr[i]->gameObject->matWorld_.matScale * allColPtr[i]->gameObject->matWorld_.matRot_)).length();
+			float worldScaleZ1 = ADXMatrix4::transform(scaleZ1, ADXMatrix4::ConvertToADXMatrix(allColPtr[i]->gameObject->matWorld_.matScale * allColPtr[i]->gameObject->matWorld_.matRot_)).length();
 
 			float minimumWorldRadius1 = 1;
 
