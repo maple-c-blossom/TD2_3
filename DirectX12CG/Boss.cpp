@@ -227,7 +227,7 @@ void Boss::Update(bool moveLimit)
 				isUp = false;
 				isDown = true;
 				downSpeed = gravity;
-				position.y = 2.f;
+				//position.y = 2.f;
 			}
 
 		}
@@ -241,7 +241,7 @@ void Boss::Update(bool moveLimit)
 			position.y += downSpeed;
 			if (position.y < 0)
 			{
-				position.y = 0;
+				//position.y = 0;
 				isDown = false;
 			}
 		}
@@ -279,11 +279,11 @@ void Boss::Update(bool moveLimit)
 	}
 	if (position.y < 0)
 	{
-		position.y = 0;
+		//position.y = 0;
 	}
 	if (position.y > 2.f)
 	{
-		position.y = 2.f;
+		//position.y = 2.f;
 	}
 
 	velocity.V3Norm();
