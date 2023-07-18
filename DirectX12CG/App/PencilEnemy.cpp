@@ -22,16 +22,16 @@ void PencilEnemy::UniqueUpdate(bool movelimit)
 		{
 			if (!attack && !beforeAttack)
 			{
-				position.x += velocity.vec.x * speed;
-				position.y += velocity.vec.y * speed;
-				position.z += velocity.vec.z * speed;
+				position_.x += velocity.vec_.x_ * speed;
+				position_.y += velocity.vec_.y_ * speed;
+				position_.z += velocity.vec_.z_ * speed;
 				Movement += speed;
 			}
 			else if (attack)
 			{
-				position.x += attackVec.vec.x * speed;
-				position.y += attackVec.vec.y * speed;
-				position.z += attackVec.vec.z * speed;
+				position_.x += attackVec.vec_.x_ * speed;
+				position_.y += attackVec.vec_.y_ * speed;
+				position_.z += attackVec.vec_.z_ * speed;
 
 				std::array<Vector3D, 3> PrevmovePoint = {};
 				bool flag = false;
@@ -40,20 +40,20 @@ void PencilEnemy::UniqueUpdate(bool movelimit)
 				{
 					PrevmovePoint[num] = itr;
 					itr += (attackVec * speed * 2);
-					if (itr.vec.x < -50)
+					if (itr.vec_.x_ < -50)
 					{
 						 flag = true;
 					}
-					if (itr.vec.x > 50)
+					if (itr.vec_.x_ > 50)
 					{
 						flag = true;
 					}
 
-					if (itr.vec.z < -40)
+					if (itr.vec_.z_ < -40)
 					{
 						flag = true;
 					}
-					if (itr.vec.z > 40)
+					if (itr.vec_.z_ > 40)
 					{
 						flag = true;
 					}
@@ -67,7 +67,7 @@ void PencilEnemy::UniqueUpdate(bool movelimit)
 			if (Movement > WRITING_RADIUS)
 			{
 				unique_ptr<Handwriting> temp = make_unique<Handwriting>();
-				temp->Initialize({ position.x,position.y,position.z }, handwritingModel);
+				temp->Initialize({ position_.x,position_.y,position_.z }, handwritingModel);
 				handwriting.push_back(move(temp));
 				Movement = 0;
 				writingCount++;
@@ -86,30 +86,30 @@ void PencilEnemy::UniqueUpdate(bool movelimit)
 			movePointIndex = movePointIndex % movePoint.size();
 			Vector3D PrevmovePoint = movePoint[movePointIndex];
 
-			Vector3D positionVec = Vector3D(position.x, position.y, position.z);
+			Vector3D positionVec = Vector3D(position_.x, position_.y, position_.z);
 
 			Float2 temp;
-			temp.x = MCB::Lerp(0, 85, (movePoint[movePointIndex].vec.z + 30) / 85);
-			temp.x /= 85;
+			temp.x_ = MCB::Lerp(0, 85, (movePoint[movePointIndex].vec_.z_ + 30) / 85);
+			temp.x_ /= 85;
 			Float2 Vartical;
-			Vartical.x = MCB::Lerp(-40, -80, temp.x);
-			Vartical.y = MCB::Lerp(40, 80, temp.x);
-			if (movePoint[movePointIndex].vec.x < -50)
+			Vartical.x_ = MCB::Lerp(-40, -80, temp.x_);
+			Vartical.y_ = MCB::Lerp(40, 80, temp.x_);
+			if (movePoint[movePointIndex].vec_.x_ < -50)
 			{
-				movePoint[movePointIndex].vec.x = PrevmovePoint.vec.x;
+				movePoint[movePointIndex].vec_.x_ = PrevmovePoint.vec_.x;
 			}
-			if (movePoint[movePointIndex].vec.x > 50)
+			if (movePoint[movePointIndex].vec_.x_ > 50)
 			{
-				movePoint[movePointIndex].vec.x = PrevmovePoint.vec.x;
+				movePoint[movePointIndex].vec_.x_ = PrevmovePoint.vec_.x;
 			}
 
-			if (movePoint[movePointIndex].vec.z < -40)
+			if (movePoint[movePointIndex].vec_.z_ < -40)
 			{
-				movePoint[movePointIndex].vec.z = PrevmovePoint.vec.z;
+				movePoint[movePointIndex].vec_.z_ = PrevmovePoint.vec_.z;
 			}
-			if (movePoint[movePointIndex].vec.z > 40)
+			if (movePoint[movePointIndex].vec_.z_ > 40)
 			{
-				movePoint[movePointIndex].vec.z = PrevmovePoint.vec.z;
+				movePoint[movePointIndex].vec_.z_ = PrevmovePoint.vec_.z;
 			}
 			velocity = Vector3D::normal(movePoint[movePointIndex] - positionVec);
 
@@ -154,7 +154,7 @@ void PencilEnemy::UniqueUpdate(bool movelimit)
 	{
 		attack = false;
 		beforeAttack = false;
-		color = { 1.f,1.f,1.f,1.f }; 
+		color_ = { 1.f,1.f,1.f,1.f }; 
 	}
 
 	bodySlam = attack;
@@ -168,8 +168,8 @@ void PencilEnemy::UniqueUpdate(bool movelimit)
 		AttackHit();
 	}
 	//Float2 temp;
-//temp.x = MCB::Lerp(0, 85,(position.z + 30) / 85);
-//temp.x = (position.z + 30) / 85;
+//temp.x = MCB::Lerp(0, 85,(position_.z + 30) / 85);
+//temp.x = (position_.z + 30) / 85;
 //Float2 Vartical;
 //Vartical.x = MCB::Lerp(-40, -80, temp.x);
 //Vartical.y = MCB::Lerp(40, 80, temp.x);
@@ -177,22 +177,22 @@ void PencilEnemy::UniqueUpdate(bool movelimit)
 	{
 
 
-		if (position.x < -50)
+		if (position_.x < -50)
 		{
-			position.x = -50;
+			position_.x = -50;
 		}
-		if (position.x > 50)
+		if (position_.x > 50)
 		{
-			position.x = 50;
+			position_.x = 50;
 		}
 
-		if (position.z < -40)
+		if (position_.z < -40)
 		{
-			position.z = -40;
+			position_.z = -40;
 		}
-		if (position.z > 40)
+		if (position_.z > 40)
 		{
-			position.z = 40;
+			position_.z = 40;
 		}
 	}
 }
@@ -207,9 +207,9 @@ void PencilEnemy::UpdateMatrix(MCB::ICamera* camera)
 {
 	for (auto& itr : handwriting)
 	{
-		itr->Object3d::Update(*camera->GetView(),*camera->GetProjection());
+		itr->Object3d::Update();
 	}
-	Object3d::Update(*camera->GetView(), *camera->GetProjection());
+	Object3d::Update();
 }
 
 void PencilEnemy::AttackCheck()
@@ -223,10 +223,10 @@ void PencilEnemy::AttackCheck()
 			if (itr.IsHit(itr2))
 			{
 				AttackStart();
-				attackVec = attackVec.V3Get(position, Player::GetPlayer()->position);
+				attackVec = attackVec.V3Get(position_, Player::GetPlayer()->position_);
 				attackVec.V3Norm();
 
-				//attackObj.position = { position.x + vec.vec.x * 2,position.y + vec.vec.y * 2,position.z + vec.vec.z * 2 };
+				//attackObj.position_ = { position_.x + vec_.vec_.x * 2,position_.y + vec_.vec_.y * 2,position_.z + vec_.vec_.z * 2 };
 			}
 		}
 		num++;

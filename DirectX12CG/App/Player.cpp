@@ -29,7 +29,7 @@ void Player::Initialize()
 	kneadedEraserGaugeTexs = { kneadedEraserGaugeTexCells[0]->texture.get(), kneadedEraserGaugeTexCells[1]->texture.get() };
 	for (auto& itr : kneadedEraserGauges)
 	{
-		itr = itr.CreateSprite();
+		itr.CreateSprite();
 		itr.anchorPoint_ = { 0,0 };
 	};
 
@@ -39,13 +39,13 @@ void Player::Initialize()
 	heartBlankTex = heartBlankTexCell->texture.get();
 	for (auto& itr : hearts)
 	{
-		itr = itr.CreateSprite();
+		itr.CreateSprite();
 		itr.anchorPoint_ = { 0,0 };
 	};
 
 	shardEmptyTexCell = { loader->LoadTexture(L"Resources\\gauge\\shardEmpty_0.png"),loader->LoadTexture(L"Resources\\gauge\\shardEmpty_1.png") };
 	shardEmptyTex = { shardEmptyTexCell[0]->texture.get(),shardEmptyTexCell[1]->texture.get() };
-	shardEmpty = shardEmpty.CreateSprite();
+	shardEmpty.CreateSprite();
 	shardEmpty.anchorPoint_ = { 0,1 };
 
 	soundEffect[(unsigned int)SoundEffect::Damage] = soundmanager->LoadWaveSound("Resources\\sound\\se\\damage.wav");
@@ -623,7 +623,7 @@ void Player::TutorialInitialize(MCB::Texture* tutorial1, MCB::Texture* tutorial2
 
 	for(auto&itr:tutorials)
 	{
-		itr = itr.CreateSprite();
+		itr.CreateSprite();
 		itr.anchorPoint_ = { 0,0 };
 	};
 }

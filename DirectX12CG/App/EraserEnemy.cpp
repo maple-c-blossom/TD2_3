@@ -95,7 +95,7 @@ void EraserEnemy::Draw()
 
 void EraserEnemy::UpdateMatrix(MCB::ICamera* camera)
 {
-	Object3d::Update(*camera->GetView(), *camera->GetProjection());
+	Object3d::Update();
 }
 
 void EraserEnemy::Turn()

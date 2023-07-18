@@ -13,10 +13,10 @@ MCB::Scene::~Scene()
     soundManager_->AllDeleteSound();
     WritingEnemy::GetHandWrite()->clear();
     Player::GetCaptureList()->clear();
-    //loader->SetDelete(testTex);
-    //loader->SetDelete(debugTextTexture);
-    //loader->SetDelete(zoomTex);
-    //loader->SetDelete(scopeTex);
+    //loader_->SetDelete(testTex);
+    //loader_->SetDelete(debugTextTexture);
+    //loader_->SetDelete(zoomTex);
+    //loader_->SetDelete(scopeTex);
     shard->free = true;
     debugTextTexture->free = true;
     playerHp->free = true;
@@ -47,7 +47,7 @@ void MCB::Scene::Initialize()
     Object3DInit();
     SpriteInit();
     ParticleInit();
-    //soundManager.PlaySoundWave(testSound, loopFlag);
+    //soundManager_->PlaySoundWave(testSound, loopFlag);
     lights_->DefaultLightSet();
     lights_->UpDate();
     Object3d::SetLights(lights_);
@@ -129,7 +129,7 @@ void MCB::Scene::LoadModel()
     BossDamegeEffectModelStar = std::make_unique<Model>("star");
     BossDamegeEffectModelSpher = std::make_unique<Model>("ball");
     BossCover = std::make_unique<Model>("bossCover");
-    //BossCover->texture = loader->LoadTexture(L"Resources\\text\\bossCover\\bossCover.png");
+    //BossCover->texture = loader_->LoadTexture(L"Resources\\text\\bossCover\\bossCover.png");
     //testModel = new FBXModel();
     //testModel->Load("testFbx");
     //assert(testModel->textureManager->textures.size() < 20);
@@ -224,9 +224,9 @@ void MCB::Scene::Update()
     Enemy::StaticUpdate();
     KneadedEraser::StaticUpdate();
     WritingEnemy::StaticUpdate();
-//        if (input->IsKeyTrigger(DIK_SPACE))
+//        if (input_->IsKeyTrigger(DIK_SPACE))
 //        {
-//            sceneEnd = true;
+//            sceneEnd_ = true;
 //        }
     if (boss->GetHp() > 0 && substie->GetHp() > 0)
     {

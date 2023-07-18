@@ -16,8 +16,8 @@ void mechanicalPencil::UniqueInitialize()
 	{
 		itr.isTrigger = true;
 	}
-	attackObj.model = model;
-	attackObj.scale = { 2,2,2 };
+	attackObj.model_ = model_;
+	attackObj.scale_ = { 2,2,2 };
 	attackObj.Init();
 }
 
@@ -28,15 +28,15 @@ void mechanicalPencil::UniqueUpdate(bool flag)
 	{
 		if (!attack && !beforeAttack)
 		{
-			position.x += velocity.vec.x * speed;
-			position.y += velocity.vec.y * speed;
-			position.z += velocity.vec.z * speed;
+			position_.x += velocity.vec_.x_ * speed;
+			position_.y += velocity.vec_.y_ * speed;
+			position_.z += velocity.vec_.z_ * speed;
 			Movement += speed;
 		}
 		if (Movement > WRITING_RADIUS)
 		{
 			unique_ptr<Handwriting> temp = make_unique<Handwriting>();
-			temp->Initialize({ position.x,position.y,position.z }, handwritingModel);
+			temp->Initialize({ position_.x,position_.y,position_.z }, handwritingModel);
 			handwriting.push_back(move(temp));
 		}
 	}
@@ -45,19 +45,19 @@ void mechanicalPencil::UniqueUpdate(bool flag)
 		itr->Update();
 	}
 
-	if (position.x < -20 || position.x > 20)
+	if (position_.x < -20 || position_.x > 20)
 	{
-		velocity.vec.x *= -1;
+		velocity.vec_.x_ *= -1;
 	}
 
-	if (position.y < -20 || position.y > 20)
+	if (position_.y < -20 || position_.y > 20)
 	{
-		velocity.vec.y *= -1;
+		velocity.vec_.y_ *= -1;
 	}
 
-	if (position.z < -20 || position.z > 20)
+	if (position_.z < -20 || position_.z > 20)
 	{
-		velocity.vec.z *= -1;
+		velocity.vec_.z_ *= -1;
 	}
 
 	allEnemyPtr.push_back(this);
@@ -97,10 +97,10 @@ void mechanicalPencil::UpdateMatrix(MCB::ICamera* camera)
 {
 	for (auto& itr : handwriting)
 	{
-		itr->Object3d::Update(*camera->GetView(), *camera->GetProjection());
+		itr->Object3d::Update();
 	}
-	attackObj.Update(*camera->GetView(), *camera->GetProjection());
-	Object3d::Update(*camera->GetView(), *camera->GetProjection());
+	attackObj.Update();
+	Object3d::Update();
 }
 
 void mechanicalPencil::AttackCheck()
@@ -116,7 +116,7 @@ void mechanicalPencil::AttackHit()
 {
 	if (!attack)return;
 	std::unique_ptr<PencilBullet> temp = std::make_unique<PencilBullet>();
-	temp->Initialize(bulletModel, 1, nowFrontVec_, { position.x,position.y,position.z });
+	temp->Initialize(bulletModel, 1, nowFrontVec_, { position_.x,position_.y,position_.z });
 	bullets.push_back(std::move(temp));
 	attack = false;
 }
