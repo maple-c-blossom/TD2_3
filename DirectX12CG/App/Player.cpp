@@ -18,7 +18,7 @@ std::list<MCB::Object3d*> Player::captureList = {};
 void Player::Initialize()
 {
 	Init();
-	prevPos = position;
+	prevPos = position_;
 	velocity = Vector3D{ 0,0,0 };
 	colliders.push_back(ADXCollider(this));
 	colliders.back().pushable_ = true;
@@ -30,7 +30,7 @@ void Player::Initialize()
 	for (auto& itr : kneadedEraserGauges)
 	{
 		itr = itr.CreateSprite();
-		itr.anchorPoint = { 0,0 };
+		itr.anchorPoint_ = { 0,0 };
 	};
 
 	heartTexCell = loader->LoadTexture(L"Resources\\gauge\\playerHp.png");
@@ -40,13 +40,13 @@ void Player::Initialize()
 	for (auto& itr : hearts)
 	{
 		itr = itr.CreateSprite();
-		itr.anchorPoint = { 0,0 };
+		itr.anchorPoint_ = { 0,0 };
 	};
 
 	shardEmptyTexCell = { loader->LoadTexture(L"Resources\\gauge\\shardEmpty_0.png"),loader->LoadTexture(L"Resources\\gauge\\shardEmpty_1.png") };
 	shardEmptyTex = { shardEmptyTexCell[0]->texture.get(),shardEmptyTexCell[1]->texture.get() };
 	shardEmpty = shardEmpty.CreateSprite();
-	shardEmpty.anchorPoint = { 0,1 };
+	shardEmpty.anchorPoint_ = { 0,1 };
 
 	soundEffect[(unsigned int)SoundEffect::Damage] = soundmanager->LoadWaveSound("Resources\\sound\\se\\damage.wav");
 	soundmanager->SetVolume(9, soundEffect[(unsigned int)SoundEffect::Damage]);
@@ -63,7 +63,7 @@ void Player::Initialize()
 
 void Player::Update(bool flag)
 {
-	float prevAngle = rotation.y;
+	float prevAngle = rotation_.y;
 	bool MoveUp =
 		input->IsKeyDown(keyConfig[0]) || input->IsKeyDown(keyConfig[4]);
 	bool MoveDown =
@@ -76,12 +76,12 @@ void Player::Update(bool flag)
 	bool moving = MoveUp || MoveDown || MoveRight || MoveLeft || Vector3D(*gamePadAxisConfig).V3Len() > 0.2f;
 
 	bool makingKneadedEraser =
-		input->IsKeyDown(keyConfig[8]) || input->gamePad->IsButtonDown(gamePadConfig[0] | gamePadConfig[1] | gamePadConfig[2] | gamePadConfig[3]);
+		input->IsKeyDown(keyConfig[8]) || input->gamePad_->IsButtonDown(gamePadConfig[0] | gamePadConfig[1] | gamePadConfig[2] | gamePadConfig[3]);
 
 	trueMakingKneadedEraser = makingKneadedEraser && makingKneadedEraserAllow;
 
-	velocity = position - prevPos;
-	prevPos = position;
+	velocity = position_ - prevPos;
+	prevPos = position_;
 
 	velocity /= 0.8f;
 
@@ -121,23 +121,23 @@ void Player::Update(bool flag)
 
 		if (MoveUp)
 		{
-			walkVec.vec.z += 1;
+			walkVec.vec_.z_ += 1;
 		}
 		if (MoveDown)
 		{
-			walkVec.vec.z -= 1;
+			walkVec.vec_.z_ -= 1;
 		}
 		if (MoveRight)
 		{
-			walkVec.vec.x += 1;
+			walkVec.vec_.x_ += 1;
 		}
 		if (MoveLeft)
 		{
-			walkVec.vec.x -= 1;
+			walkVec.vec_.x_ -= 1;
 		}
 
-		walkVec += {gamePadAxisConfig->x,0,gamePadAxisConfig->y};
-		rotateMoveRecord[rotateMoveRecordNum] = { walkVec.vec.x,walkVec.vec.z };
+		walkVec += {gamePadAxisConfig->x_,0,gamePadAxisConfig->y_};
+		rotateMoveRecord[rotateMoveRecordNum] = { walkVec.vec_.x_,walkVec.vec_.z_ };
 		rotateMoveRecordNum++;
 		if(rotateMoveRecordNum >= rotateMoveRecord.size())
 		{
@@ -174,7 +174,7 @@ void Player::Update(bool flag)
 		}
 
 		float prevDirectionAngle = directionAngle;
-		directionAngle += ADXUtility::AngleDiff(directionAngle, atan2(walkVec.vec.x, walkVec.vec.z)) / (1 + (weight) / 5);
+		directionAngle += ADXUtility::AngleDiff(directionAngle, atan2(walkVec.vec_.x_, walkVec.vec_.z_)) / (1 + (weight) / 5);
 
 		if (!trueMakingKneadedEraser)
 		{
@@ -234,9 +234,9 @@ void Player::Update(bool flag)
 	{
 		shardEmptySoundPlay = false;
 	}
-	position.x += velocity.ConvertXMFloat3().x;
-	position.y += velocity.ConvertXMFloat3().y;
-	position.z += velocity.ConvertXMFloat3().z;
+	position_.x += velocity.ConvertXMFloat3().x;
+	position_.y += velocity.ConvertXMFloat3().y;
+	position_.z += velocity.ConvertXMFloat3().z;
 	//à⁄ìÆêßå¿ãÊâÊ--
 	//Float2 temp;
 	//temp.x = MCB::Lerp(0, 85,(position.z + 30) / 85);
@@ -246,47 +246,47 @@ void Player::Update(bool flag)
 	//Vartical.y = MCB::Lerp(40, 80, temp.x);
 	if (flag)
 	{
-		if (position.x < -50)
+		if (position_.x < -50)
 		{
-			position.x = -50;
+			position_.x = -50;
 		}
-		if (position.x > 50)
+		if (position_.x > 50)
 		{
-			position.x = 50;
+			position_.x = 50;
 		}
 
-		if (position.z < -40)
+		if (position_.z < -40)
 		{
-			position.z = -40;
+			position_.z = -40;
 		}
-		if (position.z > 40)
+		if (position_.z > 40)
 		{
-			position.z = 40;
+			position_.z = 40;
 		}
 	}
 	else
 	{
 
-		if (position.x < -250)
+		if (position_.x < -250)
 		{
-			position.x = -250;
+			position_.x = -250;
 		}
-		if (position.x > 190)
+		if (position_.x > 190)
 		{
-			position.x = 190;
+			position_.x = 190;
 		}
 
-		if (position.z < -20)
+		if (position_.z < -20)
 		{
-			position.z = -20;
+			position_.z = -20;
 		}
-		if (position.z > 20)
+		if (position_.z > 20)
 		{
-			position.z = 20;
+			position_.z = 20;
 		}
 	}
 
-	position.y = 0;
+	position_.y = 0;
 	//--
 
 	if (shard <= 0)
@@ -315,8 +315,8 @@ void Player::Update(bool flag)
 		}
 
 		shard -= abs(rotateModeCount * 0.01);
-		rotation.y += rotateModeCount * 0.03;
-		rotateMoveAngle += ADXUtility::AngleDiff(prevAngle, rotation.y);
+		rotation_.y += rotateModeCount * 0.03;
+		rotateMoveAngle += ADXUtility::AngleDiff(prevAngle, rotation_.y);
 
 		if (abs(rotateMoveAngle) >= ConvertRadius(360))
 		{
@@ -328,11 +328,11 @@ void Player::Update(bool flag)
 	}
 	else if (abs(postRotateCount) > 1.0f)
 	{
-		rotation.y += postRotateCount * 0.03;
+		rotation_.y += postRotateCount * 0.03;
 	}
 	else if (!trueMakingKneadedEraser)
 	{
-		rotation.y += ADXUtility::AngleDiff(rotation.y, directionAngle) / 2;
+		rotation_.y += ADXUtility::AngleDiff(rotation_.y, directionAngle) / 2;
 	}
 
 	shard = min(max(0, shard), maxShard);
@@ -346,13 +346,13 @@ void Player::Update(bool flag)
 		if (shard > velocity.V3Len() * 1)
 		{
 			if (kneadedErasers.empty()
-				|| Vector3D{ kneadedErasers.front()->position.x,kneadedErasers.front()->position.y,kneadedErasers.front()->position.z }.V3Len() > kneadedEraserDistance)
+				|| Vector3D{ kneadedErasers.front()->position_.x,kneadedErasers.front()->position_.y,kneadedErasers.front()->position_.z }.V3Len() > kneadedEraserDistance)
 			{
 				std::unique_ptr<KneadedEraser, MyDeleter<KneadedEraser>> temp(new KneadedEraser);
 				kneadedErasers.push_front(std::move(temp));
-				kneadedErasers.front()->parent = this;
-				kneadedErasers.front()->model = KneadedEraserModel;
-				kneadedErasers.front()->matWorld.matWorld *= matWorld.matWorld;
+				kneadedErasers.front()->parent_ = this;
+				kneadedErasers.front()->model_ = KneadedEraserModel;
+				kneadedErasers.front()->matWorld_.matWorld_ *= matWorld_.matWorld_;
 				kneadedErasers.front()->colliders.push_back(ADXCollider(kneadedErasers.front().get()));
 				kneadedErasers.front()->colliders.back().isTrigger = true;
 				kneadedErasers.front()->colliders.back().collideLayer = 1;
@@ -360,11 +360,11 @@ void Player::Update(bool flag)
 
 			for (auto& itr : kneadedErasers)
 			{
-				Vector3D rotatedVel = MCB::MCBMatrix::transform(velocity, MCB::MCBMatrix::MCBMatrixConvertXMMatrix(matWorld.matRot).Inverse());
+				Vector3D rotatedVel = MCB::MCBMatrix::transform(velocity, MCB::MCBMatrix::MCBMatrixConvertXMMatrix(matWorld_.matRot_).Inverse());
 
-				itr->position.x -= rotatedVel.ConvertXMFloat3().x;
-				itr->position.y -= rotatedVel.ConvertXMFloat3().y;
-				itr->position.z -= rotatedVel.ConvertXMFloat3().z;
+				itr->position_.x -= rotatedVel.ConvertXMFloat3().x;
+				itr->position_.y -= rotatedVel.ConvertXMFloat3().y;
+				itr->position_.z -= rotatedVel.ConvertXMFloat3().z;
 			}
 		}
 	}
@@ -459,8 +459,8 @@ void Player::DethUpdate()
 
 			std::unique_ptr<BossDamageEffect,MyDeleter<BossDamageEffect>> effect(new BossDamageEffect);
 			effect->Initialize(sphereModel, { sinf(ConvertRadius((float)GetRand(0,360))) * cosf(ConvertRadius((float)GetRand(0,360))),sinf(ConvertRadius((float)GetRand(0,360))) * sinf(ConvertRadius((float)GetRand(0,360))),cosf(ConvertRadius((float)GetRand(0,360))) },
-				{ position.x + GetRand(0,200) / 100,position.y + GetRand(0,200) / 100,position.z + GetRand(0,200) / 100 }, { 2.f,2.f,2.f }, { ((float)25 / 20),0,1 - ((float)25 / 20),1 }, 0.75f, 60);
-			effect->color = { 0.2627451f,0.25490196f,0.61176471f,1.0f };
+				{ position_.x + GetRand(0,200) / 100,position_.y + GetRand(0,200) / 100,position_.z + GetRand(0,200) / 100 }, { 2.f,2.f,2.f }, { ((float)25 / 20),0,1 - ((float)25 / 20),1 }, 0.75f, 60);
+			effect->color_ = { 0.2627451f,0.25490196f,0.61176471f,1.0f };
 			effects.push_back(std::move(effect));
 		}
 		soundmanager->PlaySoundWave(dieSound);
@@ -478,10 +478,12 @@ void Player::UpdateMatrix(MCB::ICamera* camera)
 
 	if (!deth)
 	{
-		Object3d::Update(*camera->GetView(), *camera->GetProjection());
+		camera_ = camera;
+		Object3d::Update();
 		for (auto& itr : kneadedErasers)
 		{
-			itr->Object3d::Update(*camera->GetView(), *camera->GetProjection());
+			itr->camera_ = camera;
+			itr->Object3d::Update();
 		}
 	}
 	else
@@ -538,8 +540,8 @@ void Player::TutorialDraw()
 		}
 	}
 
-	tutorials[0].SpriteDraw(*tutorialTexL, edgeSpace, DxWindow::GetInstance()->window_height - edgedHalfSpriteSize - edgeSpace, totalSpriteSize, totalSpriteSize);
-	tutorials[1].SpriteDraw(*tutorialTexR, DxWindow::GetInstance()->sWINDOW_WIDTH_ - totalSpriteSize - edgeSpace, DxWindow::GetInstance()->window_height - edgedHalfSpriteSize - edgeSpace, totalSpriteSize, totalSpriteSize);
+	tutorials[0].SpriteDraw(*tutorialTexL, edgeSpace, DxWindow::GetInstance()->sWINDOW_HEIGHT_ - edgedHalfSpriteSize - edgeSpace, totalSpriteSize, totalSpriteSize);
+	tutorials[1].SpriteDraw(*tutorialTexR, DxWindow::GetInstance()->sWINDOW_WIDTH_ - totalSpriteSize - edgeSpace, DxWindow::GetInstance()->sWINDOW_HEIGHT_ - edgedHalfSpriteSize - edgeSpace, totalSpriteSize, totalSpriteSize);
 }
 
 void Player::StatusDraw()
@@ -559,7 +561,7 @@ void Player::StatusDraw()
 
 
 	kneadedEraserGauges[0].SpriteDraw(*kneadedEraserGaugeTexs[0], edgeSpace, edgeSpace);
-	kneadedEraserGauges[1].size = { gaugeSizeX,gaugeAmount + edgeLength + upperEdgeLength };
+	kneadedEraserGauges[1].size_ = { gaugeSizeX,gaugeAmount + edgeLength + upperEdgeLength };
 	kneadedEraserGauges[1].SpriteCuttingDraw(*kneadedEraserGaugeTexs[1], edgeSpace, edgeSpace + gaugeRange - gaugeAmount, { gaugeSizeX,(gaugeAmount + edgeLength + upperEdgeLength) }, { 0, 0 });
 
 	Texture* nowShardEmptyTex = shardEmptyTex[0];
@@ -578,7 +580,7 @@ void Player::StatusDraw()
 	{
 		if (hp <= index)
 		{
-			itr.SpriteDraw(*heartBlankTex, edgeSpace + heartScale * index + heartShake[index % heartShake.size()].x, gaugeSizeY + edgeSpace * 2 + heartShake[index % heartShake.size()].y);
+			itr.SpriteDraw(*heartBlankTex, edgeSpace + heartScale * index + heartShake[index % heartShake.size()].x_, gaugeSizeY + edgeSpace * 2 + heartShake[index % heartShake.size()].y_);
 		}
 		index++;
 	};
@@ -588,7 +590,7 @@ void Player::StatusDraw()
 	{
 		if (hp > index)
 		{
-			itr.SpriteDraw(*heartTex, edgeSpace + heartScale * index + heartShake[index % heartShake.size()].x, gaugeSizeY + edgeSpace * 2 + heartShake[index % heartShake.size()].y);
+			itr.SpriteDraw(*heartTex, edgeSpace + heartScale * index + heartShake[index % heartShake.size()].x_, gaugeSizeY + edgeSpace * 2 + heartShake[index % heartShake.size()].y_);
 		}
 		index++;
 	};
@@ -622,7 +624,7 @@ void Player::TutorialInitialize(MCB::Texture* tutorial1, MCB::Texture* tutorial2
 	for(auto&itr:tutorials)
 	{
 		itr = itr.CreateSprite();
-		itr.anchorPoint = { 0,0 };
+		itr.anchorPoint_ = { 0,0 };
 	};
 }
 

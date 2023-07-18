@@ -29,9 +29,9 @@ ADXCollider::ADXCollider(Object3d* obj)
 void ADXCollider::Initialize(Object3d* obj)
 {
 	gameObject = obj;
-	preTranslation.x = gameObject->position.x;
-	preTranslation.y = gameObject->position.y;
-	preTranslation.z = gameObject->position.z;
+	preTranslation.x = gameObject->position_.x;
+	preTranslation.y = gameObject->position_.y;
+	preTranslation.z = gameObject->position_.z;
 	preMatrix = ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld_.matWorld_);
 }
 
@@ -375,30 +375,30 @@ void ADXCollider::SendPushBack()
 {
 	if(gameObject != nullptr)
 	{
-		DirectX::XMFLOAT3 tempPos = gameObject->position;
-		gameObject->position.x += pushBackVector.x;
-		gameObject->position.y += pushBackVector.y;
-		gameObject->position.z += pushBackVector.z;
+		DirectX::XMFLOAT3 tempPos = gameObject->position_;
+		gameObject->position_.x += pushBackVector.x;
+		gameObject->position_.y += pushBackVector.y;
+		gameObject->position_.z += pushBackVector.z;
 
-		if (!isfinite(gameObject->position.x))
+		if (!isfinite(gameObject->position_.x))
 		{
-			gameObject->position.x = tempPos.x;
+			gameObject->position_.x = tempPos.x;
 		}
 
-		if (!isfinite(gameObject->position.y))
+		if (!isfinite(gameObject->position_.y))
 		{
-			gameObject->position.y = tempPos.y;
+			gameObject->position_.y = tempPos.y;
 		}
 
-		if (!isfinite(gameObject->position.z))
+		if (!isfinite(gameObject->position_.z))
 		{
-			gameObject->position.z = tempPos.z;
+			gameObject->position_.z = tempPos.z;
 		}
 
-		gameObject->Update(*IScene::GetCamera()->GetView(), *IScene::GetCamera()->GetProjection());
-		preTranslation.x = gameObject->position.x;
-		preTranslation.y = gameObject->position.y;
-		preTranslation.z = gameObject->position.z;
+		gameObject->Update();
+		preTranslation.x = gameObject->position_.x;
+		preTranslation.y = gameObject->position_.y;
+		preTranslation.z = gameObject->position_.z;
 		preMatrix = ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld_.matWorld_);
 		pushBackVector = { 0,0,0 };
 	}
@@ -420,7 +420,7 @@ void ADXCollider::CollidersUpdate()
 		std::vector<ADXVector3> objsTranslation = {};
 		for (auto& itr : Object3d::GetAllObjs())
 		{
-			objsTranslation.push_back({ itr->position.x,itr->position.y,itr->position.z });
+			objsTranslation.push_back({ itr->position_.x,itr->position_.y,itr->position_.z });
 		}
 
 		//すべてのコライダーで移動距離÷(最小絶対半径×0.95)を求め、最も大きい値をtranslateDivNumFに入れる
@@ -428,17 +428,17 @@ void ADXCollider::CollidersUpdate()
 		for (int i = 0; i < allColPtr.size(); i++)
 		{
 			ADXVector3 move;
-			move.x = allColPtr[i]->gameObject->position.x - allColPtr[i]->preTranslation.x;
-			move.y = allColPtr[i]->gameObject->position.y - allColPtr[i]->preTranslation.y;
-			move.z = allColPtr[i]->gameObject->position.z - allColPtr[i]->preTranslation.z;
+			move.x = allColPtr[i]->gameObject->position_.x - allColPtr[i]->preTranslation.x;
+			move.y = allColPtr[i]->gameObject->position_.y - allColPtr[i]->preTranslation.y;
+			move.z = allColPtr[i]->gameObject->position_.z - allColPtr[i]->preTranslation.z;
 
 			ADXVector3 scaleX1 = { allColPtr[i]->scale_.x,0,0 };
 			ADXVector3 scaleY1 = { 0,allColPtr[i]->scale_.y,0 };
 			ADXVector3 scaleZ1 = { 0,0,allColPtr[i]->scale_.z };
 
-			float worldScaleX1 = ADXMatrix4::transform(scaleX1, ADXMatrix4::ConvertToADXMatrix(allColPtr[i]->gameObject->matWorld_.matScale * allColPtr[i]->gameObject->matWorld_.matRot)).length();
-			float worldScaleY1 = ADXMatrix4::transform(scaleY1, ADXMatrix4::ConvertToADXMatrix(allColPtr[i]->gameObject->matWorld_.matScale * allColPtr[i]->gameObject->matWorld_.matRot)).length();
-			float worldScaleZ1 = ADXMatrix4::transform(scaleZ1, ADXMatrix4::ConvertToADXMatrix(allColPtr[i]->gameObject->matWorld_.matScale * allColPtr[i]->gameObject->matWorld_.matRot)).length();
+			float worldScaleX1 = ADXMatrix4::transform(scaleX1, ADXMatrix4::ConvertToADXMatrix(allColPtr[i]->gameObject->matWorld_.matScale_ * allColPtr[i]->gameObject->matWorld_.matRot_)).length();
+			float worldScaleY1 = ADXMatrix4::transform(scaleY1, ADXMatrix4::ConvertToADXMatrix(allColPtr[i]->gameObject->matWorld_.matScale_ * allColPtr[i]->gameObject->matWorld_.matRot_)).length();
+			float worldScaleZ1 = ADXMatrix4::transform(scaleZ1, ADXMatrix4::ConvertToADXMatrix(allColPtr[i]->gameObject->matWorld_.matScale_ * allColPtr[i]->gameObject->matWorld_.matRot_)).length();
 
 			float minimumWorldRadius1 = 1;
 
@@ -466,17 +466,16 @@ void ADXCollider::CollidersUpdate()
 		//全てのオブジェクトを移動する前の座標へ移動させる
 		for (int i = 0; i < allColPtr.size(); i++)
 		{
-			allColPtr[i]->gameObject->position.x = allColPtr[i]->preTranslation.x;
-			allColPtr[i]->gameObject->position.y = allColPtr[i]->preTranslation.y;
-			allColPtr[i]->gameObject->position.z = allColPtr[i]->preTranslation.z;
+			allColPtr[i]->gameObject->position_.x = allColPtr[i]->preTranslation.x;
+			allColPtr[i]->gameObject->position_.y = allColPtr[i]->preTranslation.y;
+			allColPtr[i]->gameObject->position_.z = allColPtr[i]->preTranslation.z;
 		}
 
 		//行列更新のついでに移動する前の座標を保存
 		std::vector<ADXVector3> objsPreTranslation = {};
 		for (auto& itr : Object3d::GetAllObjs())
 		{
-			objsPreTranslation.push_back({ itr->position.x,itr->position.y,itr->position.z });
-			itr->Update(*IScene::GetCamera()->GetView(), *IScene::GetCamera()->GetProjection());
+			itr->Update();
 		}
 
 		//少しづつ移動させながら当たり判定と押し戻し処理を行う
@@ -488,10 +487,10 @@ void ADXCollider::CollidersUpdate()
 			{
 				ADXVector3 move = objsTranslation[j] - objsPreTranslation[j];
 
-				itr->position.x += move.x / translateDivNumF;
-				itr->position.y += move.y / translateDivNumF;
-				itr->position.z += move.z / translateDivNumF;
-				itr->Update(*IScene::GetCamera()->GetView(), *IScene::GetCamera()->GetProjection());
+				itr->position_.x += move.x / translateDivNumF;
+				itr->position_.y += move.y / translateDivNumF;
+				itr->position_.z += move.z / translateDivNumF;
+				itr->Update();
 				j++;
 			}
 

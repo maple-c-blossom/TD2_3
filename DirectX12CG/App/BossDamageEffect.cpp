@@ -39,7 +39,8 @@ void BossDamageEffect::Update()
 
 void BossDamageEffect::UpdateMatrix(MCB::ICamera* camera)
 {
-	Object3d::Update(true);
+	Object3d::camera_ = camera;
+	Object3d::Update();
 }
 
 void BossDamageEffect::Draw()

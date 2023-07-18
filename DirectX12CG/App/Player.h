@@ -29,7 +29,7 @@ private:
 	int hp = maxHP;
 	std::vector<int> keyConfig{ DIK_W,DIK_S,DIK_D,DIK_A,DIK_UP,DIK_DOWN,DIK_RIGHT,DIK_LEFT,DIK_SPACE };
 	std::vector<int> gamePadConfig = { GAMEPAD_A,GAMEPAD_B,GAMEPAD_X,GAMEPAD_Y };
-	Float3* gamePadAxisConfig = { &input->gamePad->LStick };
+	Float3* gamePadAxisConfig = { &input->gamePad_->LStick_ };
 	std::array<Float2, 8> rotateMoveRecord = {};
 	int rotateMoveRecordNum = 0;
 	
