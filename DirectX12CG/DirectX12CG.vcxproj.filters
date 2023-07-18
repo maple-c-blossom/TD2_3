@@ -231,9 +231,6 @@
     <ClCompile Include="Engin\Math\Matrix\MCBMatrix.cpp">
       <Filter>ソース ファイル\Engin\Math\Matrix</Filter>
     </ClCompile>
-    <ClCompile Include="Engin\Math\Vector\Vector3D.cpp">
-      <Filter>ソース ファイル\Engin\Math\Vector</Filter>
-    </ClCompile>
     <ClCompile Include="Engin\Math\Util\MCBFloat.cpp">
       <Filter>ソース ファイル\Engin\Math</Filter>
     </ClCompile>
@@ -444,6 +441,9 @@
     <ClCompile Include="Engin\Util\Timer.cpp">
       <Filter>ソース ファイル\Engin\Util</Filter>
     </ClCompile>
+    <ClCompile Include="Engin\Math\Vector\Vector3D.cpp">
+      <Filter>ソース ファイル\Engin\Math\Vector</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\ParticleShader\ParticleGeometryShader.hlsl">
@@ -534,9 +534,6 @@
     </ClInclude>
     <ClInclude Include="Engin\Math\Matrix\MCBMatrix.h">
       <Filter>ヘッダー ファイル\Engin\Math\Matrix</Filter>
-    </ClInclude>
-    <ClInclude Include="Engin\Math\Vector\Vector3D.h">
-      <Filter>ヘッダー ファイル\Engin\Math\Vector</Filter>
     </ClInclude>
     <ClInclude Include="Engin\Math\Util\MCBFloat.h">
       <Filter>ヘッダー ファイル\Engin\Math</Filter>
@@ -756,6 +753,9 @@
     </ClInclude>
     <ClInclude Include="App\Status.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engin\Math\Vector\Vector3D.h">
+      <Filter>ヘッダー ファイル\Engin\Math\Vector</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

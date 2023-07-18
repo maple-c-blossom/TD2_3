@@ -2,8 +2,10 @@
 #include "IScene.h"
 #define _USE_MATH_DEFINES
 #include <cmath>
-#include "DebugCamera.h"
 #include "Player.h"
+#include "Status.h"
+#include "Boss.h"
+#include "PencilEnemy.h"
 namespace MCB
 {
 	class TitleScene :public IScene
@@ -11,60 +13,106 @@ namespace MCB
 	private:
 #pragma region 変換行列
 		//変換行列
-		DebugCamera camera_;
+		View matView;
+		Projection matProjection;
+		Camera camera;
 #pragma endregion 変換行列
 
 #pragma region 各種リソース
 		//3Dモデル
 #pragma region 3Dモデル
-		std::unique_ptr<Model> groundModel_;
-		std::unique_ptr<Model> skydomeModel_;
-		std::unique_ptr<Model> sphereModel_;
+		std::unique_ptr<Model> BoxModel;
+		std::unique_ptr<Model> groundModel;
+		std::unique_ptr<Model> skydomeModel;
 
-		std::unique_ptr<AnimationModel> animModel_;
-		std::unique_ptr<AnimationModel> anim2Model_;
+		std::unique_ptr<Model> playerModel;
+		std::unique_ptr<Model> pencilEnemyModel;
+		std::unique_ptr<Model> WritingModel;
+		std::unique_ptr<Model> bossModel;
+		std::unique_ptr<Model> nerikesiModel;
+		std::unique_ptr<Model> eraseEnemyModel;
+		std::unique_ptr<Model> BossDamegeEffectModelStar;
+		std::unique_ptr<Model> BossDamegeEffectModelSpher;
+		std::unique_ptr<Model> tutorialBlackBode;
+		std::unique_ptr<Model> BossCover;
 #pragma endregion 3Dモデル
 
 		//テクスチャ
 #pragma region テクスチャ
-		TextureCell* debugTextTexture_;
+		TextureCell* title;
+		TextureCell* debugTextTexture;
+		TextureCell* pushSpace;
+		TextureCell* scopeTex;
+		TextureCell* tutorialSkipTex;
+
+
+		int tutorial1AnimNum = 0;
+		std::array<TextureCell*,3> tutorial;
+		std::array<TextureCell*,5> tutorial1;
+		std::array<TextureCell*,5> tutorial1Succes;
+		int tutorial2AnimNum = 0;
+		std::array<TextureCell*, 5> tutorial2;
+		std::array<TextureCell*, 5> tutorial2Succes;
+		int tutorial3AnimNum = 0;
+		std::array<TextureCell*, 4> tutorial3;
+		std::array<TextureCell*, 4> tutorial3Succes;
+		int tutorial4AnimNum = 0;
+		std::array<TextureCell*, 3> tutorial4;
+		std::array<TextureCell*, 3> tutorial4Succes;
+		int tutorial5AnimNum = 0;
+		std::array<TextureCell*, 4> tutorial5;
+		std::array<TextureCell*, 4> tutorial5Succes;
 
 #pragma endregion テクスチャ
 
 		//サウンド
 #pragma region サウンド
-		size_t testSound_;
-		size_t test2Sound_;
-
-		int32_t volume_ = 255;
+		int bgm;
+		int succeseSound;
+		int selectSound;
+		int volume = 25;
 #pragma endregion サウンド
 
 #pragma endregion 各種リソース
 
 #pragma region 3Dオブジェクト
-		SimpleFigure triangle_;
-		Object3d ground_;
-		Object3d Skydorm_;
-		Object3d testsphere_;
-		Object3d test2Animation_;
-		Player play_;
-
+		SimpleFigure triangle;
+		Object3d ground;
+		Object3d Skydome;
+		Object3d testSpher;
+		Timer animTime;
+		//Object3d tutorialBode;
+		std::list<std::unique_ptr<Handwriting>> writing;
+		std::list<std::unique_ptr<PencilEnemy>> enemys_6tutorial;
+		std::list<std::unique_ptr<PencilEnemy>> enemys_7tutorial;
+		int i = 0;
+		std::array<Object3d, 8> tutorialBode;
+		std::unique_ptr <Player> substie = std::make_unique<Player>();
+		std::unique_ptr <Boss> boss = std::make_unique<Boss>();
+		unsigned short tutorialSucces = 0b00000;
+		float velocitySum;
+		float RotateFrame;
+		float resultSize;
+		Timer resultSizeTimer;
 #pragma endregion 3Dオブジェクト
 
 #pragma region スプライト
-		Sprite sprite_;
+		Sprite titleSprite;
 
-		Sprite zoomSprite_;
+		Sprite pushSpaceSprite;
 
-		Sprite scopeSprite_;
+		Sprite scopeSprite;
 
-		DebugText debugText_;
+		Sprite tutorialSkipSprite;
+
+
+		DebugText debugText;
 
 #pragma endregion スプライト
 
 #pragma region 通常変数
-		bool loopFlag_ = true;
-		bool startPositionReset_ = true;
+		bool loopFlag = true;
+		bool startPositionReset = true;
 #pragma endregion 通常変数
 	public:
 
@@ -79,11 +127,10 @@ namespace MCB
 		void Object3DInit()  override;
 		void SpriteInit()  override;
 		void ParticleInit()  override;
-		std::unique_ptr<IScene> GetNextScene() override;
+		IScene* GetNextScene() override;
 		//---------------
 		void MatrixUpdate() override;
 		void Update() override;
-		void PostEffectDraw() override;
 		void Draw() override;
 		void SpriteDraw() override;
 		void ParticleDraw() override;

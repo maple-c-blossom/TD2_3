@@ -24,6 +24,7 @@
     <ClCompile Include="App\WritingEnemy.cpp" />
     <ClCompile Include="Engin\Collide\ADXCollider.cpp" />
     <ClCompile Include="Engin\Math\Matrix\ADXMatrix4.cpp" />
+    <ClCompile Include="Engin\Math\Vector\Vector3D.cpp" />
     <ClCompile Include="Engin\Util\ADXUtility.cpp" />
     <ClCompile Include="Engin\Math\Vector\ADXVector3.cpp" />
     <ClCompile Include="Engin\Model\ModelManager.cpp" />
@@ -90,7 +91,6 @@
     <ClCompile Include="Engin\Util\Timer.cpp" />
     <ClCompile Include="Engin\Util\Util.cpp" />
     <ClCompile Include="Engin\Math\Vector\Vecter2D.cpp" />
-    <ClCompile Include="Engin\Math\Vector\Vector3D.cpp" />
     <ClCompile Include="Engin\Model\Vertex.cpp" />
     <ClCompile Include="Engin\Math\Matrix\View.cpp" />
     <ClCompile Include="Engin\Math\Matrix\WorldMatrix.cpp" />
@@ -201,6 +201,7 @@
     <ClInclude Include="App\WritingEnemy.h" />
     <ClInclude Include="Engin\Collide\ADXCollider.h" />
     <ClInclude Include="Engin\Math\Matrix\ADXMatrix4.h" />
+    <ClInclude Include="Engin\Math\Vector\Vector3D.h" />
     <ClInclude Include="Engin\Util\ADXUtility.h" />
     <ClInclude Include="Engin\Math\Vector\ADXVector3.h" />
     <ClInclude Include="Engin\Model\ModelManager.h" />
@@ -262,7 +263,6 @@
     <ClInclude Include="Engin\Util\Timer.h" />
     <ClInclude Include="Engin\Util\Util.h" />
     <ClInclude Include="Engin\Math\Vector\Vecter2D.h" />
-    <ClInclude Include="Engin\Math\Vector\Vector3D.h" />
     <ClInclude Include="Engin\Model\Vertex.h" />
     <ClInclude Include="Engin\Math\Matrix\View.h" />
     <ClInclude Include="Engin\Math\Matrix\WorldMatrix.h" />
