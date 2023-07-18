@@ -19,7 +19,7 @@ public:
 	void Update();
 	void Draw();
 	bool GetLifeTimeOver();
-	void SetDelete(bool flag) { deleteFlag = flag; };
+	void SetDelete(bool flag) { deleteFlag_ = flag; };
 
 private:
 	void UniqueOnColliderHit(ADXCollider* myCol, ADXCollider* col);

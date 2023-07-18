@@ -9,7 +9,7 @@ void Handwriting::Initialize(MCB::Float3 position, MCB::Model* model)
 	this->position.x = position.x;
 	this->position.y = position.y;
 	this->position.z = position.z;
-	this->model = model;
+	nowFrontVec_.vec_ = model;
 	Init();
 	color = { 0.1f,0.1f,0.1f,1.0f };
 	colliders.push_back(ADXCollider(this));
@@ -23,7 +23,7 @@ void Handwriting::Update()
 	color.w = MCB::Lerp(1, 0, lifeTimer.GetEndTime(), lifeTimer.NowTime());
 	if (lifeTimer.IsEnd())
 	{
-		deleteFlag = true;
+		deleteFlag_ = true;
 	}
 	UpdateData();
 }
@@ -43,7 +43,7 @@ void Handwriting::UniqueOnColliderHit(ADXCollider* myCol, ADXCollider* col)
 	if (col->gameObject == Player::GetPlayer())
 	{
 		Player::GetPlayer()->Erase();
-		this->deleteFlag = true;
+		this->deleteFlag_ = true;
 	}
 	else //ã‚Åcontinue‚µ‚Ä‚é‚©‚ç–{—ˆ‚¢‚ç‚È‚¢‚¯‚Çˆê‰ž
 	{
@@ -52,7 +52,7 @@ void Handwriting::UniqueOnColliderHit(ADXCollider* myCol, ADXCollider* col)
 			if (col->gameObject == itr2.get())
 			{
 				Player::GetPlayer()->Erase();
-				this->deleteFlag = true;
+				this->deleteFlag_ = true;
 			}
 		}
 	}

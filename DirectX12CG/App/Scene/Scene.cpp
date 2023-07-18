@@ -43,7 +43,7 @@ void MCB::Scene::Initialize()
     mainCamera.Inilialize();
     viewCamera = &mainCamera;
     matView.CreateMatrixView(XMFLOAT3(0.0f, 0.0f, -10.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 1.0f, 0.0f));
-    matProjection.CreateMatrixProjection(XMConvertToRadians(45.0f), (float)dxWindow->window_width / dxWindow->window_height, 0.1f, 4000.0f);
+    matProjection.CreateMatrixProjection(XMConvertToRadians(45.0f), (float)dxWindow->sWINDOW_WIDTH_ / dxWindow->window_height, 0.1f, 4000.0f);
     LoadTexture();
     LoadModel();
     LoadSound();
@@ -445,29 +445,29 @@ void MCB::Scene::SpriteDraw()
             soundManager.SetVolume(10, clearbgm);
             soundPlayed = true;
         }
-        resultSprite[(int)Result::Clear]->SpriteDraw(dxWindow->window_width / 2, 90, 576, 60);
-        resultSprite[(int)Result::Frame]->SpriteDraw(dxWindow->window_width / 2, dxWindow->window_height / 2, 448 * 2, 446);
-        resultSprite[(int)Result::Rank]->SpriteDraw(dxWindow->window_width / 2 - 224, dxWindow->window_height / 2 - 83);
+        resultSprite[(int)Result::Clear]->SpriteDraw(dxWindow->sWINDOW_WIDTH_ / 2, 90, 576, 60);
+        resultSprite[(int)Result::Frame]->SpriteDraw(dxWindow->sWINDOW_WIDTH_ / 2, dxWindow->window_height / 2, 448 * 2, 446);
+        resultSprite[(int)Result::Rank]->SpriteDraw(dxWindow->sWINDOW_WIDTH_ / 2 - 224, dxWindow->window_height / 2 - 83);
         if (time < SECOND_FRAME * 46)
         {
-            resultSprite[(int)Result::SRank]->SpriteDraw(dxWindow->window_width / 2 - 224, dxWindow->window_height / 2 + 43,48 * 1.5f,80 * 1.5f);
+            resultSprite[(int)Result::SRank]->SpriteDraw(dxWindow->sWINDOW_WIDTH_ / 2 - 224, dxWindow->window_height / 2 + 43,48 * 1.5f,80 * 1.5f);
         }
         else if (time < SECOND_FRAME * 56)
         {
-            resultSprite[(int)Result::ARank]->SpriteDraw(dxWindow->window_width / 2 - 224, dxWindow->window_height / 2 + 43, 48 * 1.5f, 80 * 1.5f);
+            resultSprite[(int)Result::ARank]->SpriteDraw(dxWindow->sWINDOW_WIDTH_ / 2 - 224, dxWindow->window_height / 2 + 43, 48 * 1.5f, 80 * 1.5f);
         }
         else if (time < SECOND_FRAME * 76)
         {
-            resultSprite[(int)Result::BRank]->SpriteDraw(dxWindow->window_width / 2 - 224, dxWindow->window_height / 2 + 43, 48 * 1.5f, 80 * 1.5f);
+            resultSprite[(int)Result::BRank]->SpriteDraw(dxWindow->sWINDOW_WIDTH_ / 2 - 224, dxWindow->window_height / 2 + 43, 48 * 1.5f, 80 * 1.5f);
         }
         else
         {
-            resultSprite[(int)Result::CRank]->SpriteDraw(dxWindow->window_width / 2 - 224, dxWindow->window_height / 2 + 43, 48 * 1.5f, 80 * 1.5f);
+            resultSprite[(int)Result::CRank]->SpriteDraw(dxWindow->sWINDOW_WIDTH_ / 2 - 224, dxWindow->window_height / 2 + 43, 48 * 1.5f, 80 * 1.5f);
         }
-        debugText.Print(dxWindow->window_width / 2 - 224 - (48 * 2) - 24, dxWindow->window_height / 2 + 106, 1, "%02d:%02d", time / SECOND_FRAME / 60, time / SECOND_FRAME % 60);
-        resultSprite[(int)Result::Title]->SpriteDraw(dxWindow->window_width / 2 + 224, dxWindow->window_height / 2 - 63,320 * 0.75f,160 * 0.75f);
-        resultSprite[(int)Result::Space]->SpriteDraw(dxWindow->window_width / 2 + 224, dxWindow->window_height / 2 + 63, 248 * resultSize, 62 * resultSize);
-        resultSprite[(int)Result::ABottom]->SpriteDraw(dxWindow->window_width / 2 + 224, dxWindow->window_height / 2 + 126, 66 * resultSize, 66 * resultSize);
+        debugText.Print(dxWindow->sWINDOW_WIDTH_ / 2 - 224 - (48 * 2) - 24, dxWindow->window_height / 2 + 106, 1, "%02d:%02d", time / SECOND_FRAME / 60, time / SECOND_FRAME % 60);
+        resultSprite[(int)Result::Title]->SpriteDraw(dxWindow->sWINDOW_WIDTH_ / 2 + 224, dxWindow->window_height / 2 - 63,320 * 0.75f,160 * 0.75f);
+        resultSprite[(int)Result::Space]->SpriteDraw(dxWindow->sWINDOW_WIDTH_ / 2 + 224, dxWindow->window_height / 2 + 63, 248 * resultSize, 62 * resultSize);
+        resultSprite[(int)Result::ABottom]->SpriteDraw(dxWindow->sWINDOW_WIDTH_ / 2 + 224, dxWindow->window_height / 2 + 126, 66 * resultSize, 66 * resultSize);
     }
     else if (mainCamera.isok && substie->GetHp() <= 0)
     {
@@ -477,11 +477,11 @@ void MCB::Scene::SpriteDraw()
             soundManager.SetVolume(10, gameOverbgm);
             soundPlayed = true;
         }
-        resultSprite[(int)Result::GameOver]->SpriteDraw(dxWindow->window_width / 2, 90, 576, 80);
-        resultSprite[(int)Result::Frame]->SpriteDraw(dxWindow->window_width / 2, dxWindow->window_height / 2, 448 * 2, 446);
-        resultSprite[(int)Result::Title]->SpriteDraw(dxWindow->window_width / 2 - 224, dxWindow->window_height / 2);
-        resultSprite[(int)Result::Space]->SpriteDraw(dxWindow->window_width / 2 + 224, dxWindow->window_height / 2 - 63,248 * resultSize,62 * resultSize);
-        resultSprite[(int)Result::ABottom]->SpriteDraw(dxWindow->window_width / 2 + 224, dxWindow->window_height / 2 + 63,66 * resultSize,66 * resultSize);
+        resultSprite[(int)Result::GameOver]->SpriteDraw(dxWindow->sWINDOW_WIDTH_ / 2, 90, 576, 80);
+        resultSprite[(int)Result::Frame]->SpriteDraw(dxWindow->sWINDOW_WIDTH_ / 2, dxWindow->window_height / 2, 448 * 2, 446);
+        resultSprite[(int)Result::Title]->SpriteDraw(dxWindow->sWINDOW_WIDTH_ / 2 - 224, dxWindow->window_height / 2);
+        resultSprite[(int)Result::Space]->SpriteDraw(dxWindow->sWINDOW_WIDTH_ / 2 + 224, dxWindow->window_height / 2 - 63,248 * resultSize,62 * resultSize);
+        resultSprite[(int)Result::ABottom]->SpriteDraw(dxWindow->sWINDOW_WIDTH_ / 2 + 224, dxWindow->window_height / 2 + 63,66 * resultSize,66 * resultSize);
     }
 
     

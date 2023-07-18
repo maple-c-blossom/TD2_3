@@ -2,7 +2,7 @@
 #include "Util.h"
 void PencilBullet::Initialize(MCB::Model* model, float speed, MCB::Vector3D startPos, MCB::Vector3D targetPos)
 {
-	this->model = model;
+	nowFrontVec_.vec_ = model;
 	this->speed = speed;
 	this->startPos = startPos;
 	this->endPos = targetPos;

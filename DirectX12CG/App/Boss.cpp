@@ -41,15 +41,15 @@ void Boss::GaugeUpdate()
 void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* model, MCB::Model* enemyModel, MCB::Model* handwrModel, MCB::Model* star, MCB::Model* ball, MCB::Model* cover, float speed, Player* playerPtr)
 {
 	this->velocity = velocity;
-	this->position.x = position.x;
-	this->position.y = position.y;
-	this->position.z = position.z;
-	this->model = model;
+	this->position_.x = position.x_;
+	this->position_.y = position.y_;
+	this->position_.z = position.z_;
+	this->model_ = model;
 	this->speed = speed;
 	this->enemyModel = enemyModel;
 	this->handwrModel = handwrModel;
 	this->playerPtr = playerPtr;
-	this->scale = { 4,4,4 };
+	this->scale_ = { 4,4,4 };
 	starModel = star;
 	sphereModel = ball;
 	hp = MAX_HP_BOSS;
@@ -71,17 +71,17 @@ void Boss::Initialize(MCB::Vector3D velocity, MCB::Float3 position, MCB::Model* 
 	}
 	Object3d::Init();
 	this->cover = std::make_unique<Object3d>();
-	this->cover->model = cover;
-	this->cover->parent = this;
-	this->cover->position.x = 1.2f;
-	this->cover->position.z = -0.10f;
+	this->cover->model_ = cover;
+	this->cover->parent_ = this;
+	this->cover->position_.x = 1.2f;
+	this->cover->position_.z = -0.10f;
 	q.SetRota({ 0,1,0 }, 0);
 	gaugeTexCells = { loader->LoadTexture(L"Resources\\gauge\\bossHpGauge.png"), loader->LoadTexture(L"Resources\\gauge\\bossHpGaugeFill.png"),loader->LoadTexture(L"Resources\\gauge\\bossHpGaugeDecrease.png") };
 	gaugeTexs = { gaugeTexCells[0]->texture.get(), gaugeTexCells[1]->texture.get(), gaugeTexCells[2]->texture.get() };
 	for (auto& itr : gauges)
 	{
 		itr = itr.CreateSprite();
-		itr.anchorPoint = { 0,0 };
+		itr.anchorPoint_ = { 0,0 };
 	};
 
 	soundEffect[(unsigned int)SoundEffect::FallAttack] = soundmanager->LoadWaveSound("Resources\\sound\\se\\bossAttack.wav");
@@ -112,11 +112,11 @@ void Boss::Update(bool moveLimit)
 
 	if (!attack && !beforeAttack && !afterAttack)
 	{
-		velocity = velocity.V3Get(position, playerPtr->position);
-		nowFrontVec = velocity;
+		velocity = velocity.V3Get(position_, playerPtr->position_);
+		nowFrontVec_ = velocity;
 		velocity.V3Norm();
-		position.x += velocity.vec.x * moveSpeed;
-		position.z += velocity.vec.z * moveSpeed;
+		position_.x += velocity.vec_.x_ * moveSpeed;
+		position_.z += velocity.vec_.z_ * moveSpeed;
 		for (auto& itr : colliders)
 		{
 			itr.pushable_ = true;
@@ -132,12 +132,12 @@ void Boss::Update(bool moveLimit)
 	Quaternion hogeQ;
 	if (!attack && !beforeAttack && !afterAttack)
 	{
-		q = q.DirToDir({ 0,0,-1 }, Vector3D({ position.x,0,position.z }, playerPtr->position));
+		q = q.DirToDir({ 0,0,-1 }, Vector3D({ position_.x,0,position_.z }, playerPtr->position_));
 		hogeQ = q;
 	}
 	else if(afterAttack)
 	{
-		//Quaternion tempQ = q.DirToDir({ 0,0,-1 }, Vector3D(velocity.vec, { playerPtr->position.x, playerPtr->position.y, playerPtr->position.z }));
+		//Quaternion tempQ = q.DirToDir({ 0,0,-1 }, Vector3D(velocity.vec_, { playerPtr->position_.x, playerPtr->position_.y, playerPtr->position_.z }));
 		//q = tempQ.Slerp(hogeQ, tempQ, afterAttackTimer.GetEndTime(), afterAttackTimer.NowTime());
 	}
 
@@ -190,7 +190,7 @@ void Boss::Update(bool moveLimit)
 		quaternion = q;
 	}
 
-	this->cover->rotation.y = -ConvertRadius(angle);
+	this->cover->rotation_.y = -ConvertRadius(angle);
 
 
 
@@ -220,14 +220,14 @@ void Boss::Update(bool moveLimit)
 				isUp = false;
 				downSpeed = gravity;
 			}
-			position.y += jumpSpeed;
+			position_.y += jumpSpeed;
 
-			if (position.y > 2.f)
+			if (position_.y > 2.f)
 			{
 				isUp = false;
 				isDown = true;
 				downSpeed = gravity;
-				//position.y = 2.f;
+				//position_.y = 2.f;
 			}
 
 		}
@@ -238,38 +238,38 @@ void Boss::Update(bool moveLimit)
 			{
 				downSpeed = -0.5f;
 			}
-			position.y += downSpeed;
-			if (position.y < 0)
+			position_.y += downSpeed;
+			if (position_.y < 0)
 			{
-				//position.y = 0;
+				//position_.y = 0;
 				isDown = false;
 			}
 		}
 	}
 	//Float2 temp;
-//temp.x = MCB::Lerp(0, 85,(position.z + 30) / 85);
-//temp.x = (position.z + 30) / 85;
+//temp.x = MCB::Lerp(0, 85,(position_.z + 30) / 85);
+//temp.x = (position_.z + 30) / 85;
 //Float2 Vartical;
 //Vartical.x = MCB::Lerp(-40, -80, temp.x);
 //Vartical.y = MCB::Lerp(40, 80, temp.x);
 	if (moveLimit)
 	{
-		if (position.x < -50)
+		if (position_.x < -50)
 		{
-			position.x = -50;
+			position_.x = -50;
 		}
-		if (position.x > 50)
+		if (position_.x > 50)
 		{
-			position.x = 50;
+			position_.x = 50;
 		}
 
-		if (position.z < -40)
+		if (position_.z < -40)
 		{
-			position.z = -40;
+			position_.z = -40;
 		}
-		if (position.z > 40)
+		if (position_.z > 40)
 		{
-			position.z = 40;
+			position_.z = 40;
 		}
 
 	}
@@ -277,13 +277,13 @@ void Boss::Update(bool moveLimit)
 	{
 		quaternion = { 0,0,0,1 };
 	}
-	if (position.y < 0)
+	if (position_.y < 0)
 	{
-		//position.y = 0;
+		//position_.y = 0;
 	}
-	if (position.y > 2.f)
+	if (position_.y > 2.f)
 	{
-		//position.y = 2.f;
+		//position_.y = 2.f;
 	}
 
 	velocity.V3Norm();
@@ -312,31 +312,31 @@ void Boss::Update(bool moveLimit)
 	{
 		if (beforeAttackTimer.NowTime() % 5 == 0)
 		{
-			color = { 1.f,0.f,0.f,1.f };
+			color_ = { 1.f,0.f,0.f,1.f };
 		}
 		else
 		{
-			color = { 1.f,1.f,1.f,1.f };
+			color_ = { 1.f,1.f,1.f,1.f };
 		}
 	}
 	else if (attack)
 	{
-		color = { 1.f,0.f,0.f,1.f };
+		color_ = { 1.f,0.f,0.f,1.f };
 	}
 	else
 	{
-		color = { 1.f,1.f,1.f,1.f };
+		color_ = { 1.f,1.f,1.f,1.f };
 	}
 
 	if (!imotalFlag)
 	{
-		color.w = 1.f;
+		color_.w_ = 1.f;
 	}
 	else
 	{
-		color.w = 0.15f;
+		color_.w_ = 0.15f;
 	}
-	cover->color = color;
+	cover->color_ = color_;
 
 	if (hp <= 0)
 	{
@@ -364,8 +364,8 @@ void Boss::Update(bool moveLimit)
 void Boss::DethUpdate()
 {
 
-	color = { 1.f,1.f,1.f,1.f };
-	cover->color = color;
+	color_ = { 1.f,1.f,1.f,1.f };
+	cover->color_ = color_;
 	DethTimerUpdate();
 	if (beforedethDown)
 	{
@@ -446,18 +446,18 @@ void Boss::StatusDraw()
 	float damageGaugeAmount = gaugeRange * damageFillAmount;
 
 
-	gauges[0].SpriteDraw(*gaugeTexs[0], DxWindow::GetInstance()->window_width - gaugeSizeX - edgeSpace, edgeSpace + gaugeShake.y);
-	gauges[1].size = { gaugeAmount + edgeLength ,gaugeSizeY };
-	gauges[2].size = { damageGaugeAmount + edgeLength ,gaugeSizeY };
-	gauges[2].SpriteCuttingDraw(*gaugeTexs[2], DxWindow::GetInstance()->window_width - gaugeSizeX - edgeSpace + gaugeRange - damageGaugeAmount, edgeSpace + gaugeShake.y, { (damageGaugeAmount + edgeLength),gaugeSizeY }, { 0, 0 });
-	gauges[1].SpriteCuttingDraw(*gaugeTexs[1], DxWindow::GetInstance()->window_width - gaugeSizeX - edgeSpace + gaugeRange - gaugeAmount, edgeSpace + gaugeShake.y, { (gaugeAmount + edgeLength),gaugeSizeY }, { 0, 0 });
+	gauges[0].SpriteDraw(*gaugeTexs[0], DxWindow::GetInstance()->sWINDOW_WIDTH_ - gaugeSizeX - edgeSpace, edgeSpace + gaugeShake.y_);
+	gauges[1].size_ = { gaugeAmount + edgeLength ,gaugeSizeY };
+	gauges[2].size_ = { damageGaugeAmount + edgeLength ,gaugeSizeY };
+	gauges[2].SpriteCuttingDraw(*gaugeTexs[2], DxWindow::GetInstance()->sWINDOW_WIDTH_ - gaugeSizeX - edgeSpace + gaugeRange - damageGaugeAmount, edgeSpace + gaugeShake.y_, { (damageGaugeAmount + edgeLength),gaugeSizeY }, { 0, 0 });
+	gauges[1].SpriteCuttingDraw(*gaugeTexs[1], DxWindow::GetInstance()->sWINDOW_WIDTH_ - gaugeSizeX - edgeSpace + gaugeRange - gaugeAmount, edgeSpace + gaugeShake.y_, { (gaugeAmount + edgeLength),gaugeSizeY }, { 0, 0 });
 
 }
 
 void Boss::UpdateMatrix(MCB::ICamera* camera)
 {
-	Object3d::Update(*camera->GetView(), *camera->GetProjection());
-	cover->Update(*camera->GetView(), *camera->GetProjection());
+	Object3d::Update();
+	cover->Update();
 	for (auto& itr : enemys)
 	{
 		itr->UpdateMatrix(camera);
@@ -492,7 +492,7 @@ void Boss::Damage(int damage)
 							{
 								unique_ptr<BossDamageEffect> effect = make_unique<BossDamageEffect>();
 								effect->Initialize(starModel, { sinf(ConvertRadius((float)GetRand(0,360))) * cosf(ConvertRadius((float)GetRand(0,360))),sinf(ConvertRadius((float)GetRand(0,360))) * sinf(ConvertRadius((float)GetRand(0,360))),cosf(ConvertRadius((float)GetRand(0,360))) },
-									{ position.x + GetRand(0,200) / 100,position.y + GetRand(0,200) / 100,position.z + GetRand(0,200) / 100 }, { (float)damage / 10 + 1,(float)damage / 10 + 1,(float)damage / 10 + 1 }, { 1,1,0,1 }, 0.75f, 30);
+									{ position_.x + GetRand(0,200) / 100,position_.y + GetRand(0,200) / 100,position_.z + GetRand(0,200) / 100 }, { (float)damage / 10 + 1,(float)damage / 10 + 1,(float)damage / 10 + 1 }, { 1,1,0,1 }, 0.75f, 30);
 								effects.push_back(std::move(effect));
 							}
 						}
@@ -502,19 +502,19 @@ void Boss::Damage(int damage)
 							{
 								unique_ptr<BossDamageEffect> effect = make_unique<BossDamageEffect>();
 								effect->Initialize(sphereModel, { sinf(ConvertRadius((float)GetRand(0,360))) * cosf(ConvertRadius((float)GetRand(0,360))),sinf(ConvertRadius((float)GetRand(0,360))) * sinf(ConvertRadius((float)GetRand(0,360))),cosf(ConvertRadius((float)GetRand(0,360)))},
-									{ position.x + GetRand(0,200) / 100,position.y + GetRand(0,200) / 100,position.z + GetRand(0,200) / 100 }, { (float)damage / 15 + 1,(float)damage / 15 + 1,(float)damage / 15 + 1 }, { ((float)damage / 20),0,1 - ((float)damage / 20),1 }, 0.75f, 30);
+									{ position_.x + GetRand(0,200) / 100,position_.y + GetRand(0,200) / 100,position_.z + GetRand(0,200) / 100 }, { (float)damage / 15 + 1,(float)damage / 15 + 1,(float)damage / 15 + 1 }, { ((float)damage / 20),0,1 - ((float)damage / 20),1 }, 0.75f, 30);
 								effects.push_back(std::move(effect));
 							}
 						}
 					}
 
-					itr3.gameObject->deleteFlag = true;
+					itr3.gameObject->deleteFlag_ = true;
 
 					heavyHitNum = 0;
 
 					for (auto& itr : *Player::GetCaptureList())//すでに練りけしについている敵のデリートフラグをOnに
 					{
-						itr->deleteFlag = true;
+						itr->deleteFlag_ = true;
 						heavyHitNum++;
 					}
 					imotalTimer.Set(60);
@@ -542,7 +542,7 @@ void Boss::AttackCheck()
 			{
 				AttackStart();
 
-				//attackObj.position = { position.x + vec.vec.x * 2,position.y + vec.vec.y * 2,position.z + vec.vec.z * 2 };
+				//attackObj.position_ = { position_.x + vec.vec.x * 2,position_.y + vec.vec.y * 2,position_.z + vec.vec.z * 2 };
 			}
 		}
 		num++;
@@ -632,8 +632,8 @@ void Boss::DethTimerUpdate()
 			{
 				unique_ptr<BossDamageEffect> effect = make_unique<BossDamageEffect>();
 				effect->Initialize(starModel, { sinf(ConvertRadius((float)GetRand(0,360))) * cosf(ConvertRadius((float)GetRand(0,360))),sinf(ConvertRadius((float)GetRand(0,360))) * sinf(ConvertRadius((float)GetRand(0,360))),cosf(ConvertRadius((float)GetRand(0,360))) },
-					{ position.x + GetRand(0,200) / 100,position.y + GetRand(0,200) / 100,position.z + GetRand(0,200) / 100 }, { (float)25 / 15 + 1,(float)25 / 15 + 1,(float)25 / 15 + 1 }, { ((float)25 / 20),0,1 - ((float)25 / 20),1 }, 0.75f, 60);
-				effect->color = { 0.54901961f,0.15294118,0.51764706f,1.0f };
+					{ position_.x + GetRand(0,200) / 100,position_.y + GetRand(0,200) / 100,position_.z + GetRand(0,200) / 100 }, { (float)25 / 15 + 1,(float)25 / 15 + 1,(float)25 / 15 + 1 }, { ((float)25 / 20),0,1 - ((float)25 / 20),1 }, 0.75f, 60);
+				effect->color_ = { 0.54901961f,0.15294118,0.51764706f,1.0f };
 				effects.push_back(std::move(effect));
 			}
 			soundmanager->PlaySoundWave(dieSound);

@@ -376,7 +376,7 @@ void Player::Update(bool flag)
 		{
 			if (index > maxKneadedErasers)
 			{
-				itr->deleteFlag = true;
+				itr->deleteFlag_ = true;
 			}
 			index++;
 		}
@@ -398,7 +398,7 @@ void Player::Update(bool flag)
 			}
 			else
 			{
-				itr->deleteFlag = true;
+				itr->deleteFlag_ = true;
 			}
 		}
 	}
@@ -539,7 +539,7 @@ void Player::TutorialDraw()
 	}
 
 	tutorials[0].SpriteDraw(*tutorialTexL, edgeSpace, DxWindow::GetInstance()->window_height - edgedHalfSpriteSize - edgeSpace, totalSpriteSize, totalSpriteSize);
-	tutorials[1].SpriteDraw(*tutorialTexR, DxWindow::GetInstance()->window_width - totalSpriteSize - edgeSpace, DxWindow::GetInstance()->window_height - edgedHalfSpriteSize - edgeSpace, totalSpriteSize, totalSpriteSize);
+	tutorials[1].SpriteDraw(*tutorialTexR, DxWindow::GetInstance()->sWINDOW_WIDTH_ - totalSpriteSize - edgeSpace, DxWindow::GetInstance()->window_height - edgedHalfSpriteSize - edgeSpace, totalSpriteSize, totalSpriteSize);
 }
 
 void Player::StatusDraw()

@@ -15,7 +15,7 @@ void KneadedEraser::UniqueUpdate()
 		{
 			if (!colListItr->pushable_ && !colListItr->isTrigger && colListItr->collideLayer != 3)
 			{
-				deleteFlag = true;
+				deleteFlag_ = true;
 			}
 		}
 	}
