@@ -187,7 +187,7 @@ namespace pmx
 
 	void PmxVertex::Read(std::istream *stream, PmxSetting *setting)
 	{
-		stream->read((char*) this->position_, sizeof(float) * 3);
+		stream->read((char*) this->position, sizeof(float) * 3);
 		stream->read((char*) this->normal, sizeof(float) * 3);
 		stream->read((char*) this->uv, sizeof(float) * 2);
 		for (int i = 0; i < setting->uv; ++i)
@@ -260,7 +260,7 @@ namespace pmx
 	{
 		this->bone_name = ReadString(stream, setting->encoding);
 		this->bone_english_name = ReadString(stream, setting->encoding);
-		stream->read((char*) this->position_, sizeof(float) * 3);
+		stream->read((char*) this->position, sizeof(float) * 3);
 		this->parent_index = ReadIndex(stream, setting->bone_index_size);
 		stream->read((char*) &this->level, sizeof(int));
 		stream->read((char*) &this->bone_flag, sizeof(uint16_t));
@@ -437,7 +437,7 @@ namespace pmx
 		stream->read((char*) &this->mask, sizeof(uint16_t));
 		stream->read((char*) &this->shape, sizeof(uint8_t));
 		stream->read((char*) this->size, sizeof(float) * 3);
-		stream->read((char*) this->position_, sizeof(float) * 3);
+		stream->read((char*) this->position, sizeof(float) * 3);
 		stream->read((char*) this->orientation, sizeof(float) * 3);
 		stream->read((char*) &this->mass, sizeof(float));
 		stream->read((char*) &this->move_attenuation, sizeof(float));
@@ -451,7 +451,7 @@ namespace pmx
 	{
 		this->rigid_body1 = ReadIndex(stream, setting->rigidbody_index_size);
 		this->rigid_body2 = ReadIndex(stream, setting->rigidbody_index_size);
-		stream->read((char*) this->position_, sizeof(float) * 3);
+		stream->read((char*) this->position, sizeof(float) * 3);
 		stream->read((char*) this->orientaiton, sizeof(float) * 3);
 		stream->read((char*) this->move_limitation_min, sizeof(float) * 3);
 		stream->read((char*) this->move_limitation_max, sizeof(float) * 3);
