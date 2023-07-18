@@ -4,9 +4,8 @@
 
 using namespace MCB;
 
-bool ADXCollider::translateDivine = false;
-std::vector<collidePattern> ADXCollider::ignoreCollidePatterns = { {1,1},{2,2},{2,3},{3,3},{-1,1} };
-std::vector<collidePattern> ADXCollider::ignorePushBackPatterns = {};
+std::vector<collidePattern> ADXCollider::S_ignoreCollidePatterns = { {1,1},{2,2},{2,3},{3,3},{-1,1} };
+std::vector<collidePattern> ADXCollider::S_ignorePushBackPatterns = {};
 
 /*
 【接触検知から押し戻しベクトル算出までの流れ】
@@ -19,36 +18,35 @@ std::vector<collidePattern> ADXCollider::ignorePushBackPatterns = {};
 ・互いのオブジェクトの衝突点の座標の差が押し戻しの方向と強さが入ったベクトルになる
 */
 
-std::vector<ADXCollider*> ADXCollider::allColPtr = {};
+std::list<ADXCollider*> ADXCollider::S_cols = {};
 
 ADXCollider::ADXCollider(Object3d* obj)
 {
-	Initialize(obj);
+	gameObject = obj;
+	UniqueInitialize();
 }
 
-void ADXCollider::Initialize(Object3d* obj)
+void ADXCollider::UniqueInitialize()
 {
-	gameObject = obj;
-	preTranslation.x = gameObject->position_.x;
-	preTranslation.y = gameObject->position_.y;
-	preTranslation.z = gameObject->position_.z;
-	preMatrix = ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld_.matWorld_);
+	preTranslation = { gameObject->position_.x,gameObject->position_.y,gameObject->position_.z };
+	preMatrix = gameObject->transform.GetMatWorld();
+	preMatrixInverse = gameObject->transform.GetMatWorldInverse();
 }
 
-void ADXCollider::Update(Object3d* obj)
+void ADXCollider::UniqueUpdate()
 {
-	gameObject = obj;
-	allColPtr.push_back(this);
+	S_cols.push_back(this);
 }
 
 //空間上の点をコライダーの中に収めた時の座標
-ADXVector3 ADXCollider::ClosestPoint(ADXVector3 pos)
+ADXVector3 ADXCollider::ClosestPoint(const ADXVector3& pos) const
 {
-	ADXVector3 ret = ADXMatrix4::transform(pos, ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld_.matWorld_).Inverse());
+	ADXVector3 ret = ADXMatrix4::transform(pos, gameObject->transform.GetMatWorldInverse());
 	ADXVector3 closPos = ret;
 
-	if (colType_ == box)
+	switch (colType_)
 	{
+	case box:
 		if (closPos.x > pos_.x + scale_.x)
 		{
 			closPos.x = pos_.x + scale_.x;
@@ -75,23 +73,46 @@ ADXVector3 ADXCollider::ClosestPoint(ADXVector3 pos)
 		{
 			closPos.z = pos_.z - scale_.z;
 		}
-	}
-	else if (colType_ == sphere)
-	{
-		if ((closPos - pos_).length() > radius_)
+		break;
+	case sphere:
+		if ((closPos - pos_).Length() > radius_)
 		{
-			closPos = pos_ + ADXVector3::normalized(closPos - pos_) * radius_;
+			closPos = pos_ + (closPos - pos_).Normalize() * radius_;
 		}
-	}
-	else
-	{
+		break;
+	case plain:
+		closPos.y = 0;
+		break;
+	case quad:
+		if (closPos.x > pos_.x + scale_.x)
+		{
+			closPos.x = pos_.x + scale_.x;
+		}
+		else if (closPos.x < pos_.x - scale_.x)
+		{
+			closPos.x = pos_.x - scale_.x;
+		}
+
+		if (closPos.z > pos_.z + scale_.z)
+		{
+			closPos.z = pos_.z + scale_.z;
+		}
+		else if (closPos.z < pos_.z - scale_.z)
+		{
+			closPos.z = pos_.z - scale_.z;
+		}
+
+		closPos.y = 0;
+		break;
+	default:
 		closPos = pos_;
+		break;
 	}
 
-	if ((closPos - ret).length() > 0)
+	if ((closPos - ret).Length() > 0)
 	{
 		ret = closPos;
-		ret = ADXMatrix4::transform(ret, ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld_.matWorld_));
+		ret = ADXMatrix4::transform(ret, gameObject->transform.GetMatWorld());
 	}
 	else
 	{
@@ -102,22 +123,25 @@ ADXVector3 ADXCollider::ClosestPoint(ADXVector3 pos)
 }
 
 //空間上の点をコライダーのフチに寄せた時の相対座標
-ADXVector3 ADXCollider::EdgeLocalPoint(ADXVector3 pos)
+ADXVector3 ADXCollider::EdgeLocalPoint(const ADXVector3& pos) const
 {
 	return EdgeLocalPoint(pos, pos);
 }
 
 //空間上の点をコライダーのフチに寄せた時の相対座標
-ADXVector3 ADXCollider::EdgeLocalPoint(ADXVector3 pos, ADXVector3 prePos)
+ADXVector3 ADXCollider::EdgeLocalPoint(const ADXVector3& pos, const ADXVector3& prePos) const
 {
-	ADXVector3 ret = ADXMatrix4::transform(pos, ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld_.matWorld_).Inverse());
+	ADXVector3 ret = ADXMatrix4::transform(pos, gameObject->transform.GetMatWorldInverse());
 	ret -= pos_;
 
-	ADXVector3 prevPos = ADXMatrix4::transform(prePos, preMatrix.Inverse());
+	ADXVector3 prevPos = ADXMatrix4::transform(prePos, preMatrixInverse);
 	prevPos -= pos_;
 
-	if (colType_ == box)
+	ADXVector3 absLocalPos{};
+
+	switch (colType_)
 	{
+	case box:
 		ret.x /= scale_.x;
 		ret.y /= scale_.y;
 		ret.z /= scale_.z;
@@ -126,7 +150,7 @@ ADXVector3 ADXCollider::EdgeLocalPoint(ADXVector3 pos, ADXVector3 prePos)
 		prevPos.y /= scale_.y;
 		prevPos.z /= scale_.z;
 
-		ADXVector3 absLocalPos = prevPos;
+		absLocalPos = prevPos;
 		if (absLocalPos.x < 0)
 		{
 			absLocalPos.x = -absLocalPos.x;
@@ -180,60 +204,83 @@ ADXVector3 ADXCollider::EdgeLocalPoint(ADXVector3 pos, ADXVector3 prePos)
 		ret.x *= scale_.x;
 		ret.y *= scale_.y;
 		ret.z *= scale_.z;
-	}
-	else if (colType_ == sphere)
-	{
-		ret = ADXVector3::normalized(ret) * radius_;
-	}
-	else
-	{
+		break;
+	case sphere:
+		ret = ret.Normalize() * radius_;
+		break;
+	case plain:
+		ret.y = 0;
+		break;
+	case quad:
+		if (ret.x > pos_.x + scale_.x)
+		{
+			ret.x = pos_.x + scale_.x;
+		}
+		else if (ret.x < pos_.x - scale_.x)
+		{
+			ret.x = pos_.x - scale_.x;
+		}
+
+		if (ret.z > pos_.z + scale_.z)
+		{
+			ret.z = pos_.z + scale_.z;
+		}
+		else if (ret.z < pos_.z - scale_.z)
+		{
+			ret.z = pos_.z - scale_.z;
+		}
+
+		ret.y = 0;
+		break;
+	default:
 		ret = { 0,0,0 };
+		break;
 	}
 
 	ret += pos_;
-	ret = ADXMatrix4::transform(ClosestPoint(ADXMatrix4::transform(ret, ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld_.matWorld_))), ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld_.matWorld_).Inverse());
+	ret = ADXMatrix4::transform(ClosestPoint(ADXMatrix4::transform(ret, gameObject->transform.GetMatWorld())), gameObject->transform.GetMatWorldInverse());
 
 	return ret;
 }
 
 //空間上の点をコライダーのフチに寄せた時の座標
-ADXVector3 ADXCollider::EdgePoint(ADXVector3 pos)
+ADXVector3 ADXCollider::EdgePoint(const ADXVector3& pos)
 {
 	return EdgePoint(pos, pos);
 }
 
 //空間上の点をコライダーのフチに寄せた時の座標
-ADXVector3 ADXCollider::EdgePoint(ADXVector3 pos, ADXVector3 prePos)
+ADXVector3 ADXCollider::EdgePoint(const ADXVector3& pos, const ADXVector3& prePos)
 {
 	ADXVector3 ret = EdgeLocalPoint(pos, prePos);
-	ret = ADXMatrix4::transform(ret, ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld_.matWorld_));
+	ret = ADXMatrix4::transform(ret, gameObject->transform.GetMatWorld());
 	return ret;
 }
 
 //相手のコライダーとの衝突点の座標
-ADXVector3 ADXCollider::CollidePoint(ADXVector3 pos, ADXVector3 targetColSenter, ADXVector3 move)
+ADXVector3 ADXCollider::CollidePoint(const ADXVector3& pos, const ADXVector3& targetColSenter, const ADXVector3& move) const
 {
 	ADXVector3 ret = EdgeLocalPoint(pos, pos - move);
-	ADXVector3 targetLocalSenter = ADXMatrix4::transform(targetColSenter, ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld_.matWorld_).Inverse()) - pos_;
+	ADXVector3 targetLocalSenter = ADXMatrix4::transform(targetColSenter, gameObject->transform.GetMatWorldInverse()) - pos_;
 
-	if (targetLocalSenter.dot(ret) < 0)
+	if (targetLocalSenter.Dot(ret) < 0)
 	{
 		ret = -ret;
 	}
 
-	ret = ADXMatrix4::transform(ret, ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld_.matWorld_));
+	ret = ADXMatrix4::transform(ret, gameObject->transform.GetMatWorld());
 	return ret;
 }
 
 //押し返す方向と強さのベクトル
-ADXVector3 ADXCollider::CollideVector(ADXCollider col)
+ADXVector3 ADXCollider::CollideVector(const ADXCollider& col)
 {
 	ADXVector3 ret;
 
-	ADXVector3 myTranslation = ADXMatrix4::transform(pos_, ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld_.matWorld_));
+	ADXVector3 myTranslation = ADXMatrix4::transform(pos_, gameObject->transform.GetMatWorld());
 	ADXVector3 myMove = myTranslation - ADXMatrix4::transform(pos_, preMatrix);
 
-	ADXVector3 targetTranslation = ADXMatrix4::transform(col.pos_, ADXMatrix4::ConvertToADXMatrix(col.gameObject->matWorld_.matWorld_));
+	ADXVector3 targetTranslation = ADXMatrix4::transform(col.pos_, col.gameObject->transform.GetMatWorld());
 	ADXVector3 targetMove = targetTranslation - ADXMatrix4::transform(col.pos_, col.preMatrix);
 
 	ADXVector3 myPushBack1 = col.CollidePoint(myTranslation, myTranslation, myMove) - CollidePoint(col.CollidePoint(myTranslation, myTranslation, myMove), targetTranslation, targetMove);
@@ -241,7 +288,7 @@ ADXVector3 ADXCollider::CollideVector(ADXCollider col)
 
 	ADXVector3 pushBackDiff = myPushBack1 - myPushBack2;
 
-	if ((targetTranslation - myTranslation).dot(pushBackDiff) > 0)
+	if ((targetTranslation - myTranslation).Dot(pushBackDiff) > 0)
 	{
 		ret = myPushBack2;
 	}
@@ -250,7 +297,7 @@ ADXVector3 ADXCollider::CollideVector(ADXCollider col)
 		ret = myPushBack1;
 	}
 
-	if (ret.dot(targetTranslation - myTranslation) > 0)
+	if (ret.Dot(targetTranslation - myTranslation) > 0)
 	{
 		ret = -ret;
 	}
@@ -259,21 +306,20 @@ ADXVector3 ADXCollider::CollideVector(ADXCollider col)
 }
 
 //相手のコライダーと重なっているか
-bool ADXCollider::IsHit(ADXCollider& col)
+bool ADXCollider::IsHit(const ADXCollider& col)
 {
-	if (!Object3d::IsValid(gameObject) || !Object3d::IsValid(col.gameObject))return false;
-	ADXVector3 closestVec1 = col.ClosestPoint(ClosestPoint(ADXMatrix4::transform(col.pos_, ADXMatrix4::ConvertToADXMatrix(col.gameObject->matWorld_.matWorld_))));
-	ADXVector3 closestVec2 = ClosestPoint(col.ClosestPoint(ClosestPoint(ADXMatrix4::transform(col.pos_, ADXMatrix4::ConvertToADXMatrix(col.gameObject->matWorld_.matWorld_)))));
-	float colPointDiff = (closestVec1 - closestVec2).length();
-	if ((closestVec1 - closestVec2).length() <= 0)
+	ADXVector3 closestVec1 = col.ClosestPoint(ClosestPoint(ADXMatrix4::transform(col.pos_, col.gameObject->transform.GetMatWorld())));
+	ADXVector3 closestVec2 = ClosestPoint(col.ClosestPoint(ClosestPoint(ADXMatrix4::transform(col.pos_, col.gameObject->transform.GetMatWorld()))));
+	float colPointDiff = (closestVec1 - closestVec2).Length();
+	if ((closestVec1 - closestVec2).Length() <= 0)
 	{
 		return true;
 	}
 
-	closestVec1 = ClosestPoint(col.ClosestPoint(ADXMatrix4::transform(pos_, ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld_.matWorld_))));
-	closestVec2 = col.ClosestPoint(ClosestPoint(col.ClosestPoint(ADXMatrix4::transform(pos_, ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld_.matWorld_)))));
-	colPointDiff = (closestVec1 - closestVec2).length();
-	if ((closestVec1 - closestVec2).length() <= 0)
+	closestVec1 = ClosestPoint(col.ClosestPoint(ADXMatrix4::transform(pos_, gameObject->transform.GetMatWorld())));
+	closestVec2 = col.ClosestPoint(ClosestPoint(col.ClosestPoint(ADXMatrix4::transform(pos_, gameObject->transform.GetMatWorld()))));
+	colPointDiff = (closestVec1 - closestVec2).Length();
+	if ((closestVec1 - closestVec2).Length() <= 0)
 	{
 		return true;
 	}
@@ -284,7 +330,7 @@ bool ADXCollider::IsHit(ADXCollider& col)
 //コライダー同士で押し合う（動かないコライダーにぶつかったら一方的に押される）
 void ADXCollider::Collide(ADXCollider* col)
 {
-	for (auto& itr : ignoreCollidePatterns)
+	for (auto& itr : S_ignoreCollidePatterns)
 	{
 		if ((itr.layer1 == collideLayer && itr.layer2 == col->collideLayer) ||
 			(itr.layer2 == collideLayer && itr.layer1 == col->collideLayer))
@@ -294,7 +340,7 @@ void ADXCollider::Collide(ADXCollider* col)
 	}
 
 	bool executePushBack = true;
-	for (auto& itr : ignorePushBackPatterns)
+	for (auto& itr : S_ignorePushBackPatterns)
 	{
 		if ((itr.layer1 == collideLayer && itr.layer2 == col->collideLayer) ||
 			(itr.layer2 == collideLayer && itr.layer1 == col->collideLayer))
@@ -302,223 +348,178 @@ void ADXCollider::Collide(ADXCollider* col)
 			executePushBack = false;
 		}
 	}
-	if (col->gameObject != nullptr && col->collideList.size() <= 1000000)
+
+	if (enabled && col->enabled && col->gameObject != gameObject && IsHit(*col))
 	{
-		if (IsHit(*col) && enabled && col->enabled && col->gameObject != gameObject)
+		if (executePushBack && !isTrigger && !col->isTrigger)
 		{
-			if (executePushBack && !isTrigger && !col->isTrigger)
+			ADXVector3 myPushBack = CollideVector(*col);
+			ADXVector3 targetPushBack = col->CollideVector(*this);
+
+			int32_t conditionState[4][3] = { {0,0,0},{1,1,1},{2,2,2},{3,1,2} };
+
+			int32_t pushableCondition = 0;
+			int32_t priorityCondition = 0;
+
+			if (pushable_ && col->pushable_)
 			{
-				ADXVector3 myPushBack = CollideVector(*col);
-				ADXVector3 targetPushBack = col->CollideVector(*this);
-
-				int conditionState[4][3] = { {0,0,0},{1,1,1},{2,2,2},{3,1,2} };
-
-				int pushableCondition = 0;
-				int priorityCondition = 0;
-
-				if (pushable_ && col->pushable_)
-				{
-					pushableCondition = 3;
-				}
-				else if (pushable_)
-				{
-					pushableCondition = 1;
-				}
-				else if (col->pushable_)
-				{
-					pushableCondition = 2;
-				}
-
-				if (pushBackPriority == col->pushBackPriority)
-				{
-					priorityCondition = 0;
-				}
-				else if (pushBackPriority < col->pushBackPriority)
-				{
-					priorityCondition = 1;
-				}
-				else if (pushBackPriority > col->pushBackPriority)
-				{
-					priorityCondition = 2;
-				}
-
-				int ConditionStateResult = conditionState[pushableCondition][priorityCondition];
-
-				switch (ConditionStateResult)
-				{
-				case 1:
-					pushBackVector += myPushBack;
-					break;
-				case 2:
-					col->pushBackVector += targetPushBack;
-					break;
-				case 3:
-					pushBackVector += myPushBack * 0.5f;
-					col->pushBackVector += targetPushBack * 0.5f;
-					break;
-				default:
-					break;
-				}
+				pushableCondition = 3;
+			}
+			else if (pushable_)
+			{
+				pushableCondition = 1;
+			}
+			else if (col->pushable_)
+			{
+				pushableCondition = 2;
 			}
 
-			collideList.push_back(col);
-			col->collideList.push_back(this);
+			if (pushBackPriority == col->pushBackPriority)
+			{
+				priorityCondition = 0;
+			}
+			else if (pushBackPriority < col->pushBackPriority)
+			{
+				priorityCondition = 1;
+			}
+			else if (pushBackPriority > col->pushBackPriority)
+			{
+				priorityCondition = 2;
+			}
 
-			gameObject->OnColliderHit(this, col);
-			col->gameObject->OnColliderHit(col, this);
+			int32_t ConditionStateResult = conditionState[pushableCondition][priorityCondition];
+
+			switch (ConditionStateResult)
+			{
+			case 1:
+				pushBackVector += myPushBack;
+				break;
+			case 2:
+				col->pushBackVector += targetPushBack;
+				break;
+			case 3:
+				pushBackVector += myPushBack * 0.5f;
+				col->pushBackVector += targetPushBack * 0.5f;
+				break;
+			default:
+				break;
+			}
 		}
+
+		collideList.push_back(col);
+		col->collideList.push_back(this);
 	}
 }
 
 //先のCollidersUpdateで別のコライダーにぶつかっていたらオブジェクトを押し戻す
 void ADXCollider::SendPushBack()
 {
-	if(gameObject != nullptr)
+	if (pushable_)
 	{
-		DirectX::XMFLOAT3 tempPos = gameObject->position_;
-		gameObject->position_.x += pushBackVector.x;
-		gameObject->position_.y += pushBackVector.y;
-		gameObject->position_.z += pushBackVector.z;
-
-		if (!isfinite(gameObject->position_.x))
-		{
-			gameObject->position_.x = tempPos.x;
-		}
-
-		if (!isfinite(gameObject->position_.y))
-		{
-			gameObject->position_.y = tempPos.y;
-		}
-
-		if (!isfinite(gameObject->position_.z))
-		{
-			gameObject->position_.z = tempPos.z;
-		}
-
-		gameObject->Update();
-		preTranslation.x = gameObject->position_.x;
-		preTranslation.y = gameObject->position_.y;
-		preTranslation.z = gameObject->position_.z;
-		preMatrix = ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld_.matWorld_);
-		pushBackVector = { 0,0,0 };
+		gameObject->transform.localPosition_ += pushBackVector;
+		gameObject->transform.UpdateMatrix();
 	}
+	preTranslation = gameObject->transform.localPosition_;
+	preMatrix = gameObject->transform.GetMatWorld();
+	preMatrixInverse = gameObject->transform.GetMatWorldInverse();
+	pushBackVector = { 0,0,0 };
 }
 
 //全てのコライダーで接触判定と押し戻しベクトルの算出を行う
 //ゲーム内の全てのコライダーが入った配列を入れて使う
-void ADXCollider::CollidersUpdate()
+void ADXCollider::StaticUpdate()
 {
-	for (int i = 0; i < allColPtr.size(); i++)
+	//現在の座標を保存しておく
+	std::vector<ADXVector3> objsTranslation = {};
+	for (int32_t i = 0; i < Object3d::GetObjs().size(); i++)
 	{
-		if (allColPtr[i]->collideList.size() <= 0)continue;
-		allColPtr[i]->collideList.clear();
+		objsTranslation.push_back(Object3d::GetObjs()[i]->transform.localPosition_);
 	}
 
-	if (translateDivine)
+	//すべてのコライダーで移動距離÷(最小絶対半径×0.95)を求め、最も大きい値をtranslateDivNumFに入れる
+	float translateDivNumF = 1;
+	for (auto& colItr : S_cols)
 	{
-		//現在の座標を保存しておく
-		std::vector<ADXVector3> objsTranslation = {};
-		for (auto& itr : Object3d::GetAllObjs())
+		//ついでにcollideListもこのタイミングでリセット
+		colItr->collideList.clear();
+
+
+		ADXVector3 move = colItr->gameObject->transform.localPosition_ - colItr->preTranslation;
+
+		ADXVector3 scaleX1 = { colItr->scale_.x,0,0 };
+		ADXVector3 scaleY1 = { 0,colItr->scale_.y,0 };
+		ADXVector3 scaleZ1 = { 0,0,colItr->scale_.z };
+
+		ADXMatrix4 WorldScalingMat = colItr->gameObject->transform.GetMatScale();
+		WorldScalingMat *= colItr->gameObject->transform.GetMatRot();
+
+		float worldScaleX1 = ADXMatrix4::transform(scaleX1, WorldScalingMat).Length();
+		float worldScaleY1 = ADXMatrix4::transform(scaleY1, WorldScalingMat).Length();
+		float worldScaleZ1 = ADXMatrix4::transform(scaleZ1, WorldScalingMat).Length();
+
+		float minimumWorldRadius1 = 1;
+
+		if (worldScaleX1 < worldScaleY1 && worldScaleX1 < worldScaleZ1 && worldScaleX1 > 0)
 		{
-			objsTranslation.push_back({ itr->position_.x,itr->position_.y,itr->position_.z });
+			minimumWorldRadius1 = worldScaleX1;
+		}
+		else if (worldScaleY1 < worldScaleZ1 && worldScaleY1 > 0)
+		{
+			minimumWorldRadius1 = worldScaleY1;
+		}
+		else if (worldScaleZ1 > 0)
+		{
+			minimumWorldRadius1 = worldScaleZ1;
 		}
 
-		//すべてのコライダーで移動距離÷(最小絶対半径×0.95)を求め、最も大きい値をtranslateDivNumFに入れる
-		float translateDivNumF = 1;
-		for (int i = 0; i < allColPtr.size(); i++)
+		float moveDivnum1 = move.Length() / (minimumWorldRadius1 * 0.95f);
+		if (moveDivnum1 >= translateDivNumF)
 		{
-			ADXVector3 move;
-			move.x = allColPtr[i]->gameObject->position_.x - allColPtr[i]->preTranslation.x;
-			move.y = allColPtr[i]->gameObject->position_.y - allColPtr[i]->preTranslation.y;
-			move.z = allColPtr[i]->gameObject->position_.z - allColPtr[i]->preTranslation.z;
-
-			ADXVector3 scaleX1 = { allColPtr[i]->scale_.x,0,0 };
-			ADXVector3 scaleY1 = { 0,allColPtr[i]->scale_.y,0 };
-			ADXVector3 scaleZ1 = { 0,0,allColPtr[i]->scale_.z };
-
-			float worldScaleX1 = ADXMatrix4::transform(scaleX1, ADXMatrix4::ConvertToADXMatrix(allColPtr[i]->gameObject->matWorld_.matScale_ * allColPtr[i]->gameObject->matWorld_.matRot_)).length();
-			float worldScaleY1 = ADXMatrix4::transform(scaleY1, ADXMatrix4::ConvertToADXMatrix(allColPtr[i]->gameObject->matWorld_.matScale_ * allColPtr[i]->gameObject->matWorld_.matRot_)).length();
-			float worldScaleZ1 = ADXMatrix4::transform(scaleZ1, ADXMatrix4::ConvertToADXMatrix(allColPtr[i]->gameObject->matWorld_.matScale_ * allColPtr[i]->gameObject->matWorld_.matRot_)).length();
-
-			float minimumWorldRadius1 = 1;
-
-			if (worldScaleX1 < worldScaleY1 && worldScaleX1 < worldScaleZ1 && worldScaleX1 > 0)
-			{
-				minimumWorldRadius1 = worldScaleX1;
-			}
-			else if (worldScaleY1 < worldScaleZ1 && worldScaleY1 > 0)
-			{
-				minimumWorldRadius1 = worldScaleY1;
-			}
-			else if (worldScaleZ1 > 0)
-			{
-				minimumWorldRadius1 = worldScaleZ1;
-			}
-
-			float moveDivnum1 = move.length() / (minimumWorldRadius1 * 0.95);
-			if (moveDivnum1 >= translateDivNumF)
-			{
-				translateDivNumF = moveDivnum1;
-			}
+			translateDivNumF = moveDivnum1;
 		}
-		translateDivNumF = ceilf(translateDivNumF);
+	}
+	translateDivNumF = ceilf(translateDivNumF);
 
-		//全てのオブジェクトを移動する前の座標へ移動させる
-		for (int i = 0; i < allColPtr.size(); i++)
+	//全てのオブジェクトを移動する前の座標へ移動させる
+	for (auto& colItr : S_cols)
+	{
+		colItr->gameObject->transform.localPosition_ = colItr->preTranslation;
+	}
+
+	//行列更新のついでに移動する前の座標を保存
+	std::vector<ADXVector3> objsPreTranslation = {};
+	for (auto& objItr : Object3d::GetObjs())
+	{
+		objsPreTranslation.push_back(objItr->transform.localPosition_);
+		objItr->transform.UpdateMatrix();
+	}
+
+	//少しづつ移動させながら当たり判定と押し戻し処理を行う
+	for (int32_t i = 0; i < translateDivNumF; i++)
+	{
+		//移動
+		for (int32_t j = 0; j < Object3d::GetObjs().size(); j++)
 		{
-			allColPtr[i]->gameObject->position_.x = allColPtr[i]->preTranslation.x;
-			allColPtr[i]->gameObject->position_.y = allColPtr[i]->preTranslation.y;
-			allColPtr[i]->gameObject->position_.z = allColPtr[i]->preTranslation.z;
+			ADXVector3 move = objsTranslation[j] - objsPreTranslation[j];
+
+			Object3d::GetObjs()[j]->transform.localPosition_ += move / translateDivNumF;
+			Object3d::GetObjs()[j]->transform.UpdateMatrix();
 		}
 
-		//行列更新のついでに移動する前の座標を保存
-		std::vector<ADXVector3> objsPreTranslation = {};
-		for (auto& itr : Object3d::GetAllObjs())
+		//当たり判定と押し戻しベクトルの算出
+		for (auto& colItr1 : S_cols)
 		{
-			itr->Update();
-		}
-
-		//少しづつ移動させながら当たり判定と押し戻し処理を行う
-		for (int i = 0; i < translateDivNumF; i++)
-		{
-			//移動
-			int j = 0;
-			for (auto& itr : Object3d::GetAllObjs())
+			for (auto& colItr2 : S_cols)
 			{
-				ADXVector3 move = objsTranslation[j] - objsPreTranslation[j];
-
-				itr->position_.x += move.x / translateDivNumF;
-				itr->position_.y += move.y / translateDivNumF;
-				itr->position_.z += move.z / translateDivNumF;
-				itr->Update();
-				j++;
-			}
-
-			//当たり判定と押し戻しベクトルの算出
-			for (int j = 0; j < allColPtr.size(); j++)
-			{
-				for (int k = j + 1; k < allColPtr.size(); k++)
+				if (&colItr1 != &colItr2)
 				{
-					allColPtr[j]->Collide(allColPtr[k]);
-					allColPtr[j]->SendPushBack();
-					allColPtr[k]->SendPushBack();
+					colItr1->Collide(colItr2);
+					colItr1->SendPushBack();
+					colItr2->SendPushBack();
 				}
 			}
 		}
 	}
-	else
-	{
-		//当たり判定と押し戻しベクトルの算出
-		for (int i = 0; i < allColPtr.size(); i++)
-		{
-			for (int j = i + 1; j < allColPtr.size(); j++)
-			{
-				allColPtr[i]->Collide(allColPtr[j]);
-				allColPtr[i]->SendPushBack();
-				allColPtr[j]->SendPushBack();
-			}
-		}
-	}
 
-	allColPtr.clear();
+	S_cols.clear();
 }

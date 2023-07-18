@@ -16,61 +16,65 @@ enum colType
 {
     box,
     sphere,
+    plain,
+    quad,
 };
 
 struct collidePattern
 {
-    int layer1;
-    int layer2;
+    int32_t layer1;
+    int32_t layer2;
 };
 
 class ADXCollider
 {
 private:
-    static std::vector<ADXCollider*> allColPtr;
+    static std::list<ADXCollider*> S_cols;
 
 public:
-    static void CollidersUpdate();
-
-protected:
-    ADXVector3 EdgeLocalPoint(ADXVector3 pos);
-    ADXVector3 EdgeLocalPoint(ADXVector3 pos, ADXVector3 prePos);
+    static void StaticUpdate();
 
 public:
     bool enabled = true;
     bool isTrigger = false;
     bool pushable_ = false;
     colType colType_ = sphere;
-    Object3d* gameObject = nullptr;
     float radius_ = 1;
     ADXVector3 pos_ = { 0,0,0 };
     ADXVector3 scale_ = { 1,1,1 };
-    std::vector<ADXCollider*> collideList{};
-    ADXVector3 pushBackVector = { 0,0,0 };
     float pushBackPriority = 0;
-    int collideLayer = 0;
-
-    ADXCollider(Object3d* obj);
-    void Initialize(Object3d* obj);
-    void Update(Object3d* obj);
-    ADXVector3 ClosestPoint(ADXVector3 pos);
-    ADXVector3 EdgePoint(ADXVector3 pos);
-    ADXVector3 EdgePoint(ADXVector3 pos, ADXVector3 prePos);
-    ADXVector3 CollidePoint(ADXVector3 pos, ADXVector3 colSenter, ADXVector3 move);
-    ADXVector3 CollideVector(ADXCollider col);
-
-    bool IsHit(ADXCollider& col);
-    
-
-    void SendPushBack();
-    void Collide(ADXCollider* col);
+    int32_t collideLayer = 0;
 
 private:
     ADXVector3 preTranslation;
     ADXMatrix4 preMatrix;
+    ADXMatrix4 preMatrixInverse;
+    std::list<ADXCollider*> collideList{};
+    ADXVector3 pushBackVector = { 0,0,0 };
+    Object3d* gameObject = nullptr;
+
+public:
+    ADXCollider(Object3d* obj);
+    ADXVector3 ClosestPoint(const ADXVector3& pos) const;
+    ADXVector3 EdgePoint(const ADXVector3& pos);
+    ADXVector3 EdgePoint(const ADXVector3& pos, const ADXVector3& prePos);
+    ADXVector3 CollidePoint(const ADXVector3& pos, const ADXVector3& colSenter, const ADXVector3& move) const;
+    ADXVector3 CollideVector(const ADXCollider& col);
+    bool IsHit(const ADXCollider& col);
+    void SendPushBack();
+    void Collide(ADXCollider* col);
+
+    std::list<ADXCollider*> GetCollideList() { return collideList; };
+
+protected:
+    ADXVector3 EdgeLocalPoint(const ADXVector3& pos) const;
+    ADXVector3 EdgeLocalPoint(const ADXVector3& pos, const ADXVector3& prePos) const;
 
 private:
-    static bool translateDivine;
-    static std::vector<collidePattern> ignoreCollidePatterns;
-    static std::vector<collidePattern> ignorePushBackPatterns;
+    void UniqueInitialize();
+    void UniqueUpdate();
+
+private:
+    static std::vector<collidePattern> S_ignoreCollidePatterns;
+    static std::vector<collidePattern> S_ignorePushBackPatterns;
 };

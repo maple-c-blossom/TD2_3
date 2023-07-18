@@ -1,8 +1,7 @@
 #pragma once
 
 #include <DirectXMath.h>
-
-using namespace DirectX;
+#include "Vector3D.h"
 
 class ADXVector3
 {
@@ -15,13 +14,12 @@ public:
 	ADXVector3();
 	ADXVector3(float x, float y, float z);
 
-	XMFLOAT3 ConvertToXMFloat3();
+	DirectX::XMFLOAT3 ConvertToXMFloat3();
 
-	float length() const;
-	ADXVector3& normalize();
-	static ADXVector3 normalized(const ADXVector3& v);
-	float dot(const ADXVector3& v) const;
-	ADXVector3 cross(const ADXVector3& v) const;
+	float Length() const;
+	ADXVector3 Normalize() const;
+	float Dot(const ADXVector3& v) const;
+	ADXVector3 Cross(const ADXVector3& v) const;
 
 	ADXVector3 operator+() const;
 	ADXVector3 operator-() const;
@@ -34,7 +32,8 @@ public:
 	bool operator==(const ADXVector3& v) const;
 
 public:
-	static ADXVector3 ConvertToADXVector3(XMFLOAT3 xf3);
+	static ADXVector3 ConvertToADXVector3(DirectX::XMFLOAT3 xf3);
+	static ADXVector3 ConvertToADXVector3(Vector3D v);
 };
 
 const ADXVector3 operator+(const ADXVector3& v1, const ADXVector3& v2);
