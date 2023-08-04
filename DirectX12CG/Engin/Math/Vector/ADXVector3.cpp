@@ -2,6 +2,7 @@
 #include <cmath>
 
 using namespace DirectX;
+using namespace MCB;
 
 ADXVector3::ADXVector3()
 {
@@ -34,7 +35,7 @@ ADXVector3 ADXVector3::ConvertToADXVector3(XMFLOAT3 xf3)
 ADXVector3 ADXVector3::ConvertToADXVector3(Vector3D v)
 {
 	ADXVector3 ret;
-	ret = { v.x,v.y,v.z };
+	ret = { v.vec_.x_,v.vec_.y_,v.vec_.z_ };
 	return ret;
 }
 

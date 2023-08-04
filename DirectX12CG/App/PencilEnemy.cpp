@@ -96,20 +96,20 @@ void PencilEnemy::UniqueUpdate(bool movelimit)
 			Vartical.y_ = MCB::Lerp(40, 80, temp.x_);
 			if (movePoint[movePointIndex].vec_.x_ < -50)
 			{
-				movePoint[movePointIndex].vec_.x_ = PrevmovePoint.vec_.x;
+				movePoint[movePointIndex].vec_.x_ = PrevmovePoint.vec_.x_;
 			}
 			if (movePoint[movePointIndex].vec_.x_ > 50)
 			{
-				movePoint[movePointIndex].vec_.x_ = PrevmovePoint.vec_.x;
+				movePoint[movePointIndex].vec_.x_ = PrevmovePoint.vec_.x_;
 			}
 
 			if (movePoint[movePointIndex].vec_.z_ < -40)
 			{
-				movePoint[movePointIndex].vec_.z_ = PrevmovePoint.vec_.z;
+				movePoint[movePointIndex].vec_.z_ = PrevmovePoint.vec_.z_;
 			}
 			if (movePoint[movePointIndex].vec_.z_ > 40)
 			{
-				movePoint[movePointIndex].vec_.z_ = PrevmovePoint.vec_.z;
+				movePoint[movePointIndex].vec_.z_ = PrevmovePoint.vec_.z_;
 			}
 			velocity = Vector3D::normal(movePoint[movePointIndex] - positionVec);
 

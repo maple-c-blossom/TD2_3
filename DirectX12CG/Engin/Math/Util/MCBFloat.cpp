@@ -39,6 +39,17 @@ MCB::Float3 MCB::operator-(MCB::Float3& a, MCB::Float3& b)
 	return temp;
 }
 
+bool MCB::Float2::operator==(const MCB::Float2& a)
+{
+	return (x_ == a.x_ && y_ == a.y_);
+}
+
+bool MCB::Float2::operator!=(const MCB::Float2& a)
+{
+	return !(x_ == a.x_ && y_ == a.y_);
+}
+
+
 MCB::Float4::Float4()
 {
 	x_ = 0;

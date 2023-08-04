@@ -431,9 +431,9 @@ void ADXCollider::StaticUpdate()
 {
 	//現在の座標を保存しておく
 	std::vector<ADXVector3> objsTranslation = {};
-	for (int32_t i = 0; i < Object3d::GetObjs().size(); i++)
+	for (int32_t i = 0; i < Object3d::GetAllObjs().size(); i++)
 	{
-		objsTranslation.push_back(Object3d::GetObjs()[i]->transform.localPosition_);
+		objsTranslation.push_back(Object3d::GetAllObjs()[i]->transform.localPosition_);
 	}
 
 	//すべてのコライダーで移動距離÷(最小絶対半径×0.95)を求め、最も大きい値をtranslateDivNumFに入れる
@@ -488,7 +488,7 @@ void ADXCollider::StaticUpdate()
 
 	//行列更新のついでに移動する前の座標を保存
 	std::vector<ADXVector3> objsPreTranslation = {};
-	for (auto& objItr : Object3d::GetObjs())
+	for (auto& objItr : Object3d::GetAllObjs())
 	{
 		objsPreTranslation.push_back(objItr->transform.localPosition_);
 		objItr->transform.UpdateMatrix();
@@ -498,12 +498,12 @@ void ADXCollider::StaticUpdate()
 	for (int32_t i = 0; i < translateDivNumF; i++)
 	{
 		//移動
-		for (int32_t j = 0; j < Object3d::GetObjs().size(); j++)
+		for (int32_t j = 0; j < Object3d::GetAllObjs().size(); j++)
 		{
 			ADXVector3 move = objsTranslation[j] - objsPreTranslation[j];
 
-			Object3d::GetObjs()[j]->transform.localPosition_ += move / translateDivNumF;
-			Object3d::GetObjs()[j]->transform.UpdateMatrix();
+			Object3d::GetAllObjs()[j]->transform.localPosition_ += move / translateDivNumF;
+			Object3d::GetAllObjs()[j]->transform.UpdateMatrix();
 		}
 
 		//当たり判定と押し戻しベクトルの算出

@@ -21,7 +21,7 @@ public:
 	float Dot(const ADXVector3& v) const;
 	ADXVector3 Cross(const ADXVector3& v) const;
 
-	Vector3D ConvertToVector3D();
+	MCB::Vector3D ConvertToVector3D();
 
 	ADXVector3 operator+() const;
 	ADXVector3 operator-() const;
@@ -35,7 +35,7 @@ public:
 
 public:
 	static ADXVector3 ConvertToADXVector3(DirectX::XMFLOAT3 xf3);
-	static ADXVector3 ConvertToADXVector3(Vector3D v);
+	static ADXVector3 ConvertToADXVector3(MCB::Vector3D v);
 };
 
 const ADXVector3 operator+(const ADXVector3& v1, const ADXVector3& v2);

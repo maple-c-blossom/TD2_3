@@ -177,6 +177,14 @@ Vector3D& MCB::Vector3D::operator=(const DirectX::XMVECTOR& a)
 	return *this;
 }
 
+Vector3D& MCB::Vector3D::operator=(const DirectX::XMFLOAT3& a)
+{
+	vec_.x_ = a.x;
+	vec_.y_ = a.y;
+	vec_.z_ = a.z;
+	return *this;
+}
+
 Vector3D MCB::operator+(const Vector3D& vecA, const Vector3D& vecB)
 {
 	Vector3D temp;

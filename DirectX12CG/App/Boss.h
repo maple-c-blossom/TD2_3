@@ -29,6 +29,8 @@ private:
 	float speed;
 	MCB::Vector3D velocity;
 	Quaternion q;
+	Quaternion quaternion;
+	Quaternion* quaternionPtr;
 	bool attack = false;
 	bool beforeAttack = false;
 	bool afterAttack = false;

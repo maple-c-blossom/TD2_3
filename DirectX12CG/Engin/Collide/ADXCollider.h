@@ -44,6 +44,7 @@ public:
     ADXVector3 scale_ = { 1,1,1 };
     float pushBackPriority = 0;
     int32_t collideLayer = 0;
+    Object3d* gameObject = nullptr;
 
 private:
     ADXVector3 preTranslation;
@@ -51,7 +52,6 @@ private:
     ADXMatrix4 preMatrixInverse;
     std::list<ADXCollider*> collideList{};
     ADXVector3 pushBackVector = { 0,0,0 };
-    Object3d* gameObject = nullptr;
 
 public:
     ADXCollider(Object3d* obj);
