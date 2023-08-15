@@ -11,7 +11,7 @@ void KneadedEraser::UniqueUpdate()
 
 	for (auto& colItr : colliders)
 	{
-		for (auto& colListItr : colItr.collideList)
+		for (auto& colListItr : colItr.GetCollideList())
 		{
 			if (!colListItr->pushable_ && !colListItr->isTrigger && colListItr->collideLayer != 3)
 			{

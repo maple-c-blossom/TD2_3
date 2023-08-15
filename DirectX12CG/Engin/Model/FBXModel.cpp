@@ -148,7 +148,7 @@ void MCB::AnimationMesh::Init()
 //        normal.V3Norm();
 //        for (uint16_t index : v)
 //        {
-//            vertices[index].normal = { normal.vec.x, normal.vec.y, normal.vec.z };
+//            vertices[index].normal = { normal.vec_.x_, normal.vec_.y_, normal.vec_.z_ };
 //        }
 //    }
 //}

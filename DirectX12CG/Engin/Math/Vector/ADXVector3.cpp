@@ -31,10 +31,10 @@ ADXVector3 ADXVector3::ConvertToADXVector3(XMFLOAT3 xf3)
 	return ret;
 }
 
-ADXVector3 ADXVector3::ConvertToADXVector3(Vector3D v)
+ADXVector3 ADXVector3::ConvertToADXVector3(MCB::Vector3D v)
 {
 	ADXVector3 ret;
-	ret = { v.x,v.y,v.z };
+	ret = { v.vec_.x_,v.vec_.y_,v.vec_.z_ };
 	return ret;
 }
 
@@ -64,9 +64,9 @@ ADXVector3 ADXVector3::Cross(const ADXVector3& v) const
 	return ADXVector3(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
 }
 
-Vector3D ADXVector3::ConvertToVector3D()
+MCB::Vector3D ADXVector3::ConvertToVector3D()
 {
-	Vector3D ret;
+	MCB::Vector3D ret;
 	ret = { x,y,z };
 	return ret;
 }

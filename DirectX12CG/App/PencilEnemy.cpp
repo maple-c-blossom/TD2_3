@@ -96,20 +96,20 @@ void PencilEnemy::UniqueUpdate(bool movelimit)
 			Vartical.y_ = MCB::Lerp(40, 80, temp.x_);
 			if (movePoint[movePointIndex].vec_.x_ < -50)
 			{
-				movePoint[movePointIndex].vec_.x_ = PrevmovePoint.vec_.x;
+				movePoint[movePointIndex].vec_.x_ = PrevmovePoint.vec_.x_;
 			}
 			if (movePoint[movePointIndex].vec_.x_ > 50)
 			{
-				movePoint[movePointIndex].vec_.x_ = PrevmovePoint.vec_.x;
+				movePoint[movePointIndex].vec_.x_ = PrevmovePoint.vec_.x_;
 			}
 
 			if (movePoint[movePointIndex].vec_.z_ < -40)
 			{
-				movePoint[movePointIndex].vec_.z_ = PrevmovePoint.vec_.z;
+				movePoint[movePointIndex].vec_.z_ = PrevmovePoint.vec_.z_;
 			}
 			if (movePoint[movePointIndex].vec_.z_ > 40)
 			{
-				movePoint[movePointIndex].vec_.z_ = PrevmovePoint.vec_.z;
+				movePoint[movePointIndex].vec_.z_ = PrevmovePoint.vec_.z_;
 			}
 			velocity = Vector3D::normal(movePoint[movePointIndex] - positionVec);
 
@@ -226,7 +226,7 @@ void PencilEnemy::AttackCheck()
 				attackVec = attackVec.V3Get(position_, Player::GetPlayer()->position_);
 				attackVec.V3Norm();
 
-				//attackObj.position_ = { position_.x + vec_.vec_.x * 2,position_.y + vec_.vec_.y * 2,position_.z + vec_.vec_.z * 2 };
+				//attackObj.position_ = { position_.x + vec_.vec_.x_ * 2,position_.y + vec_.vec_.y_ * 2,position_.z + vec_.vec_.z_ * 2 };
 			}
 		}
 		num++;

@@ -44,9 +44,9 @@ namespace MCB
         Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTranceform_ = nullptr;
         Microsoft::WRL::ComPtr<ID3D12Resource> constBuffSkin_ = nullptr;
         //行列用定数バッファマップ
-        ConstBufferDataTransform* constMapTranceform_ = nullptr;
         ConstBuffSkin* constMapSkin_ = nullptr;
     public:
+        ConstBufferDataTransform* constMapTranceform_ = nullptr;
         std::string nameId_;
         std::string currentAnimation_ = "Null";
         static LightGroup* slights_;
@@ -67,6 +67,10 @@ namespace MCB
         AnimationModel* animationModel_ = nullptr;
         bool hited_ = false;
         bool isInvisible = false;
+
+        Quaternion quaternion;
+        Quaternion* quaternionPtr;
+
         Object3d();
 
         virtual ~Object3d();
@@ -106,7 +110,7 @@ namespace MCB
        ID3D12Resource* GetConstBuffTrans() { return constBuffTranceform_.Get(); };
        std::string GetName() { return name_; };
         //void CreateModel(const char* fileName);
-
+       void UpdateData();
 
        static void StaticUpdate();
 

@@ -211,9 +211,9 @@ void MCB::Scene::ParticleInit()
     //testParticle.rotation.x = ConvertRadius(-90);
 }
 
-IScene* MCB::Scene::GetNextScene()
+std::unique_ptr<IScene> MCB::Scene::GetNextScene()
 {
-    return new TitleScene(rootparamsPtr_,depth_,pipeline_);
+    return std::move(make_unique<TitleScene>(rootparamsPtr_,depth_,pipeline_));
 }
 
 #pragma endregion 各種リソースの読み込みと初期化
@@ -325,7 +325,7 @@ void MCB::Scene::Update()
         resultSize = sinf(ConvertRadius((float)resultSizeTimer.NowTime() >= 180 ? resultSizeTimer.NowTime()  * -1: resultSizeTimer.NowTime())) * 0.25f + 0.75f;
         resultSizeTimer.SafeUpdate();
         resultSizeTimer.ReSet();
-        if (mainCamera.isok_)
+        if (mainCamera.isok)
         {
             if (input_->IsKeyTrigger(DIK_SPACE) || input_->gamePad_->IsButtonTrigger(GAMEPAD_A))
             {

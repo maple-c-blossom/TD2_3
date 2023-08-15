@@ -55,3 +55,12 @@ MCB::Float4::Float4(float x, float y, float z, float w)
 	w_ = w;
 }
 
+bool MCB::Float2::operator==(const Float2& a)
+{
+	return this->x_ == a.x_ && this->y_ == a.y_;
+}
+
+bool MCB::Float2::operator!=(const Float2& a)
+{
+	return this->x_ != a.x_ || this->y_ != a.y_;
+}

@@ -19,6 +19,9 @@ namespace MCB
 	float Abs(float num);
 	double Abs(double num);
 	float ConvertRadius(float angle);
+	float clamp(float f);
+
+	float clamp(float f, float min, float max);
 
 	static void InitRand() {
 		srand((unsigned int)time(nullptr));

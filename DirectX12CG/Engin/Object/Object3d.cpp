@@ -94,6 +94,24 @@ void MCB::Object3d::UniqueUpdate()
     isInvisible = false;
 }
 
+
+void MCB::Object3d::UpdateData()
+{
+    if (IsValid(this))
+    {
+        deleteCountDown = 3;
+        allObjPtr.push_back(this);
+        for (auto& colItr : colliders)
+        {
+            colItr.Update(this);
+        }
+    }
+    else
+    {
+        deleteCountDown--;
+    }
+}
+
 void Object3d::Update(bool isBillBord)
 {
     UpdateMatrix(isBillBord);
@@ -146,7 +164,7 @@ void Object3d::Update(Quaternion q, bool isBillBord)
     constMapTranceform_->cameraPos.y_ = camera_->GetView()->eye_.y;
     constMapTranceform_->cameraPos.z_ = camera_->GetView()->eye_.z;
     constMapTranceform_->shaderNum = shaderNum_;
-    constMapTranceform_->color = color_;
+    constMapTranceform_->color_ = color_;
     if (collider_)collider_->Update();
 }
 
@@ -252,7 +270,7 @@ void MCB::Object3d::AnimationUpdate(bool isBillBord)
     constMapTranceform_->cameraPos.x_ = camera_->GetView()->eye_.x;
     constMapTranceform_->cameraPos.y_ = camera_->GetView()->eye_.y;
     constMapTranceform_->cameraPos.z_ = camera_->GetView()->eye_.z;
-    constMapTranceform_->color = color_;
+    constMapTranceform_->color_ = color_;
     constMapTranceform_->shaderNum = shaderNum_;
     if (collider_)collider_->Update();
     animeTime_ += animationSpeed_;
@@ -278,7 +296,7 @@ void MCB::Object3d::AnimationUpdate( Quaternion q, bool isBillBord)
     constMapTranceform_->cameraPos.y_ = camera_->GetView()->eye_.y;
     constMapTranceform_->cameraPos.z_ = camera_->GetView()->eye_.z;
     constMapTranceform_->shaderNum = shaderNum_;
-    constMapTranceform_->color = color_;
+    constMapTranceform_->color_ = color_;
     if (collider_)collider_->Update();
     animeTime_ += animationSpeed_;
 

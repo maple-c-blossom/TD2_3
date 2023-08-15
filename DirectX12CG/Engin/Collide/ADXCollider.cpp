@@ -26,11 +26,27 @@ ADXCollider::ADXCollider(Object3d* obj)
 	UniqueInitialize();
 }
 
+
+void ADXCollider::Initialize(Object3d* obj)
+{
+	gameObject = obj;
+	preTranslation.x = gameObject->position_.x;
+	preTranslation.y = gameObject->position_.y;
+	preTranslation.z = gameObject->position_.z;
+	preMatrix = ADXMatrix4::ConvertToADXMatrix(gameObject->matWorld_.matWorld_);
+}
+
+void ADXCollider::Update(Object3d* obj)
+{
+	gameObject = obj;
+	allColPtr.push_back(this);
+}
+
 void ADXCollider::UniqueInitialize()
 {
 	preTranslation = { gameObject->position_.x,gameObject->position_.y,gameObject->position_.z };
-	preMatrix = gameObject->transform.GetMatWorld();
-	preMatrixInverse = gameObject->transform.GetMatWorldInverse();
+	preMatrix = gameObject->matWorld_.GetMatWorld();
+	preMatrixInverse = gameObject->matWorld_.GetMatWorldInverse();
 }
 
 void ADXCollider::UniqueUpdate()
@@ -41,7 +57,7 @@ void ADXCollider::UniqueUpdate()
 //空間上の点をコライダーの中に収めた時の座標
 ADXVector3 ADXCollider::ClosestPoint(const ADXVector3& pos) const
 {
-	ADXVector3 ret = ADXMatrix4::transform(pos, gameObject->transform.GetMatWorldInverse());
+	ADXVector3 ret = ADXMatrix4::transform(pos, gameObject->matWorld_.GetMatWorldInverse());
 	ADXVector3 closPos = ret;
 
 	switch (colType_)

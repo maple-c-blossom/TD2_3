@@ -21,7 +21,7 @@ void EraserEnemy::UniqueUpdate(bool limitMove)
 		for (auto& itr : *WritingEnemy::GetHandWrite())
 		{
 			if (itr->generatorType == TypeName::Bonus || !Object3d::IsValid(&*itr)) continue;
-			MCB::Vector3D temp(position, itr->position);
+			MCB::Vector3D temp(position_, itr->position_);
 			float tempLen = temp.V3Len();
 			if (tempLen < tempNorm)
 			{
@@ -34,7 +34,7 @@ void EraserEnemy::UniqueUpdate(bool limitMove)
 		for (auto& itr : enemies)
 		{
 			if (itr->enemyType == Erase)continue;
-			MCB::Vector3D temp(position, itr->position);
+			MCB::Vector3D temp(position_, itr->position_);
 			float tempLen = temp.V3Len();
 			if (tempLen < tempNorm)
 			{
@@ -43,9 +43,9 @@ void EraserEnemy::UniqueUpdate(bool limitMove)
 				tempNorm = tempLen;
 			}
 		}
-		position.x += velocity.vec.x * speed;
-		position.y += velocity.vec.y * speed;
-		position.z += velocity.vec.z * speed;
+		position_.x += velocity.vec_.x_ * speed;
+		position_.y += velocity.vec_.y_ * speed;
+		position_.z += velocity.vec_.z_ * speed;
 		for (auto& itr : *WritingEnemy::GetHandWrite())
 		{
 			if (itr->generatorType == TypeName::Bonus) continue;
@@ -64,22 +64,22 @@ void EraserEnemy::UniqueUpdate(bool limitMove)
 			}
 		}
 	
-		if (position.x < -50)
+		if (position_.x < -50)
 		{
-			position.x = -50;
+			position_.x = -50;
 		}
-		if (position.x > 50)
+		if (position_.x > 50)
 		{
-			position.x = 50;
+			position_.x = 50;
 		}
 	
-		if (position.z < -40)
+		if (position_.z < -40)
 		{
-			position.z = -40;
+			position_.z = -40;
 		}
-		if (position.z > 40)
+		if (position_.z > 40)
 		{
-			position.z = 40;
+			position_.z = 40;
 		}
 	
 

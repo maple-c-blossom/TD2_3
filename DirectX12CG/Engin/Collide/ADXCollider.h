@@ -51,9 +51,9 @@ private:
     ADXMatrix4 preMatrixInverse;
     std::list<ADXCollider*> collideList{};
     ADXVector3 pushBackVector = { 0,0,0 };
-    Object3d* gameObject = nullptr;
 
 public:
+    Object3d* gameObject = nullptr;
     ADXCollider(Object3d* obj);
     ADXVector3 ClosestPoint(const ADXVector3& pos) const;
     ADXVector3 EdgePoint(const ADXVector3& pos);
@@ -63,7 +63,8 @@ public:
     bool IsHit(const ADXCollider& col);
     void SendPushBack();
     void Collide(ADXCollider* col);
-
+    void Initialize(Object3d* obj);
+    void Update(Object3d* obj);
     std::list<ADXCollider*> GetCollideList() { return collideList; };
 
 protected:

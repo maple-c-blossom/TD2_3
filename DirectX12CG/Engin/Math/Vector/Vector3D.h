@@ -12,6 +12,8 @@ namespace MCB
 		Vector3D(const Vector3D& start, const Vector3D& end);
 		Vector3D();
 		Vector3D(const Float3& vec);
+		Vector3D(const DirectX::XMFLOAT3& vec);
+		Vector3D(const DirectX::XMVECTOR& vec);
 		Vector3D(float x, float y, float z);
 		Vector3D(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end);
 
@@ -32,12 +34,14 @@ namespace MCB
 		Vector3D GetRightVec(Vector3D frontVec, Vector3D UpVec = { 0,1,0 });
 
 
-
+		static Vector3D normal(Vector3D v);
 		Vector3D& operator+=(const Vector3D& Vec);
 		Vector3D& operator-=(const Vector3D& Vec);
 		Vector3D& operator*=(float k);
+		Vector3D& operator/=(float k);
 		Vector3D& operator= (const Float3& a);
 		Vector3D& operator= (const DirectX::XMVECTOR& a);
+		Vector3D& operator= (const DirectX::XMFLOAT3& a);
 
 	};
 	Vector3D operator+(const Vector3D& vecA, const Vector3D& vecB);

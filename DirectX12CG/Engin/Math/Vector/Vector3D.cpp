@@ -1,7 +1,7 @@
 #include "Vector3D.h"
 #include <cmath>
 
-
+using namespace DirectX;
 using namespace MCB;
 MCB::Vector3D::Vector3D(const Float3& start, const Float3& end)
 {
@@ -39,6 +39,14 @@ MCB::Vector3D::Vector3D()
 MCB::Vector3D::Vector3D(const Float3& vec)
 {
 	vec_ = vec;
+}
+MCB::Vector3D::Vector3D(const XMFLOAT3& vec)
+{
+	*this = vec;
+}
+MCB::Vector3D::Vector3D(const DirectX::XMVECTOR& vec)
+{
+	*this = vec;
 }
 MCB::Vector3D::Vector3D(float x, float y, float z)
 {
@@ -137,6 +145,13 @@ float MCB::Vector3D::GetInnerProduct(Vector3D vector)
 	return acos(temp.GetV3Dot(vector));
 }
 
+Vector3D MCB::Vector3D::normal(Vector3D v)
+{
+	Vector3D ret = v;
+	ret.V3Norm();
+	return ret;
+}
+
 Vector3D& MCB::Vector3D::operator+=(const Vector3D& Vec)
 {
 	vec_.x_ += Vec.vec_.x_;
@@ -161,6 +176,12 @@ Vector3D& MCB::Vector3D::operator*=(float k)
 	return *this;
 }
 
+Vector3D& MCB::Vector3D::operator/=(float k)
+{
+	*this = *this / k;
+	return *this;
+}
+
 Vector3D& MCB::Vector3D::operator=(const Float3& a)
 {
 	vec_.x_ = a.x_;
@@ -174,6 +195,15 @@ Vector3D& MCB::Vector3D::operator=(const DirectX::XMVECTOR& a)
 	vec_.x_ = a.m128_f32[0];
 	vec_.y_ = a.m128_f32[1];
 	vec_.z_ = a.m128_f32[2];
+	return *this;
+}
+
+
+Vector3D& MCB::Vector3D::operator=(const DirectX::XMFLOAT3& a)
+{
+	vec_.x_ = a.x;
+	vec_.y_ = a.y;
+	vec_.z_ = a.z;
 	return *this;
 }
 

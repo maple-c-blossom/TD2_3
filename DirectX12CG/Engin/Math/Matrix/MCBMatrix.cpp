@@ -261,13 +261,13 @@ MCBMatrix MCBMatrix::Inverse() {
 //【ADXEngine由来】座標変換（ベクトルと行列の掛け算をする）
 Vector3D MCBMatrix::transform(const Vector3D& v, const MCBMatrix& m)
 {
-	float w = v.vec.x * m._14 + v.vec.y * m._24 + v.vec.z * m._34 + m._44;
+	float w = v.vec_.x_ * m._14 + v.vec_.y_ * m._24 + v.vec_.z_ * m._34 + m._44;
 
 	Vector3D result = 
 	{
-		(v.vec.x * m._11 + v.vec.y * m._21 + v.vec.z * m._31 + m._41) / w,
-		(v.vec.x * m._12 + v.vec.y * m._22 + v.vec.z * m._32 + m._42) / w,
-		(v.vec.x * m._13 + v.vec.y * m._23 + v.vec.z * m._33 + m._43) / w
+		(v.vec_.x_ * m._11 + v.vec_.y_ * m._21 + v.vec_.z_ * m._31 + m._41) / w,
+		(v.vec_.x_ * m._12 + v.vec_.y_ * m._22 + v.vec_.z_ * m._32 + m._42) / w,
+		(v.vec_.x_ * m._13 + v.vec_.y_ * m._23 + v.vec_.z_ * m._33 + m._43) / w
 	};
 
 	return result;

@@ -23,6 +23,8 @@ namespace MCB
 	public:
 		float x_;
 		float y_;
+		bool operator==(const Float2& a);
+		bool operator!=(const Float2& a);
 	};
 
 	class Float4

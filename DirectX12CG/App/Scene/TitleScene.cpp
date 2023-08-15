@@ -22,9 +22,9 @@ void MCB::TitleScene::ParticleInit()
 {
 }
 
-MCB::IScene* MCB::TitleScene::GetNextScene()
+std::unique_ptr<IScene> MCB::TitleScene::GetNextScene()
 {
-	return new Scene(rootparamsPtr_, depth_, pipeline_);
+    return std::move(make_unique<Scene>(rootparamsPtr_, depth_, pipeline_));
 }
 
 void MCB::TitleScene::MatrixUpdate()

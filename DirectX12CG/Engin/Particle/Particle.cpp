@@ -92,7 +92,7 @@ void Particle::Update(View& view, Projection& projection, bool isBillBord)
         matWorld_.matWorld_ *= parent_->matWorld_.matWorld_;
     }
 
-    //constMapTranceform->mat = matWorld.matWorld * view.mat * projection.mat;
+    //constMapTranceform->mat = matWorld.matWorld_ * view.mat * projection.mat;
     constMapTranceform_->world = matWorld_.matWorld_ * view.mat_;
     constMapTranceform_->viewproj = projection.mat_;
     constMapTranceform_->cameraPos.x_ = view.eye_.x;

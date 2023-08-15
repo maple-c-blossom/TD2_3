@@ -34,6 +34,16 @@ double MCB::InOutQuad(double startPos, double endPos, double maxTime, double tim
 	if (time < 1) return change / 2 * time * time + startPos;
 	return -change / 2 * ((--time) * (time - 2) - 1) + startPos;
 }
+
+float MCB::clamp(float f)
+{
+	return (f < 0.0f) ? 0.0f : ((f > 1.0f) ? 1.0f : f);
+}
+
+float MCB::clamp(float f, float min, float max)
+{
+	return (f < min) ? min : ((f > max) ? max : f);
+}
 double MCB::OutInRelayQuad(double startPos, double endPos, double relayPos, double maxTime, double relayTime, double time)
 {
 	if (time < relayTime)

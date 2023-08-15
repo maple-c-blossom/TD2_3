@@ -1,7 +1,11 @@
 #pragma once
 #include "ICamera.h"
 #include "Object3d.h"
+#include "Util.h"
+#include "Timer.h"
 
+class Player;
+class Boss;
 namespace MCB
 {
 	class Camera :public ICamera
@@ -10,38 +14,51 @@ namespace MCB
 		void Inilialize()override;
 		void Update()override;
 
-		void WorldPositionUpdate(const DirectX::XMMATRIX& playerMatrix,const DirectX::XMFLOAT3& playerPosition, bool isBillBord);
+		void WorldPositionUpdate(DirectX::XMMATRIX playerMatrix, DirectX::XMFLOAT3 playerPosition,bool isBillBord);
 
 		void WorldPositionInit();
 
-		DirectX::XMFLOAT3 Transform(const DirectX::XMFLOAT3& forward,const WorldMatrix& matworld);
+		DirectX::XMFLOAT3 Transform(DirectX::XMFLOAT3 forward, WorldMatrix matworld);
 
 		//ワールド変換行列
 		DirectX::XMMATRIX GetMadWorld();
 
 		//WorldMatrix GetMadWorld2();
-		void SetCameraTarget(Object3d* target);
+		Shake* GetShakePtr() { return &shakeX; }
 
+		Player* player = nullptr;
+		Boss* boss = nullptr;
+
+		bool isok = false;
+		Timer timer;
+
+		Timer isOktimer;
 	private:
 
 		std::unique_ptr<Object3d> object3d_ = std::make_unique<Object3d>();
 
 		//Object3d* object3d = nullptr;
-		Object3d* target_;
+		Shake shakeX;
+		Shake shakeY;
+		Shake shakeZ;
+		
+		Float3 distance = {0,30,-40};
 
- 
-		DirectX::XMFLOAT3 eyeStartPos_;
+		DirectX::XMFLOAT3 eyeStartPos;
+
+		DirectX::XMFLOAT3 eyeEaseStartPos;
+		DirectX::XMFLOAT3 targetEaseStartPos;
 
 		//プレイヤーのワールド変換行列
 		DirectX::XMMATRIX playerMatrix_;
 		 
 		//レールカメラの初期座標
-		DirectX::XMFLOAT3 firstPos_ = { 0,0,0 };
+		DirectX::XMFLOAT3 firstPos = { 0,0,0 };
 
+		//レールカメラの初期座標
+		DirectX::XMFLOAT3 angle = { 0,0,0 };
 
-		DirectX::XMFLOAT3 angle_ = { 0,0,0 };
-
-		MCB::Vector3D directVec_ = { 0,0,0 };
+		MCB::Vector3D directVec = { 0,0,0 };
 
 	};
 }
