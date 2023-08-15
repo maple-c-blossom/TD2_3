@@ -80,7 +80,7 @@ void Player::Update(bool flag)
 
 	trueMakingKneadedEraser = makingKneadedEraser && makingKneadedEraserAllow;
 
-	velocity = position_ - prevPos;
+	velocity = position_ - prevPos.ConvertXMFloat3();
 	prevPos = position_;
 
 	velocity /= 0.8f;

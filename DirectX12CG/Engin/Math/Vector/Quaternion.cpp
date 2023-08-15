@@ -171,25 +171,25 @@ MCBMatrix MCB::Quaternion::GetQuaternionRotaMat(const Quaternion& rotaQ)
 {
 	MCBMatrix mat;
 	mat.MCBMatrixIdentity();
-	mat._11 = 1 - (2 * (y_ * y_)) - (2 * (z_ * z_));
-	mat._12 = (2 * x_ * y_) + (2 * w_ * z_);
-	mat._13 = (2 * x_ * z_) - (2 * w_ * y_);
-	mat._14 = 0;
+	mat._11_ = 1 - (2 * (y_ * y_)) - (2 * (z_ * z_));
+	mat._12_ = (2 * x_ * y_) + (2 * w_ * z_);
+	mat._13_ = (2 * x_ * z_) - (2 * w_ * y_);
+	mat._14_ = 0;
 
-	mat._21 = (2 * x_ * y_) - (2 * w_ * z_);
-	mat._22 = 1 - (2 * (x_ * x_)) - (2 * (z_ * z_));
-	mat._23 = (2 * y_ * z_) + (2 * w_ * x_);
-	mat._24 = 0;
+	mat._21_ = (2 * x_ * y_) - (2 * w_ * z_);
+	mat._22_ = 1 - (2 * (x_ * x_)) - (2 * (z_ * z_));
+	mat._23_ = (2 * y_ * z_) + (2 * w_ * x_);
+	mat._24_ = 0;
 
-	mat._31 = (2 * x_ * z_) + (2 * w_ * y_);
-	mat._32 = (2 * y_ * z_) - (2 * w_ * x_);
-	mat._33 = 1 - (2 * (x_ * x_)) - (2 * (y_ * y_));
-	mat._34 = 0;
+	mat._31_ = (2 * x_ * z_) + (2 * w_ * y_);
+	mat._32_ = (2 * y_ * z_) - (2 * w_ * x_);
+	mat._33_ = 1 - (2 * (x_ * x_)) - (2 * (y_ * y_));
+	mat._34_ = 0;
 
-	mat._41 = 0;
-	mat._42 = 0;
-	mat._43 = 0;
-	mat._44 = 1;
+	mat._41_ = 0;
+	mat._42_ = 0;
+	mat._43_ = 0;
+	mat._44_ = 1;
 
 
 	return mat;

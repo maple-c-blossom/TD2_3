@@ -683,7 +683,7 @@ void MCB::PipelineRootSignature::CommonBeginDraw(int32_t toporogyType)
     case TRIANGLESTRIP:
         dx12->commandList_->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
         break;
-    case POINT:
+    case POINT_TPOROGY:
         dx12->commandList_->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
         break;
     default:

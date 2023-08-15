@@ -20,7 +20,7 @@ namespace MCB
 	{
 		TRIANGLESTRIP,
 		TRIANGLELIST,
-		POINT,
+		POINT_TPOROGY,
 	};
 	class PipelineRootSignature
 	{

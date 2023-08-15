@@ -44,6 +44,7 @@ public:
     ADXVector3 scale_ = { 1,1,1 };
     float pushBackPriority = 0;
     int32_t collideLayer = 0;
+    Object3d* gameObject = nullptr;
 
 private:
     ADXVector3 preTranslation;
@@ -53,7 +54,6 @@ private:
     ADXVector3 pushBackVector = { 0,0,0 };
 
 public:
-    Object3d* gameObject = nullptr;
     ADXCollider(Object3d* obj);
     ADXVector3 ClosestPoint(const ADXVector3& pos) const;
     ADXVector3 EdgePoint(const ADXVector3& pos);

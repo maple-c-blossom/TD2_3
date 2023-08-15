@@ -30,7 +30,7 @@ void MCB::PipeLineManager::SetSpritePipeLine(int32_t blend)
 void MCB::PipeLineManager::SetParticlePipeLine(int32_t blend)
 {
 	if (blend >= particlePipeline_.size())return;
-	particlePipeline_[blend].CommonBeginDraw(POINT);
+	particlePipeline_[blend].CommonBeginDraw(POINT_TPOROGY);
 }
 
 void MCB::PipeLineManager::SetPostEffectPipeLine(int32_t blend)

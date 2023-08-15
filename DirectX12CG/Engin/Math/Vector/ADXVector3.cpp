@@ -2,6 +2,7 @@
 #include <cmath>
 
 using namespace DirectX;
+using namespace MCB;
 
 ADXVector3::ADXVector3()
 {

@@ -8,10 +8,10 @@ namespace MCB
 	class MCBMatrix
 	{
 	public:
-		float _11; float _12; float _13; float _14;
-		float _21; float _22; float _23; float _24;
-		float _31; float _32; float _33; float _34;
-		float _41; float _42; float _43; float _44;
+		float _11_; float _12_; float _13_; float _14_;
+		float _21_; float _22_; float _23_; float _24_;
+		float _31_; float _32_; float _33_; float _34_;
+		float _41_; float _42_; float _43_; float _44_;
 		
 	public:
 		//yADXEngine—R—ˆz’PˆÊs—ñ‚ğ•Ô‚·
