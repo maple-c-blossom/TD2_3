@@ -45,8 +45,8 @@ void ADXCollider::Update(Object3d* obj)
 void ADXCollider::UniqueInitialize()
 {
 	preTranslation = { gameObject->position_.x,gameObject->position_.y,gameObject->position_.z };
-	preMatrix = gameObject->matWorld_.GetMatWorld();
-	preMatrixInverse = gameObject->matWorld_.GetMatWorldInverse();
+	preMatrix = ADXMatrix4::ConvertToADXMatrix(gameObject->GetMatWorld());
+	preMatrixInverse = ADXMatrix4::ConvertToADXMatrix(gameObject->GetMatWorld()).Inverse();
 }
 
 void ADXCollider::UniqueUpdate()
@@ -57,7 +57,7 @@ void ADXCollider::UniqueUpdate()
 //空間上の点をコライダーの中に収めた時の座標
 ADXVector3 ADXCollider::ClosestPoint(const ADXVector3& pos) const
 {
-	ADXVector3 ret = ADXMatrix4::transform(pos, gameObject->matWorld_.GetMatWorldInverse());
+	ADXVector3 ret = ADXMatrix4::transform(pos, ADXMatrix4::ConvertToADXMatrix(gameObject->GetMatWorld()).Inverse());
 	ADXVector3 closPos = ret;
 
 	switch (colType_)
@@ -432,10 +432,10 @@ void ADXCollider::SendPushBack()
 {
 	if (pushable_)
 	{
-		gameObject->transform.localPosition_ += pushBackVector;
-		gameObject->transform.UpdateMatrix();
+		gameObject->position_ += pushBackVector;
+		gameObject->UpdateMatrix();
 	}
-	preTranslation = gameObject->transform.localPosition_;
+	preTranslation = ADXVector3::ConvertToADXVector3(gameObject->position_);
 	preMatrix = ADXMatrix4::ConvertToADXMatrix(gameObject->GetMatWorld());
 	preMatrixInverse = ADXMatrix4::ConvertToADXMatrix(gameObject->GetMatWorld()).Inverse();
 	pushBackVector = { 0,0,0 };
@@ -449,7 +449,7 @@ void ADXCollider::StaticUpdate()
 	std::vector<ADXVector3> objsTranslation = {};
 	for (int32_t i = 0; i < Object3d::GetAllObjs().size(); i++)
 	{
-		objsTranslation.push_back(Object3d::GetAllObjs()[i]->localPosition_);
+		objsTranslation.push_back(ADXVector3::ConvertToADXVector3(Object3d::GetAllObjs()[i]->position_));
 	}
 
 	//すべてのコライダーで移動距離÷(最小絶対半径×0.95)を求め、最も大きい値をtranslateDivNumFに入れる
@@ -460,7 +460,7 @@ void ADXCollider::StaticUpdate()
 		colItr->collideList.clear();
 
 
-		ADXVector3 move = colItr->gameObject->transform.localPosition_ - colItr->preTranslation;
+		ADXVector3 move = ADXVector3::ConvertToADXVector3(colItr->gameObject->position_) - colItr->preTranslation;
 
 		ADXVector3 scaleX1 = { colItr->scale_.x,0,0 };
 		ADXVector3 scaleY1 = { 0,colItr->scale_.y,0 };
@@ -499,15 +499,15 @@ void ADXCollider::StaticUpdate()
 	//全てのオブジェクトを移動する前の座標へ移動させる
 	for (auto& colItr : S_cols)
 	{
-		colItr->gameObject->transform.localPosition_ = colItr->preTranslation;
+		colItr->gameObject->position_ = colItr->preTranslation.ConvertToXMFloat3();
 	}
 
 	//行列更新のついでに移動する前の座標を保存
 	std::vector<ADXVector3> objsPreTranslation = {};
 	for (auto& objItr : Object3d::GetAllObjs())
 	{
-		objsPreTranslation.push_back(objItr->transform.localPosition_);
-		objItr->transform.UpdateMatrix();
+		objsPreTranslation.push_back(ADXVector3::ConvertToADXVector3(objItr->position_));
+		objItr->UpdateMatrix();
 	}
 
 	//少しづつ移動させながら当たり判定と押し戻し処理を行う
@@ -518,8 +518,8 @@ void ADXCollider::StaticUpdate()
 		{
 			ADXVector3 move = objsTranslation[j] - objsPreTranslation[j];
 
-			Object3d::GetAllObjs()[j]->transform.localPosition_ += move / translateDivNumF;
-			Object3d::GetAllObjs()[j]->transform.UpdateMatrix();
+			Object3d::GetAllObjs()[j]->position_ += move / translateDivNumF;
+			Object3d::GetAllObjs()[j]->UpdateMatrix();
 		}
 
 		//当たり判定と押し戻しベクトルの算出
