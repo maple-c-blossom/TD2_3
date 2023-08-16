@@ -101,6 +101,8 @@ namespace MCB
 
        virtual void AnimationDraw( uint16_t incremant);
        const DirectX::XMMATRIX GetMatWorld() { return matWorld_.matWorld_; };
+       const DirectX::XMMATRIX GetMatScale() { return matWorld_.matScale_; };
+       const DirectX::XMMATRIX GetMatRot() { return matWorld_.matRot_; };
        void SetCollider(std::unique_ptr<BaseCollider> collider);
        BaseCollider* GetCollider() { return collider_; };
        virtual void OnCollision(const CollisionInfomation& info) { color_ = { 1,0,0,1 }; hited_ = true; }

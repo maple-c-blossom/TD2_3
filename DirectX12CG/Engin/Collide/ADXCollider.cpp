@@ -2,7 +2,6 @@
 #include "Object3d.h"
 #include "IScene.h"
 
-using namespace MCB;
 
 std::vector<collidePattern> ADXCollider::S_ignoreCollidePatterns = { {1,1},{2,2},{2,3},{3,3},{-1,1} };
 std::vector<collidePattern> ADXCollider::S_ignorePushBackPatterns = {};
@@ -39,7 +38,6 @@ void ADXCollider::Initialize(Object3d* obj)
 void ADXCollider::Update(Object3d* obj)
 {
 	gameObject = obj;
-	allColPtr.push_back(this);
 }
 
 void ADXCollider::UniqueInitialize()
@@ -432,7 +430,10 @@ void ADXCollider::SendPushBack()
 {
 	if (pushable_)
 	{
-		gameObject->position_ += pushBackVector;
+		gameObject->position_ = XMFLOAT3{
+			gameObject->position_.x + pushBackVector.x,
+			gameObject->position_.y + pushBackVector.y,
+			gameObject->position_.z + pushBackVector.z };
 		gameObject->UpdateMatrix();
 	}
 	preTranslation = ADXVector3::ConvertToADXVector3(gameObject->position_);
@@ -466,8 +467,8 @@ void ADXCollider::StaticUpdate()
 		ADXVector3 scaleY1 = { 0,colItr->scale_.y,0 };
 		ADXVector3 scaleZ1 = { 0,0,colItr->scale_.z };
 
-		ADXMatrix4 WorldScalingMat = colItr->gameObject->transform.GetMatScale();
-		WorldScalingMat *= colItr->gameObject->transform.GetMatRot();
+		ADXMatrix4 WorldScalingMat = ADXMatrix4::ConvertToADXMatrix(colItr->gameObject->GetMatScale());
+		WorldScalingMat *= ADXMatrix4::ConvertToADXMatrix(colItr->gameObject->GetMatRot());
 
 		float worldScaleX1 = ADXMatrix4::transform(scaleX1, WorldScalingMat).Length();
 		float worldScaleY1 = ADXMatrix4::transform(scaleY1, WorldScalingMat).Length();
@@ -518,7 +519,10 @@ void ADXCollider::StaticUpdate()
 		{
 			ADXVector3 move = objsTranslation[j] - objsPreTranslation[j];
 
-			Object3d::GetAllObjs()[j]->position_ += move / translateDivNumF;
+			Object3d::GetAllObjs()[j]->position_ = XMFLOAT3{
+				Object3d::GetAllObjs()[j]->position_.x + (move / translateDivNumF).x,
+				Object3d::GetAllObjs()[j]->position_.y + (move / translateDivNumF).y,
+				Object3d::GetAllObjs()[j]->position_.z + (move / translateDivNumF).z };
 			Object3d::GetAllObjs()[j]->UpdateMatrix();
 		}
 

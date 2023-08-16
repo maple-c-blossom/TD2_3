@@ -18,7 +18,7 @@ ADXVector3::ADXVector3(float x, float y, float z)
 	ADXVector3::z = z;
 }
 
-XMFLOAT3 ADXVector3::ConvertToXMFloat3()
+XMFLOAT3 ADXVector3::ConvertToXMFloat3() const
 {
 	XMFLOAT3 ret;
 	ret = { x,y,z };

@@ -14,7 +14,7 @@ public:
 	ADXVector3();
 	ADXVector3(float x, float y, float z);
 
-	DirectX::XMFLOAT3 ConvertToXMFloat3();
+	DirectX::XMFLOAT3 ConvertToXMFloat3() const;
 
 	float Length() const;
 	ADXVector3 Normalize() const;
