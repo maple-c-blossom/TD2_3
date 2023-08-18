@@ -376,31 +376,31 @@ void MCB::Scene::Update()
 void MCB::Scene::Draw()
 {
     //3Dオブジェクト
-    Skydome.Draw();
-    ground.Draw();
-    if (substie->GetVisible())
-    {
-        if (!boss->afterdethDown)
-        {
-            substie->Draw();
-        }
-    }
-    if (!(substie->GetHp() <= 0))
-    {
-        if (!boss->afterdethDown)
-        {
-            for (auto& itr : walls)
-            {
-                itr.Draw();
-            }
-            for (auto& itr : enemys)
-            {
-                itr->Draw();
-            }
-        }
-        boss->Draw();
-    }
-    WritingEnemy::StaticDraw();
+    //Skydome.Draw();
+    //ground.Draw();
+    //if (substie->GetVisible())
+    //{
+    //    if (!boss->afterdethDown)
+    //    {
+    //        substie->Draw();
+    //    }
+    //}
+    //if (!(substie->GetHp() <= 0))
+    //{
+    //    if (!boss->afterdethDown)
+    //    {
+    //        for (auto& itr : walls)
+    //        {
+    //            itr.Draw();
+    //        }
+    //        for (auto& itr : enemys)
+    //        {
+    //            itr->Draw();
+    //        }
+    //    }
+    //    boss->Draw();
+    //}
+    //WritingEnemy::StaticDraw();
     //human.Draw();
     //testSpher.Draw();
     //testSpher.FbxDraw();
@@ -408,6 +408,8 @@ void MCB::Scene::Draw()
 
 void MCB::Scene::SpriteDraw()
 {
+
+    postEffect_->Draw();
     if (!(substie->GetHp() <= 0))
     {
         if (!boss->afterdethDown)
@@ -558,6 +560,37 @@ void MCB::Scene::ImGuiUpdate()
     
     ImGui::End();
     imgui_.End();
+}
+
+void MCB::Scene::PostEffectDraw()
+{
+    postEffect_->PreDraw();
+    Skydome.Draw();
+    ground.Draw();
+    if (substie->GetVisible())
+    {
+        if (!boss->afterdethDown)
+        {
+            substie->Draw();
+        }
+    }
+    if (!(substie->GetHp() <= 0))
+    {
+        if (!boss->afterdethDown)
+        {
+            for (auto& itr : walls)
+            {
+                itr.Draw();
+            }
+            for (auto& itr : enemys)
+            {
+                itr->Draw();
+            }
+        }
+        boss->Draw();
+    }
+    WritingEnemy::StaticDraw();
+    postEffect_->PostDraw();
 }
 
 void MCB::Scene::MatrixUpdate()

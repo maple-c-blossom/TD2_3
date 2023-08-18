@@ -443,6 +443,145 @@ void MCB::TitleScene::Update()
 
 void MCB::TitleScene::Draw()
 {
+    ////3Dオブジェクト
+    //Skydome.Draw();
+    //ground.Draw();
+    //testSpher.Draw();
+    //substie->Draw();
+    //boss->Draw();
+    //for (auto& itr : writing)
+    //{
+    //    itr->Draw();
+    //}
+    //for (auto& itr : enemys_6tutorial)
+    //{
+    //    itr->Draw();
+    //}
+    //for (auto& itr : enemys_7tutorial)
+    //{
+    //    itr->Draw();
+    //}
+
+    //tutorialBode[0].Draw(tutorial[0]->texture->incrementNum_);
+    //tutorialBode[1].Draw(tutorial[1]->texture->incrementNum_);
+    //if (tutorialSucces & 0b10000)
+    //{
+    //    tutorialBode[2].Draw(tutorial1Succes[tutorial1AnimNum]->texture->incrementNum_);
+    //}
+    //else
+    //{
+    //    tutorialBode[2].Draw(tutorial1[tutorial1AnimNum]->texture->incrementNum_);
+    //}
+
+    //if (tutorialSucces & 0b01000)
+    //{
+    //    tutorialBode[3].Draw(tutorial2Succes[tutorial2AnimNum]->texture->incrementNum_);
+    //}
+    //else
+    //{
+    //    tutorialBode[3].Draw(tutorial2[tutorial2AnimNum]->texture->incrementNum_);
+    //}
+
+    //if (tutorialSucces & 0b00100)
+    //{
+    //    tutorialBode[4].Draw(tutorial3Succes[tutorial3AnimNum]->texture->incrementNum_);
+    //}
+    //else
+    //{
+    //    tutorialBode[4].Draw(tutorial3[tutorial3AnimNum]->texture->incrementNum_);
+    //}
+
+    //if (tutorialSucces & 0b00010)
+    //{
+    //    tutorialBode[5].Draw(tutorial4Succes[tutorial4AnimNum]->texture->incrementNum_);
+    //}
+    //else
+    //{
+    //    tutorialBode[5].Draw(tutorial4[tutorial4AnimNum]->texture->incrementNum_);
+    //}
+
+    //if (tutorialSucces & 0b00001)
+    //{
+    //    tutorialBode[6].Draw(tutorial5Succes[tutorial5AnimNum]->texture->incrementNum_);
+    //}
+    //else
+    //{
+    //    tutorialBode[6].Draw(tutorial5[tutorial5AnimNum]->texture->incrementNum_);
+    //}
+    //tutorialBode[7].Draw(tutorial[2]->texture->incrementNum_);
+  
+}
+
+void MCB::TitleScene::SpriteDraw()
+{
+    postEffect_->Draw();
+   titleSprite.SpriteDraw(*title->texture.get(), dxWindow_->sWINDOW_WIDTH_ / 2 - (substie->position_.x + 210) * 30, dxWindow_->sWINDOW_HEIGHT_ / 2 - 80, 512 * resultSize, 128 * resultSize);
+    //pushSpaceSprite.SpriteDraw(dxWindow_->sWINDOW_WIDTH_ / 2 - substie->position_.x * 30, dxWindow_->sWINDOW_HEIGHT_ / 2 + 40 + substie->position_.z * 30);
+    if (substie->position_.x >= tutorialBode[2].position_.x - 30)
+    {
+        substie->StatusDraw();
+    }
+
+    tutorialSkipSprite.SpriteDraw(*tutorialSkipTex->texture.get(), dxWindow_->sWINDOW_WIDTH_ - 10,10.f,480 * 0.85f, 100 * 0.85f);
+    debugText.AllDraw();
+}
+
+void MCB::TitleScene::ParticleDraw()
+{
+}
+
+void MCB::TitleScene::CheckAllColision()
+{
+}
+
+void MCB::TitleScene::ImGuiUpdate()
+{
+    imgui_.Begin();
+    ImGui::Begin("Debug");
+    /*if (ImGui::TreeNode("Tutorial"))
+    {
+        if (ImGui::TreeNode("position_"))
+        {
+            ImGui::SliderFloat("x", &tutorialBode.position_.x, -100, 100);
+            ImGui::SliderFloat("y", &tutorialBode.position_.y, -100, 100);
+            ImGui::SliderFloat("z", &tutorialBode.position_.z, -100, 100);
+            ImGui::TreePop();
+        }
+        if (ImGui::TreeNode("scale_"))
+        {
+            ImGui::SliderFloat("x", &tutorialBode.scale_.x, 0, 10);
+            ImGui::SliderFloat("y", &tutorialBode.scale_.y, 0, 10);
+            ImGui::SliderFloat("z", &tutorialBode.scale_.z, 0, 10);
+            ImGui::TreePop();
+        }
+    }*/
+    if (ImGui::TreeNode("Player"))
+    {
+        if (ImGui::TreeNode("position_"))
+        {
+            ImGui::Text("X %f", substie->position_.x);
+            ImGui::Text("Y %f", substie->position_.y);
+            ImGui::Text("Z %f", substie->position_.z);
+            ImGui::TreePop();
+        }
+
+        if (ImGui::TreeNode("shard"))
+        {
+            ImGui::Text("shard %f", substie->GetShard(), 0, 20);
+            ImGui::SliderFloat("shardCost %f", &substie->shardCost, 0, 20);
+            ImGui::SliderFloat("shardRotaCost %f", &substie->shardRotateCost, 0, 20);
+            ImGui::TreePop();
+        }
+        ImGui::TreePop();
+    }
+    ImGui::End();
+    imgui_.End();
+}
+
+void MCB::TitleScene::PostEffectDraw()
+{
+
+    postEffect_->PreDraw();
     //3Dオブジェクト
     Skydome.Draw();
     ground.Draw();
@@ -509,72 +648,7 @@ void MCB::TitleScene::Draw()
         tutorialBode[6].Draw(tutorial5[tutorial5AnimNum]->texture->incrementNum_);
     }
     tutorialBode[7].Draw(tutorial[2]->texture->incrementNum_);
-  
-}
-
-void MCB::TitleScene::SpriteDraw()
-{
-   titleSprite.SpriteDraw(*title->texture.get(), dxWindow_->sWINDOW_WIDTH_ / 2 - (substie->position_.x + 210) * 30, dxWindow_->sWINDOW_HEIGHT_ / 2 - 80, 512 * resultSize, 128 * resultSize);
-    //pushSpaceSprite.SpriteDraw(dxWindow_->sWINDOW_WIDTH_ / 2 - substie->position_.x * 30, dxWindow_->sWINDOW_HEIGHT_ / 2 + 40 + substie->position_.z * 30);
-    if (substie->position_.x >= tutorialBode[2].position_.x - 30)
-    {
-        substie->StatusDraw();
-    }
-
-    tutorialSkipSprite.SpriteDraw(*tutorialSkipTex->texture.get(), dxWindow_->sWINDOW_WIDTH_ - 10,10.f,480 * 0.85f, 100 * 0.85f);
-    debugText.AllDraw();
-}
-
-void MCB::TitleScene::ParticleDraw()
-{
-}
-
-void MCB::TitleScene::CheckAllColision()
-{
-}
-
-void MCB::TitleScene::ImGuiUpdate()
-{
-    imgui_.Begin();
-    ImGui::Begin("Debug");
-    /*if (ImGui::TreeNode("Tutorial"))
-    {
-        if (ImGui::TreeNode("position_"))
-        {
-            ImGui::SliderFloat("x", &tutorialBode.position_.x, -100, 100);
-            ImGui::SliderFloat("y", &tutorialBode.position_.y, -100, 100);
-            ImGui::SliderFloat("z", &tutorialBode.position_.z, -100, 100);
-            ImGui::TreePop();
-        }
-        if (ImGui::TreeNode("scale_"))
-        {
-            ImGui::SliderFloat("x", &tutorialBode.scale_.x, 0, 10);
-            ImGui::SliderFloat("y", &tutorialBode.scale_.y, 0, 10);
-            ImGui::SliderFloat("z", &tutorialBode.scale_.z, 0, 10);
-            ImGui::TreePop();
-        }
-    }*/
-    if (ImGui::TreeNode("Player"))
-    {
-        if (ImGui::TreeNode("position_"))
-        {
-            ImGui::Text("X %f", substie->position_.x);
-            ImGui::Text("Y %f", substie->position_.y);
-            ImGui::Text("Z %f", substie->position_.z);
-            ImGui::TreePop();
-        }
-
-        if (ImGui::TreeNode("shard"))
-        {
-            ImGui::Text("shard %f", substie->GetShard(), 0, 20);
-            ImGui::SliderFloat("shardCost %f", &substie->shardCost, 0, 20);
-            ImGui::SliderFloat("shardRotaCost %f", &substie->shardRotateCost, 0, 20);
-            ImGui::TreePop();
-        }
-        ImGui::TreePop();
-    }
-    ImGui::End();
-    imgui_.End();
+    postEffect_->PostDraw();
 }
 
 MCB::TitleScene::TitleScene(RootParameter* root, Depth* depth,PipeLineManager* pipeline)
