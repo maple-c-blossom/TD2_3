@@ -136,6 +136,7 @@ namespace MCB
 		void ParticleDraw() override;
 		void CheckAllColision()override;
 		void ImGuiUpdate()override;
+		void PostEffectDraw()override;
 	};
 }
 
