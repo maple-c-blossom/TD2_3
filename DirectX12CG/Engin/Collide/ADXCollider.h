@@ -28,12 +28,6 @@ struct collidePattern
 
 class ADXCollider
 {
-private:
-    static std::list<ADXCollider*> S_cols;
-
-public:
-    static void StaticUpdate();
-
 public:
     bool enabled = true;
     bool isTrigger = false;
@@ -47,9 +41,9 @@ public:
     Object3d* gameObject = nullptr;
 
 private:
-    ADXVector3 preTranslation;
-    ADXMatrix4 preMatrix;
-    ADXMatrix4 preMatrixInverse;
+    ADXVector3 preTranslation{};
+    ADXMatrix4 preMatrix{};
+    ADXMatrix4 preMatrixInverse{};
     std::list<ADXCollider*> collideList{};
     ADXVector3 pushBackVector = { 0,0,0 };
 
@@ -78,4 +72,8 @@ private:
 private:
     static std::vector<collidePattern> S_ignoreCollidePatterns;
     static std::vector<collidePattern> S_ignorePushBackPatterns;
+    static std::list<ADXCollider*> S_cols;
+
+public:
+    static void StaticUpdate();
 };
