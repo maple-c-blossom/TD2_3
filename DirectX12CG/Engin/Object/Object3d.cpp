@@ -7,7 +7,8 @@ using namespace std;
 
 LightGroup* Object3d::slights_ = nullptr;
 ICamera* Object3d::camera_ = nullptr;
-
+std::vector<Object3d*> Object3d::allObjPtr{};
+std::vector<Object3d*> Object3d::objs{};
 
 MCB::Object3d::Object3d()
 {
@@ -110,6 +111,10 @@ void MCB::Object3d::UpdateData()
     {
         deleteCountDown--;
     }
+}
+
+void MCB::Object3d::UniqueOnColliderHit(ADXCollider* myCol, ADXCollider* col)
+{
 }
 
 void Object3d::Update(bool isBillBord)

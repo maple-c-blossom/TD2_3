@@ -58,7 +58,12 @@ Vector3D MCB::Vector3D::V3Get(const Float3& start, const Float3& end)
 {
 	Vector3D temp(start, end);
 	return temp;
+}Vector3D MCB::Vector3D::V3Get(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end)
+{
+	Vector3D temp(start, end);
+	return temp;
 }
+
 float MCB::Vector3D::V3Len() const
 {
 	return sqrtf(((vec_.x_ * vec_.x_) + (vec_.y_ * vec_.y_) + (vec_.z_ * vec_.z_)));

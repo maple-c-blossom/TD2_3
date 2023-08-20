@@ -29,7 +29,6 @@ namespace MCB
 		DirectX::XMVECTOR ConvertXMVEC();
 		DirectX::XMFLOAT3 ConvertXMFloat3();
 
-		Vector3D GetFrontVec(Vector3D RightVec, Vector3D UpVec = { 0,1,0 });
 		Vector3D GetUpVec(Vector3D RightVec, Vector3D frontVec = { 0,0,1 });
 		Vector3D GetRightVec(Vector3D frontVec, Vector3D UpVec = { 0,1,0 });
 
