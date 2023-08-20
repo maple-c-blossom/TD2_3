@@ -53,6 +53,7 @@ void MCB::Scene::Initialize()
     Object3d::SetLights(lights_);
     soundManager_->PlaySoundWave(bgm, true);
     soundManager_->SetVolume(10, bgm);
+    postEffect_->Init();
 }
 
 void MCB::Scene::Object3DInit()
@@ -368,7 +369,7 @@ void MCB::Scene::Update()
         }
     }
     //s—ñ•ÏŠ·
-    //MatrixUpdate();
+    MatrixUpdate();
 
 
 }

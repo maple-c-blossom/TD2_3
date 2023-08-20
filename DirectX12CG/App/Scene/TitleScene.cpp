@@ -30,6 +30,7 @@ std::unique_ptr<IScene> MCB::TitleScene::GetNextScene()
 void MCB::TitleScene::MatrixUpdate()
 {
     viewCamera_->Update();
+    Object3d::camera_ = viewCamera_;
     Skydome.Update();
     ground.Update();
     boss->UpdateMatrix(viewCamera_);
@@ -431,7 +432,7 @@ void MCB::TitleScene::Update()
             break;
         }
     }
-    //MatrixUpdate();
+    MatrixUpdate();
     if (input_->IsKeyTrigger(DIK_P) || input_->IsKeyTrigger(DIK_RETURN)  || input_->gamePad_->IsButtonTrigger(GAMEPAD_START))
     {
         sceneEnd_ = true;
@@ -746,6 +747,7 @@ void MCB::TitleScene::Initialize()
     soundManager_->PlaySoundWave(bgm, true);
     soundManager_->SetVolume(10, bgm);
     resultSizeTimer.Set(360);
+    postEffect_->Init();
 }
 
 void MCB::TitleScene::LoadModel()

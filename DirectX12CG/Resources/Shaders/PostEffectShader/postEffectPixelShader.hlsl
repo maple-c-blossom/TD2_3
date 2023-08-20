@@ -7,20 +7,20 @@ SamplerState smp : register(s0);
 float4 AverageBlur(VSOutput input, Texture2D<float4> tex)
 {
     float4 texColor1 = float4(tex.Sample(smp, input.uv));
-    //const float uChange = 1 / 1280.f;
-    //const float vChange = 1 / 720.f;
-    //float4 texColor1sum = { 0, 0, 0, 0 };
-    //const float uForRange = 6;
-    //const float vForRange = 6;
-    //for (float v = 0; v < vForRange; v++)
-    //{
-    //    for (float u = 0; u < uForRange; u++)
-    //    {
-    //        float2 offSet = float2((u - 1) * uChange, (v - 1) * vChange);
-    //        texColor1sum += tex.Sample(smp, saturate(input.uv - offSet));
-    //    }
-    //}
-    return texColor1;
+    const float uChange = 1 / 1280.f;
+    const float vChange = 1 / 720.f;
+    float4 texColor1sum = { 0, 0, 0, 0 };
+    const float uForRange = 6;
+    const float vForRange = 6;
+    for (float v = 0; v < vForRange; v++)
+    {
+        for (float u = 0; u < uForRange; u++)
+        {
+            float2 offSet = float2((u - 1) * uChange, (v - 1) * vChange);
+            texColor1sum += tex.Sample(smp, saturate(input.uv - offSet));
+        }
+    }
+    return texColor1sum / (uForRange * vForRange);
 }
 
 float4 inv(VSOutput input, Texture2D<float4> tex)
@@ -71,41 +71,41 @@ float4 GaussianBlur(VSOutput input, Texture2D<float4> tex)
 
 float4 main(VSOutput input) : SV_TARGET
 {
-    switch (color.r)
-    {
-        case 1:
-            if (fmod(input.uv.y, 0.1f) < 0.05f)
-            {
-                return AverageBlur(input, tex0);
-            }
-            return inv(input, tex1);
-            break;
-        case 2:
-            return AverageBlur(input, tex0);
-            break;
-        case 3:
-            return inv(input, tex0);
-            break;
-        case 4:
-            return GaussianBlur(input, tex0);
-            break;
-        case 5:
-            return gray(input, tex0);
-            break;
-        case 6:
-            return sepia(input, tex0,0.024f);
-            break;
-        case 7:
-            return float4(tex1.Sample(smp, input.uv));;
-            break;
-        default:
-            if (fmod(input.uv.y, 0.1f) < 0.05f)
-            {
-                return AverageBlur(input,tex0); 
-            }
-            return inv(input, tex1);
-            break;
-    }
+    //switch (color.r)
+    //{
+    //    case 1:
+    //        if (fmod(input.uv.y, 0.1f) < 0.05f)
+    //        {
+    //            return AverageBlur(input, tex0);
+    //        }
+    //        return inv(input, tex1);
+    //        break;
+    //    case 2:
+    //        return AverageBlur(input, tex0);
+    //        break;
+    //    case 3:
+    //        return inv(input, tex0);
+    //        break;
+    //    case 4:
+    //        return GaussianBlur(input, tex0);
+    //        break;
+    //    case 5:
+    //        return gray(input, tex0);
+    //        break;
+    //    case 6:
+    //        return sepia(input, tex0,0.024f);
+    //        break;
+    //    case 7:
+    //        return float4(tex1.Sample(smp, input.uv));;
+    //        break;
+    //    default:
+    //        if (fmod(input.uv.y, 0.1f) < 0.05f)
+    //        {
+    //            return AverageBlur(input,tex0); 
+    //        }
+    //        return inv(input, tex1);
+    //        break;
+    //}
     return float4(tex1.Sample(smp, input.uv));
     
 }
