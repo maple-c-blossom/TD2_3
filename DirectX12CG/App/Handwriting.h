@@ -22,6 +22,6 @@ public:
 	void SetDelete(bool flag) { deleteFlag_ = flag; };
 
 private:
-	void UniqueOnColliderHit(ADXCollider* myCol, ADXCollider* col);
+	void OnColliderHit(ADXCollider* myCol, ADXCollider* col);
 };
 

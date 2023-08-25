@@ -160,7 +160,7 @@ std::vector<Enemy*> Enemy::GetAllEnemies()
 	return enemies;
 }
 
-void Enemy::UniqueOnColliderHit(ADXCollider* myCol, ADXCollider* col)
+void Enemy::OnColliderHit(ADXCollider* myCol, ADXCollider* col)
 {
 	if (capture == nullptr && !myCol->isTrigger)
 	{

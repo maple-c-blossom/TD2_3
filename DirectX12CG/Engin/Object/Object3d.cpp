@@ -113,7 +113,7 @@ void MCB::Object3d::UpdateData()
     }
 }
 
-void MCB::Object3d::UniqueOnColliderHit(ADXCollider* myCol, ADXCollider* col)
+void MCB::Object3d::OnColliderHit(ADXCollider* myCol, ADXCollider* col)
 {
 }
 

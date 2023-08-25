@@ -421,7 +421,10 @@ void ADXCollider::Collide(ADXCollider* col)
 		}
 
 		collideList.push_back(col);
+		gameObject->OnColliderHit(this, col);
 		col->collideList.push_back(this);
+		col->gameObject->OnColliderHit(col, this);
+
 	}
 }
 
