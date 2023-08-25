@@ -440,7 +440,7 @@ void MCB::TitleScene::Update()
     }
     
     Object3d::StaticUpdate();
-    ADXCollider::StaticUpdate(); 
+    ADXCollider::StaticUpdate();
 }
 
 void MCB::TitleScene::Draw()

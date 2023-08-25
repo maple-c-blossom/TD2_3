@@ -38,6 +38,7 @@ void ADXCollider::Initialize(Object3d* obj)
 void ADXCollider::Update(Object3d* obj)
 {
 	gameObject = obj;
+	UniqueUpdate();
 }
 
 void ADXCollider::UniqueInitialize()
