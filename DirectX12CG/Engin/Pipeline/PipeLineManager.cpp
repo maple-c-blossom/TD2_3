@@ -41,7 +41,7 @@ void MCB::PipeLineManager::SetSpritePipeLine(BlendMode blend)
 void MCB::PipeLineManager::SetParticlePipeLine(BlendMode blend)
 {
 	if (blend >= particlePipeline_.size())return;
-	particlePipeline_[blend].CommonBeginDraw(POINT);
+	particlePipeline_[blend].CommonBeginDraw(POINT_);
 }
 
 void MCB::PipeLineManager::SetPostEffectPipeLine(BlendMode blend)
