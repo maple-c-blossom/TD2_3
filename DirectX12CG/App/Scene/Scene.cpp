@@ -54,6 +54,10 @@ void MCB::Scene::Initialize()
     soundManager_->PlaySoundWave(bgm, true);
     soundManager_->SetVolume(10, bgm);
     postEffect_->Init();
+    for (auto& itr : walls)
+    {
+        itr.boss = boss.get();
+    }
 }
 
 void MCB::Scene::Object3DInit()
