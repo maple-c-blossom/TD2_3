@@ -59,6 +59,6 @@ public:
 	KneadedEraser* GetcapturePtr() { return capture; }
 
 private:
-	void UniqueOnColliderHit(ADXCollider* myCol, ADXCollider* col);
+	void OnColliderHit(ADXCollider* myCol, ADXCollider* col);
 };
 

@@ -145,9 +145,8 @@ namespace MCB
         // 【ADXEngine由来】全てのオブジェクトが入った配列
         static std::vector<Object3d*> objs;
 
-    protected:
-        virtual void UniqueOnColliderHit(ADXCollider* myCol, ADXCollider* col);
-    
+    public:
+        virtual void OnColliderHit(ADXCollider* myCol, ADXCollider* col);
     };
 
 }

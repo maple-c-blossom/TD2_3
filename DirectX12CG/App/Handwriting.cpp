@@ -38,7 +38,7 @@ bool Handwriting::GetLifeTimeOver()
 	return lifeTimer.IsEnd();
 }
 
-void Handwriting::UniqueOnColliderHit(ADXCollider* myCol, ADXCollider* col)
+void Handwriting::OnColliderHit(ADXCollider* myCol, ADXCollider* col)
 {
 	if (col->gameObject == Player::GetPlayer())
 	{
