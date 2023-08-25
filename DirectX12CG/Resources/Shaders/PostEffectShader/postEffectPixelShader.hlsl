@@ -106,6 +106,7 @@ float4 main(VSOutput input) : SV_TARGET
     //        return inv(input, tex1);
     //        break;
     //}
-    return float4(tex1.Sample(smp, input.uv));
+    float3 col = float4(tex1.Sample(smp, input.uv)).rgb;
+    return float4(col, 1);
     
 }

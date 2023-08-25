@@ -409,8 +409,9 @@ void MCB::Scene::Draw()
 
 void MCB::Scene::SpriteDraw()
 {
-
+    pipeline_->SetPostEffectPipeLine();
     postEffect_->Draw();
+    pipeline_->SetSpritePipeLine();
     if (!(substie->GetHp() <= 0))
     {
         if (!boss->afterdethDown)
