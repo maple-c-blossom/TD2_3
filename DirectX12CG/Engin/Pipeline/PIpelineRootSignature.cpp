@@ -166,7 +166,7 @@ void MCB::PipelineRootSignature::CreateLinePipeline(Depth& depth, RootParameter&
 
 #pragma region 頂点シェーダとピクセルシェーダをパイプラインに設定
 
-    pipeline_.SetGpipleneDescAll(&shader_);
+    pipeline_.SetGpipleneDescAll(shader_.vsBlob_.Get(), shader_.psBlob_.Get());
 
 #pragma endregion 頂点シェーダとピクセルシェーダをパイプラインに設定
     //-----------------------------------

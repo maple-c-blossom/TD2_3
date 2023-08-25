@@ -41,6 +41,7 @@ void MCB::SoundManager::AllDeleteSound()
 			sounds_[i]->pSourceVoice = nullptr;
 		}
 	}
+	sounds_.erase(remove_if(sounds_.begin(), sounds_.end(), [](auto& itr) {return itr->free == true; }),sounds_.end());
 }
 
 SoundManager::SoundManager()
