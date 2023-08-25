@@ -515,7 +515,9 @@ void MCB::TitleScene::Draw()
 
 void MCB::TitleScene::SpriteDraw()
 {
+    pipeline_->SetPostEffectPipeLine();
     postEffect_->Draw();
+    pipeline_->SetSpritePipeLine();
    titleSprite.SpriteDraw(*title->texture.get(), dxWindow_->sWINDOW_WIDTH_ / 2 - (substie->position_.x + 210) * 30, dxWindow_->sWINDOW_HEIGHT_ / 2 - 80, 512 * resultSize, 128 * resultSize);
     //pushSpaceSprite.SpriteDraw(dxWindow_->sWINDOW_WIDTH_ / 2 - substie->position_.x * 30, dxWindow_->sWINDOW_HEIGHT_ / 2 + 40 + substie->position_.z * 30);
     if (substie->position_.x >= tutorialBode[2].position_.x - 30)
