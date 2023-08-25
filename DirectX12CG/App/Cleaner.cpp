@@ -13,10 +13,12 @@ void Cleaner::Inilialize(MCB::Model* model)
     colliders.push_back(ADXCollider(this));
     colliders.back().colType_ = box;
     moveTime.Set(SECOND_FRAME * 9);
-    movePoint[0].vec_ = { -38.f , 0.f , 25.f };
-    movePoint[1].vec_ = { 38.f , 0.f , 25.f };
-    movePoint[2].vec_ = { -38.f , 0.f , -34.f };
-    movePoint[3].vec_ = { 38.f , 0.f , -34.f };
+    movePoint[0].vec_ = { 65.f , 0.f , 30.f };
+    movePoint[1].vec_ = { 0.f , 0.f , 30.f };
+    movePoint[2].vec_ = { -65.f , 0.f , 30.f };
+    movePoint[3].vec_ = { -65.f , 0.f , -30.f };
+    movePoint[4].vec_ = { 0.f , 0.f , -30.f };
+    movePoint[5].vec_ = { 65.f , 0.f , -30.f };
     position_.x = movePoint[2].vec_.x_;
     position_.y = movePoint[2].vec_.y_;
     position_.z = movePoint[2].vec_.z_;
