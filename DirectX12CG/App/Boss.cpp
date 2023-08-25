@@ -395,8 +395,8 @@ void Boss::DethUpdate()
 		Vector3D vec = -(velocity.GetV3Cross({ 0,1,0 }));
 		float tempangle = ConvertRadius(downAngle);
 		temp.SetRota(vec, tempangle);
-		q = q.GetDirectProduct(temp, q);
-		q.Normalize();
+		quaternion = quaternion.GetDirectProduct(temp, q);
+		quaternion.Normalize();
 	}
 
 	for (auto& itr : effects)
@@ -456,7 +456,7 @@ void Boss::StatusDraw()
 
 void Boss::UpdateMatrix(MCB::ICamera* camera)
 {
-	Object3d::Update(q);
+	Object3d::Update(quaternion);
 	cover->Update();
 	for (auto& itr : enemys)
 	{
