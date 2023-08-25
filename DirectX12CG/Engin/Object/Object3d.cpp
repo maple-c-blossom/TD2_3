@@ -113,6 +113,12 @@ void MCB::Object3d::UpdateData()
     }
 }
 
+void MCB::Object3d::StaticUpdate()
+{
+    objs = allObjPtr;
+    allObjPtr = {};
+}
+
 void MCB::Object3d::OnColliderHit(ADXCollider* myCol, ADXCollider* col)
 {
 }
