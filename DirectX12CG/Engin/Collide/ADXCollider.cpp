@@ -467,42 +467,45 @@ void ADXCollider::StaticUpdate()
 	float translateDivNumF = 1;
 	for (auto& colItr : S_cols)
 	{
-		//ついでにcollideListもこのタイミングでリセット
-		colItr->collideList.clear();
-
-
-		ADXVector3 move = ADXVector3::ConvertToADXVector3(colItr->gameObject->position_) - colItr->preTranslation;
-
-		ADXVector3 scaleX1 = { colItr->scale_.x,0,0 };
-		ADXVector3 scaleY1 = { 0,colItr->scale_.y,0 };
-		ADXVector3 scaleZ1 = { 0,0,colItr->scale_.z };
-
-		ADXMatrix4 WorldScalingMat = ADXMatrix4::ConvertToADXMatrix(colItr->gameObject->GetMatScale());
-		WorldScalingMat *= ADXMatrix4::ConvertToADXMatrix(colItr->gameObject->GetMatRot());
-
-		float worldScaleX1 = ADXMatrix4::transform(scaleX1, WorldScalingMat).Length();
-		float worldScaleY1 = ADXMatrix4::transform(scaleY1, WorldScalingMat).Length();
-		float worldScaleZ1 = ADXMatrix4::transform(scaleZ1, WorldScalingMat).Length();
-
-		float minimumWorldRadius1 = 1;
-
-		if (worldScaleX1 < worldScaleY1 && worldScaleX1 < worldScaleZ1 && worldScaleX1 > 0)
+		if (colItr != nullptr)
 		{
-			minimumWorldRadius1 = worldScaleX1;
-		}
-		else if (worldScaleY1 < worldScaleZ1 && worldScaleY1 > 0)
-		{
-			minimumWorldRadius1 = worldScaleY1;
-		}
-		else if (worldScaleZ1 > 0)
-		{
-			minimumWorldRadius1 = worldScaleZ1;
-		}
+			//ついでにcollideListもこのタイミングでリセット
+			colItr->collideList.clear();
 
-		float moveDivnum1 = move.Length() / (minimumWorldRadius1 * 0.95f);
-		if (moveDivnum1 >= translateDivNumF)
-		{
-			translateDivNumF = moveDivnum1;
+
+			ADXVector3 move = ADXVector3::ConvertToADXVector3(colItr->gameObject->position_) - colItr->preTranslation;
+
+			ADXVector3 scaleX1 = { colItr->scale_.x,0,0 };
+			ADXVector3 scaleY1 = { 0,colItr->scale_.y,0 };
+			ADXVector3 scaleZ1 = { 0,0,colItr->scale_.z };
+
+			ADXMatrix4 WorldScalingMat = ADXMatrix4::ConvertToADXMatrix(colItr->gameObject->GetMatScale());
+			WorldScalingMat *= ADXMatrix4::ConvertToADXMatrix(colItr->gameObject->GetMatRot());
+
+			float worldScaleX1 = ADXMatrix4::transform(scaleX1, WorldScalingMat).Length();
+			float worldScaleY1 = ADXMatrix4::transform(scaleY1, WorldScalingMat).Length();
+			float worldScaleZ1 = ADXMatrix4::transform(scaleZ1, WorldScalingMat).Length();
+
+			float minimumWorldRadius1 = 1;
+
+			if (worldScaleX1 < worldScaleY1 && worldScaleX1 < worldScaleZ1 && worldScaleX1 > 0)
+			{
+				minimumWorldRadius1 = worldScaleX1;
+			}
+			else if (worldScaleY1 < worldScaleZ1 && worldScaleY1 > 0)
+			{
+				minimumWorldRadius1 = worldScaleY1;
+			}
+			else if (worldScaleZ1 > 0)
+			{
+				minimumWorldRadius1 = worldScaleZ1;
+			}
+
+			float moveDivnum1 = move.Length() / (minimumWorldRadius1 * 0.95f);
+			if (moveDivnum1 >= translateDivNumF)
+			{
+				translateDivNumF = moveDivnum1;
+			}
 		}
 	}
 	translateDivNumF = ceilf(translateDivNumF);
