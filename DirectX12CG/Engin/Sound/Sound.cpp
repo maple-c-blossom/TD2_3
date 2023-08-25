@@ -24,6 +24,7 @@ void MCB::SoundManager::DeleteSound(size_t SoundHandle)
 	sounds_[SoundHandle]->wfex = {};
 	sounds_[SoundHandle]->free = true;
 	sounds_[SoundHandle]->pSourceVoice = nullptr;
+	sounds_.erase(remove_if(sounds_.begin(), sounds_.end(), [](auto& itr) {return itr->free == true; }), sounds_.end());
 }
 
 void MCB::SoundManager::AllDeleteSound()

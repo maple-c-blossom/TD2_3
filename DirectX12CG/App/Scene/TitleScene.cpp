@@ -657,11 +657,12 @@ MCB::TitleScene::TitleScene(RootParameter* root, Depth* depth,PipeLineManager* p
 	rootparamsPtr_ = root;
 	this->depth_ = depth;
     this->pipeline_ = pipeline;
+    soundManager_->AllDeleteSound();
 }
 
 MCB::TitleScene::~TitleScene()
 {
-    soundManager_->AllDeleteSound();
+    
     
     title->free = true;
     debugTextTexture->free = true;

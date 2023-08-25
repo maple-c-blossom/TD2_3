@@ -10,7 +10,7 @@ using namespace std;
 
 MCB::Scene::~Scene()
 {
-    soundManager_->AllDeleteSound();
+    //soundManager_->AllDeleteSound();
     WritingEnemy::GetHandWrite()->clear();
     Player::GetCaptureList()->clear();
     //loader_->SetDelete(testTex);
@@ -625,5 +625,6 @@ MCB::Scene::Scene(RootParameter* root, Depth* depthptr,PipeLineManager* pipeline
 	rootparamsPtr_ = root;
     depth_ = depthptr;
     this->pipeline_ = pipeline;
+    soundManager_->AllDeleteSound();
 }
 
