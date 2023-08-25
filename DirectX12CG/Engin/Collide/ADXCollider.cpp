@@ -420,10 +420,16 @@ void ADXCollider::Collide(ADXCollider* col)
 			}
 		}
 
-		collideList.push_back(col);
-		gameObject->OnColliderHit(this, col);
-		col->collideList.push_back(this);
-		col->gameObject->OnColliderHit(col, this);
+		if (collideList.empty() || !collideList.empty() && collideList.back() != col)
+		{
+			collideList.push_back(col);
+			gameObject->OnColliderHit(this, col);
+		}
+		if (collideList.empty() || !col->collideList.empty() && col->collideList.back() != this)
+		{
+			col->collideList.push_back(this);
+			gameObject->OnColliderHit(col, this);
+		}
 
 	}
 }

@@ -58,7 +58,8 @@ Vector3D MCB::Vector3D::V3Get(const Float3& start, const Float3& end)
 {
 	Vector3D temp(start, end);
 	return temp;
-}Vector3D MCB::Vector3D::V3Get(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end)
+}
+Vector3D MCB::Vector3D::V3Get(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end)
 {
 	Vector3D temp(start, end);
 	return temp;
