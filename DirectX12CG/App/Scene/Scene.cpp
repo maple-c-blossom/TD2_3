@@ -371,7 +371,7 @@ void MCB::Scene::Update()
     //s—ñ•ÏŠ·
     MatrixUpdate();
 
-
+    ADXCollider::StaticUpdate();
 }
 
 void MCB::Scene::Draw()
