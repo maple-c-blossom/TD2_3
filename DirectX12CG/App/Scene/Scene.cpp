@@ -374,7 +374,7 @@ void MCB::Scene::Update()
     }
     //s—ñ•ÏŠ·
     MatrixUpdate();
-
+    Object3d::StaticUpdate();
     ADXCollider::StaticUpdate();
 }
 

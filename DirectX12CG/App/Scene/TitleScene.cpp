@@ -439,7 +439,8 @@ void MCB::TitleScene::Update()
         soundManager_->PlaySoundWave(selectSound);
     }
     
-    ADXCollider::StaticUpdate();
+    Object3d::StaticUpdate();
+    ADXCollider::StaticUpdate(); 
 }
 
 void MCB::TitleScene::Draw()
