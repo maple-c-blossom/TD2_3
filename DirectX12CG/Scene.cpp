@@ -56,6 +56,10 @@ void MCB::Scene::Initialize()
     Object3d::SetLights(lights);
     soundManager.PlaySoundWave(bgm, true);
     soundManager.SetVolume(10, bgm);
+    for (auto& itr : walls)
+    {
+        itr.boss = boss.get();
+    }
 }
 
 void MCB::Scene::Object3DInit()
